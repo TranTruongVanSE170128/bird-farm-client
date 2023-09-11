@@ -4,6 +4,7 @@ function App() {
   return (
     <main>
       <Button>Click Me</Button>
+      <Button variant="secondary">Click Me</Button>
     </main>
   );
 }
