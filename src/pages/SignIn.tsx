@@ -1,0 +1,32 @@
+import { useGoogleLogin } from '@react-oauth/google'
+import axios from 'axios'
+
+function SignIn() {
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: async (codeResponse) => {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login-google`, {
+        accessTokenGoogle: codeResponse.access_token
+      })
+
+      const accessToken = data.accessToken
+      console.log(accessToken)
+
+      localStorage.setItem('access_token', accessToken)
+    }
+  })
+
+  return (
+    <main>
+      <button
+        className='bg-blue-500 py-2 px-4 rounded-md'
+        onClick={() => {
+          handleGoogleLogin()
+        }}
+      >
+        Google Login
+      </button>
+    </main>
+  )
+}
+
+export default SignIn
