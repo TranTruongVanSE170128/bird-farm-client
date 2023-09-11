@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button'
 import { useGoogleLogin } from '@react-oauth/google'
 import axios from 'axios'
 
@@ -17,14 +18,13 @@ function SignIn() {
 
   return (
     <main>
-      <button
-        className='bg-blue-500 py-2 px-4 rounded-md'
+      <Button
         onClick={() => {
           handleGoogleLogin()
         }}
       >
         Google Login
-      </button>
+      </Button>
     </main>
   )
 }
