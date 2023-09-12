@@ -1,3 +1,4 @@
+import { ModeToggle } from '@/components/mode-toggle'
 import { Button } from '@/components/ui/button'
 import useModal from '@/hooks/useModal'
 
@@ -12,8 +13,12 @@ function Home() {
   })
   return (
     <main>
+      <ModeToggle />
       <Modal />
       <Button onClick={showModal}>Click me</Button>
+      <Button variant='secondary' onClick={showModal}>
+        Click me
+      </Button>
     </main>
   )
 }
