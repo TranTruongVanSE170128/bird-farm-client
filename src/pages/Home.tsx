@@ -1,6 +1,6 @@
 import { ModeToggle } from '@/components/mode-toggle'
 import { Button } from '@/components/ui/button'
-import useModal from '@/hooks/useModal'
+import useModal from '@/hooks/use-modal'
 
 function Home() {
   const { Modal, showModal } = useModal({
@@ -11,6 +11,7 @@ function Home() {
       console.log('Đã xóa')
     }
   })
+
   return (
     <main>
       <ModeToggle />
