@@ -10,17 +10,14 @@ type Props = {
 
 function BirdCard({ className }: Props) {
   return (
-    <Link
-      to='/'
-      className={cn('outline-0 focus:ring-2 hover:ring-2 ring-primary transition duration-300 rounded-lg', className)}
-    >
-      <Card className='rounded-lg border-2'>
-        <CardHeader className='pt-4'>
-          <div className='aspect-square rounded-lg overflow-hidden'>
+    <Link to='/' className={cn('focus:ring-2 rounded-lg hover:ring-2 ring-primary transition duration-300', className)}>
+      <Card className='border-2 overflow-hidden'>
+        <CardHeader className='p-0 mb-4'>
+          <div className='aspect-square overflow-hidden'>
             <img
               src='https://www.droversvet.com.au/wp-content/uploads/2014/09/Fotolia_51454286_1000x666.jpg'
               alt=''
-              className='object-cover w-full h-full rounded-lg transition-all duration-300 hover:scale-105'
+              className='object-cover w-full h-full transition-all duration-300 hover:scale-105'
             />
           </div>
         </CardHeader>
