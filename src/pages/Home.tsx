@@ -1,26 +1,33 @@
-import { ModeToggle } from '@/components/mode-toggle'
-import { Button } from '@/components/ui/button'
-import useModal from '@/hooks/use-modal'
+import BirdCard from '@/components/bird-card'
+import SpecieCard from '@/components/specie-card'
+import Container from '@/components/ui/container'
 
 function Home() {
-  const { Modal, showModal } = useModal({
-    action: 'Vẫn xóa',
-    description: 'Xóa cái là không có lấy lại được đâu nha, có không giữ mất đừng tìm.',
-    title: 'Có chắc là xóa không?',
-    onAction: () => {
-      console.log('Đã xóa')
-    }
-  })
-
   return (
-    <main>
-      <ModeToggle />
-      <Modal />
-      <Button onClick={showModal}>Click me</Button>
-      <Button variant='secondary' onClick={showModal}>
-        Click me
-      </Button>
-    </main>
+    <Container>
+      <div className='space-y-4 mt-8'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+          <SpecieCard />
+          <SpecieCard />
+          <SpecieCard />
+          <SpecieCard />
+          <SpecieCard />
+          <SpecieCard />
+          <SpecieCard />
+          <SpecieCard />
+        </div>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+          <BirdCard />
+          <BirdCard />
+          <BirdCard />
+          <BirdCard />
+          <BirdCard />
+          <BirdCard />
+          <BirdCard />
+          <BirdCard />
+        </div>
+      </div>
+    </Container>
   )
 }
 

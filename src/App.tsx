@@ -1,9 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import SignIn from './pages/sign-in'
-import SignUp from './pages/sign-up'
-import Layout from './pages/layout'
-import Home from './pages/home'
+import SignIn from '@/pages/sign-in'
+import SignUp from '@/pages/sign-up'
+
+import Home from '@/pages/home'
+import LayoutShop from '@/components/hoc/layout-shop'
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
           <Route path='sign-in' element={<SignIn />} />
           <Route path='sign-up' element={<SignUp />} />
         </Route>
-        <Route path='/' element={<Layout />}>
+        <Route path='/' element={<LayoutShop />}>
           <Route path='' element={<Home />} />
         </Route>
       </Routes>
