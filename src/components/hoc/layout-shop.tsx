@@ -5,7 +5,7 @@ function LayoutShop() {
   return (
     <>
       <Header />
-      <div className='px-4 sm:px-8'>
+      <div className='px-4 sm:px-8 pb-12'>
         <Outlet />
       </div>
     </>

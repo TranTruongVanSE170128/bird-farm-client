@@ -1,9 +1,10 @@
+import { cn } from '@/lib/utils'
 import React from 'react'
 
-type Props = { children: React.ReactNode }
+type Props = { children: React.ReactNode; className?: string }
 
-function Container({ children }: Props) {
-  return <div className='w-full mx-auto max-w-7xl'>{children}</div>
+function Container({ children, className }: Props) {
+  return <div className={cn('w-full mx-auto max-w-7xl', className)}>{children}</div>
 }
 
 export default Container

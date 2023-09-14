@@ -55,7 +55,7 @@ function Header() {
               <span className='sr-only'>Shopping Cart</span>
             </Button>
 
-            <ModeToggle className='mr-4' />
+            <ModeToggle />
 
             <ProfileButton />
           </div>

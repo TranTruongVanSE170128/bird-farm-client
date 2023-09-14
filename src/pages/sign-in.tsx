@@ -1,7 +1,5 @@
-import { Button } from '@/components/ui/button'
 import { useGoogleLogin } from '@react-oauth/google'
 import axios from 'axios'
-
 function SignIn() {
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: async (codeResponse) => {
@@ -16,17 +14,7 @@ function SignIn() {
     }
   })
 
-  return (
-    <main>
-      <Button
-        onClick={() => {
-          handleGoogleLogin()
-        }}
-      >
-        Google Login
-      </Button>
-    </main>
-  )
+  return <main>SignIn</main>
 }
 
 export default SignIn

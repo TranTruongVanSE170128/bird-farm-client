@@ -1,123 +1,114 @@
-import {
-  Cloud,
-  CreditCard,
-  Github,
-  Keyboard,
-  LifeBuoy,
-  LogOut,
-  Mail,
-  MessageSquare,
-  Plus,
-  PlusCircle,
-  Settings,
-  User,
-  UserPlus,
-  Users
-} from 'lucide-react'
-
+import { CreditCard, LogIn, LogOut, Settings, User } from 'lucide-react'
+import registerIcon from '@/assets/register.svg'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { useEffect, useState } from 'react'
+import { Button } from './ui/button'
+import { Link } from 'react-router-dom'
+import axios from 'axios'
+import { useTheme } from './theme-provider'
+import { cn } from '@/lib/utils'
 
 function ProfileButton() {
+  const [user, setUser] = useState(null)
+  const { theme } = useTheme()
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const accessToken = localStorage.getItem('access_token')
+
+      if (!accessToken) {
+        return
+      }
+
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/who-am-i`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+
+      if (data?.user) {
+        setUser(data.user)
+      }
+    }
+
+    fetchUser()
+  }, [])
+
+  if (!user) {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant='ghost' size='icon' className='mr-2' aria-label='Shopping Cart'>
+            <User className='h-6 w-6' />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className='w-56'>
+          <DropdownMenuGroup>
+            <DropdownMenuItem asChild className='cursor-pointer'>
+              <Link to='/auth/sign-in'>
+                <LogIn className='mr-2 h-4 w-4' />
+                <span>Đăng nhập</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild className='cursor-pointer'>
+              <Link to='/auth/sign-up'>
+                <img
+                  alt='đăng ký'
+                  src={registerIcon}
+                  className={cn('mr-2 h-4 w-4', theme === 'dark' && 'filter invert')}
+                />
+                <span>Đăng ký</span>
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    )
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className='cursor-pointer'>
+        <Avatar className='cursor-pointer ml-3'>
           <AvatarImage src='https://github.com/shadcn.png' />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56'>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>
+          <div className='flex flex-col space-y-1'>
+            <p className='text-sm font-medium leading-none line-clamp-1'>Trần Trương Văn</p>
+            <p className='text-xs leading-none text-muted-foreground line-clamp-1'>kingchenobama711@gmail.com</p>
+          </div>
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem className='cursor-pointer'>
             <User className='mr-2 h-4 w-4' />
             <span>Profile</span>
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem className='cursor-pointer'>
             <CreditCard className='mr-2 h-4 w-4' />
             <span>Billing</span>
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem className='cursor-pointer'>
             <Settings className='mr-2 h-4 w-4' />
             <span>Settings</span>
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Keyboard className='mr-2 h-4 w-4' />
-            <span>Keyboard shortcuts</span>
-            <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Users className='mr-2 h-4 w-4' />
-            <span>Team</span>
-          </DropdownMenuItem>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-              <UserPlus className='mr-2 h-4 w-4' />
-              <span>Invite users</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <DropdownMenuItem>
-                  <Mail className='mr-2 h-4 w-4' />
-                  <span>Email</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <MessageSquare className='mr-2 h-4 w-4' />
-                  <span>Message</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <PlusCircle className='mr-2 h-4 w-4' />
-                  <span>More...</span>
-                </DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-          <DropdownMenuItem>
-            <Plus className='mr-2 h-4 w-4' />
-            <span>New Team</span>
-            <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Github className='mr-2 h-4 w-4' />
-          <span>GitHub</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <LifeBuoy className='mr-2 h-4 w-4' />
-          <span>Support</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem disabled>
-          <Cloud className='mr-2 h-4 w-4' />
-          <span>API</span>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem className='cursor-pointer'>
           <LogOut className='mr-2 h-4 w-4' />
           <span>Log out</span>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
