@@ -6,10 +6,14 @@ import { Menu, ShoppingCart } from 'lucide-react'
 import { ModeToggle } from './mode-toggle'
 import ProfileButton from './profile-button'
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
+import logoBlack from '@/assets/logo-black.png'
+import logoWhite from '@/assets/logo-white.png'
+import { useTheme } from './theme-provider'
 
 function Header() {
+  const { theme } = useTheme()
   return (
-    <header className='py-3 sm:flex sm:justify-between sm:items-center border-b'>
+    <header className='py-3 px-4 sm:flex sm:justify-between sm:items-center border-b'>
       <Container>
         <div className='relative flex h-16 w-full items-center justify-between'>
           <div className='flex items-center'>
@@ -21,7 +25,7 @@ function Header() {
                 <nav className='flex flex-col gap-4'>
                   {routes.map((route) => {
                     return (
-                      <Link key={route.label} to={route.href} className='blovk px-2 py-1 text-lg'>
+                      <Link key={route.label} to={route.href} className='px-2 py-1 text-lg'>
                         {route.label}
                       </Link>
                     )
@@ -31,7 +35,7 @@ function Header() {
             </Sheet>
 
             <Link to='/' className='ml-4 md:ml-0'>
-              <h1 className='text-xl font-bold'>STORE NAME</h1>
+              <img className='max-h-[48px]' src={theme === 'light' ? logoBlack : logoWhite} />
             </Link>
           </div>
           <nav className='mx-6 items-center space-x-4 lg:space-x-6 hidden md:flex'>

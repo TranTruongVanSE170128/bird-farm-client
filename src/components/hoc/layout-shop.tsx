@@ -3,10 +3,12 @@ import Header from '@/components/header'
 
 function LayoutShop() {
   return (
-    <div className='px-4 sm:px-8'>
+    <>
       <Header />
-      <Outlet />
-    </div>
+      <div className='px-4 sm:px-8'>
+        <Outlet />
+      </div>
+    </>
   )
 }
 
