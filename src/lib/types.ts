@@ -12,7 +12,7 @@ export type Bird = {
   onSale: boolean
   birth?: Date
   gender: Gender
-  price: number
+  price?: number
   description?: string
   imageUrls?: string[]
   parent?: Parent
