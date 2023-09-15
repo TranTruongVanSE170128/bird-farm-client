@@ -19,9 +19,8 @@ function Home() {
   useEffect(() => {
     const fetchSpecies = async () => {
       const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/species?pageSize=8&pageNumber=1`)
-      if (data?.species) {
-        setSpecies(data.species)
-      }
+
+      setSpecies(data?.species || [])
       setIsLoadingSpecies(false)
     }
 
@@ -84,7 +83,7 @@ function Home() {
           onSlideChange={() => console.log('slide change')}
         >
           {isLoadingSpecies
-            ? Array(8).map(() => {
+            ? Array(...new Array(8)).map(() => {
                 return (
                   <SwiperSlide>
                     <SpecieCardSkeleton />
@@ -93,7 +92,7 @@ function Home() {
               })
             : species?.map((specie) => {
                 return (
-                  <SwiperSlide>
+                  <SwiperSlide key={specie._id}>
                     <SpecieCard specie={specie} />
                   </SwiperSlide>
                 )
