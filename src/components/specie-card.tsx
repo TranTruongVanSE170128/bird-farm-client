@@ -1,10 +1,12 @@
 import { cn } from '@/lib/utils'
 import { Link } from 'react-router-dom'
 import { Card, CardContent, CardHeader } from './ui/card'
+import { Specie } from '@/lib/types'
+import noImage from '@/assets/no-image.avif'
 
-type Props = { className?: string }
+type Props = { className?: string; specie: Specie }
 
-function SpecieCard({ className }: Props) {
+function SpecieCard({ className, specie }: Props) {
   return (
     <Link
       to='/'
@@ -17,13 +19,13 @@ function SpecieCard({ className }: Props) {
         <CardHeader className='p-0 mb-4'>
           <div className='aspect-square overflow-hidden'>
             <img
-              src='https://daohieu.com/wp-content/uploads/2020/05/chim-vang-anh-917x1024.jpg'
+              src={specie?.imageUrl || noImage}
               alt=''
               className='object-cover w-full h-full transition-all duration-300 hover:scale-105'
             />
           </div>
         </CardHeader>
-        <CardContent className='font-semibold text-lg text-center'>Chim Vàng Anh</CardContent>
+        <CardContent className='font-semibold text-lg text-center line-clamp-1'>{specie.name}</CardContent>
       </Card>
     </Link>
   )
