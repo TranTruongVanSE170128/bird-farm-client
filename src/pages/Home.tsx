@@ -1,13 +1,30 @@
 import BirdCard from '@/components/bird-card'
 import SpecieCard from '@/components/specie-card'
+import SpecieCardSkeleton from '@/components/specie-card-skeleton'
 import { Button } from '@/components/ui/button'
 import Container from '@/components/ui/container'
+import { Specie } from '@/lib/types'
+import axios from 'axios'
 import { ShoppingBag } from 'lucide-react'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-
+// /http://localhost:5000/api/species
 function Home() {
   const speciesSection = useRef<HTMLHeadingElement>(null)
+  const [isLoadingSpecies, setIsLoadingSpecies] = useState(true)
+  const [species, setSpecies] = useState<Specie[]>([])
+
+  useEffect(() => {
+    const fetchSpecies = async () => {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/species?pageSize=8&pageNumber=1`)
+      if (data?.species) {
+        setSpecies(data.species)
+      }
+      setIsLoadingSpecies(false)
+    }
+
+    fetchSpecies()
+  }, [])
 
   return (
     <Container>
@@ -46,12 +63,20 @@ function Home() {
         </Link>
       </div>
 
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-        <SpecieCard />
-        <SpecieCard />
-        <SpecieCard />
-        <SpecieCard />
-      </div>
+      {isLoadingSpecies ? (
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+          <SpecieCardSkeleton />
+          <SpecieCardSkeleton />
+          <SpecieCardSkeleton />
+          <SpecieCardSkeleton />
+        </div>
+      ) : (
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+          {species?.map((specie) => {
+            return <SpecieCard specie={specie} />
+          })}
+        </div>
+      )}
 
       <Button className='mx-auto block mt-6' size='lg'>
         Xem tất cả
