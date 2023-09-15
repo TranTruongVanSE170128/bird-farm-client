@@ -9,19 +9,19 @@ type Props = { className?: string; specie: Specie }
 function SpecieCard({ className, specie }: Props) {
   return (
     <Link
-      to='/'
+      to={`/birds?specie=${specie._id}&pageNumber=1&pageSize=8`}
       className={cn(
-        'outline-0 focus:ring-2 hover:ring-2 overflow-hidden ring-primary transition duration-300 rounded-lg',
+        'outline-0 focus:border-2 hover:border-2 border-primary transition duration-300 rounded-2xl overflow-hidden',
         className
       )}
     >
-      <Card className='border-2'>
+      <Card className='border-2 rounded-2xl overflow-hidden'>
         <CardHeader className='p-0 mb-4'>
-          <div className='aspect-square overflow-hidden'>
+          <div className='aspect-square'>
             <img
               src={specie?.imageUrl || noImage}
               alt=''
-              className='object-cover w-full h-full transition-all duration-300 hover:scale-105'
+              className='object-fill w-full h-full transition-all duration-300 hover:scale-105'
             />
           </div>
         </CardHeader>

@@ -1,6 +1,4 @@
-type Props = {}
-
-function VerifyEmail({}: Props) {
+function VerifyEmail() {
   return <div>VerifyEmail</div>
 }
 

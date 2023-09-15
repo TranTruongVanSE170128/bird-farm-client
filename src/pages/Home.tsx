@@ -5,10 +5,12 @@ import { Button } from '@/components/ui/button'
 import Container from '@/components/ui/container'
 import { Specie } from '@/lib/types'
 import axios from 'axios'
-import { ShoppingBag } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ShoppingBag } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-// /http://localhost:5000/api/species
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination, EffectCoverflow } from 'swiper/modules'
+
 function Home() {
   const speciesSection = useRef<HTMLHeadingElement>(null)
   const [isLoadingSpecies, setIsLoadingSpecies] = useState(true)
@@ -53,30 +55,58 @@ function Home() {
         </div>
       </div>
 
-      <div className='flex justify-between items-center mt-8 mb-4'>
-        <h1 ref={speciesSection} className='text-3xl font-bold'>
-          Các loài chim bán chạy
-        </h1>
+      <h1 ref={speciesSection} className='text-3xl font-bold mt-8 mb-5 text-center'>
+        Các loài chim bán chạy
+      </h1>
 
-        <Link to='/' className='text-xl underline text-primary font-bold'>
-          Xem thêm
-        </Link>
+      <div className='relative'>
+        <Swiper
+          effect={'coverflow'}
+          grabCursor={true}
+          centeredSlides={true}
+          loop={true}
+          slidesPerView={4}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 0,
+            depth: 100,
+            modifier: 2.5
+          }}
+          pagination={{ el: '.swiper-pagination', clickable: true }}
+          navigation={{
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+          }}
+          modules={[EffectCoverflow, Pagination, Navigation]}
+          spaceBetween={16}
+          scrollbar={{ draggable: true }}
+          onSwiper={(swiper) => console.log(swiper)}
+          onSlideChange={() => console.log('slide change')}
+        >
+          {isLoadingSpecies
+            ? Array(8).map(() => {
+                return (
+                  <SwiperSlide>
+                    <SpecieCardSkeleton />
+                  </SwiperSlide>
+                )
+              })
+            : species?.map((specie) => {
+                return (
+                  <SwiperSlide>
+                    <SpecieCard specie={specie} />
+                  </SwiperSlide>
+                )
+              })}
+        </Swiper>
+
+        <Button className='p-2 text-primary-foreground bg-primary rounded-full swiper-button-prev slider-arrow absolute left-0 top-1/2 -translate-y-1/2 z-[999] -translate-x-1/2'>
+          <ArrowLeft />
+        </Button>
+        <Button className='p-2 text-primary-foreground bg-primary rounded-full swiper-button-next slider-arrow absolute right-0 top-1/2 -translate-y-1/2 z-[999] translate-x-1/2'>
+          <ArrowRight />
+        </Button>
       </div>
-
-      {isLoadingSpecies ? (
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-          <SpecieCardSkeleton />
-          <SpecieCardSkeleton />
-          <SpecieCardSkeleton />
-          <SpecieCardSkeleton />
-        </div>
-      ) : (
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-          {species?.map((specie) => {
-            return <SpecieCard specie={specie} />
-          })}
-        </div>
-      )}
 
       <Button className='mx-auto block mt-6' size='lg'>
         Xem tất cả

@@ -1,10 +1,8 @@
 import Container from '@/components/ui/container'
-import React from 'react'
+
 import { useParams } from 'react-router-dom'
 
-type Props = {}
-
-function BirdDetail({}: Props) {
+function BirdDetail() {
   const { id } = useParams()
   return (
     <main>
