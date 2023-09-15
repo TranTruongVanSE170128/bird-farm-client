@@ -108,9 +108,9 @@ function Home() {
         </Button>
       </div>
 
-      <Button className='mx-auto block mt-6' size='lg'>
-        Xem tất cả
-      </Button>
+      <Link className='mt-6 flex justify-center' to='/species'>
+        <Button size='lg'>Xem tất cả</Button>
+      </Link>
 
       <div className='flex justify-between items-center mt-8 mb-4'>
         <h1 className='text-3xl font-bold'>Chim đang bán tại cửa hàng</h1>
