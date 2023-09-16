@@ -2,7 +2,7 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import Ellipce from '@/assets/Ellipse2.png'
 
-import { ChevronUp, ChevronDown } from 'lucide-react'
+import { ChevronUp, ChevronDown, Container } from 'lucide-react'
 
 function BirdDetail() {
   const { id } = useParams()
@@ -172,6 +172,7 @@ function BirdDetail() {
           <div className='flex gap-4 px-3'>Sản phẩm tương tự</div>
         </p>
       </div>
+      
     </main>
   )
 }
