@@ -13,10 +13,14 @@ function VerifyEmail() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmiting(true)
-    const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/${userId}/verify/${code}`)
 
-    setVerify(data?.success ? 'success' : 'fail')
-    setIsSubmiting(false)
+    try {
+      await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/${userId}/verify/${code}`)
+      setVerify('success')
+    } catch (error) {
+      setVerify('fail')
+      setIsSubmiting(false)
+    }
   }
 
   return (

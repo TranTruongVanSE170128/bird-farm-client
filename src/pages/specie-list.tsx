@@ -7,12 +7,12 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-const pageSize = 12
+const pageSize = 8
 
 function SpecieList() {
   const [searchParams] = useSearchParams()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
-  const searchQuery = searchParams.get('searchQuery')
+  const searchQuery = searchParams.get('searchQuery') || ''
   const [species, setSpecies] = useState<Specie[]>([])
   const [isLoadingSpecies, setIsLoadingSpecies] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)

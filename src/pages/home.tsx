@@ -26,10 +26,6 @@ function Home() {
   }, [width])
 
   useEffect(() => {
-    console.log(sliceSpeciePerView)
-  }, [sliceSpeciePerView])
-
-  useEffect(() => {
     const fetchSpecies = async () => {
       const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/species?pageSize=8&pageNumber=1`)
 
