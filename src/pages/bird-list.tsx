@@ -38,7 +38,7 @@ function BirdList() {
     <main>
       <Container>
         <div className='flex justify-between items-center mt-10 mb-6'>
-          <h1 className='text-3xl font-bold'>Các loài chim đang bán tại cửa hàng</h1>
+          <h1 className='text-3xl font-bold'>Chim đang bán tại cửa hàng</h1>
         </div>
 
         {isLoadingBirds ? (

@@ -1,4 +1,4 @@
-import { CreditCard, LogIn, LogOut, Settings, User } from 'lucide-react'
+import { CreditCard, LogIn, LogOut, Settings, User as UserIcon } from 'lucide-react'
 import registerIcon from '@/assets/register.svg'
 import {
   DropdownMenu,
@@ -10,43 +10,25 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
 import { useTheme } from './theme-provider'
 import { cn } from '@/lib/utils'
+import { User } from '@/lib/types'
+type Props = {
+  className?: string
+  user: User | null
+}
 
-function ProfileButton() {
-  const [user, setUser] = useState<User | null>(null)
+function ProfileButton({ className, user }: Props) {
   const { theme } = useTheme()
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const accessToken = localStorage.getItem('access_token')
-
-      if (!accessToken) {
-        return
-      }
-
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/who-am-i`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
-
-      setUser(data?.user || null)
-    }
-
-    fetchUser()
-  }, [])
 
   if (!user) {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant='ghost' size='icon' className='mr-2' aria-label='Shopping Cart'>
-            <User className='h-6 w-6' />
+          <Button variant='ghost' size='icon' className={cn('mr-2', className)} aria-label='Shopping Cart'>
+            <UserIcon className='h-6 w-6' />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className='w-56'>
@@ -91,7 +73,7 @@ function ProfileButton() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem className='cursor-pointer'>
-            <User className='mr-2 h-4 w-4' />
+            <UserIcon className='mr-2 h-4 w-4' />
             <span>Profile</span>
           </DropdownMenuItem>
           <DropdownMenuItem className='cursor-pointer'>

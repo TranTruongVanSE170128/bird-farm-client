@@ -6,15 +6,28 @@ import Container from '@/components/ui/container'
 import { Specie } from '@/lib/types'
 import axios from 'axios'
 import { ArrowLeft, ArrowRight, ShoppingBag } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, EffectCoverflow } from 'swiper/modules'
+import useWindowSize from '@/hooks/use-window-size'
 
 function Home() {
-  const speciesSection = useRef<HTMLHeadingElement>(null)
   const [isLoadingSpecies, setIsLoadingSpecies] = useState(true)
   const [species, setSpecies] = useState<Specie[]>([])
+  const { width } = useWindowSize()
+  const speciesSection = useRef<HTMLHeadingElement>(null)
+
+  const sliceSpeciePerView = useMemo(() => {
+    if (width < 640) return 1
+    else if (width < 768) return 2
+    else if (width < 1024) return 3
+    else return 4
+  }, [width])
+
+  useEffect(() => {
+    console.log(sliceSpeciePerView)
+  }, [sliceSpeciePerView])
 
   useEffect(() => {
     const fetchSpecies = async () => {
@@ -64,7 +77,7 @@ function Home() {
           grabCursor={true}
           centeredSlides={true}
           loop={true}
-          slidesPerView={4}
+          slidesPerView={sliceSpeciePerView}
           coverflowEffect={{
             rotate: 0,
             stretch: 0,
