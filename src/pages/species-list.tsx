@@ -24,6 +24,8 @@ function SpeciesList() {
           import.meta.env.VITE_API_URL
         }/api/species?pageSize=${pageSize}&pageNumber=${pageNumber}searchQuery=${searchQuery}`
       )
+      console.log(data)
+
       setSpecies(data?.species || [])
       setTotalPages(data?.totalPages || null)
       setIsLoadingSpecies(false)
@@ -35,7 +37,7 @@ function SpeciesList() {
   return (
     <main>
       <Container>
-        <div className='flex justify-between items-center mt-10 mb-6'>
+        <div className='flex justify-between items-center my-12'>
           <h1 className='text-3xl font-bold'>Các loài chim đang bán tại cửa hàng</h1>
         </div>
 

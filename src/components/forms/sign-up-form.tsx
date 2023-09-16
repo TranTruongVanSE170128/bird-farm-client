@@ -6,16 +6,21 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '../ui/input'
 import axios from 'axios'
 import googleIcon from '@/assets/google.svg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { Shell } from 'lucide-react'
 
 export function SignUpForm() {
+  const navigate = useNavigate()
   const form = useForm<TSignUpSchema>({
     resolver: zodResolver(signUpSchema)
   })
+  const isSubmitting = form.formState.isSubmitting
 
-  async function onSubmit(data: TSignUpSchema) {
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/sign-up`, data)
-    console.log(response)
+  async function onSubmit(values: TSignUpSchema) {
+    const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/sign-up`, values)
+    if (data?.email && data?.userId) {
+      navigate(`/auth/${data.userId}/verify-email?email=${data.email}`)
+    }
   }
 
   return (
@@ -63,8 +68,8 @@ export function SignUpForm() {
               </FormItem>
             )}
           />
-          <Button type='submit' className='w-full'>
-            Đăng ký
+          <Button disabled={isSubmitting} type='submit' className='w-full'>
+            {!isSubmitting ? 'Đăng ký' : <Shell className='animate-spin w-4 h-4' />}
           </Button>
         </form>
       </Form>
