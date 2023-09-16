@@ -2,16 +2,43 @@ import Container from '@/components/ui/container'
 import { Link } from 'react-router-dom'
 import { routes } from '@/constants/linkRoutes'
 import { Button } from '@/components/ui/button'
-import { Menu, ShoppingCart } from 'lucide-react'
-import { ModeToggle } from './mode-toggle'
+import { Bell, Heart, Menu, ShoppingCart } from 'lucide-react'
 import ProfileButton from './profile-button'
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
 import logoBlack from '@/assets/logo-black.png'
 import logoWhite from '@/assets/logo-white.png'
 import { useTheme } from './theme-provider'
+import { Input } from './ui/input'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { User } from '@/lib/types'
 
 function Header() {
   const { theme } = useTheme()
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const accessToken = localStorage.getItem('access_token')
+
+      if (!accessToken) {
+        return
+      }
+
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/who-am-i`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+
+      if (data?.user) {
+        setUser(data.user)
+      }
+    }
+
+    fetchUser()
+  }, [])
+
   return (
     <header className='py-3 px-4 sm:flex sm:justify-between sm:items-center border-b'>
       <Container>
@@ -35,29 +62,44 @@ function Header() {
             </Sheet>
 
             <Link to='/' className='ml-4 md:ml-0'>
-              <img className='max-h-[48px]' src={theme === 'light' ? logoBlack : logoWhite} />
+              <img className='max-h-[36px]' src={theme === 'light' ? logoBlack : logoWhite} />
             </Link>
+
+            <nav className='m-4 items-center hidden md:flex'>
+              {routes.map((route) => {
+                return (
+                  <Button variant='ghost' asChild>
+                    <Link key={route.label} to={route.href} className='text-sm font-medium transition-colors'>
+                      {route.label}
+                    </Link>
+                  </Button>
+                )
+              })}
+            </nav>
           </div>
-          <nav className='mx-6 items-center space-x-4 lg:space-x-6 hidden md:flex'>
-            {routes.map((route) => {
-              return (
-                <Button variant='ghost' asChild>
-                  <Link key={route.label} to={route.href} className='text-sm font-medium transition-colors'>
-                    {route.label}
-                  </Link>
-                </Button>
-              )
-            })}
-          </nav>
-          <div className='flex items-center'>
-            <Button variant='ghost' size='icon' className='mr-2' aria-label='Shopping Cart'>
+
+          <div className='flex items-center flex-1 justify-end'>
+            <Input className='mr-4 max-w-xs flex-1 outline-none' type='text' placeholder='Tìm kiếm chim...' />
+
+            {user && (
+              <Button variant='ghost' size='icon' className='mr-2 shrink-0' aria-label='Shopping Cart'>
+                <Heart className='h-6 w-6' />
+              </Button>
+            )}
+
+            <Button variant='ghost' size='icon' className='mr-2 shrink-0' aria-label='Shopping Cart'>
               <ShoppingCart className='h-6 w-6' />
-              <span className='sr-only'>Shopping Cart</span>
             </Button>
 
-            <ModeToggle />
+            {user && (
+              <Button variant='ghost' size='icon' className='mr-2 shrink-0' aria-label='Shopping Cart'>
+                <Bell className='h-6 w-6' />
+              </Button>
+            )}
 
-            <ProfileButton />
+            {/* <ModeToggle className='shrink-0' /> */}
+
+            <ProfileButton user={user} className='shrink-0' />
           </div>
         </div>
       </Container>

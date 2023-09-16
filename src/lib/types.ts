@@ -1,3 +1,11 @@
+export type User = {
+  _id?: string
+  name: string
+  email: string
+  imageUrl?: string
+  role: Role
+}
+
 export type Specie = {
   _id?: string
   name: string
@@ -21,6 +29,7 @@ export type Bird = {
 }
 
 export type Gender = 'male' | 'female'
+
 export type Parent = {
   dad?: string
   mom?: string
@@ -35,3 +44,5 @@ export type Discount = {
   startDate: Date
   endDate: Date
 }
+
+export type Role = 'customer' | 'staff' | 'manager'

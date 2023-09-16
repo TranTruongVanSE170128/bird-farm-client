@@ -1,14 +1,14 @@
 export const routes = [
   {
     href: '/',
-    label: 'Sản Phẩm'
+    label: 'Chim Trưởng Thành'
   },
   {
     href: '/',
-    label: 'Loài Chim'
+    label: 'Tổ Chim Non Có Sẵn'
   },
   {
     href: '/',
-    label: 'Giảm Giá'
+    label: 'Đặt Tổ Chim Non'
   }
 ]
