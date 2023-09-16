@@ -1,43 +1,19 @@
 import Container from '@/components/ui/container'
 import { Link } from 'react-router-dom'
-import { routes } from '@/constants/linkRoutes'
+import { routes } from '@/constants/shopRoutes'
 import { Button } from '@/components/ui/button'
 import { Bell, Heart, Menu, ShoppingCart } from 'lucide-react'
-import ProfileButton from './profile-button'
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
+import ProfileButton from '../profile-button'
+import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 import logoBlack from '@/assets/logo-black.png'
 import logoWhite from '@/assets/logo-white.png'
-import { useTheme } from './theme-provider'
-import { Input } from './ui/input'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import { User } from '@/lib/types'
+import { useTheme } from '../theme-provider'
+import { Input } from '../ui/input'
+import useAuth from '@/hooks/use-auth'
 
 function Header() {
   const { theme } = useTheme()
-  const [user, setUser] = useState<User | null>(null)
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const accessToken = localStorage.getItem('access_token')
-
-      if (!accessToken) {
-        return
-      }
-
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/who-am-i`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
-
-      if (data?.user) {
-        setUser(data.user)
-      }
-    }
-
-    fetchUser()
-  }, [])
+  const user = useAuth()
 
   return (
     <header className='py-3 px-4 sm:flex sm:justify-between sm:items-center border-b'>

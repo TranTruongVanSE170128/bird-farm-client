@@ -3,12 +3,14 @@ import { Toaster } from '@/components/ui/toaster'
 import SignIn from '@/pages/sign-in'
 import SignUp from '@/pages/sign-up'
 import Home from '@/pages/home'
-import LayoutShop from '@/components/hoc/layout-shop'
+import LayoutShop from '@/components/shared/layout-shop'
 import VerifyEmail from '@/pages/verify-email'
 import BirdDetail from '@/pages/bird-detail'
 import BirdList from '@/pages/bird-list'
 import SpecieList from '@/pages/specie-list'
 import NotFound from '@/pages/not-found'
+import Dashboard from './pages/dashboard'
+import LayoutAdmin from './components/shared/layout-admin'
 
 function App() {
   return (
@@ -26,6 +28,13 @@ function App() {
           <Route path='species' element={<SpecieList />} />
           <Route path='birds/:id' element={<BirdDetail />} />
           <Route path='birds' element={<BirdList />} />
+        </Route>
+
+        <Route path='/admin' element={<LayoutAdmin />}>
+          <Route path='' element={<Dashboard />} />
+          <Route path='birds' element={<Dashboard />} />
+          <Route path='nests' element={<Dashboard />} />
+          <Route path='orders' element={<Dashboard />} />
         </Route>
 
         <Route path='*' element={<NotFound />} />
