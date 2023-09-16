@@ -18,7 +18,7 @@ import { useTheme } from './theme-provider'
 import { cn } from '@/lib/utils'
 
 function ProfileButton() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<User | null>(null)
   const { theme } = useTheme()
 
   useEffect(() => {
@@ -35,9 +35,7 @@ function ProfileButton() {
         }
       })
 
-      if (data?.user) {
-        setUser(data.user)
-      }
+      setUser(data?.user || null)
     }
 
     fetchUser()
@@ -86,7 +84,7 @@ function ProfileButton() {
       <DropdownMenuContent className='w-56'>
         <DropdownMenuLabel>
           <div className='flex flex-col space-y-1'>
-            <p className='text-sm font-medium leading-none line-clamp-1'>Trần Trương Văn</p>
+            <p className='text-sm font-medium leading-none line-clamp-1'>{user.name}</p>
             <p className='text-xs leading-none text-muted-foreground line-clamp-1'>kingchenobama711@gmail.com</p>
           </div>
         </DropdownMenuLabel>

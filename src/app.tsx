@@ -7,7 +7,7 @@ import LayoutShop from '@/components/hoc/layout-shop'
 import VerifyEmail from '@/pages/verify-email'
 import BirdDetail from '@/pages/bird-detail'
 import BirdList from '@/pages/bird-list'
-import SpeciesList from '@/pages/species-list'
+import SpecieList from '@/pages/specie-list'
 import NotFound from '@/pages/not-found'
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
 
         <Route path='/' element={<LayoutShop />}>
           <Route path='' element={<Home />} />
-          <Route path='species' element={<SpeciesList />} />
+          <Route path='species' element={<SpecieList />} />
           <Route path='birds/:id' element={<BirdDetail />} />
           <Route path='birds' element={<BirdList />} />
         </Route>

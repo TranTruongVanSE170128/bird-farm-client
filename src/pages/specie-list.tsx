@@ -9,7 +9,7 @@ import { useSearchParams } from 'react-router-dom'
 
 const pageSize = 12
 
-function SpeciesList() {
+function SpecieList() {
   const [searchParams] = useSearchParams()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
   const searchQuery = searchParams.get('searchQuery')
@@ -22,7 +22,7 @@ function SpeciesList() {
       const { data } = await axios.get(
         `${
           import.meta.env.VITE_API_URL
-        }/api/species?pageSize=${pageSize}&pageNumber=${pageNumber}searchQuery=${searchQuery}`
+        }/api/species?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}`
       )
       console.log(data)
 
@@ -69,4 +69,4 @@ function SpeciesList() {
   )
 }
 
-export default SpeciesList
+export default SpecieList

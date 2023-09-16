@@ -8,18 +8,28 @@ import axios from 'axios'
 import googleIcon from '@/assets/google.svg'
 import { Link, useNavigate } from 'react-router-dom'
 import { Shell } from 'lucide-react'
+import { useState } from 'react'
 
 export function SignUpForm() {
   const navigate = useNavigate()
   const form = useForm<TSignUpSchema>({
     resolver: zodResolver(signUpSchema)
   })
-  const isSubmitting = form.formState.isSubmitting
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   async function onSubmit(values: TSignUpSchema) {
-    const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/sign-up`, values)
-    if (data?.email && data?.userId) {
-      navigate(`/auth/${data.userId}/verify-email?email=${data.email}`)
+    setIsSubmitting(true)
+
+    try {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/sign-up`, values)
+      if (data?.email && data?.userId) {
+        navigate(`/auth/${data.userId}/verify-email?email=${data.email}`)
+        return
+      }
+
+      throw new Error('Có lỗi xảy ra')
+    } catch (error) {
+      setIsSubmitting(false)
     }
   }
 

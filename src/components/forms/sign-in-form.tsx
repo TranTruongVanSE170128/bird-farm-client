@@ -6,16 +6,26 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '../ui/input'
 import axios from 'axios'
 import googleIcon from '@/assets/google.svg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { Shell } from 'lucide-react'
+import { useState } from 'react'
 
 export function SignInForm() {
+  const navigate = useNavigate()
   const form = useForm<TSignInSchema>({
     resolver: zodResolver(signInSchema)
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  async function onSubmit(data: TSignInSchema) {
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/sign-up`, data)
-    console.log(response)
+  async function onSubmit(values: TSignInSchema) {
+    setIsSubmitting(true)
+    try {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/sign-in`, values)
+      localStorage.setItem('access_token', data?.accessToken)
+      navigate('/')
+    } catch (error) {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -49,8 +59,8 @@ export function SignInForm() {
               </FormItem>
             )}
           />
-          <Button type='submit' className='w-full'>
-            Đăng nhập
+          <Button disabled={isSubmitting} type='submit' className='w-full'>
+            {!isSubmitting ? 'Đăng nhập' : <Shell className='animate-spin w-4 h-4' />}
           </Button>
         </form>
       </Form>
