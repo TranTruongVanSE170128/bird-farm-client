@@ -2,22 +2,59 @@ import { Link } from 'react-router-dom'
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card'
 import { cn, formatPrice } from '@/lib/utils'
 import { Button } from './ui/button'
-import { Heart } from 'lucide-react'
 import { Bird } from '@/lib/types'
 import noImage from '@/assets/no-image.avif'
+import redHeart from '@/assets/red-heart.svg'
+import blackHeart from '@/assets/black-heart.svg'
+import { useState } from 'react'
+import { useToast } from './ui/use-toast'
 
 type Props = {
   className?: string
-  bird?: Bird
+  bird: Bird
 }
 
 function BirdCard({ className, bird }: Props) {
+  const wishList: Record<string, boolean> = JSON.parse(localStorage.getItem('wishList') || '{}')
+  const cart: Record<string, number> = JSON.parse(localStorage.getItem('cart') || '{}')
+  const [isInWishList, setIsInWishList] = useState(wishList[bird._id])
+  const { toast } = useToast()
+
   const addToCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
+    cart[bird._id] = cart[bird._id] ? cart[bird._id] + 1 : 1
+    localStorage.setItem('cart', JSON.stringify(cart))
+    toast({
+      variant: 'success',
+      title: 'Đã thêm chim vào giỏ hàng!',
+      duration: 1500
+    })
   }
+
   const addToWishList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
+    wishList[bird._id] = true
+    localStorage.setItem('wishList', JSON.stringify(wishList))
+    setIsInWishList(!isInWishList)
+    toast({
+      variant: 'success',
+      title: 'Đã thêm chim vào danh sách mong ước!',
+      duration: 1500
+    })
   }
+
+  const removeFromWishList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault()
+    delete wishList[bird._id]
+    localStorage.setItem('wishList', JSON.stringify(wishList))
+    setIsInWishList(!isInWishList)
+    toast({
+      variant: 'destructive',
+      title: 'Đã bỏ chim khỏi danh sách mong ước!',
+      duration: 1500
+    })
+  }
+
   const handleBuyNow = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
   }
@@ -50,9 +87,15 @@ function BirdCard({ className, bird }: Props) {
             <Button onClick={addToCart} variant='outline' className='w-full'>
               Thêm vào giỏ
             </Button>
-            <Button onClick={addToWishList} className='p-2' variant='outline' size='icon'>
-              <Heart />
-            </Button>
+            {isInWishList ? (
+              <Button onClick={removeFromWishList} className='p-1' variant='outline' size='icon'>
+                <img src={redHeart} alt='heart' />
+              </Button>
+            ) : (
+              <Button onClick={addToWishList} className='p-1' variant='outline' size='icon'>
+                <img src={blackHeart} alt='heart' />
+              </Button>
+            )}
           </div>
           <Button onClick={handleBuyNow} className='w-full'>
             Mua ngay

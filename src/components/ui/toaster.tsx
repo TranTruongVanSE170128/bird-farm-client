@@ -5,20 +5,26 @@ export function Toaster() {
   const { toasts } = useToast()
 
   return (
-    <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }) {
-        return (
-          <Toast key={id} {...props}>
-            <div className='grid gap-1'>
-              {title && <ToastTitle>{title}</ToastTitle>}
-              {description && <ToastDescription>{description}</ToastDescription>}
-            </div>
-            {action}
-            <ToastClose />
-          </Toast>
-        )
-      })}
-      <ToastViewport />
-    </ToastProvider>
+    <div className='absolute max-w-full'>
+      <ToastProvider>
+        {toasts.map(function ({ id, title, description, action, duration, ...props }) {
+          return (
+            <Toast key={id} duration={duration} {...props}>
+              <div className='flex flex-col w-full'>
+                <div className='flex justify-start items-center w-full p-2 gap-2 mr-4'>
+                  <div className='grid gap-1'>
+                    {title && <ToastTitle>{title}</ToastTitle>}
+                    {description && <ToastDescription>{description}</ToastDescription>}
+                  </div>
+                  {action}
+                </div>
+                <ToastClose />
+              </div>
+            </Toast>
+          )
+        })}
+        <ToastViewport />
+      </ToastProvider>
+    </div>
   )
 }

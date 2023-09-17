@@ -15,8 +15,8 @@ import { useRef } from 'react'
 type Props = {
   title: string
   description: string
-  action: string
-  onAction: () => void
+  action?: string
+  onAction?: () => void
 }
 
 function useModal({ title, description, onAction, action }: Props) {

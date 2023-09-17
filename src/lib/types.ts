@@ -1,5 +1,5 @@
 export type User = {
-  _id?: string
+  _id: string
   name: string
   email: string
   imageUrl?: string
@@ -14,7 +14,7 @@ export type Specie = {
 }
 
 export type Bird = {
-  _id?: string
+  _id: string
   name: string
   specie: Specie
   sold: boolean

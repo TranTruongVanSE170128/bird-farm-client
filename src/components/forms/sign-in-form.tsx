@@ -9,9 +9,14 @@ import googleIcon from '@/assets/google.svg'
 import { Link, useNavigate } from 'react-router-dom'
 import { Shell } from 'lucide-react'
 import { useState } from 'react'
+import useModal from '@/hooks/use-modal'
 
 export function SignInForm() {
   const navigate = useNavigate()
+  const { Modal, showModal } = useModal({
+    title: 'Lỗi đăng nhập',
+    description:  'Lỗi không xác định.'
+  })
   const form = useForm<TSignInSchema>({
     resolver: zodResolver(signInSchema)
   })
@@ -23,13 +28,16 @@ export function SignInForm() {
       const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/sign-in`, values)
       localStorage.setItem('access_token', data?.accessToken)
       navigate('/')
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       setIsSubmitting(false)
+      showModal()
     }
   }
 
   return (
     <>
+      <Modal />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
           <FormField
