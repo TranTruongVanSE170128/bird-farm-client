@@ -4,18 +4,6 @@ import icon from '@/assets/icon.png'
 import { SignInForm } from '@/components/forms/sign-in-form'
 
 function SignUp() {
-  // const handleGoogleLogin = useGoogleLogin({
-  //   onSuccess: async (codeResponse) => {
-  //     const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login-google`, {
-  //       accessTokenGoogle: codeResponse.access_token
-  //     })
-
-  //     const accessToken = data.accessToken
-  //     console.log(accessToken)
-
-  //     localStorage.setItem('access_token', accessToken)
-  //   }
-  // })
   return (
     <main>
       <div className='container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0'>
