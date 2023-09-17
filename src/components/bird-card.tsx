@@ -8,6 +8,7 @@ import redHeart from '@/assets/red-heart.svg'
 import blackHeart from '@/assets/black-heart.svg'
 import { useState } from 'react'
 import { useToast } from './ui/use-toast'
+import { useCartContext } from '@/contexts/CartProvider'
 
 type Props = {
   className?: string
@@ -16,14 +17,13 @@ type Props = {
 
 function BirdCard({ className, bird }: Props) {
   const wishList: Record<string, boolean> = JSON.parse(localStorage.getItem('wishList') || '{}')
-  const cart: Record<string, number> = JSON.parse(localStorage.getItem('cart') || '{}')
+  const { addToCart } = useCartContext()
   const [isInWishList, setIsInWishList] = useState(wishList[bird._id])
   const { toast } = useToast()
 
-  const addToCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
-    cart[bird._id] = cart[bird._id] ? cart[bird._id] + 1 : 1
-    localStorage.setItem('cart', JSON.stringify(cart))
+    addToCart(bird._id)
     toast({
       variant: 'success',
       title: 'Đã thêm chim vào giỏ hàng!',
@@ -31,7 +31,7 @@ function BirdCard({ className, bird }: Props) {
     })
   }
 
-  const addToWishList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleAddToWishList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
     wishList[bird._id] = true
     localStorage.setItem('wishList', JSON.stringify(wishList))
@@ -43,7 +43,7 @@ function BirdCard({ className, bird }: Props) {
     })
   }
 
-  const removeFromWishList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleRemoveFromWishList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
     delete wishList[bird._id]
     localStorage.setItem('wishList', JSON.stringify(wishList))
@@ -84,15 +84,15 @@ function BirdCard({ className, bird }: Props) {
         </CardContent>
         <CardFooter className='flex gap-2 flex-col'>
           <div className='flex w-full gap-2'>
-            <Button onClick={addToCart} variant='outline' className='w-full'>
+            <Button onClick={handleAddToCart} variant='outline' className='w-full'>
               Thêm vào giỏ
             </Button>
             {isInWishList ? (
-              <Button onClick={removeFromWishList} className='p-1' variant='outline' size='icon'>
+              <Button onClick={handleRemoveFromWishList} className='p-1' variant='outline' size='icon'>
                 <img src={redHeart} alt='heart' />
               </Button>
             ) : (
-              <Button onClick={addToWishList} className='p-1' variant='outline' size='icon'>
+              <Button onClick={handleAddToWishList} className='p-1' variant='outline' size='icon'>
                 <img src={blackHeart} alt='heart' />
               </Button>
             )}

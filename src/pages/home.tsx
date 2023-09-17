@@ -122,10 +122,10 @@ function Home() {
               })}
         </Swiper>
 
-        <Button className='p-2 text-primary-foreground bg-primary rounded-full swiper-button-prev slider-arrow absolute left-0 top-1/2 -translate-y-1/2 z-[999] -translate-x-1/2'>
+        <Button className='p-2 text-primary-foreground bg-primary rounded-full swiper-button-prev slider-arrow absolute left-0 top-1/2 -translate-y-1/2 z-40 -translate-x-1/2'>
           <ArrowLeft />
         </Button>
-        <Button className='p-2 text-primary-foreground bg-primary rounded-full swiper-button-next slider-arrow absolute right-0 top-1/2 -translate-y-1/2 z-[999] translate-x-1/2'>
+        <Button className='p-2 text-primary-foreground bg-primary rounded-full swiper-button-next slider-arrow absolute right-0 top-1/2 -translate-y-1/2 z-40 translate-x-1/2'>
           <ArrowRight />
         </Button>
       </div>
