@@ -15,6 +15,7 @@ export type Specie = {
 
 export type Bird = {
   _id?: string
+  name: string
   specie: Specie
   sold: boolean
   onSale: boolean

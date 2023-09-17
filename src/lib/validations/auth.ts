@@ -1,21 +1,21 @@
 import { z } from 'zod'
 
-// const idValidation = z.string().nonempty('id is required').trim().toLowerCase()
-// const verifyCodeValidation = z.string().nonempty('verify code is required').trim().toLowerCase()
+// const idValidation = z.coerce.string().nonempty('id is required').trim().toLowerCase()
+// const verifyCodeValidation = z.coerce.string().nonempty('verify code is required').trim().toLowerCase()
 
 export const signInSchema = z.object({
-  email: z.string({ required_error: 'Bắt buộc' }).email().trim().toLowerCase(),
-  password: z.string({ required_error: 'Bắt buộc' }).trim()
+  email: z.coerce.string({ required_error: 'Bắt buộc' }).email().trim().toLowerCase(),
+  password: z.coerce.string({ required_error: 'Bắt buộc' }).trim()
 })
 
 export const signUpSchema = z.object({
-  name: z.string({ required_error: 'Bắt buộc' }).min(2, 'Tên ít nhất 2 kí tự').trim(),
-  email: z.string({ required_error: 'Bắt buộc' }).email('Email không hợp lệ').trim().toLowerCase(),
-  password: z.string({ required_error: 'Bắt buộc' }).trim().min(6, 'Mật khẩu ít nhất 6 kí tự')
+  name: z.coerce.string({ required_error: 'Bắt buộc' }).min(2, 'Tên ít nhất 2 kí tự').trim(),
+  email: z.coerce.string({ required_error: 'Bắt buộc' }).email('Email không hợp lệ').trim().toLowerCase(),
+  password: z.coerce.string({ required_error: 'Bắt buộc' }).trim().min(6, 'Mật khẩu ít nhất 6 kí tự')
 })
 
-export type TSignInSchema = z.infer<typeof signInSchema>
-export type TSignUpSchema = z.infer<typeof signUpSchema>
+export type TSignInSchema = z.coerce.infer<typeof signInSchema>
+export type TSignUpSchema = z.coerce.infer<typeof signUpSchema>
 
 // export const forgetPasswordSchema = z.object({
 //   body: z.object({

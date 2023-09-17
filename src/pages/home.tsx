@@ -3,7 +3,7 @@ import SpecieCard from '@/components/specie-card'
 import SpecieCardSkeleton from '@/components/specie-card-skeleton'
 import { Button } from '@/components/ui/button'
 import Container from '@/components/ui/container'
-import { Specie } from '@/lib/types'
+import { Bird, Specie } from '@/lib/types'
 import axios from 'axios'
 import { ArrowLeft, ArrowRight, ShoppingBag } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -11,10 +11,13 @@ import { Link } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, EffectCoverflow } from 'swiper/modules'
 import useWindowSize from '@/hooks/use-window-size'
+import BirdCardSkeleton from '@/components/bird-card-skeleton'
 
 function Home() {
   const [isLoadingSpecies, setIsLoadingSpecies] = useState(true)
   const [species, setSpecies] = useState<Specie[]>([])
+  const [isLoadingBirds, setIsLoadingBirds] = useState(true)
+  const [birds, setBirds] = useState<Bird[]>([])
   const { width } = useWindowSize()
   const speciesSection = useRef<HTMLHeadingElement>(null)
 
@@ -26,15 +29,22 @@ function Home() {
   }, [width])
 
   useEffect(() => {
-    console.log(sliceSpeciePerView)
-  }, [sliceSpeciePerView])
-
-  useEffect(() => {
     const fetchSpecies = async () => {
       const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/species?pageSize=8&pageNumber=1`)
 
       setSpecies(data?.species || [])
       setIsLoadingSpecies(false)
+    }
+
+    fetchSpecies()
+  }, [])
+
+  useEffect(() => {
+    const fetchSpecies = async () => {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/birds?pageSize=8&pageNumber=1`)
+
+      setBirds(data?.birds || [])
+      setIsLoadingBirds(false)
     }
 
     fetchSpecies()
@@ -132,10 +142,13 @@ function Home() {
         </Link>
       </div>
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-        <BirdCard />
-        <BirdCard />
-        <BirdCard />
-        <BirdCard />
+        {isLoadingBirds
+          ? Array(...new Array(8)).map(() => {
+              return <BirdCardSkeleton />
+            })
+          : birds?.map((bird) => {
+              return <BirdCard key={bird._id} bird={bird} />
+            })}
       </div>
 
       <Link className='mt-6 flex justify-center' to='/birds'>

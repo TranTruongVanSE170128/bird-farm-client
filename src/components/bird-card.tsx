@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card'
-import { cn } from '@/lib/utils'
+import { cn, formatPrice } from '@/lib/utils'
 import { Button } from './ui/button'
 import { Heart } from 'lucide-react'
 import { Bird } from '@/lib/types'
@@ -40,14 +40,10 @@ function BirdCard({ className, bird }: Props) {
         <CardContent className='flex-col items-start'>
           <div>
             <p className='font-semibold text-lg lg:text-xl'>
-              {/* {bird?.specie?.name} mã {bird?._id?.slice(6)} */}
-              Chim Sẻ mã SE1234
+              {bird?.specie?.name} mã {bird?.name}
             </p>
           </div>
-          <div className='flex items-center justify-between lg:text-lg'>
-            200.000đ
-            {/* {formatPrice(bird?.price || 0)} */}
-          </div>
+          <div className='flex items-center justify-between lg:text-lg'>{formatPrice(bird?.price || 0)}</div>
         </CardContent>
         <CardFooter className='flex gap-2 flex-col'>
           <div className='flex w-full gap-2'>
