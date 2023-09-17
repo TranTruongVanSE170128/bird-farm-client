@@ -10,7 +10,7 @@ import logoWhite from '@/assets/logo-white.png'
 import { useTheme } from '../theme-provider'
 import { Input } from '../ui/input'
 import useAuth from '@/hooks/use-auth'
-import { useCartContext } from '@/contexts/CartProvider'
+import { useCartContext } from '@/contexts/cart-provider'
 
 function Header() {
   const { theme } = useTheme()
@@ -61,7 +61,9 @@ function Header() {
 
             <Button variant='ghost' size='icon' className='shrink-0 relative' aria-label='Shopping Cart'>
               <ShoppingCart className='h-6 w-6' />
-              <div className='bg-red-500 text-slate-50 absolute rounded-full py-[1px] px-[2px] -top-[2px] -right-[2px]'>{quantityInCart}</div>
+              <div className='bg-red-500 text-slate-50 absolute rounded-full py-[1px] px-[2px] -top-[2px] -right-[2px]'>
+                {quantityInCart}
+              </div>
             </Button>
 
             {user && (

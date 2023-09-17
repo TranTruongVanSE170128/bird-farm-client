@@ -18,7 +18,6 @@ function useLocalStorage<T>(key: string, defaultValue: T) {
     }
   })
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const setLocalStorageStateValue = (valueOrFn: T) => {
     let newValue
     if (typeof valueOrFn === 'function') {

@@ -8,7 +8,7 @@ import redHeart from '@/assets/red-heart.svg'
 import blackHeart from '@/assets/black-heart.svg'
 import { useState } from 'react'
 import { useToast } from './ui/use-toast'
-import { useCartContext } from '@/contexts/CartProvider'
+import { useCartContext } from '@/contexts/cart-provider'
 
 type Props = {
   className?: string
