@@ -1,6 +1,7 @@
 // import { useSearchParams } from 'react-router-dom'
 
 import BirdCard from '@/components/bird-card'
+import BirdCardSkeleton from '@/components/bird-card-skeleton'
 import Paginate from '@/components/paginate'
 import Container from '@/components/ui/container'
 import { Bird } from '@/lib/types'
@@ -43,9 +44,9 @@ function BirdList() {
 
         {isLoadingBirds ? (
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-            {/* {Array(...new Array(12)).map(() => {
-              return <SpecieCardSkeleton />
-            })} */}
+            {Array(...new Array(12)).map(() => {
+              return <BirdCardSkeleton />
+            })}
           </div>
         ) : (
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
