@@ -81,7 +81,7 @@ function BirdDetail() {
             <span className='underline underline-offset-4 '>Danh mục chim chào mào </span>
           </p>
           <span className='text-3xl text-red-500 font-medium '>5.500.000 đ</span>
-          <div className='flex  justify-center gap-10 mt-3'>
+          <div className='flex justify-center gap-10 mt-3'>
             <div>
               <p className='mt-3'>Ngày sinh : 20/09/2022</p>
               <p className='mt-3'>Giới tính : Đực </p>

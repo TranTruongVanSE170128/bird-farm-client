@@ -9,6 +9,7 @@ import BirdDetail from '@/pages/bird-detail'
 import BirdList from '@/pages/bird-list'
 import SpeciesList from '@/pages/species-list'
 import NotFound from '@/pages/not-found'
+import NestList from './pages/nest-list'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path='species' element={<SpeciesList />} />
           <Route path='birds/:id' element={<BirdDetail />} />
           <Route path='birds' element={<BirdList />} />
+          <Route path='nests' element={<NestList />} />
           <Route path='not-found' element={<NotFound />} />
         </Route>
 
