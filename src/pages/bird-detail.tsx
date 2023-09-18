@@ -1,9 +1,12 @@
 
 import { useNavigate, useParams } from 'react-router-dom'
 import Ellipce from '@/assets/Ellipse2.png'
-
-import { ChevronUp, ChevronDown, Container } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { ChevronUp, ChevronDown} from 'lucide-react'
 import { useRef, useState } from 'react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination, EffectCoverflow } from 'swiper/modules'
 
 function BirdDetail() {
   const { id } = useParams()
@@ -198,6 +201,47 @@ function BirdDetail() {
         <p className='uppercase text-xl font-bold bg-primary py-2 mb-3  text-white cursor-pointer'>
           <div className='flex gap-4 px-3'>Sản phẩm tương tự</div>
         </p>
+        <div className='relative '>
+          <Button className='p-2 bg-blue-500 rounded-full swiper-button-prev slider-arrow absolute left-0 top-1/3 -translate-y-1/2 z-[999] -translate-x-1/2'>
+            <ArrowLeft />
+          </Button>
+          <Button className='p-2 bg-blue-500 rounded-full swiper-button-next slider-arrow absolute right-0 top-1/3 -translate-y-1/2 z-[999] translate-x-1/2'>
+            <ArrowRight />
+          </Button>
+          <div className='mx-10'>
+            <Swiper
+              slidesPerView={4}
+              spaceBetween={30} 
+              scrollbar={{ draggable: true }}
+              loop={true} 
+              pagination={{ el: '.swiper-pagination', clickable: true }}
+              navigation={{
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev'
+              }}
+              modules={[EffectCoverflow, Pagination, Navigation]}
+              onSwiper={(swiper) => console.log(swiper)}
+              onSlideChange={() => console.log('slide change')}
+            >
+              {new Array(10).fill(0).map((el, i) => (
+                <SwiperSlide key={i}>
+                  <div className='bg-white rounded-xl '>
+                    <img
+                      src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKAKHac56qa2ePV7jdG_NGG1ExlwG8tpdzPLHQeKJxnVdj62ZmAfevw0v0G_tXFxSdFA0&usqp=CAU'
+                      alt=''
+                      className='w-full object-cover rounded-lg'
+                    />
+                    <div className='px-3'>
+                      <p>Chim chào mào trung mang</p>
+                      <p>Mã : SE170112</p>
+                      <p className='text-red-500 text-xl'>5.500.000đ</p>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
       </div>
 
     </main>
