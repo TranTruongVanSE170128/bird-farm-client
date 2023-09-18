@@ -26,6 +26,7 @@ function App() {
           <Route path='species' element={<SpeciesList />} />
           <Route path='birds/:id' element={<BirdDetail />} />
           <Route path='birds' element={<BirdList />} />
+          <Route path='not-found' element={<NotFound />} />
         </Route>
 
         <Route path='*' element={<NotFound />} />
