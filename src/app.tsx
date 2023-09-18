@@ -15,6 +15,7 @@ import WishList from './pages/wish-list'
 import Profile from './pages/profile'
 import OrderList from './pages/order-list'
 import Cart from './pages/cart'
+import AdminBirdList from './pages/admin-bird-list'
 
 function App() {
   return (
@@ -40,7 +41,7 @@ function App() {
 
         <Route path='/admin' element={<LayoutAdmin />}>
           <Route path='' element={<Dashboard />} />
-          <Route path='birds' element={<Dashboard />} />
+          <Route path='birds' element={<AdminBirdList />} />
           <Route path='nests' element={<Dashboard />} />
           <Route path='orders' element={<Dashboard />} />
         </Route>
