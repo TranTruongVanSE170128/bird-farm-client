@@ -1,0 +1,119 @@
+import Paginate from '@/components/paginate'
+import Spinner from '@/components/ui/spinner'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Bird, getSpecie } from '@/lib/types'
+import { formatPrice } from '@/lib/utils'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
+import axios from 'axios'
+import { Check, MoreHorizontal, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import maleIcon from '@/assets/male.svg'
+import femaleIcon from '@/assets/female.svg'
+
+const pageSize = 12
+
+function AdminBirdList() {
+  const [searchParams] = useSearchParams()
+  const pageNumber = Number(searchParams.get('pageNumber') || 1)
+  const searchQuery = searchParams.get('searchQuery') || ''
+  const specie = searchParams.get('specie') || ''
+  const [birds, setBirds] = useState<Bird[]>([])
+  const [isLoadingBirds, setIsLoadingBirds] = useState(true)
+  const [totalPages, setTotalPages] = useState<number | null>(null)
+
+  useEffect(() => {
+    const fetchBirds = async () => {
+      setIsLoadingBirds(true)
+      try {
+        const { data } = await axios.get(
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/admin/birds?pageSize=${pageSize}&pageNumber=${pageNumber}searchQuery=${searchQuery}&specie=${specie}`
+        )
+        setBirds(data?.birds || null)
+        setIsLoadingBirds(false)
+        setTotalPages(data?.totalPages || null)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchBirds()
+  }, [pageNumber, searchQuery, specie])
+
+  if (!birds) {
+    return <div>Loading</div>
+  }
+
+  return (
+    <div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Loài</TableHead>
+            <TableHead className='text-center'>Tên</TableHead>
+            <TableHead className='text-center'>Ảnh</TableHead>
+            <TableHead className='text-center'>Giá</TableHead>
+            {/* <TableHead className='text-center'>Đã Bán</TableHead> */}
+            <TableHead className='text-center'>Đang Bán</TableHead>
+            <TableHead className='text-center'>Giới Tính</TableHead>
+            <TableHead className='text-end'></TableHead>
+          </TableRow>
+        </TableHeader>
+
+        {!isLoadingBirds && (
+          <TableBody>
+            {birds.map((bird) => {
+              return (
+                <TableRow key={bird._id}>
+                  <TableCell className='line-clamp-1'>{getSpecie(bird).name}</TableCell>
+                  <TableCell className='text-center'>{bird.name}</TableCell>
+                  <TableCell className='text-center'>
+                    <img src={bird.imageUrls?.[0]} alt='bird' />
+                  </TableCell>
+                  <TableCell className='text-center'>{formatPrice(bird.price)}</TableCell>
+                  {/* <TableCell className='text-center'>Đã Bán</TableCell> */}
+                  <TableCell className='text-center flex justify-center'>
+                    <div>{bird.onSale ? <Check color='green' /> : <X color='red' />}</div>
+                  </TableCell>
+                  <TableCell className='text-center'>
+                    {bird.gender === 'male' ? (
+                      <img className='w-9 h-9 block mx-auto' src={maleIcon} alt='đực' />
+                    ) : (
+                      <img className='w-8 h-8 block mx-auto' src={femaleIcon} alt='cái' />
+                    )}
+                  </TableCell>
+                  <TableCell className='text-center'>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <MoreHorizontal className='cursor-pointer' />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className='bg-background border border-border'>
+                        <DropdownMenuItem className='cursor-pointer py-2 px-4'>Chi Tiết</DropdownMenuItem>
+                        <DropdownMenuItem className='cursor-pointer py-2 px-4'>Bày Bán</DropdownMenuItem>
+                        <DropdownMenuItem className='cursor-pointer py-2 px-4'>Ngừng Bán</DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        )}
+      </Table>
+      {isLoadingBirds && <Spinner className='mt-5' />}
+      {!!totalPages && (
+        <Paginate
+          className='mt-8'
+          path={`/admin/birds?searchQuery=${searchQuery}`}
+          pageSize={pageSize}
+          pageNumber={pageNumber}
+          totalPages={totalPages}
+        />
+      )}
+    </div>
+  )
+}
+
+export default AdminBirdList
