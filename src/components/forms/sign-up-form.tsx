@@ -9,13 +9,17 @@ import googleIcon from '@/assets/google.svg'
 import { Link, useNavigate } from 'react-router-dom'
 import { Shell } from 'lucide-react'
 import { useState } from 'react'
+import { useToast } from '../ui/use-toast'
+import { useGoogleLogin } from '@react-oauth/google'
 
 export function SignUpForm() {
   const navigate = useNavigate()
+  const { toast } = useToast()
   const form = useForm<TSignUpSchema>({
     resolver: zodResolver(signUpSchema)
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isLoggingGoogle, setIsLoggingGoogle] = useState(false)
 
   async function onSubmit(values: TSignUpSchema) {
     setIsSubmitting(true)
@@ -25,10 +29,44 @@ export function SignUpForm() {
       if (data?.email && data?.userId) {
         navigate(`/auth/${data.userId}/verify-email?email=${data.email}`)
       }
+<<<<<<< HEAD
     } catch (error) {
+=======
+
+      throw new Error('Có lỗi xảy ra')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const messageError = error.response.data.message
+      toast({
+        variant: 'destructive',
+        title: messageError
+      })
+>>>>>>> origin/main
       setIsSubmitting(false)
     }
   }
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: async (codeResponse) => {
+      setIsLoggingGoogle(true)
+      try {
+        const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login-google`, {
+          accessTokenGoogle: codeResponse.access_token
+        })
+        const accessToken = data.accessToken
+        localStorage.setItem('access_token', accessToken)
+        navigate('/')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        const messageError = error.response.data.message
+        toast({
+          variant: 'destructive',
+          title: messageError
+        })
+        setIsLoggingGoogle(false)
+      }
+    }
+  })
 
   return (
     <>
@@ -89,8 +127,17 @@ export function SignUpForm() {
           <span className='bg-background px-2 text-muted-foreground'>hoặc tiếp tục với</span>
         </div>
       </div>
-      <Button variant='outline' type='button'>
-        <img className='w-7 h-7 mr-2' alt='google' src={googleIcon} /> Đăng ký bằng google
+      <Button
+        onClick={() => {
+          handleGoogleLogin()
+        }}
+        variant='outline'
+        type='button'
+        disabled={isLoggingGoogle}
+      >
+        <img className='w-7 h-7 mr-2' alt='google' src={googleIcon} />
+        Đăng ký bằng google
+        {isLoggingGoogle && <Shell className='animate-spin w-4 h-4 ml-1' />}
       </Button>
 
       <p className='mx-auto'>

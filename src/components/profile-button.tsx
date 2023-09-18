@@ -1,4 +1,4 @@
-import { CreditCard, LogIn, LogOut, Settings, User as UserIcon } from 'lucide-react'
+import { Heart, LogIn, LogOut, User as UserIcon } from 'lucide-react'
 import registerIcon from '@/assets/register.svg'
 import {
   DropdownMenu,
@@ -15,6 +15,8 @@ import { Link } from 'react-router-dom'
 import { useTheme } from './theme-provider'
 import { cn } from '@/lib/utils'
 import { User } from '@/lib/types'
+import orderIcon from '@/assets/order.svg'
+
 type Props = {
   className?: string
   user: User | null
@@ -59,7 +61,7 @@ function ProfileButton({ className, user }: Props) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className='cursor-pointer ml-3'>
-          <AvatarImage src='https://github.com/shadcn.png' />
+          <AvatarImage src={user.imageUrl || 'https://github.com/shadcn.png'} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
@@ -72,23 +74,35 @@ function ProfileButton({ className, user }: Props) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className='cursor-pointer'>
-            <UserIcon className='mr-2 h-4 w-4' />
-            <span>Profile</span>
+          <DropdownMenuItem asChild className='cursor-pointer'>
+            <Link to='/profile'>
+              <UserIcon className='mr-2 h-4 w-4' />
+              <span>Hồ sơ người dùng</span>
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className='cursor-pointer'>
-            <CreditCard className='mr-2 h-4 w-4' />
-            <span>Billing</span>
+          <DropdownMenuItem asChild className='cursor-pointer'>
+            <Link to='/wishlist'>
+              <Heart className='mr-2 h-4 w-4' />
+              <span>Danh sách mong ước</span>
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className='cursor-pointer'>
-            <Settings className='mr-2 h-4 w-4' />
-            <span>Settings</span>
+          <DropdownMenuItem asChild className='cursor-pointer'>
+            <Link to='/orders'>
+              <img src={orderIcon} className='mr-2 h-4 w-4' />
+              <span>Đơn hàng</span>
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className='cursor-pointer'>
+        <DropdownMenuItem
+          onClick={() => {
+            localStorage.removeItem('access_token')
+            window.location.reload()
+          }}
+          className='cursor-pointer'
+        >
           <LogOut className='mr-2 h-4 w-4' />
-          <span>Log out</span>
+          <span>Đăng Xuất</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

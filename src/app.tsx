@@ -11,6 +11,9 @@ import SpecieList from '@/pages/specie-list'
 import NotFound from '@/pages/not-found'
 import Dashboard from './pages/dashboard'
 import LayoutAdmin from './components/shared/layout-admin'
+import WishList from './pages/wish-list'
+import Profile from './pages/profile'
+import OrderList from './pages/order-list'
 
 function App() {
   return (
@@ -28,6 +31,9 @@ function App() {
           <Route path='species' element={<SpecieList />} />
           <Route path='birds/:id' element={<BirdDetail />} />
           <Route path='birds' element={<BirdList />} />
+          <Route path='wishlist' element={<WishList />} />
+          <Route path='profile' element={<Profile />} />
+          <Route path='orders' element={<OrderList />} />
         </Route>
 
         <Route path='/admin' element={<LayoutAdmin />}>

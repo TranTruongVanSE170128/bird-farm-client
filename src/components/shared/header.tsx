@@ -2,7 +2,7 @@ import Container from '@/components/ui/container'
 import { Link } from 'react-router-dom'
 import { routes } from '@/constants/shopRoutes'
 import { Button } from '@/components/ui/button'
-import { Bell, Heart, Menu, ShoppingCart } from 'lucide-react'
+import { Bell, Menu, ShoppingCart } from 'lucide-react'
 import ProfileButton from '../profile-button'
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 import logoBlack from '@/assets/logo-black.png'
@@ -10,13 +10,15 @@ import logoWhite from '@/assets/logo-white.png'
 import { useTheme } from '../theme-provider'
 import { Input } from '../ui/input'
 import useAuth from '@/hooks/use-auth'
+import { useCartContext } from '@/contexts/cart-provider'
 
 function Header() {
   const { theme } = useTheme()
   const user = useAuth()
+  const { quantityInCart } = useCartContext()
 
   return (
-    <header className='py-3 px-4 sm:flex sm:justify-between sm:items-center border-b'>
+    <header className='py-3 px-4 sm:flex sm:justify-between sm:items-center border-b fixed top-0 w-full z-50 bg-background'>
       <Container>
         <div className='relative flex h-16 w-full items-center justify-between'>
           <div className='flex items-center'>
@@ -57,18 +59,15 @@ function Header() {
           <div className='flex items-center flex-1 justify-end'>
             <Input className='mr-4 max-w-xs flex-1 outline-none' type='text' placeholder='Tìm kiếm chim...' />
 
-            {user && (
-              <Button variant='ghost' size='icon' className='mr-2 shrink-0' aria-label='Shopping Cart'>
-                <Heart className='h-6 w-6' />
-              </Button>
-            )}
-
-            <Button variant='ghost' size='icon' className='mr-2 shrink-0' aria-label='Shopping Cart'>
+            <Button variant='ghost' size='icon' className='shrink-0 relative' aria-label='Shopping Cart'>
               <ShoppingCart className='h-6 w-6' />
+              <div className='bg-red-500 text-slate-50 absolute rounded-full py-[1px] px-[2px] -top-[2px] -right-[2px]'>
+                {quantityInCart}
+              </div>
             </Button>
 
             {user && (
-              <Button variant='ghost' size='icon' className='mr-2 shrink-0' aria-label='Shopping Cart'>
+              <Button variant='ghost' size='icon' className='shrink-0' aria-label='Shopping Cart'>
                 <Bell className='h-6 w-6' />
               </Button>
             )}

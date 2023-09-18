@@ -3,7 +3,7 @@ import SpecieCard from '@/components/specie-card'
 import SpecieCardSkeleton from '@/components/specie-card-skeleton'
 import { Button } from '@/components/ui/button'
 import Container from '@/components/ui/container'
-import { Specie } from '@/lib/types'
+import { Bird, Specie } from '@/lib/types'
 import axios from 'axios'
 import { ArrowLeft, ArrowRight, ShoppingBag } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -11,10 +11,13 @@ import { Link } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, EffectCoverflow } from 'swiper/modules'
 import useWindowSize from '@/hooks/use-window-size'
+import BirdCardSkeleton from '@/components/bird-card-skeleton'
 
 function Home() {
   const [isLoadingSpecies, setIsLoadingSpecies] = useState(true)
   const [species, setSpecies] = useState<Specie[]>([])
+  const [isLoadingBirds, setIsLoadingBirds] = useState(true)
+  const [birds, setBirds] = useState<Bird[]>([])
   const { width } = useWindowSize()
   const speciesSection = useRef<HTMLHeadingElement>(null)
 
@@ -31,6 +34,17 @@ function Home() {
 
       setSpecies(data?.species || [])
       setIsLoadingSpecies(false)
+    }
+
+    fetchSpecies()
+  }, [])
+
+  useEffect(() => {
+    const fetchSpecies = async () => {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/birds?pageSize=8&pageNumber=1`)
+
+      setBirds(data?.birds || [])
+      setIsLoadingBirds(false)
     }
 
     fetchSpecies()
@@ -66,7 +80,6 @@ function Home() {
       <h1 ref={speciesSection} className='text-3xl font-bold mt-8 mb-5 text-center'>
         Các loài chim bán chạy
       </h1>
-
       <div className='relative'>
         <Swiper
           effect={'coverflow'}
@@ -108,10 +121,10 @@ function Home() {
               })}
         </Swiper>
 
-        <Button className='p-2 text-primary-foreground bg-primary rounded-full swiper-button-prev slider-arrow absolute left-0 top-1/2 -translate-y-1/2 z-[999] -translate-x-1/2'>
+        <Button className='p-2 text-primary-foreground bg-primary rounded-full swiper-button-prev slider-arrow absolute left-0 top-1/2 -translate-y-1/2 z-40 -translate-x-1/2'>
           <ArrowLeft />
         </Button>
-        <Button className='p-2 text-primary-foreground bg-primary rounded-full swiper-button-next slider-arrow absolute right-0 top-1/2 -translate-y-1/2 z-[999] translate-x-1/2'>
+        <Button className='p-2 text-primary-foreground bg-primary rounded-full swiper-button-next slider-arrow absolute right-0 top-1/2 -translate-y-1/2 z-40 translate-x-1/2'>
           <ArrowRight />
         </Button>
       </div>
@@ -128,10 +141,13 @@ function Home() {
         </Link>
       </div>
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-        <BirdCard />
-        <BirdCard />
-        <BirdCard />
-        <BirdCard />
+        {isLoadingBirds
+          ? Array(...new Array(8)).map(() => {
+              return <BirdCardSkeleton />
+            })
+          : birds?.map((bird) => {
+              return <BirdCard key={bird._id} bird={bird} />
+            })}
       </div>
 
       <Link className='mt-6 flex justify-center' to='/birds'>
