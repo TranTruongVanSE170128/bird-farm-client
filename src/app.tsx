@@ -14,6 +14,7 @@ import LayoutAdmin from './components/shared/layout-admin'
 import WishList from './pages/wish-list'
 import Profile from './pages/profile'
 import OrderList from './pages/order-list'
+import Cart from './pages/cart'
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path='wishlist' element={<WishList />} />
           <Route path='profile' element={<Profile />} />
           <Route path='orders' element={<OrderList />} />
+          <Route path='cart' element={<Cart />} />
         </Route>
 
         <Route path='/admin' element={<LayoutAdmin />}>
