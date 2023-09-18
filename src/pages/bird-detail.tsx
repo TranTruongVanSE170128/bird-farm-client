@@ -1,27 +1,26 @@
-
 import { useNavigate, useParams } from 'react-router-dom'
 import Ellipce from '@/assets/Ellipse2.png'
 
-import { ChevronUp, ChevronDown, Container } from 'lucide-react'
+import { ChevronUp, ChevronDown } from 'lucide-react'
 import { useRef, useState } from 'react'
 
 function BirdDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const imageRef = useRef<HTMLImageElement | null>(null);
-  const [isListVisible, setListVisible] = useState(false);
+  const imageRef = useRef<HTMLImageElement | null>(null)
+  const [isListVisible, setListVisible] = useState(false)
   if (!id) {
     navigate('/')
   }
 
   const handleMouseEnter = (imageUrl: string) => {
     if (imageRef.current) {
-      imageRef.current.src = imageUrl;
+      imageRef.current.src = imageUrl
     }
   }
 
   const toggleList = () => {
-    setListVisible(!isListVisible);
+    setListVisible(!isListVisible)
   }
 
   return (
@@ -39,7 +38,9 @@ function BirdDetail() {
           <div className='flex mt-5 gap-x-7 gap-auto flex-wrap w-full ml-2'>
             <img
               onMouseEnter={() => {
-                handleMouseEnter('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKAKHac56qa2ePV7jdG_NGG1ExlwG8tpdzPLHQeKJxnVdj62ZmAfevw0v0G_tXFxSdFA0&usqp=CAU');
+                handleMouseEnter(
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKAKHac56qa2ePV7jdG_NGG1ExlwG8tpdzPLHQeKJxnVdj62ZmAfevw0v0G_tXFxSdFA0&usqp=CAU'
+                )
               }}
               className='w-[100px]  object-cover'
               src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKAKHac56qa2ePV7jdG_NGG1ExlwG8tpdzPLHQeKJxnVdj62ZmAfevw0v0G_tXFxSdFA0&usqp=CAU'
@@ -47,7 +48,9 @@ function BirdDetail() {
             />
             <img
               onMouseEnter={() => {
-                handleMouseEnter('https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI');
+                handleMouseEnter(
+                  'https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI'
+                )
               }}
               className='w-[100px]  object-cover'
               src='https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI'
@@ -55,7 +58,9 @@ function BirdDetail() {
             />
             <img
               onMouseEnter={() => {
-                handleMouseEnter('https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI');
+                handleMouseEnter(
+                  'https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI'
+                )
               }}
               className='w-[100px]  object-cover'
               src='https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI'
@@ -63,13 +68,14 @@ function BirdDetail() {
             />
             <img
               onMouseEnter={() => {
-                handleMouseEnter('https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI');
+                handleMouseEnter(
+                  'https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI'
+                )
               }}
               className='w-[100px]  object-cover'
               src='https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI'
               alt='bird'
             />
-
           </div>
         </div>
         <div className='p-5'>
@@ -119,12 +125,9 @@ function BirdDetail() {
       </div>
 
       <div className='mt-3 p-3 transition-all'>
-        <p
-          className='uppercase text-xl font-bold bg-primary py-2 mb-3  text-white cursor-pointer'
-          onClick={toggleList}
-        >
+        <p className='uppercase text-xl font-bold bg-primary py-2 mb-3  text-white cursor-pointer' onClick={toggleList}>
           <div className='flex gap-4 px-3 items-center'>
-            {(isListVisible) ? <ChevronUp></ChevronUp> : <ChevronDown></ChevronDown>}
+            {isListVisible ? <ChevronUp></ChevronUp> : <ChevronDown></ChevronDown>}
             Mô tả chi tiết
           </div>
         </p>
@@ -199,7 +202,6 @@ function BirdDetail() {
           <div className='flex gap-4 px-3'>Sản phẩm tương tự</div>
         </p>
       </div>
-
     </main>
   )
 }

@@ -1,7 +1,9 @@
 import Paginate from '@/components/paginate'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Bird } from '@/lib/types'
+import { Bird, getSpecie } from '@/lib/types'
+import { formatPrice } from '@/lib/utils'
 import axios from 'axios'
+import { Check, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
@@ -18,11 +20,16 @@ function AdminBirdList() {
 
   useEffect(() => {
     const fetchBirds = async () => {
-      const { data } = await axios.get(
-        `${
-          import.meta.env.VITE_API_URL
-        }/api/admin/birds?pageSize=${pageSize}&pageNumber=${pageNumber}searchQuery=${searchQuery}&specie=${specie}`
-      )
+      try {
+        const { data } = await axios.get(
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/admin/birds?pageSize=${pageSize}&pageNumber=${pageNumber}searchQuery=${searchQuery}&specie=${specie}`
+        )
+        setBirds(data?.birds || null)
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     fetchBirds()
@@ -38,34 +45,32 @@ function AdminBirdList() {
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className='w-[100px]'>Loài</TableHead>
-            <TableHead>Tên</TableHead>
-            <TableHead>Ảnh</TableHead>
-            <TableHead>Giá</TableHead>
-            {/* <TableHead>Đã Bán</TableHead> */}
-            <TableHead>Đang Bán</TableHead>
-            <TableHead>Giới Tính</TableHead>
-            <TableHead>Giá</TableHead>
-            <TableHead>Tên</TableHead>
-            <TableHead>Giá</TableHead>
-            <TableHead className='text-right'>Amount</TableHead>
+            <TableHead>Loài</TableHead>
+            <TableHead className='text-center'>Tên</TableHead>
+            <TableHead className='text-center'>Ảnh</TableHead>
+            <TableHead className='text-center'>Giá</TableHead>
+            {/* <TableHead className='text-center'>Đã Bán</TableHead> */}
+            <TableHead className='text-center'>Đang Bán</TableHead>
+            <TableHead className='text-center'>Giới Tính</TableHead>
+            <TableHead className='text-end'></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {birds.map((bird) => {
             return (
-              <TableRow>
-                <TableCell className='w-[100px]'>{getSpecie}</TableCell>
-                <TableCell>Tên</TableCell>
-                <TableCell>Ảnh</TableCell>
-                <TableCell>Giá</TableCell>
-                {/* <TableCell>Đã Bán</TableCell> */}
-                <TableCell>Đang Bán</TableCell>
-                <TableCell>Giới Tính</TableCell>
-                <TableCell>Giá</TableCell>
-                <TableCell>Tên</TableCell>
-                <TableCell>Giá</TableCell>
-                <TableCell className='text-right'>Amount</TableCell>
+              <TableRow key={bird._id}>
+                <TableCell className='line-clamp-1'>{getSpecie(bird).name}</TableCell>
+                <TableCell className='text-center'>{bird.name}</TableCell>
+                <TableCell className='text-center'>
+                  <img src={bird.imageUrls?.[0]} alt='bird' />
+                </TableCell>
+                <TableCell className='text-center'>{formatPrice(bird.price)}</TableCell>
+                {/* <TableCell className='text-center'>Đã Bán</TableCell> */}
+                <TableCell className='text-center flex justify-center'>
+                  {bird.onSale ? <Check color='green' /> : <X color='red' />}
+                </TableCell>
+                <TableCell className='text-center'>{bird.gender === 'male' ? 'Đực' : 'Cái'}</TableCell>
+                <TableCell className='text-center'>{bird.gender === 'male' ? 'Đực' : 'Cái'}</TableCell>
               </TableRow>
             )
           })}
