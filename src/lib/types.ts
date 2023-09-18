@@ -15,18 +15,22 @@ export type Specie = {
 
 export type Bird = {
   _id: string
+  specie: Specie | string
   name: string
-  specie: Specie
   sold: boolean
   onSale: boolean
   birth?: Date
   gender: Gender
-  price?: number
+  price: number
   description?: string
   imageUrls?: string[]
   parent?: Parent
   achievements?: Achievement[]
   discount?: Discount
+}
+
+export function getSpecie(bird: Bird): Specie {
+  return bird.specie as Specie
 }
 
 export type Gender = 'male' | 'female'
