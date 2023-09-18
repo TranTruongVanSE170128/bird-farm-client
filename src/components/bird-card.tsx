@@ -17,17 +17,17 @@ type Props = {
 
 function BirdCard({ className, bird }: Props) {
   const wishList: Record<string, boolean> = JSON.parse(localStorage.getItem('wishList') || '{}')
-  const { addToCart } = useCartContext()
+  const { addBirdToCart } = useCartContext()
   const [isInWishList, setIsInWishList] = useState(wishList[bird._id])
   const { toast } = useToast()
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
-    addToCart(bird._id)
+    addBirdToCart(bird._id)
     toast({
       variant: 'success',
       title: 'Đã thêm chim vào giỏ hàng!',
-      duration: 1500
+      duration: 2500
     })
   }
 
@@ -39,7 +39,7 @@ function BirdCard({ className, bird }: Props) {
     toast({
       variant: 'success',
       title: 'Đã thêm chim vào danh sách mong ước!',
-      duration: 1500
+      duration: 2500
     })
   }
 
@@ -51,7 +51,7 @@ function BirdCard({ className, bird }: Props) {
     toast({
       variant: 'destructive',
       title: 'Đã bỏ chim khỏi danh sách mong ước!',
-      duration: 1500
+      duration: 2500
     })
   }
 
