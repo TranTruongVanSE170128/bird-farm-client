@@ -13,6 +13,12 @@ export function isBase64Image(imageData: string) {
   return base64Regex.test(imageData)
 }
 
+//created by google bard
+export const generateRandomHexCode = () => {
+  const randomNumber = Math.floor(Math.random() * 16777215)
+  return randomNumber.toString(16)
+}
+
 export function formatPrice(num: number) {
   return Number(num).toLocaleString().replaceAll(',', '.') + 'đ'
 }

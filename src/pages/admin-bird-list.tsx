@@ -2,16 +2,17 @@ import Paginate from '@/components/paginate'
 import Spinner from '@/components/ui/spinner'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Bird, getSpecie } from '@/lib/types'
-import { formatPrice } from '@/lib/utils'
+import { cn, formatPrice } from '@/lib/utils'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
 import axios from 'axios'
-import { Check, MoreHorizontal, X } from 'lucide-react'
+import { Check, MoreHorizontal, Plus, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
 import { useToast } from '@/components/ui/use-toast'
 import { useAuthContext } from '@/contexts/auth-provider'
+import { buttonVariants } from '@/components/ui/button'
 
 const pageSize = 12
 
@@ -61,6 +62,14 @@ function AdminBirdList() {
 
   return (
     <div>
+      <div className='flex items-center justify-between mb-6'>
+        <div className='text-3xl font-bold'>Danh sách chim</div>
+        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/birds/new'>
+          <span>Tạo Chim</span>
+          <Plus className='w-5 h-5' />
+        </Link>
+      </div>
+
       <Table>
         <TableHeader>
           <TableRow>

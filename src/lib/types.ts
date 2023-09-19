@@ -7,7 +7,7 @@ export type User = {
 }
 
 export type Specie = {
-  _id?: string
+  _id: string
   name: string
   imageUrl?: string
   description?: string
