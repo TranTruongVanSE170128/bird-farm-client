@@ -11,7 +11,7 @@ type Props = {
   bird?: Bird
 }
 
-function NestList({ className, bird }: Props) {
+function NestCard({ className, bird }: Props) {
   const addToCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
   }
@@ -67,4 +67,4 @@ function NestList({ className, bird }: Props) {
   )
 }
 
-export default NestList
+export default NestCard

@@ -155,8 +155,7 @@ function Home() {
         <Button size='lg'>Xem tất cả</Button>
       </Link>
 
-      <Footer />  
-
+      <Footer />
     </Container>
   )
 }
