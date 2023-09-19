@@ -94,7 +94,7 @@ function BirdCard({ className, bird }: Props) {
               </Button>
             ) : (
               <Button onClick={handleAddToWishList} className='p-1' variant='outline' size='icon'>
-                <img src={blackHeart} alt='heart' />
+                <img src={blackHeart} className='dark:filter dark:invert' alt='heart' />
               </Button>
             )}
           </div>
