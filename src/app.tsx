@@ -16,6 +16,7 @@ import Profile from './pages/profile'
 import OrderList from './pages/order-list'
 import Cart from './pages/cart'
 import AdminBirdList from './pages/admin-bird-list'
+import NestList from './pages/nest-list'
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path='profile' element={<Profile />} />
           <Route path='orders' element={<OrderList />} />
           <Route path='cart' element={<Cart />} />
+          <Route path='nests' element={<NestList />} />
           <Route path='not-found' element={<NotFound />} />
         </Route>
 
