@@ -50,10 +50,6 @@ function BirdDetail() {
     fetchBird()
   }, [id, navigate])
 
-  useEffect(() => {
-    console.log(bird)
-  }, [bird])
-
   if (!bird) {
     return <div>Loading</div>
   }

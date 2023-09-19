@@ -1,19 +1,15 @@
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 import LeftSidebar from './left-side-bar'
 import TopBar from './top-bar'
 import BottomBar from './bottom-bar'
-import { useEffect } from 'react'
 import { useAuthContext } from '@/contexts/auth-provider'
 
 function LayoutAdmin() {
-  const { user } = useAuthContext()
-  const navigate = useNavigate()
+  const { role } = useAuthContext()
 
-  useEffect(() => {
-    if (user?.role && user?.role !== 'admin') {
-      navigate('/')
-    }
-  }, [user])
+  if (role && !(role === 'admin')) {
+    return <Navigate to='/' />
+  }
 
   return (
     <main className='relative'>

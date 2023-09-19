@@ -37,8 +37,6 @@ function AddSpecieForm({ specie, btnTitle }: Props) {
   })
 
   const onSubmit = async (values: TAddSpecieSchema) => {
-    console.log(values)
-
     setIsSubmitting(true)
     try {
       let imageUrl = ''

@@ -57,7 +57,6 @@ const addToRemoveQueue = (toastId: string) => {
   }
 
   const timeout = setTimeout(() => {
-    console.log(new Date().toLocaleTimeString(), 'REMOVE_TOAST:', toastId)
     toastTimeouts.delete(toastId)
     dispatch({
       type: 'REMOVE_TOAST',
@@ -71,7 +70,6 @@ const addToRemoveQueue = (toastId: string) => {
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'ADD_TOAST':
-      console.log(new Date().toLocaleTimeString(), 'ADD_TOAST', action.toast.id, 'duration:', action.toast.duration)
       return {
         ...state,
         toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT)
@@ -86,9 +84,6 @@ export const reducer = (state: State, action: Action): State => {
     case 'DISMISS_TOAST': {
       const { toastId } = action
 
-      // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
-      console.log(new Date().toLocaleTimeString(), 'DISMISS_TOAST:', toastId, 'duration:', state.toasts[0].duration)
       if (toastId) {
         addToRemoveQueue(toastId)
       } else {

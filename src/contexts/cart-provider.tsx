@@ -19,7 +19,7 @@ type CartContextType = {
 export const CartContext = React.createContext<CartContextType | null>(null)
 
 const CartProvider = ({ children }: CartProviderProps) => {
-  const { localStorageValue: cart, setLocalStorageStateValue: setCart } = useLocalStorage<Cart>('cart', {
+  const [cart, setCart] = useLocalStorage<Cart>('cart', {
     birds: {},
     nests: {}
   })

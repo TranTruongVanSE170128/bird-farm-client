@@ -17,9 +17,7 @@ type Props = {
 }
 
 function BirdCard({ className, bird }: Props) {
-  const { localStorageValue: wishList, setLocalStorageStateValue: setWishList } = useLocalStorage<
-    Record<string, boolean>
-  >('wishlist', {})
+  const [wishList, setWishList] = useLocalStorage<Record<string, boolean>>('wishlist', {})
   const { addBirdToCart } = useCartContext()
   const [isInWishList, setIsInWishList] = useState(wishList[bird._id])
   const { toast } = useToast()
