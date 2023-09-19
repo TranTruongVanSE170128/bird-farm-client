@@ -18,6 +18,7 @@ import AdminBirdList from './pages/admin-bird-list'
 import NestList from './pages/nest-list'
 import Pairing from './pages/pairing'
 import Cart from './pages/cart'
+import AdminSpecieList from './pages/admin-specie-list'
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
 
         <Route path='/admin' element={<LayoutAdmin />}>
           <Route path='' element={<Dashboard />} />
+          <Route path='species' element={<AdminSpecieList />} />
           <Route path='birds' element={<AdminBirdList />} />
           <Route path='nests' element={<Dashboard />} />
           <Route path='orders' element={<Dashboard />} />
