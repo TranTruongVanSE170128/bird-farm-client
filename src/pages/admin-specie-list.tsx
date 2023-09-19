@@ -6,8 +6,11 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import noImage from '@/assets/no-image.avif'
+import { buttonVariants } from '@/components/ui/button'
+import { Plus } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
-const pageSize = 8
+const pageSize = 12
 
 function AdminSpecieList() {
   const [searchParams] = useSearchParams()
@@ -44,6 +47,14 @@ function AdminSpecieList() {
 
   return (
     <main>
+      <div className='flex items-center justify-between mb-6'>
+        <div className='text-3xl font-bold'>Danh sách loài</div>
+        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/species/new'>
+          <span>Tạo Loài</span>
+          <Plus className='w-5 h-5' />
+        </Link>
+      </div>
+
       {isLoadingSpecies ? (
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
           {Array(...new Array(8)).map(() => {
