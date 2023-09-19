@@ -61,76 +61,78 @@ function BirdDetail() {
   return (
     <main className=' mt-5 container sm:flex-row transition-all '>
       <Container>
-        <section className='flex mt-5 gap-x-7 gap-auto flex-wrap w-full ml-2'>
-          <div>
-            <img
-              ref={imageRef}
-              className='w-full h-full aspect-square object-cover rounded cursor-pointer'
-              // src={bird?.imageUrls?.[0] || noImage}
-              src={imageUrls[0] || noImage}
-              alt='bird'
-            />
+        <section className='grid grid-cols-12 gap-8'>
+          <div className='col-span-5'>
+            <div>
+              <img
+                ref={imageRef}
+                className='w-full h-full aspect-square object-cover rounded cursor-pointer'
+                // src={bird?.imageUrls?.[0] || noImage}
+                src={imageUrls[0] || noImage}
+                alt='bird'
+              />
+            </div>
+            <div className='grid grid-cols-5 mt-2 gap-2 flex-wrap w-full'>
+              {/* {bird?.imageUrls?.map((imageUrl) => { */}
+              {imageUrls.map((imageUrl) => {
+                return (
+                  <img
+                    onMouseEnter={() => {
+                      handleMouseEnter(imageUrl)
+                    }}
+                    className='w-full h-full aspect-square object-cover rounded cursor-pointer'
+                    src={imageUrl}
+                    alt='bird'
+                  />
+                )
+              })}
+            </div>
           </div>
-          <div className='grid grid-cols-5 mt-2 gap-2 flex-wrap w-full'>
-            {/* {bird?.imageUrls?.map((imageUrl) => { */}
-            {imageUrls.map((imageUrl) => {
-              return (
-                <img
-                  onMouseEnter={() => {
-                    handleMouseEnter(imageUrl)
-                  }}
-                  className='w-full h-full aspect-square object-cover rounded cursor-pointer'
-                  src={imageUrl}
-                  alt='bird'
-                />
-              )
-            })}
+
+          <div className='col-span-7'>
+            <h3 className='text-2xl font-bold'>{bird.name}</h3>
+            <p className='my-3'>
+              <span className='font-semibold'>
+                Danh mục:{' '}
+                <Link
+                  to={`/birds?specie=${getSpecie(bird)._id}`}
+                  className='font-normal hover:text-primary hover:underline cursor-pointer'
+                >
+                  {getSpecie(bird)?.name}
+                </Link>
+              </span>
+            </p>
+
+            <p className='text-3xl text-red-500 font-medium '>{formatPrice(bird.price)}</p>
+
+            <div className='flex justify-center gap-10 mt-3'>
+              <div>
+                <p className='mt-3'>Tuổi : {calculateAge(bird.birth)}</p>
+                <p className='mt-3'>Giới tính : {bird?.gender === 'male' ? 'Đực' : 'Cái'} </p>
+                <p className='mt-3'>Màu xám</p>
+                <p className='mt-3'>Sức khỏe : Ăn uống tốt , khỏe mạnh , nhanh nhẹn </p>
+              </div>
+              <div>
+                <p className='mt-3'>Bố: Trương Văn(xem thông tin chim bố)</p>
+                <p className='mt-3'>Bố: Trương Văn(xem thông tin chim bố)</p>
+                <p className='mt-3'>Lịch sử sinh sản</p>
+                <p className='mt-3'>Vận chuyển: Miễn phí</p>
+                <p className='mt-3'>Thành tích thi đấu : Huy chương vàng cấp QG</p>
+              </div>
+            </div>
+            <div className='flex gap-10 my-5'>
+              <button className='bg-black/60 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition-all'>
+                Mua ngay
+              </button>
+              <button className='bg-white text-black rounded-md px-4 py-2 border'>Thêm vào giỏ hàng</button>
+            </div>
+            <div>
+              <h3 className='mt-3 text-medium font-semibold'>
+                Xem chim trực tiếp tại trang trại Bird 590 TRƯƠNG ĐỊNH(mặt bờ sông) Tuân mai hoàng mai hà nội
+              </h3>
+            </div>
           </div>
         </section>
-
-        <div className='col-span-7'>
-          <h3 className='text-2xl font-bold'>{bird.name}</h3>
-          <p className='my-3'>
-            <span className='font-semibold'>
-              Danh mục:{' '}
-              <Link
-                to={`/birds?specie=${getSpecie(bird)._id}`}
-                className='font-normal hover:text-primary hover:underline cursor-pointer'
-              >
-                {getSpecie(bird)?.name}
-              </Link>
-            </span>
-          </p>
-
-          <p className='text-3xl text-red-500 font-medium '>{formatPrice(bird.price)}</p>
-
-          <div className='flex justify-center gap-10 mt-3'>
-            <div>
-              <p className='mt-3'>Tuổi : {calculateAge(bird.birth)}</p>
-              <p className='mt-3'>Giới tính : {bird?.gender === 'male' ? 'Đực' : 'Cái'} </p>
-              <p className='mt-3'>Màu xám</p>
-              <p className='mt-3'>Sức khỏe : Ăn uống tốt , khỏe mạnh , nhanh nhẹn </p>
-            </div>
-            <div>
-              <p className='mt-3'>Bố: Trương Văn(xem thông tin chim bố)</p>
-              <p className='mt-3'>Bố: Trương Văn(xem thông tin chim bố)</p>
-              <p className='mt-3'>Lịch sử sinh sản</p>
-              <p className='mt-3'>Vận chuyển: Miễn phí</p>
-              <p className='mt-3'>Thành tích thi đấu : Huy chương vàng cấp QG</p>
-            </div>
-          </div>
-          <div className='flex gap-10 my-5'>
-            <button className='bg-black/60 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition-all'>
-              Mua ngay
-            </button>
-            <button className='bg-white text-black rounded-md px-4 py-2 border'>Thêm vào giỏ hàng</button>
-          </div>
-          <div>
-            <h3 className='mt-3 text-medium font-semibold'>
-              Xem chim trực tiếp tại trang trại Bird 590 TRƯƠNG ĐỊNH(mặt bờ sông) Tuân mai hoàng mai hà nội
-            </h3>
-          </div>
-        </div>
 
         <div className='text-center flex flex-col gap-3 mt-7 items-center'>
           <h3 className='text-3xl uppercase font-bold'>gọi ngay cho trang trại</h3>
