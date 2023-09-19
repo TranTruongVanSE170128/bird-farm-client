@@ -66,7 +66,7 @@ function ProfileButton({ className, user }: Props) {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56'>
-        <DropdownMenuLabel>
+        <DropdownMenuLabel> 
           <div className='flex flex-col space-y-1'>
             <p className='text-sm font-medium leading-none line-clamp-1'>{user.name}</p>
             <p className='text-xs leading-none text-muted-foreground line-clamp-1'>kingchenobama711@gmail.com</p>
