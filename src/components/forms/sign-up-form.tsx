@@ -12,9 +12,11 @@ import { Shell } from 'lucide-react'
 import { useState } from 'react'
 import { useToast } from '../ui/use-toast'
 import { useGoogleLogin } from '@react-oauth/google'
+import { useAuthContext } from '@/contexts/auth-provider'
 
 export function SignUpForm() {
   const navigate = useNavigate()
+  const { setAccessToken } = useAuthContext()
   const { toast } = useToast()
   const form = useForm<TSignUpSchema>({
     resolver: zodResolver(signUpSchema)
@@ -52,7 +54,7 @@ export function SignUpForm() {
           accessTokenGoogle: codeResponse.access_token
         })
         const accessToken = data.accessToken
-        localStorage.setItem('access_token', accessToken)
+        setAccessToken(accessToken)
         navigate('/')
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {

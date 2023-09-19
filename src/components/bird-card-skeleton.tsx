@@ -23,9 +23,9 @@ function BirdCardSkeleton({ className, bird }: Props) {
         </CardHeader>
         <CardContent className='flex-col items-start'>
           <div>
-            <p className='font-semibold text-lg lg:text-xl'>
+            <div className='font-semibold text-lg lg:text-xl'>
               <Skeleton className='h-6 w-full' />
-            </p>
+            </div>
           </div>
 
           <Skeleton className='h-6 w-full mt-1' />

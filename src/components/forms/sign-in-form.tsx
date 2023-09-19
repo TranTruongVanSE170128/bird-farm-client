@@ -11,10 +11,11 @@ import { Shell } from 'lucide-react'
 import { useState } from 'react'
 import { useToast } from '../ui/use-toast'
 import { useGoogleLogin } from '@react-oauth/google'
+import { useAuthContext } from '@/contexts/auth-provider'
 
 export function SignInForm() {
   const navigate = useNavigate()
-
+  const { setAccessToken } = useAuthContext()
   const { toast } = useToast()
   const form = useForm<TSignInSchema>({
     resolver: zodResolver(signInSchema)
@@ -30,7 +31,7 @@ export function SignInForm() {
           accessTokenGoogle: codeResponse.access_token
         })
         const accessToken = data.accessToken
-        localStorage.setItem('access_token', accessToken)
+        setAccessToken(accessToken)
         navigate('/')
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
@@ -48,7 +49,7 @@ export function SignInForm() {
     setIsSubmitting(true)
     try {
       const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/sign-in`, values)
-      localStorage.setItem('access_token', data?.accessToken)
+      setAccessToken(data?.accessToken)
       navigate('/')
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

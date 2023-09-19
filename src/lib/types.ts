@@ -50,4 +50,4 @@ export type Discount = {
   endDate: Date
 }
 
-export type Role = 'customer' | 'staff' | 'manager'
+export type Role = 'customer' | 'staff' | 'manager' | 'admin' | 'guest'

@@ -10,6 +10,8 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
+import { useToast } from '@/components/ui/use-toast'
+import { useAuthContext } from '@/contexts/auth-provider'
 
 const pageSize = 12
 
@@ -21,6 +23,8 @@ function AdminBirdList() {
   const [birds, setBirds] = useState<Bird[]>([])
   const [isLoadingBirds, setIsLoadingBirds] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
+  const { toast } = useToast()
+  const { accessToken } = useAuthContext()
 
   useEffect(() => {
     const fetchBirds = async () => {
@@ -29,13 +33,22 @@ function AdminBirdList() {
         const { data } = await axios.get(
           `${
             import.meta.env.VITE_API_URL
-          }/api/admin/birds?pageSize=${pageSize}&pageNumber=${pageNumber}searchQuery=${searchQuery}&specie=${specie}`
+          }/api/admin/birds?pageSize=${pageSize}&pageNumber=${pageNumber}searchQuery=${searchQuery}&specie=${specie}`,
+          {
+            headers: {
+              Authorization: 'Bearer ' + accessToken
+            }
+          }
         )
         setBirds(data?.birds || null)
         setIsLoadingBirds(false)
         setTotalPages(data?.totalPages || null)
       } catch (error) {
-        console.log(error)
+        setIsLoadingBirds(false)
+        toast({
+          variant: 'destructive',
+          title: 'Có lỗi xảy ra'
+        })
       }
     }
 

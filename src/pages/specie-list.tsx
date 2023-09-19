@@ -24,7 +24,6 @@ function SpecieList() {
           import.meta.env.VITE_API_URL
         }/api/species?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}`
       )
-      console.log(data)
 
       setSpecies(data?.species || [])
       setTotalPages(data?.totalPages || null)

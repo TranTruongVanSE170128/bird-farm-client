@@ -73,7 +73,7 @@ function Pairing() {
                       <CommandItem
                         key={specie._id}
                         value={specie._id}
-                        onSelect={(currentValue) => {
+                        onSelect={(currentValue: string) => {
                           setSpecieId(currentValue === specieId ? '' : currentValue)
                           setOpen(false)
                           setSearchValue('')
