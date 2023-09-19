@@ -9,12 +9,12 @@ import logoBlack from '@/assets/logo-black.png'
 import logoWhite from '@/assets/logo-white.png'
 import { useTheme } from '../theme-provider'
 import { Input } from '../ui/input'
-import useAuth from '@/hooks/use-auth'
 import { useCartContext } from '@/contexts/cart-provider'
+import { useAuthContext } from '@/contexts/auth-provider'
 
 function Header() {
   const { theme } = useTheme()
-  const user = useAuth()
+  const { user } = useAuthContext()
   const { quantityInCart } = useCartContext()
 
   return (
@@ -46,7 +46,7 @@ function Header() {
             <nav className='m-4 items-center hidden md:flex'>
               {routes.map((route) => {
                 return (
-                  <Button variant='ghost' asChild>
+                  <Button key={route.label} variant='ghost' asChild>
                     <Link key={route.label} to={route.href} className='text-sm font-medium transition-colors'>
                       {route.label}
                     </Link>
@@ -76,7 +76,7 @@ function Header() {
 
             {/* <ModeToggle className='shrink-0' /> */}
 
-            <ProfileButton user={user} className='shrink-0' />
+            <ProfileButton className='shrink-0' />
           </div>
         </div>
       </Container>

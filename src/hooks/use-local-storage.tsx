@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function useLocalStorage<T>(key: string, defaultValue: T) {
   const [localStorageValue, setLocalStorageValue] = useState<T>(() => {
     try {
@@ -9,11 +8,11 @@ function useLocalStorage<T>(key: string, defaultValue: T) {
       if (value) {
         return JSON.parse(value)
       } else {
-        localStorage.setItem(key, JSON.stringify(defaultValue))
+        localStorage.setItem(key, typeof defaultValue === 'string' ? defaultValue : JSON.stringify(defaultValue))
         return defaultValue
       }
     } catch (error) {
-      localStorage.setItem(key, JSON.stringify(defaultValue))
+      localStorage.setItem(key, typeof defaultValue === 'string' ? defaultValue : JSON.stringify(defaultValue))
       return defaultValue
     }
   })
@@ -26,7 +25,7 @@ function useLocalStorage<T>(key: string, defaultValue: T) {
     } else {
       newValue = valueOrFn
     }
-    localStorage.setItem(key, JSON.stringify(newValue))
+    localStorage.setItem(key, typeof newValue === 'string' ? newValue : JSON.stringify(newValue))
     setLocalStorageValue(newValue)
   }
   return { localStorageValue, setLocalStorageStateValue }

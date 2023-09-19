@@ -1,15 +1,15 @@
 import { routes } from '@/constants/adminRoutes'
-import useAuth from '@/hooks/use-auth'
 import { cn } from '@/lib/utils'
 import { LogOut } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../theme-provider'
+import { useAuthContext } from '@/contexts/auth-provider'
 
 const LeftSidebar = () => {
   const navigate = useNavigate()
   const pathname = useLocation().pathname
   const { theme } = useTheme()
-  const user = useAuth()
+  const { user } = useAuthContext()
 
   console.log({ pathname })
 

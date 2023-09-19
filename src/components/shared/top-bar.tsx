@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom'
 import logoWhite from '@/assets/logo-white.png'
 import logoBlack from '@/assets/logo-black.png'
-import useAuth from '@/hooks/use-auth'
 import { LogOut } from 'lucide-react'
 import { ModeToggle } from '../mode-toggle'
 import { useTheme } from '../theme-provider'
+import { useAuthContext } from '@/contexts/auth-provider'
 
 function TopBar() {
-  const user = useAuth()
+  const { user } = useAuthContext()
   const { theme } = useTheme()
 
   return (
