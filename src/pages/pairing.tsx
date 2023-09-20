@@ -78,7 +78,6 @@ function pairing({}: Props) {
           <div className='w-56 h-96 border border-white'></div>
       </div>
 
-
     </Container>
   )
 }

@@ -4,7 +4,7 @@ import { Mail } from 'lucide-react'
 function Footer() {
   return (
     <div className='w-full h-full border-t-2 mt-20'>
-      <div className='flex text-white mt-6 gap-14'>
+      <div className='flex text-foreground mt-6 gap-14'>
         <div className='flex flex-col flex-1 gap-1'>
           <div className='text-2xl font-bold text-primary'>Thông tin cửa hàng</div>
           <p className='text-xs sm:text-base'>
