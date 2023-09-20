@@ -17,6 +17,7 @@ import OrderList from './pages/order-list'
 import Cart from './pages/cart'
 import AdminBirdList from './pages/admin-bird-list'
 import BirdComparing from './pages/bird-comparing'
+import FollowOrders from './pages/order-follow'
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path='wishlist' element={<WishList />} />
           <Route path='profile' element={<Profile />} />
           <Route path='orders' element={<OrderList />} />
+          <Route path='follow' element={<FollowOrders />} />
           <Route path='cart' element={<Cart />} />
           {/* <Route path='nests' element={<NestList />} /> */}
           <Route path='comparings' element={<BirdComparing />} />
