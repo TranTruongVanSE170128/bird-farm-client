@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { imageDB } from '@/firebase'
+import { imageDB } from '@/services/firebase'
 import { v4 } from 'uuid'
 import { useForm } from 'react-hook-form'
 import { TBirdSchema, birdSchema } from '@/lib/validations/bird'
@@ -12,7 +12,6 @@ import noImage from '@/assets/no-image.avif'
 import { Button } from '../ui/button'
 import { Textarea } from '../ui/textarea'
 import { CalendarIcon, Check, ChevronsUpDown, Shell } from 'lucide-react'
-import axios from 'axios'
 import { useToast } from '../ui/use-toast'
 import { useNavigate } from 'react-router-dom'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
@@ -26,6 +25,7 @@ import { Calendar } from '../ui/calendar'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import { useAuthContext } from '@/contexts/auth-provider'
+import { birdFarmApi } from '@/services/bird-farm-api'
 
 type Props = {
   bird?: Bird
@@ -76,8 +76,8 @@ function BirdForm({ bird, btnTitle }: Props) {
         imageUrls
       })
 
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/admin/birds`,
+      await birdFarmApi.post(
+        '/api/birds',
         {
           ...values,
           imageUrls
@@ -130,7 +130,7 @@ function BirdForm({ bird, btnTitle }: Props) {
 
   useEffect(() => {
     const fetchSpecies = async () => {
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/species?pagination=false`)
+      const { data } = await birdFarmApi.get('/api/species')
 
       setSpecies(data?.species || [])
     }

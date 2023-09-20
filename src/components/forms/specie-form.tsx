@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { imageDB } from '@/firebase'
+import { imageDB } from '@/services/firebase'
 import { v4 } from 'uuid'
 import { useForm } from 'react-hook-form'
 import { TSpecieSchema, specieSchema } from '@/lib/validations/specie'
@@ -12,9 +12,9 @@ import noImage from '@/assets/no-image.avif'
 import { Button } from '../ui/button'
 import { Textarea } from '../ui/textarea'
 import { Shell } from 'lucide-react'
-import axios from 'axios'
 import { useToast } from '../ui/use-toast'
 import { useNavigate } from 'react-router-dom'
+import { birdFarmApi } from '@/services/bird-farm-api'
 
 type Props = {
   specie?: Specie
@@ -47,7 +47,7 @@ function SpecieForm({ specie, btnTitle }: Props) {
         imageUrl = await getDownloadURL(imageRef)
       }
 
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/species`, {
+      await birdFarmApi.post('/api/species', {
         ...values,
         imageUrl
       })

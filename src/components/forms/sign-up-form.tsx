@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { TSignUpSchema, signUpSchema } from '@/lib/validations/auth'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
-import axios from 'axios'
 import googleIcon from '@/assets/google.svg'
 import { Link, useNavigate } from 'react-router-dom'
 import { Shell } from 'lucide-react'
@@ -13,6 +12,7 @@ import { useState } from 'react'
 import { useToast } from '../ui/use-toast'
 import { useGoogleLogin } from '@react-oauth/google'
 import { useAuthContext } from '@/contexts/auth-provider'
+import { birdFarmApi } from '@/services/bird-farm-api'
 
 export function SignUpForm() {
   const navigate = useNavigate()
@@ -28,7 +28,7 @@ export function SignUpForm() {
     setIsSubmitting(true)
 
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/sign-up`, values)
+      const { data } = await birdFarmApi.post('/api/auth/sign-up', values)
       if (data?.email && data?.userId) {
         navigate(`/auth/${data.userId}/verify-email?email=${data.email}`)
       }
@@ -49,7 +49,7 @@ export function SignUpForm() {
     onSuccess: async (codeResponse) => {
       setIsLoggingGoogle(true)
       try {
-        const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login-google`, {
+        const { data } = await birdFarmApi.post('/api/auth/login-google', {
           accessTokenGoogle: codeResponse.access_token
         })
         const accessToken = data.accessToken

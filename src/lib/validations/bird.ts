@@ -1,18 +1,18 @@
 import { z } from 'zod'
 
 export const birdSchema = z.object({
-  specie: z.coerce.string().nonempty('Bắt buộc'),
-  name: z.coerce.string().nonempty('Bắt buộc'),
-  birth: z.coerce.date().optional(),
-  price: z.coerce.number(),
-  description: z.coerce.string().optional(),
-  sold: z.coerce.boolean().optional(),
-  onSale: z.coerce.boolean(),
+  specie: z.string().nonempty('Bắt buộc'),
+  name: z.string().nonempty('Bắt buộc'),
+  birth: z.date().optional(),
+  price: z.number(),
+  description: z.string().optional(),
+  sold: z.boolean().optional(),
+  onSale: z.boolean(),
   gender: z.enum(['male', 'female']),
-  imageUrls: z.coerce.string().optional(),
-  parent: z.coerce.string().optional(),
-  achievements: z.coerce.string().optional(),
-  discount: z.coerce.string().optional()
+  imageUrls: z.string().optional(),
+  parent: z.string().optional(),
+  achievements: z.string().optional(),
+  discount: z.string().optional()
 })
 
 export type TBirdSchema = z.infer<typeof birdSchema>

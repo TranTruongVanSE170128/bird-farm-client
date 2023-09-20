@@ -4,11 +4,11 @@ import Container from '@/components/ui/container'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Specie } from '@/lib/types'
 import { cn } from '@/lib/utils'
-import axios from 'axios'
 import { BirdIcon, Check, ChevronsUpDown, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Heart } from 'lucide-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { birdFarmApi } from '@/services/bird-farm-api'
 
 function Pairing() {
   const [open, setOpen] = useState(false)
@@ -18,7 +18,7 @@ function Pairing() {
 
   useEffect(() => {
     const fetchSpecies = async () => {
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/species?pagination=false`)
+      const { data } = await birdFarmApi.get('/api/species/')
 
       setSpecies(data?.species || [])
     }

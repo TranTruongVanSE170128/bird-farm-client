@@ -2,13 +2,13 @@ import Paginate from '@/components/paginate'
 import SpecieCardSkeleton from '@/components/specie-card-skeleton'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Specie } from '@/lib/types'
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import noImage from '@/assets/no-image.avif'
 import { buttonVariants } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { birdFarmApi } from '@/services/bird-farm-api'
 
 const pageSize = 12
 
@@ -25,10 +25,8 @@ function AdminSpecieList() {
     const fetchSpecies = async () => {
       setIsLoadingSpecies(true)
       try {
-        const { data } = await axios.get(
-          `${
-            import.meta.env.VITE_API_URL
-          }/api/species?pageSize=${pageSize}&pageNumber=${pageNumber}searchQuery=${searchQuery}&specie=${specie}`
+        const { data } = await birdFarmApi.get(
+          `/api/species/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}`
         )
         setSpecies(data?.species || null)
         setIsLoadingSpecies(false)

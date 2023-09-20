@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button'
 import Container from '@/components/ui/container'
 import { useCartContext } from '@/contexts/cart-provider'
+import { birdFarmApi } from '@/services/bird-farm-api'
 import { loadStripe } from '@stripe/stripe-js'
-import axios from 'axios'
 
 function Cart() {
   const { cart } = useCartContext()
@@ -11,12 +11,9 @@ function Cart() {
     try {
       const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY)
 
-      const { data: session } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/checkout/create-checkout-session`,
-        {
-          products: cart
-        }
-      )
+      const { data: session } = await birdFarmApi.post('/api/checkout/create-checkout-session', {
+        products: cart
+      })
 
       const result = await stripe?.redirectToCheckout({
         sessionId: session.id

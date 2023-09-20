@@ -1,6 +1,5 @@
 import Paginate from '@/components/paginate'
 import { Nest } from '@/lib/types'
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { buttonVariants } from '@/components/ui/button'
@@ -9,6 +8,7 @@ import { cn, formatPrice } from '@/lib/utils'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import Spinner from '@/components/ui/spinner'
+import { birdFarmApi } from '@/services/bird-farm-api'
 
 const pageSize = 12
 
@@ -25,10 +25,8 @@ function AdminNestList() {
     const fetchNests = async () => {
       setIsLoadingNests(true)
       try {
-        const { data } = await axios.get(
-          `${
-            import.meta.env.VITE_API_URL
-          }/api/nests?pageSize=${pageSize}&pageNumber=${pageNumber}searchQuery=${searchQuery}&nest=${nest}`
+        const { data } = await birdFarmApi.get(
+          `/api/nests/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&nest=${nest}`
         )
         setNests(data?.nests || null)
         setIsLoadingNests(false)

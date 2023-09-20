@@ -4,7 +4,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Bird, getSpecie } from '@/lib/types'
 import { cn, formatPrice } from '@/lib/utils'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
-import axios from 'axios'
 import { Check, MoreHorizontal, Plus, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
@@ -13,6 +12,7 @@ import femaleIcon from '@/assets/female.svg'
 import { useToast } from '@/components/ui/use-toast'
 import { useAuthContext } from '@/contexts/auth-provider'
 import { buttonVariants } from '@/components/ui/button'
+import { birdFarmApi } from '@/services/bird-farm-api'
 
 const pageSize = 12
 
@@ -31,10 +31,8 @@ function AdminBirdList() {
     const fetchBirds = async () => {
       setIsLoadingBirds(true)
       try {
-        const { data } = await axios.get(
-          `${
-            import.meta.env.VITE_API_URL
-          }/api/admin/birds?pageSize=${pageSize}&pageNumber=${pageNumber}searchQuery=${searchQuery}&specie=${specie}`,
+        const { data } = await birdFarmApi.get(
+          `/api/birds/pagination/admin?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}`,
           {
             headers: {
               Authorization: 'Bearer ' + accessToken

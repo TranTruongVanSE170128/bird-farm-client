@@ -1,6 +1,6 @@
 import useLocalStorage from '@/hooks/use-local-storage'
 import { Role, User } from '@/lib/types'
-import axios from 'axios'
+import { birdFarmApi } from '@/services/bird-farm-api'
 import React, { useContext, useEffect, useState } from 'react'
 
 type AuthProviderProps = {
@@ -30,7 +30,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         return
       }
       try {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/who-am-i`, {
+        const { data } = await birdFarmApi.get('/api/users/who-am-i', {
           headers: {
             Authorization: `Bearer ${JSON.parse(accessToken)}`
           }

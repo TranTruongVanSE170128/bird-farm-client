@@ -1,13 +1,13 @@
 import { z } from 'zod'
 
 export const nestSchema = z.object({
-  specie: z.coerce.string().nonempty('Bắt buộc'),
-  name: z.coerce.string().nonempty('Bắt buộc'),
-  dad: z.coerce.string(),
-  mom: z.coerce.string(),
-  price: z.coerce.number(),
-  imageUrls: z.coerce.string().optional(),
-  description: z.coerce.string().optional()
+  specie: z.string().nonempty('Bắt buộc'),
+  name: z.string().nonempty('Bắt buộc'),
+  dad: z.string().optional(),
+  mom: z.string().optional(),
+  price: z.number(),
+  imageUrls: z.string().optional(),
+  description: z.string().optional()
 })
 
 export type TNestSchema = z.infer<typeof nestSchema>

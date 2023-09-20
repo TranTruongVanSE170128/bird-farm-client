@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { imageDB } from '@/firebase'
+import { imageDB } from '@/services/firebase'
 import { v4 } from 'uuid'
 import { useForm } from 'react-hook-form'
 import { TNestSchema, nestSchema } from '@/lib/validations/nest'
@@ -12,13 +12,14 @@ import noImage from '@/assets/no-image.avif'
 import { Button } from '../ui/button'
 import { Textarea } from '../ui/textarea'
 import { Check, ChevronsUpDown, Shell } from 'lucide-react'
-import axios from 'axios'
 import { useToast } from '../ui/use-toast'
 import { useNavigate } from 'react-router-dom'
 import { cn, generateRandomHexCode } from '@/lib/utils'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '../ui/command'
 import { ScrollArea } from '../ui/scroll-area'
+import { useAuthContext } from '@/contexts/auth-provider'
+import { birdFarmApi } from '@/services/bird-farm-api'
 
 type Props = {
   nest?: Nest
@@ -34,6 +35,7 @@ function NestForm({ nest, btnTitle }: Props) {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [species, setSpecies] = useState<Specie[]>([])
+  const { accessToken } = useAuthContext()
 
   const form = useForm<TNestSchema>({
     resolver: zodResolver(nestSchema),
@@ -49,27 +51,42 @@ function NestForm({ nest, btnTitle }: Props) {
   const onSubmit = async (values: TNestSchema) => {
     setIsSubmitting(true)
     try {
-      let imageUrl = ''
+      let imageUrls: string[] = []
       const image = files[0]
       if (image) {
         const imageRef = ref(imageDB, `images/${image.name + v4()}`)
         await uploadBytes(imageRef, image)
-        imageUrl = await getDownloadURL(imageRef)
+        imageUrls = [await getDownloadURL(imageRef)]
       }
 
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/nests`, {
+      console.log({
         ...values,
-        imageUrl
+        imageUrls
       })
+
+      await birdFarmApi.post(
+        '/api/nests',
+        {
+          ...values,
+          imageUrls
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        }
+      )
 
       toast({
         variant: 'success',
-        title: 'Tạo loài mới thành công'
+        title: 'Tạo tổ chim mới thành công'
       })
 
       navigate('/admin/nests')
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      console.log({ error })
+
       const messageError = error.response.data.message
       toast({
         variant: 'destructive',
@@ -101,7 +118,7 @@ function NestForm({ nest, btnTitle }: Props) {
 
   useEffect(() => {
     const fetchSpecies = async () => {
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/species?pagination=false`)
+      const { data } = await birdFarmApi.get('/api/species')
 
       setSpecies(data?.species || [])
     }

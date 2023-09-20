@@ -4,7 +4,6 @@ import SpecieCardSkeleton from '@/components/specie-card-skeleton'
 import { Button } from '@/components/ui/button'
 import Container from '@/components/ui/container'
 import { Bird, Specie } from '@/lib/types'
-import axios from 'axios'
 import { ArrowLeft, ArrowRight, ShoppingBag } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -12,6 +11,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, EffectCoverflow } from 'swiper/modules'
 import useWindowSize from '@/hooks/use-window-size'
 import BirdCardSkeleton from '@/components/bird-card-skeleton'
+import { birdFarmApi } from '@/services/bird-farm-api'
 
 function Home() {
   const [isLoadingSpecies, setIsLoadingSpecies] = useState(true)
@@ -30,7 +30,7 @@ function Home() {
 
   useEffect(() => {
     const fetchSpecies = async () => {
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/species?pageSize=8&pageNumber=1`)
+      const { data } = await birdFarmApi.get('/api/species/pagination?pageSize=8&pageNumber=1')
 
       setSpecies(data?.species || [])
       setIsLoadingSpecies(false)
@@ -41,7 +41,7 @@ function Home() {
 
   useEffect(() => {
     const fetchSpecies = async () => {
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/birds?pageSize=8&pageNumber=1`)
+      const { data } = await birdFarmApi.get('/api/birds/pagination?pageSize=8&pageNumber=1')
 
       setBirds(data?.birds || [])
       setIsLoadingBirds(false)
