@@ -32,9 +32,6 @@ export function SignUpForm() {
       if (data?.email && data?.userId) {
         navigate(`/auth/${data.userId}/verify-email?email=${data.email}`)
       }
-<<<<<<< HEAD
-    } catch (error) {
-=======
 
       throw new Error('Có lỗi xảy ra')
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,7 +41,6 @@ export function SignUpForm() {
         variant: 'destructive',
         title: messageError
       })
->>>>>>> origin/main
       setIsSubmitting(false)
     }
   }
