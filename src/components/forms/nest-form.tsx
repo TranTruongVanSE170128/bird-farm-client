@@ -18,7 +18,6 @@ import { cn, generateRandomHexCode } from '@/lib/utils'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '../ui/command'
 import { ScrollArea } from '../ui/scroll-area'
-import { useAuthContext } from '@/contexts/auth-provider'
 import { birdFarmApi } from '@/services/bird-farm-api'
 
 type Props = {
@@ -35,7 +34,6 @@ function NestForm({ nest, btnTitle }: Props) {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [species, setSpecies] = useState<Specie[]>([])
-  const { accessToken } = useAuthContext()
 
   const form = useForm<TNestSchema>({
     resolver: zodResolver(nestSchema),
@@ -64,18 +62,10 @@ function NestForm({ nest, btnTitle }: Props) {
         imageUrls
       })
 
-      await birdFarmApi.post(
-        '/api/nests',
-        {
-          ...values,
-          imageUrls
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        }
-      )
+      await birdFarmApi.post('/api/nests', {
+        ...values,
+        imageUrls
+      })
 
       toast({
         variant: 'success',

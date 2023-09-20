@@ -30,11 +30,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         return
       }
       try {
-        const { data } = await birdFarmApi.get('/api/users/who-am-i', {
-          headers: {
-            Authorization: `Bearer ${JSON.parse(accessToken)}`
-          }
-        })
+        const { data } = await birdFarmApi.get('/api/users/who-am-i')
         if (data?.user) {
           setUser(data.user)
           setRole(data.user.role)

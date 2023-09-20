@@ -10,7 +10,6 @@ import { Link, useSearchParams } from 'react-router-dom'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
 import { useToast } from '@/components/ui/use-toast'
-import { useAuthContext } from '@/contexts/auth-provider'
 import { buttonVariants } from '@/components/ui/button'
 import { birdFarmApi } from '@/services/bird-farm-api'
 
@@ -25,19 +24,13 @@ function AdminBirdList() {
   const [isLoadingBirds, setIsLoadingBirds] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
   const { toast } = useToast()
-  const { accessToken } = useAuthContext()
 
   useEffect(() => {
     const fetchBirds = async () => {
       setIsLoadingBirds(true)
       try {
         const { data } = await birdFarmApi.get(
-          `/api/birds/pagination/admin?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}`,
-          {
-            headers: {
-              Authorization: 'Bearer ' + accessToken
-            }
-          }
+          `/api/birds/pagination/admin?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}`
         )
         setBirds(data?.birds || null)
         setIsLoadingBirds(false)

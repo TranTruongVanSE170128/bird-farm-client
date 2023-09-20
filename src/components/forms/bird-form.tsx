@@ -24,7 +24,6 @@ import femaleIcon from '@/assets/female.svg'
 import { Calendar } from '../ui/calendar'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
-import { useAuthContext } from '@/contexts/auth-provider'
 import { birdFarmApi } from '@/services/bird-farm-api'
 
 type Props = {
@@ -41,7 +40,6 @@ function BirdForm({ bird, btnTitle }: Props) {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [species, setSpecies] = useState<Specie[]>([])
-  const { accessToken } = useAuthContext()
 
   const form = useForm<TBirdSchema>({
     resolver: zodResolver(birdSchema),
@@ -76,18 +74,10 @@ function BirdForm({ bird, btnTitle }: Props) {
         imageUrls
       })
 
-      await birdFarmApi.post(
-        '/api/birds',
-        {
-          ...values,
-          imageUrls
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        }
-      )
+      await birdFarmApi.post('/api/birds', {
+        ...values,
+        imageUrls
+      })
 
       toast({
         variant: 'success',
