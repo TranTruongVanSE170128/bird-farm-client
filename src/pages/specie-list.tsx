@@ -7,7 +7,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-const pageSize = 12
+const pageSize = 8
 
 function SpecieList() {
   const [searchParams] = useSearchParams()

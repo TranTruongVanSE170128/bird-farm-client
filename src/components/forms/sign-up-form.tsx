@@ -31,8 +31,10 @@ export function SignUpForm() {
       const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/sign-up`, values)
       if (data?.email && data?.userId) {
         navigate(`/auth/${data.userId}/verify-email?email=${data.email}`)
-        return
       }
+<<<<<<< HEAD
+    } catch (error) {
+=======
 
       throw new Error('Có lỗi xảy ra')
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,6 +44,7 @@ export function SignUpForm() {
         variant: 'destructive',
         title: messageError
       })
+>>>>>>> origin/main
       setIsSubmitting(false)
     }
   }
