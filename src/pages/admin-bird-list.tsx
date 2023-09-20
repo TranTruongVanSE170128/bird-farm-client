@@ -92,7 +92,7 @@ function AdminBirdList() {
                   <TableCell className='line-clamp-1'>{getSpecie(bird).name}</TableCell>
                   <TableCell className='text-center'>{bird.name}</TableCell>
                   <TableCell className='text-center'>
-                    <img src={bird.imageUrls?.[0]} alt='bird' />
+                    <img src={bird.imageUrls?.[0]} alt='' />
                   </TableCell>
                   <TableCell className='text-center'>{formatPrice(bird.price)}</TableCell>
                   {/* <TableCell className='text-center'>Đã Bán</TableCell> */}

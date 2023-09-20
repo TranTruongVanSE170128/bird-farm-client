@@ -11,7 +11,7 @@ import { Input } from '../ui/input'
 import noImage from '@/assets/no-image.avif'
 import { Button } from '../ui/button'
 import { Textarea } from '../ui/textarea'
-import { Check, ChevronsUpDown, Shell } from 'lucide-react'
+import { CalendarIcon, Check, ChevronsUpDown, Shell } from 'lucide-react'
 import axios from 'axios'
 import { useToast } from '../ui/use-toast'
 import { useNavigate } from 'react-router-dom'
@@ -19,6 +19,13 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { cn, generateRandomHexCode } from '@/lib/utils'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '../ui/command'
 import { ScrollArea } from '../ui/scroll-area'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+import maleIcon from '@/assets/male.svg'
+import femaleIcon from '@/assets/female.svg'
+import { Calendar } from '../ui/calendar'
+import { format } from 'date-fns'
+import { vi } from 'date-fns/locale'
+import { useAuthContext } from '@/contexts/auth-provider'
 
 type Props = {
   bird?: Bird
@@ -34,30 +41,22 @@ function CreateBirdForm({ bird, btnTitle }: Props) {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [species, setSpecies] = useState<Specie[]>([])
-
-  useEffect(() => {
-    const fetchSpecies = async () => {
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/species?pagination=false`)
-
-      setSpecies(data?.species || [])
-    }
-    fetchSpecies()
-  }, [])
+  const { accessToken } = useAuthContext()
 
   const form = useForm<TCreateBirdSchema>({
     resolver: zodResolver(createBirdSchema),
     defaultValues: {
-      imageUrls: bird?.imageUrls ? JSON.stringify(bird.imageUrls) : '',
-      description: bird?.description ? bird.description : '',
-      name: bird?.name ? bird.name : code,
-      achievements: bird?.achievements ? JSON.stringify(bird.achievements) : '',
-      birth: bird?.birth ? bird.birth : undefined,
-      discount: bird?.discount ? JSON.stringify(bird.discount) : '',
-      gender: bird?.gender ? bird.gender : 'male',
+      imageUrls: bird?.imageUrls ? JSON.stringify(bird.imageUrls) : '', //
+      description: bird?.description ? bird.description : '', //
+      name: bird?.name ? bird.name : code, //
+      achievements: bird?.achievements ? JSON.stringify(bird.achievements) : undefined,
+      birth: bird?.birth ? bird.birth : undefined, //
+      discount: bird?.discount ? JSON.stringify(bird.discount) : undefined,
+      gender: bird?.gender ? bird.gender : undefined, //
       onSale: bird?.onSale ? bird.onSale : true,
-      parent: bird?.parent ? JSON.stringify(bird.parent) : '',
-      price: bird?.price ? bird.price : undefined,
-      specie: bird?.specie ? (bird.specie as string) : ''
+      parent: bird?.parent ? JSON.stringify(bird.parent) : undefined,
+      price: bird?.price ? bird.price : undefined, //
+      specie: bird?.specie ? (bird.specie as string) : '' //
     }
   })
 
@@ -72,10 +71,23 @@ function CreateBirdForm({ bird, btnTitle }: Props) {
         imageUrls = [await getDownloadURL(imageRef)]
       }
 
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/birds`, {
+      console.log({
         ...values,
         imageUrls
       })
+
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/admin/birds`,
+        {
+          ...values,
+          imageUrls
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        }
+      )
 
       toast({
         variant: 'success',
@@ -85,6 +97,8 @@ function CreateBirdForm({ bird, btnTitle }: Props) {
       navigate('/admin/birds')
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      console.log({ error })
+
       const messageError = error.response.data.message
       toast({
         variant: 'destructive',
@@ -113,6 +127,15 @@ function CreateBirdForm({ bird, btnTitle }: Props) {
       fileReader.readAsDataURL(file)
     }
   }
+
+  useEffect(() => {
+    const fetchSpecies = async () => {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/species?pagination=false`)
+
+      setSpecies(data?.species || [])
+    }
+    fetchSpecies()
+  }, [])
 
   return (
     <Form {...form}>
@@ -174,9 +197,9 @@ function CreateBirdForm({ bird, btnTitle }: Props) {
           name='name'
           render={({ field }) => (
             <FormItem className='flex w-full flex-col gap-3'>
-              <FormLabel className='font-bold text-light-2'>Tên*</FormLabel>
+              <FormLabel className='font-bold'>Tên*</FormLabel>
               <FormControl>
-                <Input disabled type='hidden' className='account-form_input no-focus' {...field} />
+                <Input disabled type='hidden' className='no-focus' {...field} />
               </FormControl>
               <div className='flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300'>
                 {form.getValues('name')}
@@ -189,11 +212,57 @@ function CreateBirdForm({ bird, btnTitle }: Props) {
 
         <FormField
           control={form.control}
+          name='gender'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Giới Tính*</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder='Chọn giới tính cho chim' />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value='male'>
+                    <div className='flex items-center'>
+                      <img className='w-6 h-6 mr-1' src={maleIcon} alt='' />
+                      Đực
+                    </div>
+                  </SelectItem>
+                  <SelectItem className='flex items-center' value='female'>
+                    <div className='flex items-center'>
+                      <img className='w-6 h-6 mr-1' src={femaleIcon} alt='' />
+                      Cái
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='price'
+          render={({ field }) => (
+            <FormItem className='flex w-full flex-col gap-3'>
+              <FormLabel className='font-bold'>Giá*(vnđ)</FormLabel>
+              <FormControl>
+                <Input placeholder='Giá chim...' type='text' className='no-focus' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name='imageUrls'
           render={({ field }) => (
             <FormItem className='flex items-center gap-4'>
               <FormLabel className=''>
-                <div className='font-bold text-light-2 mb-4'>Ảnh</div>
+                <div className='font-bold mb-4'>Ảnh</div>
                 {field.value ? (
                   <img
                     src={field.value}
@@ -206,7 +275,7 @@ function CreateBirdForm({ bird, btnTitle }: Props) {
                   <img src={noImage} alt='imageUrl' width={240} height={240} className='object-contain rounded-md' />
                 )}
               </FormLabel>
-              <FormControl className='flex-1 font-bold text-gray-200'>
+              <FormControl>
                 <Input
                   type='file'
                   accept='image/*'
@@ -222,12 +291,45 @@ function CreateBirdForm({ bird, btnTitle }: Props) {
 
         <FormField
           control={form.control}
+          name='birth'
+          render={({ field }) => (
+            <FormItem className='flex flex-col'>
+              <FormLabel>Ngày sinh</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={'outline'}
+                      className={cn('w-[240px] pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
+                    >
+                      {field.value ? format(field.value, 'PPP', { locale: vi }) : <span>Chọn ngày sinh</span>}
+                      <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className='w-auto p-0' align='start'>
+                  <Calendar
+                    mode='single'
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name='description'
           render={({ field }) => (
             <FormItem className='flex w-full flex-col gap-3'>
-              <FormLabel className='font-bold text-light-2'>Mô tả</FormLabel>
+              <FormLabel className='font-bold'>Mô tả</FormLabel>
               <FormControl>
-                <Textarea rows={10} className='account-form_input no-focus' {...field} />
+                <Textarea rows={10} className='no-focus' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

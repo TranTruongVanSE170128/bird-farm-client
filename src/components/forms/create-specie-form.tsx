@@ -125,7 +125,7 @@ function CreateSpecieForm({ specie, btnTitle }: Props) {
                   <img src={noImage} alt='imageUrl' width={240} height={240} className='object-contain rounded-md' />
                 )}
               </FormLabel>
-              <FormControl className='flex-1 font-bold text-gray-200'>
+              <FormControl>
                 <Input
                   type='file'
                   accept='image/*'
