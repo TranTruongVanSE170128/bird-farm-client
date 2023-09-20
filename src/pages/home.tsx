@@ -12,7 +12,6 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, EffectCoverflow } from 'swiper/modules'
 import useWindowSize from '@/hooks/use-window-size'
 import BirdCardSkeleton from '@/components/bird-card-skeleton'
-import Footer from '@/components/footer'
 
 function Home() {
   const [isLoadingSpecies, setIsLoadingSpecies] = useState(true)
@@ -152,8 +151,6 @@ function Home() {
       <Link className='mt-6 flex justify-center' to='/birds'>
         <Button size='lg'>Xem tất cả</Button>
       </Link>
-
-      <Footer />
     </Container>
   )
 }
