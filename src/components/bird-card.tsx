@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card'
 import { cn, formatPrice } from '@/lib/utils'
 import { Button } from './ui/button'
-import { Bird, getSpecie } from '@/lib/types'
+import { Bird } from '@/lib/types'
 import noImage from '@/assets/no-image.avif'
 import redHeart from '@/assets/red-heart.svg'
 import blackHeart from '@/assets/black-heart.svg'
@@ -77,9 +77,7 @@ function BirdCard({ className, bird }: Props) {
         </CardHeader>
         <CardContent className='flex-col items-start'>
           <div>
-            <p className='font-semibold text-lg lg:text-xl'>
-              {getSpecie(bird).name} mã {bird?.name}
-            </p>
+            <p className='font-semibold text-lg lg:text-xl'>{bird?.name}</p>
           </div>
           <div className='flex items-center justify-between lg:text-lg'>{formatPrice(bird?.price || 0)}</div>
         </CardContent>
