@@ -22,6 +22,8 @@ import NestList from './pages/nest-list'
 import AdminSpecieList from './pages/admin-specie-list'
 import AdminSpeciesNew from './pages/admin-species-new'
 import AdminBirdsNew from './pages/admin-birds-new'
+import AdminNestList from './pages/admin-nest-list'
+import AdminNestsNew from './pages/admin-nests-new'
 
 function App() {
   return (
@@ -55,7 +57,8 @@ function App() {
           <Route path='species/new' element={<AdminSpeciesNew />} />
           <Route path='birds' element={<AdminBirdList />} />
           <Route path='birds/new' element={<AdminBirdsNew />} />
-          <Route path='nests' element={<Dashboard />} />
+          <Route path='nests' element={<AdminNestList />} />
+          <Route path='nests/new' element={<AdminNestsNew />} />
           <Route path='orders' element={<Dashboard />} />
         </Route>
 

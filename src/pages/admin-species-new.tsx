@@ -1,13 +1,13 @@
 // import { imageDB } from '@/firebase'
 
-import CreateSpecieForm from '@/components/forms/create-specie-form'
+import SpecieForm from '@/components/forms/specie-form'
 
 function AdminSpecieNew() {
   //   const [img, setimg] = useState(second)
 
   return (
     <div>
-      <CreateSpecieForm btnTitle='Tạo' />
+      <SpecieForm btnTitle='Tạo' />
     </div>
   )
 }

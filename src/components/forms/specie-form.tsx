@@ -3,7 +3,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { imageDB } from '@/firebase'
 import { v4 } from 'uuid'
 import { useForm } from 'react-hook-form'
-import { TCreateSpecieSchema, createSpecieSchema } from '@/lib/validations/specie'
+import { TSpecieSchema, specieSchema } from '@/lib/validations/specie'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Specie } from '@/lib/types'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
@@ -21,14 +21,14 @@ type Props = {
   btnTitle: string
 }
 
-function CreateSpecieForm({ specie, btnTitle }: Props) {
+function SpecieForm({ specie, btnTitle }: Props) {
   const [files, setFiles] = useState<File[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
   const navigate = useNavigate()
 
-  const form = useForm<TCreateSpecieSchema>({
-    resolver: zodResolver(createSpecieSchema),
+  const form = useForm<TSpecieSchema>({
+    resolver: zodResolver(specieSchema),
     defaultValues: {
       imageUrl: specie?.imageUrl ? specie.imageUrl : '',
       description: specie?.description ? specie.description : '',
@@ -36,7 +36,7 @@ function CreateSpecieForm({ specie, btnTitle }: Props) {
     }
   })
 
-  const onSubmit = async (values: TCreateSpecieSchema) => {
+  const onSubmit = async (values: TSpecieSchema) => {
     setIsSubmitting(true)
     try {
       let imageUrl = ''
@@ -162,4 +162,4 @@ function CreateSpecieForm({ specie, btnTitle }: Props) {
   )
 }
 
-export default CreateSpecieForm
+export default SpecieForm

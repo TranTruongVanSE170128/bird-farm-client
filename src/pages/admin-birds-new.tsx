@@ -1,13 +1,13 @@
 // import { imageDB } from '@/firebase'
 
-import CreateBirdForm from '@/components/forms/create-bird-form'
+import BirdForm from '@/components/forms/bird-form'
 
 function AdminBirdsNew() {
   //   const [img, setimg] = useState(second)
 
   return (
     <div>
-      <CreateBirdForm btnTitle='Tạo' />
+      <BirdForm btnTitle='Tạo' />
     </div>
   )
 }

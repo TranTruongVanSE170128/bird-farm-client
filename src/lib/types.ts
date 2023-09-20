@@ -29,6 +29,18 @@ export type Bird = {
   discount?: Discount
 }
 
+export type Nest = {
+  _id: string
+  dad: Bird | string
+  mom: Bird | string
+  name: string
+  specie: Specie | string
+  sold: boolean
+  price: number
+  imageUrls?: string[]
+  description?: string
+}
+
 export function getSpecie(bird: Bird): Specie {
   return bird.specie as Specie
 }

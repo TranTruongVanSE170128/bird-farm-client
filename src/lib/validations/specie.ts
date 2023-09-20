@@ -1,12 +1,12 @@
 import { z } from 'zod'
 
-export const createSpecieSchema = z.object({
-  name: z.coerce.string({ required_error: 'Bắt buộc tên loài' }).nonempty('Bắt buộc tên loài'),
+export const specieSchema = z.object({
+  name: z.coerce.string().nonempty('Bắt buộc'),
   imageUrl: z.coerce.string().optional(),
   description: z.coerce.string().optional()
 })
 
-export type TCreateSpecieSchema = z.infer<typeof createSpecieSchema>
+export type TSpecieSchema = z.infer<typeof specieSchema>
 
 // export const updateSpecieSchema = z.object({
 //   params: z.object({ id: idValidation }),

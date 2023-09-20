@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-export const createBirdSchema = z.object({
-  specie: z.coerce.string().nonempty('bắt buộc loài').trim(),
-  name: z.coerce.string().nonempty('bắt buộc tên').trim(),
+export const birdSchema = z.object({
+  specie: z.coerce.string().nonempty('Bắt buộc'),
+  name: z.coerce.string().nonempty('Bắt buộc'),
   birth: z.coerce.date().optional(),
   price: z.coerce.number(),
   description: z.coerce.string().optional(),
@@ -15,4 +15,4 @@ export const createBirdSchema = z.object({
   discount: z.coerce.string().optional()
 })
 
-export type TCreateBirdSchema = z.infer<typeof createBirdSchema>
+export type TBirdSchema = z.infer<typeof birdSchema>
