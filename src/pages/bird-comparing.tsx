@@ -25,8 +25,8 @@ function BirdComparing({ className, bird }: Props) {
         </div>
         <div className='w-full h-[1px] bg-black mt-3'></div>
         <div className='flex flex-col md:flex-row md:justify-between items-center'>
-          <div className='md:flex-1'>
-            <Input />
+          <div className='md:flex-1 mx-10'>
+            <Input className='mt-3 mb-3 text-center' placeholder='Tìm kiếm chim để so sánh...' />
             <Link
               to={`/birds/${bird?._id}`}
               className={cn('focus:ring-2 rounded-lg hover:ring-2 ring-primary transition duration-300', className)}
@@ -41,11 +41,11 @@ function BirdComparing({ className, bird }: Props) {
               <p className='underline text-cyan-400 text-center pt-3'>Xem chi tiết</p>
             </Link>
           </div>
-          <div className='md:flex-1 '>
-            <img src='src/assets/compare.png' alt='compare' className='mx-auto  w-[80px]' />
+          <div className=' mx-10'>
+            <img src='src/assets/compare.png' alt='compare' className='mx-auto w-[60px]' />
           </div>
-          <div className='md:flex-1'>
-            <Input />
+          <div className='md:flex-1 mx-10'>
+            <Input className='mt-3 mb-3 text-center' placeholder='Tìm kiếm chim để so sánh...' />
             <Link
               to={`/birds/${bird?._id}`}
               className={cn('focus:ring-2 rounded-lg hover:ring-2 ring-primary transition duration-300', className)}
@@ -73,49 +73,49 @@ function BirdComparing({ className, bird }: Props) {
           </p>
           {!isListVisible && (
             <div className='flex justify-center'>
-              <Table className='min-w-full leading-normal'>
+              <Table className='w-full leading-normal'>
                 <TableCaption></TableCaption>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Chim chào mào mã SE170112</TableHead>
-                    <TableHead>Thông tin</TableHead>
-                    <TableHead>Chim yến mã SE170128</TableHead>
+                    <TableHead className='text-center text-xl'>Chim chào mã SE170112</TableHead>
+                    <TableHead className='text-center text-xl'>Thông tin</TableHead>
+                    <TableHead className='text-center text-xl'>Chim yến mã SE170128</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
+                  <TableRow className='text-center'>
                     <TableCell>Alex</TableCell>
-                    <TableCell>Bố</TableCell>
+                    <TableCell className='font-bold'>Bố</TableCell>
                     <TableCell>Wilson</TableCell>
                   </TableRow>
-                  <TableRow>
+                  <TableRow className='text-center'>
                     <TableCell>Alison</TableCell>
-                    <TableCell>Mẹ</TableCell>
+                    <TableCell className='font-bold'>Mẹ</TableCell>
                     <TableCell>Jenny</TableCell>
                   </TableRow>
-                  <TableRow>
+                  <TableRow className='text-center'>
                     <TableCell>20/12/2022</TableCell>
-                    <TableCell>Ngày sinh</TableCell>
+                    <TableCell className='font-bold'>Ngày sinh</TableCell>
                     <TableCell>19/3/2015</TableCell>
                   </TableRow>
-                  <TableRow>
+                  <TableRow className='text-center'>
                     <TableCell>Đực</TableCell>
-                    <TableCell>Giới tính</TableCell>
+                    <TableCell className='font-bold'>Giới tính</TableCell>
                     <TableCell>Cái</TableCell>
                   </TableRow>
-                  <TableRow>
+                  <TableRow className='text-center'>
                     <TableCell>Tốt, nhanh nhẹn</TableCell>
-                    <TableCell>Sức khỏe</TableCell>
+                    <TableCell className='font-bold'>Sức khỏe</TableCell>
                     <TableCell>Cần được chăm sóc</TableCell>
                   </TableRow>
-                  <TableRow>
+                  <TableRow className='text-center'>
                     <TableCell>Không có thành tích</TableCell>
-                    <TableCell>Thành tích thi đấu</TableCell>
+                    <TableCell className='font-bold'>Thành tích thi đấu</TableCell>
                     <TableCell>3 lần huy chương vàng quốc gia</TableCell>
                   </TableRow>
-                  <TableRow>
+                  <TableRow className='text-center'>
                     <TableCell>15.000.000đ</TableCell>
-                    <TableCell>Giá</TableCell>
+                    <TableCell className='font-bold'>Giá</TableCell>
                     <TableCell>19.780.000đ</TableCell>
                   </TableRow>
                 </TableBody>
