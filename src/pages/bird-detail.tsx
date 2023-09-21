@@ -3,12 +3,12 @@ import Ellipce from '@/assets/Ellipse2.png'
 import { ChevronUp, ChevronDown } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Bird, getSpecie } from '@/lib/types'
-import axios from 'axios'
 import Container from '@/components/ui/container'
 import noImage from '@/assets/no-image.avif'
 import { calculateAge, formatPrice } from '@/lib/utils'
 import moment from 'moment'
 import 'moment/locale/vi'
+import { birdFarmApi } from '@/services/bird-farm-api'
 
 const imageUrls = [
   'https://daohieu.com/wp-content/uploads/2020/05/chim-vang-anh-917x1024.jpg',
@@ -39,7 +39,7 @@ function BirdDetail() {
   useEffect(() => {
     const fetchBird = async () => {
       try {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/birds/${id}`)
+        const { data } = await birdFarmApi.get(`/api/birds/${id}`)
 
         setBird(data?.bird || null)
       } catch (error) {
@@ -50,17 +50,13 @@ function BirdDetail() {
     fetchBird()
   }, [id, navigate])
 
-  useEffect(() => {
-    console.log(bird)
-  }, [bird])
-
   if (!bird) {
     return <div>Loading</div>
   }
 
   return (
-    <main>
-      <Container className='mt-8'>
+    <main className=' mt-5 container sm:flex-row transition-all '>
+      <Container>
         <section className='grid grid-cols-12 gap-8'>
           <div className='col-span-5'>
             <div>

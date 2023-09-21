@@ -14,10 +14,18 @@ import LayoutAdmin from './components/shared/layout-admin'
 import WishList from './pages/wish-list'
 import Profile from './pages/profile'
 import OrderList from './pages/order-list'
-import Cart from './pages/cart'
 import AdminBirdList from './pages/admin-bird-list'
+import Pairing from './pages/pairing'
+import Cart from './pages/cart'
 import BirdComparing from './pages/bird-comparing'
-
+import NestList from './pages/nest-list'
+import AdminSpecieList from './pages/admin-specie-list'
+import AdminSpeciesNew from './pages/admin-species-new'
+import AdminBirdsNew from './pages/admin-birds-new'
+import AdminNestList from './pages/admin-nest-list'
+import AdminNestsNew from './pages/admin-nests-new'
+import AdminSpecieDetail from './pages/admin-specie-detail'
+import AdminBirdDetail from './pages/admin-bird-detail'
 
 function App() {
   return (
@@ -39,15 +47,22 @@ function App() {
           <Route path='profile' element={<Profile />} />
           <Route path='orders' element={<OrderList />} />
           <Route path='cart' element={<Cart />} />
-          {/* <Route path='nests' element={<NestList />} /> */}
-          <Route path='comparings' element={<BirdComparing />} />
+          <Route path='nests' element={<NestList />} />
+          <Route path='compare' element={<BirdComparing />} />
           <Route path='not-found' element={<NotFound />} />
+          <Route path='pairing' element={<Pairing />} />
         </Route>
 
         <Route path='/admin' element={<LayoutAdmin />}>
           <Route path='' element={<Dashboard />} />
+          <Route path='species' element={<AdminSpecieList />} />
+          <Route path='species/new' element={<AdminSpeciesNew />} />
+          <Route path='species/:id' element={<AdminSpecieDetail />} />
           <Route path='birds' element={<AdminBirdList />} />
-          <Route path='nests' element={<Dashboard />} />
+          <Route path='birds/new' element={<AdminBirdsNew />} />
+          <Route path='birds/:id' element={<AdminBirdDetail />} />
+          <Route path='nests' element={<AdminNestList />} />
+          <Route path='nests/new' element={<AdminNestsNew />} />
           <Route path='orders' element={<Dashboard />} />
         </Route>
 

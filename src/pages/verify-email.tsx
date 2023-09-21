@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { birdFarmApi } from '@/services/bird-farm-api'
 import { useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 
@@ -13,10 +13,14 @@ function VerifyEmail() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmiting(true)
-    const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/${userId}/verify/${code}`)
 
-    setVerify(data?.success ? 'success' : 'fail')
-    setIsSubmiting(false)
+    try {
+      await birdFarmApi.get(`/api/auth/${userId}/verify/${code}`)
+      setVerify('success')
+    } catch (error) {
+      setVerify('fail')
+      setIsSubmiting(false)
+    }
   }
 
   return (

@@ -1,10 +1,10 @@
 export const routes = [
   {
-    href: '/',
+    href: '/birds',
     label: 'Chim Trưởng Thành'
   },
   {
-    href: '/',
+    href: '/nests',
     label: 'Tổ Chim Non Có Sẵn'
   },
   {

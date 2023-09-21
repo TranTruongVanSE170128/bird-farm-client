@@ -5,7 +5,7 @@ import BirdCardSkeleton from '@/components/bird-card-skeleton'
 import Paginate from '@/components/paginate'
 import Container from '@/components/ui/container'
 import { Bird } from '@/lib/types'
-import axios from 'axios'
+import { birdFarmApi } from '@/services/bird-farm-api'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
@@ -22,10 +22,8 @@ function BirdList() {
 
   useEffect(() => {
     const fetchBirds = async () => {
-      const { data } = await axios.get(
-        `${
-          import.meta.env.VITE_API_URL
-        }/api/birds?pageSize=${pageSize}&pageNumber=${pageNumber}searchQuery=${searchQuery}&specie=${specie}`
+      const { data } = await birdFarmApi.get(
+        `/api/birds/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}`
       )
       setBirds(data?.birds || [])
       setTotalPages(data?.totalPages || null)

@@ -7,7 +7,7 @@ export type User = {
 }
 
 export type Specie = {
-  _id?: string
+  _id: string
   name: string
   imageUrl?: string
   description?: string
@@ -18,7 +18,7 @@ export type Bird = {
   specie: Specie | string
   name: string
   sold: boolean
-  onSale: boolean
+  type: BirdType
   birth?: Date
   gender: Gender
   price: number
@@ -29,11 +29,25 @@ export type Bird = {
   discount?: Discount
 }
 
+export type Nest = {
+  _id: string
+  dad: Bird | string
+  mom: Bird | string
+  name: string
+  specie: Specie | string
+  sold: boolean
+  price: number
+  imageUrls?: string[]
+  description?: string
+}
+
 export function getSpecie(bird: Bird): Specie {
   return bird.specie as Specie
 }
 
 export type Gender = 'male' | 'female'
+
+export type BirdType = 'sell' | 'breed'
 
 export type Parent = {
   dad?: string
@@ -42,6 +56,7 @@ export type Parent = {
 export type Achievement = {
   competition: string
   rank: number
+  _id: string
 }
 
 export type Discount = {
@@ -50,4 +65,4 @@ export type Discount = {
   endDate: Date
 }
 
-export type Role = 'customer' | 'staff' | 'manager'
+export type Role = 'customer' | 'staff' | 'manager' | 'admin' | 'guest'

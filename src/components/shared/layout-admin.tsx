@@ -1,9 +1,16 @@
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 import LeftSidebar from './left-side-bar'
 import TopBar from './top-bar'
 import BottomBar from './bottom-bar'
+import { useAuthContext } from '@/contexts/auth-provider'
 
 function LayoutAdmin() {
+  const { role } = useAuthContext()
+
+  if (role && !(role === 'admin')) {
+    return <Navigate to='/' />
+  }
+
   return (
     <main className='relative'>
       <TopBar />

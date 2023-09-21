@@ -11,19 +11,20 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from './ui/button'
-import { Link } from 'react-router-dom'
-import { useTheme } from './theme-provider'
+import { Link, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils'
-import { User } from '@/lib/types'
 import orderIcon from '@/assets/order.svg'
+import { useAuthContext } from '@/contexts/auth-provider'
+import adminIcon from '@/assets/admin.svg'
+import storeIcon from '@/assets/store.svg'
 
 type Props = {
   className?: string
-  user: User | null
 }
 
-function ProfileButton({ className, user }: Props) {
-  const { theme } = useTheme()
+function ProfileButton({ className }: Props) {
+  const { user, setAccessToken } = useAuthContext()
+  const pathname = useLocation().pathname
 
   if (!user) {
     return (
@@ -43,11 +44,7 @@ function ProfileButton({ className, user }: Props) {
             </DropdownMenuItem>
             <DropdownMenuItem asChild className='cursor-pointer'>
               <Link to='/auth/sign-up'>
-                <img
-                  alt='đăng ký'
-                  src={registerIcon}
-                  className={cn('mr-2 h-4 w-4', theme === 'dark' && 'filter invert')}
-                />
+                <img alt='đăng ký' src={registerIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
                 <span>Đăng ký</span>
               </Link>
             </DropdownMenuItem>
@@ -69,11 +66,26 @@ function ProfileButton({ className, user }: Props) {
         <DropdownMenuLabel>
           <div className='flex flex-col space-y-1'>
             <p className='text-sm font-medium leading-none line-clamp-1'>{user.name}</p>
-            <p className='text-xs leading-none text-muted-foreground line-clamp-1'>kingchenobama711@gmail.com</p>
+            <p className='text-xs leading-none text-muted-foreground line-clamp-1'>{user.email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          {user.role === 'admin' && (
+            <DropdownMenuItem asChild className='cursor-pointer'>
+              {pathname.includes('admin') ? (
+                <Link to='/'>
+                  <img src={storeIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                  <span>Xem cửa hàng</span>
+                </Link>
+              ) : (
+                <Link to='/admin'>
+                  <img src={adminIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                  <span>Admin</span>
+                </Link>
+              )}
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem asChild className='cursor-pointer'>
             <Link to='/profile'>
               <UserIcon className='mr-2 h-4 w-4' />
@@ -88,7 +100,7 @@ function ProfileButton({ className, user }: Props) {
           </DropdownMenuItem>
           <DropdownMenuItem asChild className='cursor-pointer'>
             <Link to='/orders'>
-              <img src={orderIcon} className='mr-2 h-4 w-4' />
+              <img src={orderIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
               <span>Đơn hàng</span>
             </Link>
           </DropdownMenuItem>
@@ -96,7 +108,7 @@ function ProfileButton({ className, user }: Props) {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
-            localStorage.removeItem('access_token')
+            setAccessToken('')
             window.location.reload()
           }}
           className='cursor-pointer'

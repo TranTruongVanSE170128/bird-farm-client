@@ -26,7 +26,7 @@ function BirdComparing({ className, bird }: Props) {
         <div className='w-full h-[1px] bg-black mt-3'></div>
         <div className='flex flex-col md:flex-row md:justify-between items-center'>
           <div className='md:flex-1 mx-10'>
-            <Input className='mt-3 mb-3 text-center' placeholder='Tìm kiếm chim để so sánh...'/>
+            <Input className='mt-3 mb-3 text-center' placeholder='Tìm kiếm chim để so sánh...' />
             <Link
               to={`/birds/${bird?._id}`}
               className={cn('focus:ring-2 rounded-lg hover:ring-2 ring-primary transition duration-300', className)}

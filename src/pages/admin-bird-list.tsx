@@ -2,14 +2,16 @@ import Paginate from '@/components/paginate'
 import Spinner from '@/components/ui/spinner'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Bird, getSpecie } from '@/lib/types'
-import { formatPrice } from '@/lib/utils'
+import { cn, formatPrice } from '@/lib/utils'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
-import axios from 'axios'
-import { Check, MoreHorizontal, X } from 'lucide-react'
+import { Check, MoreHorizontal, Plus, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
+import { useToast } from '@/components/ui/use-toast'
+import { buttonVariants } from '@/components/ui/button'
+import { birdFarmApi } from '@/services/bird-farm-api'
 
 const pageSize = 12
 
@@ -21,21 +23,24 @@ function AdminBirdList() {
   const [birds, setBirds] = useState<Bird[]>([])
   const [isLoadingBirds, setIsLoadingBirds] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
+  const { toast } = useToast()
 
   useEffect(() => {
     const fetchBirds = async () => {
       setIsLoadingBirds(true)
       try {
-        const { data } = await axios.get(
-          `${
-            import.meta.env.VITE_API_URL
-          }/api/admin/birds?pageSize=${pageSize}&pageNumber=${pageNumber}searchQuery=${searchQuery}&specie=${specie}`
+        const { data } = await birdFarmApi.get(
+          `/api/birds/pagination/admin?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}`
         )
         setBirds(data?.birds || null)
         setIsLoadingBirds(false)
         setTotalPages(data?.totalPages || null)
       } catch (error) {
-        console.log(error)
+        setIsLoadingBirds(false)
+        toast({
+          variant: 'destructive',
+          title: 'Có lỗi xảy ra'
+        })
       }
     }
 
@@ -48,6 +53,14 @@ function AdminBirdList() {
 
   return (
     <div>
+      <div className='flex items-center justify-between mb-6'>
+        <div className='text-3xl font-bold'>Danh sách chim</div>
+        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/birds/new'>
+          <span>Tạo Chim</span>
+          <Plus className='w-5 h-5' />
+        </Link>
+      </div>
+
       <Table>
         <TableHeader>
           <TableRow>
@@ -70,12 +83,12 @@ function AdminBirdList() {
                   <TableCell className='line-clamp-1'>{getSpecie(bird).name}</TableCell>
                   <TableCell className='text-center'>{bird.name}</TableCell>
                   <TableCell className='text-center'>
-                    <img src={bird.imageUrls?.[0]} alt='bird' />
+                    <img src={bird.imageUrls?.[0]} alt='' />
                   </TableCell>
                   <TableCell className='text-center'>{formatPrice(bird.price)}</TableCell>
                   {/* <TableCell className='text-center'>Đã Bán</TableCell> */}
                   <TableCell className='text-center flex justify-center'>
-                    <div>{bird.onSale ? <Check color='green' /> : <X color='red' />}</div>
+                    <div>{bird.type ? <Check color='green' /> : <X color='red' />}</div>
                   </TableCell>
                   <TableCell className='text-center'>
                     {bird.gender === 'male' ? (
@@ -90,7 +103,9 @@ function AdminBirdList() {
                         <MoreHorizontal className='cursor-pointer' />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className='bg-background border border-border'>
-                        <DropdownMenuItem className='cursor-pointer py-2 px-4'>Chi Tiết</DropdownMenuItem>
+                        <DropdownMenuItem asChild className='cursor-pointer py-2 px-4'>
+                          <Link to={`/admin/birds/${bird._id}`}>Chi Tiết</Link>
+                        </DropdownMenuItem>
                         <DropdownMenuItem className='cursor-pointer py-2 px-4'>Bày Bán</DropdownMenuItem>
                         <DropdownMenuItem className='cursor-pointer py-2 px-4'>Ngừng Bán</DropdownMenuItem>
                       </DropdownMenuContent>
