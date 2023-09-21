@@ -5,6 +5,7 @@ import { LogOut } from 'lucide-react'
 import { ModeToggle } from '../mode-toggle'
 import { useTheme } from '../theme-provider'
 import { useAuthContext } from '@/contexts/auth-provider'
+import ProfileButton from '../profile-button'
 
 function TopBar() {
   const { user } = useAuthContext()
@@ -31,14 +32,7 @@ function TopBar() {
 
         <ModeToggle />
 
-        {/* <OrganizationSwitcher
-          appearance={{
-            baseTheme: dark,
-            elements: {
-              organizationSwitcherTrigger: 'py-2 px-4'
-            }
-          }}
-        /> */}
+        <ProfileButton />
       </div>
     </nav>
   )

@@ -11,11 +11,12 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from './ui/button'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import orderIcon from '@/assets/order.svg'
 import { useAuthContext } from '@/contexts/auth-provider'
 import adminIcon from '@/assets/admin.svg'
+import storeIcon from '@/assets/store.svg'
 
 type Props = {
   className?: string
@@ -23,6 +24,7 @@ type Props = {
 
 function ProfileButton({ className }: Props) {
   const { user, setAccessToken } = useAuthContext()
+  const pathname = useLocation().pathname
 
   if (!user) {
     return (
@@ -71,10 +73,17 @@ function ProfileButton({ className }: Props) {
         <DropdownMenuGroup>
           {user.role === 'admin' && (
             <DropdownMenuItem asChild className='cursor-pointer'>
-              <Link to='/admin'>
-                <img src={adminIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
-                <span>Admin</span>
-              </Link>
+              {pathname.includes('admin') ? (
+                <Link to='/'>
+                  <img src={storeIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                  <span>Xem cửa hàng</span>
+                </Link>
+              ) : (
+                <Link to='/admin'>
+                  <img src={adminIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                  <span>Admin</span>
+                </Link>
+              )}
             </DropdownMenuItem>
           )}
           <DropdownMenuItem asChild className='cursor-pointer'>
