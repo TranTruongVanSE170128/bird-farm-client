@@ -19,9 +19,11 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 type Props = {
   specie?: Specie
   btnTitle: string
+  action: 'create' | 'update'
+  setEdit?: (val: boolean) => void
 }
 
-function SpecieForm({ specie, btnTitle }: Props) {
+function SpecieForm({ specie, btnTitle, action, setEdit }: Props) {
   const [files, setFiles] = useState<File[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
@@ -39,7 +41,7 @@ function SpecieForm({ specie, btnTitle }: Props) {
   const onSubmit = async (values: TSpecieSchema) => {
     setIsSubmitting(true)
     try {
-      let imageUrl = ''
+      let imageUrl = specie?.imageUrl
       const image = files[0]
       if (image) {
         const imageRef = ref(imageDB, `images/${image.name + v4()}`)
@@ -47,17 +49,24 @@ function SpecieForm({ specie, btnTitle }: Props) {
         imageUrl = await getDownloadURL(imageRef)
       }
 
-      await birdFarmApi.post('/api/species', {
-        ...values,
-        imageUrl
-      })
+      const { data } =
+        action === 'create'
+          ? await birdFarmApi.post('/api/species', {
+              ...values,
+              imageUrl
+            })
+          : await birdFarmApi.put(`/api/species/${specie?._id}`, {
+              ...values,
+              imageUrl
+            })
 
       toast({
         variant: 'success',
-        title: 'Tạo loài mới thành công'
+        title: action === 'create' ? 'Tạo loài mới thành công' : 'Cập nhật loài thành công'
       })
 
-      navigate('/admin/species')
+      navigate(`/admin/species/${data.specie._id}`)
+      window.location.reload()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       const messageError = error.response.data.message
@@ -90,75 +99,101 @@ function SpecieForm({ specie, btnTitle }: Props) {
   }
 
   return (
-    <Form {...form}>
-      <form className='flex flex-col justify-start gap-10' onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name='name'
-          render={({ field }) => (
-            <FormItem className='flex w-full flex-col gap-3'>
-              <FormLabel className='font-bold text-light-2'>Tên Loài*</FormLabel>
-              <FormControl>
-                <Input type='text' className='account-form_input no-focus' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <>
+      <Form {...form}>
+        <form className='flex flex-col justify-start gap-10' onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name='name'
+            render={({ field }) => (
+              <FormItem className='flex w-full flex-col gap-3'>
+                <FormLabel className='font-bold text-light-2'>Tên Loài*</FormLabel>
+                <FormControl>
+                  <Input type='text' className='account-form_input no-focus' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name='imageUrl'
-          render={({ field }) => (
-            <FormItem className='flex items-center gap-4'>
-              <FormLabel className=''>
-                <div className='font-bold text-light-2 mb-4'>Ảnh</div>
-                {field.value ? (
-                  <img
-                    src={field.value}
-                    alt='imageUrl'
-                    width={240}
-                    height={240}
-                    className='rounded-md object-contain'
+          <FormField
+            control={form.control}
+            name='imageUrl'
+            render={({ field }) => (
+              <FormItem className='flex items-center gap-4'>
+                <FormLabel className=''>
+                  <div className='font-bold text-light-2 mb-4'>Ảnh</div>
+                  {field.value ? (
+                    <img
+                      src={field.value}
+                      alt='imageUrl'
+                      width={240}
+                      height={240}
+                      className='rounded-md object-contain'
+                    />
+                  ) : (
+                    <img src={noImage} alt='imageUrl' width={240} height={240} className='object-contain rounded-md' />
+                  )}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type='file'
+                    accept='image/*'
+                    placeholder='Add profile photo'
+                    className='hidden'
+                    onChange={(e) => handleImage(e, field.onChange)}
                   />
-                ) : (
-                  <img src={noImage} alt='imageUrl' width={240} height={240} className='object-contain rounded-md' />
-                )}
-              </FormLabel>
-              <FormControl>
-                <Input
-                  type='file'
-                  accept='image/*'
-                  placeholder='Add profile photo'
-                  className='hidden'
-                  onChange={(e) => handleImage(e, field.onChange)}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name='description'
-          render={({ field }) => (
-            <FormItem className='flex w-full flex-col gap-3'>
-              <FormLabel className='font-bold text-light-2'>Mô tả</FormLabel>
-              <FormControl>
-                <Textarea rows={10} className='account-form_input no-focus' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name='description'
+            render={({ field }) => (
+              <FormItem className='flex w-full flex-col gap-3'>
+                <FormLabel className='font-bold text-light-2'>Mô tả (html)</FormLabel>
+                <FormControl>
+                  <Textarea
+                    // onChange={(e) => handleDescription(e, field.onChange)}
+                    rows={10}
+                    className='account-form_input no-focus'
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <Button disabled={isSubmitting} type='submit'>
-          {btnTitle}
-          {isSubmitting && <Shell className='ml-1 animate-spin w-4 h-4' />}
-        </Button>
-      </form>
-    </Form>
+          <div className='flex gap-2 justify-end'>
+            {setEdit && (
+              <Button
+                onClick={() => {
+                  setEdit(false)
+                }}
+                disabled={isSubmitting}
+                variant='outline'
+                type='submit'
+              >
+                Hủy
+              </Button>
+            )}
+            <Button disabled={isSubmitting} type='submit'>
+              {btnTitle}
+              {isSubmitting && <Shell className='ml-1 animate-spin w-4 h-4' />}
+            </Button>
+          </div>
+        </form>
+      </Form>
+
+      {/* <div>
+        <div className='font-bold text-lg mb-4'>Mô tả trên cửa hàng</div>
+        <div dangerouslySetInnerHTML={{ __html: descriptionReview }} />
+      </div> */}
+    </>
   )
 }
 

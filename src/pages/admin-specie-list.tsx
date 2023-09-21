@@ -16,7 +16,6 @@ function AdminSpecieList() {
   const [searchParams] = useSearchParams()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
   const searchQuery = searchParams.get('searchQuery') || ''
-  const specie = searchParams.get('specie') || ''
   const [species, setSpecies] = useState<Specie[]>([])
   const [isLoadingSpecies, setIsLoadingSpecies] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
@@ -26,7 +25,7 @@ function AdminSpecieList() {
       setIsLoadingSpecies(true)
       try {
         const { data } = await birdFarmApi.get(
-          `/api/species/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}`
+          `/api/species/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}`
         )
         setSpecies(data?.species || null)
         setIsLoadingSpecies(false)
@@ -37,7 +36,7 @@ function AdminSpecieList() {
     }
 
     fetchSpecies()
-  }, [pageNumber, searchQuery, specie])
+  }, [pageNumber, searchQuery])
 
   if (!species) {
     return <div>Loading</div>

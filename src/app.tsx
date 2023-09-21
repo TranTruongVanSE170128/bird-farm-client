@@ -24,6 +24,7 @@ import AdminSpeciesNew from './pages/admin-species-new'
 import AdminBirdsNew from './pages/admin-birds-new'
 import AdminNestList from './pages/admin-nest-list'
 import AdminNestsNew from './pages/admin-nests-new'
+import AdminSpecieDetail from './pages/admin-specie-detail'
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
           <Route path='' element={<Dashboard />} />
           <Route path='species' element={<AdminSpecieList />} />
           <Route path='species/new' element={<AdminSpeciesNew />} />
+          <Route path='species/:id' element={<AdminSpecieDetail />} />
           <Route path='birds' element={<AdminBirdList />} />
           <Route path='birds/new' element={<AdminBirdsNew />} />
           <Route path='nests' element={<AdminNestList />} />
