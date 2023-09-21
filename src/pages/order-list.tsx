@@ -100,7 +100,7 @@ function OrderList() {
                 <p className='text-[13px] text-center md:text-left'>Phân loại: Chim trưởng thành</p>
               </div>
             </div>
-            <div className='my-7 mx-7 text-center md:text-right md:w-1/2'>
+            <div className='my-7 text-center md:text-right md:w-1/2'>
               <p className='font-bold'>Thành tiền</p>
               <div className='flex justify-center md:justify-end'>
                 <p className='mx-6 line-through text-slate-500'>500.000.000đ</p>
@@ -109,45 +109,9 @@ function OrderList() {
             </div>
           </div>
           <div className='min-w-full h-[1px] bg-black'></div>
-          <div className='flex flex-col md:flex-row justify-end items-center my-5 mx-5'>
+          <div className='flex flex-col md:flex-row justify-end items-center mt-5'>
             <Button className='md:mx-0'>Đánh giá</Button>
-            <Button className='bg-white border border-primary text-black mt-3 mx-5 md:mt-0'>Liên hệ shop</Button>
-          </div>
-        </div>
-        <div className='mt-8 bg-gray-100 rounded p-4 md:p-8'>
-          <div className='flex justify-end'>
-            <p className='mt-2 text-teal-500'>Đơn hàng đã được hủy</p>
-            <div className='w-[1px] h-[20px] bg-black mx-4 mt-2 '></div>
-            <p className='uppercase text-red-600 mt-2'>đã hủy</p>
-          </div>
-          <div className='min-w-full h-[1px] bg-black mt-2'></div>
-          <div className='flex flex-col md:flex-row justify-between'>
-            <div className='flex items-center my-5 md:w-1/2'>
-              <div className='w-[70px] h-[70px] mx-5'>
-                <img
-                  className='w-full h-full'
-                  src='https://thuvienthucung.com/wp-content/uploads/2021/09/Cam-Nang-Nuoi-Cham-Soc-Chim-Chao-Mao.jpg'
-                  alt=''
-                />
-              </div>
-              <div>
-                <p className='font-semibold text-center md:text-left'>Chim chào mào huế, mã SE170112</p>
-                <p className='text-[13px] text-center md:text-left'>Giống: Chim chào mào | Đực</p>
-                <p className='text-[13px] text-center md:text-left'>Phân loại: Chim trưởng thành</p>
-              </div>
-            </div>
-            <div className='my-7 mx-7 text-center md:text-right md:w-1/2'>
-              <p className='font-bold'>Thành tiền</p>
-              <div className='flex justify-center md:justify-end'>
-                <p className='mx-6 line-through text-slate-500'>500.000.000đ</p>
-                <p className='text-red-600'>4.999.000đ</p>
-              </div>
-            </div>
-          </div>
-          <div className='min-w-full h-[1px] bg-black'></div>
-          <div className='flex flex-col md:flex-row justify-end items-center my-5 mx-5'>
-            <Button className='md:mx-0'>Mua lại</Button>
-            <Button className='bg-white border border-primary text-black mt-3 mx-5 md:mt-0'>Liên hệ shop</Button>
+            <Button className='bg-white border border-primary text-black mt-3 md:mt-0 md:ml-5'>Liên hệ shop</Button>
           </div>
         </div>
         <div className='mt-8 bg-gray-100 rounded p-4 md:p-8'>
@@ -172,7 +136,7 @@ function OrderList() {
                 <p className='text-[13px] text-center md:text-left'>Phân loại: Chim trưởng thành</p>
               </div>
             </div>
-            <div className='my-7 mx-7 text-center md:text-right md:w-1/2'>
+            <div className='my-7 text-center md:text-right md:w-1/2'>
               <p className='font-bold'>Thành tiền</p>
               <div className='flex justify-center md:justify-end'>
                 <p className='mx-6 line-through text-slate-500'>500.000.000đ</p>
@@ -181,9 +145,45 @@ function OrderList() {
             </div>
           </div>
           <div className='min-w-full h-[1px] bg-black'></div>
-          <div className='flex flex-col md:flex-row justify-end items-center my-5 mx-5'>
-            <Button className='md:mx-0'>Hủy đơn hàng</Button>
-            <Button className='bg-white border border-primary text-black mt-3 mx-5 md:mt-0'>Liên hệ shop</Button>
+          <div className='flex flex-col md:flex-row justify-end items-center mt-5'>
+            <Button className='md:mx-0'>Đánh giá</Button>
+            <Button className='bg-white border border-primary text-black mt-3 md:mt-0 md:ml-5'>Liên hệ shop</Button>
+          </div>
+        </div>
+        <div className='mt-8 bg-gray-100 rounded p-4 md:p-8'>
+          <div className='flex justify-end'>
+            <p className='mt-2 text-teal-500'>Đơn hàng đã được hủy bởi người mua</p>
+            <div className='w-[1px] h-[20px] bg-black mx-4 mt-2 '></div>
+            <p className='uppercase text-red-600 mt-2'>đã hủy</p>
+          </div>
+          <div className='min-w-full h-[1px] bg-black mt-2'></div>
+          <div className='flex flex-col md:flex-row justify-between'>
+            <div className='flex items-center my-5 md:w-1/2'>
+              <div className='w-[70px] h-[70px] mx-5'>
+                <img
+                  className='w-full h-full'
+                  src='https://thuvienthucung.com/wp-content/uploads/2021/09/Cam-Nang-Nuoi-Cham-Soc-Chim-Chao-Mao.jpg'
+                  alt=''
+                />
+              </div>
+              <div>
+                <p className='font-semibold text-center md:text-left'>Chim chào mào huế, mã SE170112</p>
+                <p className='text-[13px] text-center md:text-left'>Giống: Chim chào mào | Đực</p>
+                <p className='text-[13px] text-center md:text-left'>Phân loại: Chim trưởng thành</p>
+              </div>
+            </div>
+            <div className='my-7 text-center md:text-right md:w-1/2'>
+              <p className='font-bold'>Thành tiền</p>
+              <div className='flex justify-center md:justify-end'>
+                <p className='mx-6 line-through text-slate-500'>500.000.000đ</p>
+                <p className='text-red-600'>4.999.000đ</p>
+              </div>
+            </div>
+          </div>
+          <div className='min-w-full h-[1px] bg-black'></div>
+          <div className='flex flex-col md:flex-row justify-end items-center mt-5'>
+            <Button className='md:mx-0'>Đánh giá</Button>
+            <Button className='bg-white border border-primary text-black mt-3 md:mt-0 md:ml-5'>Liên hệ shop</Button>
           </div>
         </div>
         <div className='mt-8 bg-gray-100 rounded p-4 md:p-8'>
@@ -208,7 +208,7 @@ function OrderList() {
                 <p className='text-[13px] text-center md:text-left'>Phân loại: Chim trưởng thành</p>
               </div>
             </div>
-            <div className='my-7 mx-7 text-center md:text-right md:w-1/2'>
+            <div className='my-7 text-center md:text-right md:w-1/2'>
               <p className='font-bold'>Thành tiền</p>
               <div className='flex justify-center md:justify-end'>
                 <p className='mx-6 line-through text-slate-500'>500.000.000đ</p>
@@ -217,8 +217,9 @@ function OrderList() {
             </div>
           </div>
           <div className='min-w-full h-[1px] bg-black'></div>
-          <div className='flex flex-col md:flex-row justify-end items-center my-5 mx-5'>
-            <Button className='bg-white border border-primary text-black mt-3 mx-5 md:mt-0'>Liên hệ shop</Button>
+          <div className='flex flex-col md:flex-row justify-end items-center mt-5'>
+            <Button className='md:mx-0'>Đánh giá</Button>
+            <Button className='bg-white border border-primary text-black mt-3 md:mt-0 md:ml-5'>Liên hệ shop</Button>
           </div>
         </div>
       </Container>
