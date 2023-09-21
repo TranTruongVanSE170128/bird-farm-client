@@ -7,12 +7,19 @@ export const birdSchema = z.object({
   price: z.number(),
   description: z.string().optional(),
   sold: z.boolean().optional(),
-  onSale: z.boolean(),
+  type: z.enum(['sell', 'breed']),
   gender: z.enum(['male', 'female']),
-  imageUrls: z.string().optional(),
+  imageUrls: z.array(z.string()).optional(),
   parent: z.string().optional(),
-  achievements: z.string().optional(),
-  discount: z.string().optional()
+  achievements: z
+    .array(
+      z.object({
+        competition: z.string(),
+        rank: z.number(),
+        _id: z.string()
+      })
+    )
+    .optional()
 })
 
 export type TBirdSchema = z.infer<typeof birdSchema>

@@ -88,7 +88,7 @@ function AdminBirdList() {
                   <TableCell className='text-center'>{formatPrice(bird.price)}</TableCell>
                   {/* <TableCell className='text-center'>Đã Bán</TableCell> */}
                   <TableCell className='text-center flex justify-center'>
-                    <div>{bird.onSale ? <Check color='green' /> : <X color='red' />}</div>
+                    <div>{bird.type ? <Check color='green' /> : <X color='red' />}</div>
                   </TableCell>
                   <TableCell className='text-center'>
                     {bird.gender === 'male' ? (
@@ -103,7 +103,9 @@ function AdminBirdList() {
                         <MoreHorizontal className='cursor-pointer' />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className='bg-background border border-border'>
-                        <DropdownMenuItem className='cursor-pointer py-2 px-4'>Chi Tiết</DropdownMenuItem>
+                        <DropdownMenuItem asChild className='cursor-pointer py-2 px-4'>
+                          <Link to={`/admin/birds/${bird._id}`}>Chi Tiết</Link>
+                        </DropdownMenuItem>
                         <DropdownMenuItem className='cursor-pointer py-2 px-4'>Bày Bán</DropdownMenuItem>
                         <DropdownMenuItem className='cursor-pointer py-2 px-4'>Ngừng Bán</DropdownMenuItem>
                       </DropdownMenuContent>

@@ -18,7 +18,7 @@ export type Bird = {
   specie: Specie | string
   name: string
   sold: boolean
-  onSale: boolean
+  type: BirdType
   birth?: Date
   gender: Gender
   price: number
@@ -47,6 +47,8 @@ export function getSpecie(bird: Bird): Specie {
 
 export type Gender = 'male' | 'female'
 
+export type BirdType = 'sell' | 'breed'
+
 export type Parent = {
   dad?: string
   mom?: string
@@ -54,6 +56,7 @@ export type Parent = {
 export type Achievement = {
   competition: string
   rank: number
+  _id: string
 }
 
 export type Discount = {

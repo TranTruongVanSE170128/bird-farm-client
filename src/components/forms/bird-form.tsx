@@ -1,17 +1,17 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { imageDB } from '@/services/firebase'
 import { v4 } from 'uuid'
 import { useForm } from 'react-hook-form'
 import { TBirdSchema, birdSchema } from '@/lib/validations/bird'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Bird, Specie } from '@/lib/types'
+import { Bird, Specie, getSpecie } from '@/lib/types'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import noImage from '@/assets/no-image.avif'
 import { Button } from '../ui/button'
 import { Textarea } from '../ui/textarea'
-import { CalendarIcon, Check, ChevronsUpDown, Shell } from 'lucide-react'
+import { CalendarIcon, Check, ChevronsUpDown, Plus, Shell, Trash } from 'lucide-react'
 import { useToast } from '../ui/use-toast'
 import { useNavigate } from 'react-router-dom'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
@@ -21,42 +21,43 @@ import { ScrollArea } from '../ui/scroll-area'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
+import breedIcon from '@/assets/breed.svg'
+import sellIcon from '@/assets/sell.svg'
 import { Calendar } from '../ui/calendar'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import { birdFarmApi } from '@/services/bird-farm-api'
+import { v4 as uuid } from 'uuid'
 
 type Props = {
   bird?: Bird
   btnTitle: string
+  setEdit?: (val: boolean) => void
+  action: 'create' | 'update'
 }
 
 const code = generateRandomHexCode()
 
-function BirdForm({ bird, btnTitle }: Props) {
+function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
   const [files, setFiles] = useState<File[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [species, setSpecies] = useState<Specie[]>([])
-
   const form = useForm<TBirdSchema>({
     resolver: zodResolver(birdSchema),
     defaultValues: {
-      imageUrls: bird?.imageUrls ? JSON.stringify(bird.imageUrls) : '', //
-      description: bird?.description ? bird.description : '', //
-      name: bird?.name ? bird.name : code, //
-      achievements: bird?.achievements ? JSON.stringify(bird.achievements) : undefined,
-      birth: bird?.birth ? bird.birth : undefined, //
-      discount: bird?.discount ? JSON.stringify(bird.discount) : undefined,
-      gender: bird?.gender ? bird.gender : undefined, //
-      onSale: bird?.onSale ? bird.onSale : true,
-      parent: bird?.parent ? JSON.stringify(bird.parent) : undefined,
-      price: bird?.price ? bird.price : undefined, //
-      specie: bird?.specie ? (bird.specie as string) : '' //
+      ...bird,
+      specie: bird?.specie ? getSpecie(bird)._id : '',
+      name: bird?.name || code,
+      birth: bird?.birth ? new Date(bird.birth) : undefined,
+      parent: bird?.parent ? JSON.stringify(bird.parent) : undefined //
     }
   })
+  const [achievements, setAchievements] = useState(form.getValues('achievements'))
+  const newCompetition = useRef<HTMLInputElement>(null)
+  const newRank = useRef<HTMLInputElement>(null)
 
   const onSubmit = async (values: TBirdSchema) => {
     setIsSubmitting(true)
@@ -69,22 +70,24 @@ function BirdForm({ bird, btnTitle }: Props) {
         imageUrls = [await getDownloadURL(imageRef)]
       }
 
-      console.log({
+      const body = {
         ...values,
-        imageUrls
-      })
+        imageUrls,
+        achievements
+      }
 
-      await birdFarmApi.post('/api/birds', {
-        ...values,
-        imageUrls
-      })
+      const { data } =
+        action === 'create'
+          ? await birdFarmApi.post('/api/birds', body)
+          : await birdFarmApi.put(`/api/birds/${bird?._id}`, body)
 
       toast({
         variant: 'success',
-        title: 'Tạo loài mới thành công'
+        title: action === 'create' ? 'Tạo chim mới thành công' : 'Cập nhật chim thành công'
       })
 
-      navigate('/admin/birds')
+      navigate(`/admin/birds/${data.bird._id}`)
+      window.location.reload()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log({ error })
@@ -98,7 +101,7 @@ function BirdForm({ bird, btnTitle }: Props) {
     }
   }
 
-  const handleImage = (e: ChangeEvent<HTMLInputElement>, fieldChange: (value: string) => void) => {
+  const handleImage = (e: ChangeEvent<HTMLInputElement>, fieldChange: (value: string[]) => void) => {
     e.preventDefault()
 
     const fileReader = new FileReader()
@@ -111,10 +114,51 @@ function BirdForm({ bird, btnTitle }: Props) {
 
       fileReader.onload = async (event) => {
         const imageDataUrl = event.target?.result?.toString() || ''
-        fieldChange(imageDataUrl)
+        fieldChange([imageDataUrl])
       }
 
       fileReader.readAsDataURL(file)
+    }
+  }
+
+  const handleChangeAchievements = (e: ChangeEvent<HTMLInputElement>, id: string, field: string) => {
+    const newAchievements = achievements ? [...achievements] : []
+    const updatedAchievement = newAchievements?.find((achievement) => achievement._id === id) || {
+      competition: '',
+      rank: 0,
+      _id: ''
+    }
+
+    const newValue = e.target.value
+
+    if (field === 'competition') {
+      updatedAchievement[field] = newValue
+    }
+    if (field === 'rank' && !isNaN(Number(newValue))) {
+      updatedAchievement[field] = parseInt(newValue) || 0
+    }
+
+    setAchievements(newAchievements)
+  }
+
+  const handleDeleteAchievement = (id: string) => {
+    setAchievements(achievements?.filter((achievement) => achievement._id !== id))
+  }
+
+  const handleAddAchievement = () => {
+    const newCompetitionValue = newCompetition.current?.value
+    const newRankValue = Number(newRank.current?.value)
+
+    if (newCompetitionValue && !isNaN(newRankValue)) {
+      const newAchievement = { competition: newCompetitionValue, rank: newRankValue, _id: uuid() }
+      setAchievements(achievements ? [...achievements, newAchievement] : [newAchievement])
+
+      if (newCompetition.current) {
+        newCompetition.current.value = ''
+      }
+      if (newRank.current) {
+        newRank.current.value = ''
+      }
     }
   }
 
@@ -158,6 +202,7 @@ function BirdForm({ bird, btnTitle }: Props) {
                       <ScrollArea className='max-h-96'>
                         {species.map((specie) => (
                           <CommandItem
+                            className='cursor-pointer'
                             value={specie.name}
                             key={specie._id}
                             onSelect={() => {
@@ -182,23 +227,30 @@ function BirdForm({ bird, btnTitle }: Props) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name='name'
-          render={({ field }) => (
-            <FormItem className='flex w-full flex-col gap-3'>
-              <FormLabel className='font-bold'>Tên*</FormLabel>
-              <FormControl>
-                <Input disabled type='hidden' className='no-focus' {...field} />
-              </FormControl>
-              <div className='flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300'>
-                {form.getValues('name')}
-              </div>
-              <FormDescription>Tên được tạo tự động</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {form.getValues('specie') && (
+          <FormField
+            control={form.control}
+            name='name'
+            render={({ field }) => (
+              <FormItem className='flex w-full flex-col gap-3'>
+                <FormLabel className='font-bold'>Tên*</FormLabel>
+                <FormControl>
+                  <Input disabled type='hidden' className='no-focus' {...field} />
+                </FormControl>
+                <div>
+                  <div className='text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-semibold text-light-2 mb-3'>
+                    Tên Chim*
+                  </div>
+                  <div className='flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300'>
+                    {form.getValues('name')}
+                  </div>
+                </div>
+                <FormDescription>Tên được tạo tự động</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <FormField
           control={form.control}
@@ -234,6 +286,38 @@ function BirdForm({ bird, btnTitle }: Props) {
 
         <FormField
           control={form.control}
+          name='type'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Loại Chim*</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder='Chọn loại chim' />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value='sell'>
+                    <div className='flex items-center'>
+                      <img className='w-6 h-6 mr-1' src={sellIcon} alt='' />
+                      Chim để bán
+                    </div>
+                  </SelectItem>
+                  <SelectItem className='flex items-center' value='breed'>
+                    <div className='flex items-center'>
+                      <img className='w-6 h-6 mr-1' src={breedIcon} alt='' />
+                      Chim để phối giống
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name='price'
           render={({ field }) => (
             <FormItem className='flex w-full flex-col gap-3'>
@@ -253,16 +337,14 @@ function BirdForm({ bird, btnTitle }: Props) {
             <FormItem className='flex items-center gap-4'>
               <FormLabel className=''>
                 <div className='font-bold mb-4'>Ảnh</div>
-                {field.value ? (
-                  <img
-                    src={field.value}
-                    alt='imageUrl'
-                    width={240}
-                    height={240}
-                    className='rounded-md object-contain'
-                  />
-                ) : (
+                {!field.value?.length ? (
                   <img src={noImage} alt='imageUrl' width={240} height={240} className='object-contain rounded-md' />
+                ) : (
+                  field.value.map((url) => {
+                    return (
+                      <img src={url} alt='imageUrl' width={240} height={240} className='rounded-md object-contain' />
+                    )
+                  })
                 )}
               </FormLabel>
               <FormControl>
@@ -284,7 +366,7 @@ function BirdForm({ bird, btnTitle }: Props) {
           name='birth'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
-              <FormLabel>Ngày sinh</FormLabel>
+              <FormLabel>Ngày Sinh</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -312,6 +394,57 @@ function BirdForm({ bird, btnTitle }: Props) {
           )}
         />
 
+        <div>
+          <div className='text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-semibold text-light-2 mb-3'>
+            Thành Tích Thi Đấu
+          </div>
+          <div className='flex w-full'>
+            <div className='grid grid-cols-2 gap-3 w-full'>
+              <div className='col-span-1 text-sm flex items-end pb-3'>Tên Cuộc Thi</div>
+              <div className='col-span-1 text-sm flex items-end pb-3'>Xếp Hạng</div>
+            </div>
+            <Button size='icon' variant='outline' className='invisible'></Button>
+          </div>
+          <div className='flex flex-col gap-3'>
+            {achievements?.map((achievement) => {
+              return (
+                <div key={achievement._id} className='flex w-full gap-3'>
+                  <div className='grid grid-cols-2 gap-3 w-full'>
+                    <Input
+                      onChange={(e) => handleChangeAchievements(e, achievement._id, 'competition')}
+                      value={achievement.competition}
+                      className='col-span-1 py-2 px-4 rounded-md border-border border'
+                    />
+                    <Input
+                      onChange={(e) => handleChangeAchievements(e, achievement._id, 'rank')}
+                      value={achievement.rank}
+                      className='col-span-1 py-2 px-4 rounded-md border-border border'
+                    />
+                  </div>
+                  <Button
+                    onClick={() => {
+                      handleDeleteAchievement(achievement._id)
+                    }}
+                    size='icon'
+                    variant='outline'
+                  >
+                    <Trash />
+                  </Button>
+                </div>
+              )
+            })}
+            <div className='flex w-full gap-3'>
+              <div className='grid grid-cols-2 gap-3 w-full'>
+                <Input ref={newCompetition} className='col-span-1 py-2 px-4 rounded-md border-border border' />
+                <Input ref={newRank} className='col-span-1 py-2 px-4 rounded-md border-border border' />
+              </div>
+              <Button onClick={handleAddAchievement} size='icon' variant='outline'>
+                <Plus />
+              </Button>
+            </div>
+          </div>
+        </div>
+
         <FormField
           control={form.control}
           name='description'
@@ -326,10 +459,24 @@ function BirdForm({ bird, btnTitle }: Props) {
           )}
         />
 
-        <Button disabled={isSubmitting} type='submit'>
-          {btnTitle}
-          {isSubmitting && <Shell className='ml-1 animate-spin w-4 h-4' />}
-        </Button>
+        <div className='flex gap-2 justify-end'>
+          {setEdit && (
+            <Button
+              onClick={() => {
+                setEdit(false)
+              }}
+              disabled={isSubmitting}
+              variant='outline'
+              type='submit'
+            >
+              Hủy
+            </Button>
+          )}
+          <Button disabled={isSubmitting} type='submit'>
+            {btnTitle}
+            {isSubmitting && <Shell className='ml-1 animate-spin w-4 h-4' />}
+          </Button>
+        </div>
       </form>
     </Form>
   )

@@ -1,33 +1,33 @@
 import { Button, buttonVariants } from '@/components/ui/button'
-import { Specie } from '@/lib/types'
+import { Bird } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { ArrowLeft, Edit } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import noImage from '@/assets/no-image.avif'
-import SpecieForm from '@/components/forms/specie-form'
+import BirdForm from '@/components/forms/bird-form'
 import Spinner from '@/components/ui/spinner'
 
-function AdminSpecieDetail() {
+function AdminBirdDetail() {
   const { id } = useParams()
-  const [specie, setSpecie] = useState<Specie | null>(null)
+  const [bird, setBird] = useState<Bird | null>(null)
   const [edit, setEdit] = useState(false)
 
   useEffect(() => {
-    const fetchSpecie = async () => {
+    const fetchBird = async () => {
       try {
-        const { data } = await birdFarmApi.get(`/api/species/${id}`)
-        setSpecie(data?.specie || null)
+        const { data } = await birdFarmApi.get(`/api/birds/${id}`)
+        setBird(data?.bird || null)
       } catch (error) {
         console.log(error)
       }
     }
 
-    fetchSpecie()
+    fetchBird()
   }, [id])
 
-  if (!specie) {
+  if (!bird) {
     return <Spinner />
   }
 
@@ -35,7 +35,7 @@ function AdminSpecieDetail() {
     <div>
       <div className='flex items-center justify-between mb-6'>
         <div className='flex gap-2'>
-          <div className='text-3xl font-bold'>{!edit ? 'Chi tiết loài chim' : 'Chỉnh sửa loài chim'}</div>
+          <div className='text-3xl font-bold'>{!edit ? 'Chi tiết chim' : 'Chỉnh sửa chim'}</div>
         </div>
 
         <div className='flex gap-2'>
@@ -50,7 +50,7 @@ function AdminSpecieDetail() {
               <Edit className='w-5 h-5' />
             </Button>
           )}
-          <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/species'>
+          <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/birds'>
             <span>Quay lại</span>
             <ArrowLeft className='w-5 h-5' />
           </Link>
@@ -59,39 +59,37 @@ function AdminSpecieDetail() {
       {!edit ? (
         <>
           <div className='text-xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold text-light-2'>
-            Tên Loài: {specie?.name}
+            Tên chim: {bird?.name}
           </div>
           <div className='mt-6 text-xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold text-light-2 mb-3'>
             Ảnh
           </div>
           <div>
-            {specie?.imageUrl ? (
-              <img
-                src={specie.imageUrl}
-                alt='imageUrl'
-                width={240}
-                height={240}
-                className='rounded-md object-contain'
-              />
+            {bird?.imageUrls ? (
+              <div className='flex gap-2 flex-wrap'>
+                {bird?.imageUrls.map((imageUrl) => {
+                  return <img src={imageUrl} alt='' width={240} height={240} className='rounded-md object-contain' />
+                })}
+              </div>
             ) : (
-              <img src={noImage} alt='imageUrl' width={240} height={240} className='object-contain rounded-md' />
+              <img src={noImage} alt='' width={240} height={240} className='object-contain rounded-md' />
             )}
           </div>
 
           <div className='mt-6 text-xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold text-light-2 mb-3'>
             Mô tả
           </div>
-          {specie?.description ? (
-            <div dangerouslySetInnerHTML={{ __html: specie.description }} />
+          {bird?.description ? (
+            <div dangerouslySetInnerHTML={{ __html: bird.description }} />
           ) : (
             <div>Chưa có mô tả</div>
           )}
         </>
       ) : (
-        <SpecieForm setEdit={setEdit} action='update' btnTitle='Lưu' specie={specie || undefined} />
+        <BirdForm setEdit={setEdit} action='update' btnTitle='Lưu' bird={bird} />
       )}
     </div>
   )
 }
 
-export default AdminSpecieDetail
+export default AdminBirdDetail
