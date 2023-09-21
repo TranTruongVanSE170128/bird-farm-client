@@ -1,5 +1,5 @@
 import { Button, buttonVariants } from '@/components/ui/button'
-import { Bird } from '@/lib/types'
+import { Bird, getSpecie } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { ArrowLeft, Edit } from 'lucide-react'
@@ -58,25 +58,26 @@ function AdminBirdDetail() {
       </div>
       {!edit ? (
         <>
-          <div className='text-xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold text-light-2'>
-            Tên chim: {bird?.name}
+          <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='font-bold'>Tên chim:</div> {bird?.name}
           </div>
-          <div className='mt-6 text-xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold text-light-2 mb-3'>
-            Ảnh
+          <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='font-bold'>Loài chim:</div> {getSpecie(bird).name}
           </div>
+          <div className='text-lg font-bold mb-2'>Ảnh</div>
           <div>
-            {bird?.imageUrls ? (
+            {!bird?.imageUrls?.length ? (
+              <img src={noImage} alt='' width={240} height={240} className='object-contain rounded-md' />
+            ) : (
               <div className='flex gap-2 flex-wrap'>
                 {bird?.imageUrls.map((imageUrl) => {
                   return <img src={imageUrl} alt='' width={240} height={240} className='rounded-md object-contain' />
                 })}
               </div>
-            ) : (
-              <img src={noImage} alt='' width={240} height={240} className='object-contain rounded-md' />
             )}
           </div>
 
-          <div className='mt-6 text-xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold text-light-2 mb-3'>
+          <div className='mt-6 text-xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold mb-3'>
             Mô tả
           </div>
           {bird?.description ? (
@@ -88,6 +89,7 @@ function AdminBirdDetail() {
       ) : (
         <BirdForm setEdit={setEdit} action='update' btnTitle='Lưu' bird={bird} />
       )}
+      <BirdForm setEdit={setEdit} action='update' btnTitle='Lưu' bird={bird} />
     </div>
   )
 }
