@@ -77,7 +77,7 @@ function BirdCard({ className, bird }: Props) {
         </CardHeader>
         <CardContent className='flex-col items-start'>
           <div>
-            <p className='font-semibold text-lg lg:text-xl'>{bird?.name}</p>
+            <p className='font-semibold text-lg lg:text-xl line-clamp-1'>{bird?.name}</p>
           </div>
           <div className='flex items-center justify-between lg:text-lg'>{formatPrice(bird?.price || 0)}</div>
         </CardContent>

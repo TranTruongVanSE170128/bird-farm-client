@@ -59,13 +59,15 @@ function Header() {
           <div className='flex items-center flex-1 justify-end'>
             <Input className='mr-4 max-w-xs flex-1 outline-none' type='text' placeholder='Tìm kiếm chim...' />
 
-            <Button variant='ghost' size='icon' className='shrink-0 relative' aria-label='Shopping Cart'>
-              <ShoppingCart className='h-6 w-6' />
-              {!!quantityInCart && (
-                <div className='bg-red-500 text-slate-50 absolute rounded-full w-5 h-5 text-sm flex justify-center items-center -top-[2px] -right-[2px]'>
-                  {quantityInCart}
-                </div>
-              )}
+            <Button asChild variant='ghost' size='icon' className='shrink-0 relative' aria-label='Shopping Cart'>
+              <Link to='/cart'>
+                <ShoppingCart className='h-6 w-6' />
+                {!!quantityInCart && (
+                  <div className='bg-red-500 text-slate-50 absolute rounded-full w-5 h-5 text-sm flex justify-center items-center -top-[2px] -right-[2px]'>
+                    {quantityInCart}
+                  </div>
+                )}
+              </Link>
             </Button>
 
             {user && (
