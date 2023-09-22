@@ -21,7 +21,8 @@ export type Bird = {
   type: BirdType
   birth?: Date
   gender: Gender
-  price: number
+  sellPrice: number
+  breedPrice: number
   description?: string
   imageUrls?: string[]
   parent?: Parent

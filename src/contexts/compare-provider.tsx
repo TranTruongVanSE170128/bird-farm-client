@@ -24,6 +24,7 @@ const CompareProvider = ({ children }: CompareProviderProps) => {
   const [birds, setBirds] = useLocalStorage<AllBirds>('compare_birds', [null, null])
   const { toast } = useToast()
   const [activeCompare, setActiveCompare] = useState(false)
+  //   const { setActiveBreed } = useBreedContext()
 
   const addToCompare = (bird: Bird) => {
     if (bird !== birds[0] && bird !== birds[1]) {
@@ -45,6 +46,7 @@ const CompareProvider = ({ children }: CompareProviderProps) => {
     }
 
     setActiveCompare(true)
+    // setActiveBreed(false)
   }
 
   const deleteAllBirds = () => {

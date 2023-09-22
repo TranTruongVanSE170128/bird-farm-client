@@ -33,7 +33,7 @@ function AdminBirdList() {
       setIsLoadingBirds(true)
       try {
         const { data } = await birdFarmApi.get(
-          `/api/birds/pagination/admin?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}`
+          `/api/birds/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}`
         )
         setBirds(data?.birds || null)
         setIsLoadingBirds(false)
@@ -70,7 +70,7 @@ function AdminBirdList() {
             <TableHead>Loài</TableHead>
             <TableHead>Tên</TableHead>
             <TableHead className='text-center'>Ảnh</TableHead>
-            <TableHead className='text-center'>Giá</TableHead>
+            <TableHead className='text-center'>Giá bán/Giá phối giống</TableHead>
             {/* <TableHead className='text-center'>Đã Bán</TableHead> */}
             <TableHead className='text-center'>Loại Chim</TableHead>
             <TableHead className='text-center'>Giới Tính</TableHead>
@@ -92,7 +92,9 @@ function AdminBirdList() {
                       <img className='w-12 h-12 aspect-square rounded-md' src={bird.imageUrls[0]} alt='' />
                     )}
                   </TableCell>
-                  <TableCell className='text-center'>{formatPrice(bird.price)}</TableCell>
+                  <TableCell className='text-center'>
+                    {bird.type === 'sell' ? formatPrice(bird.sellPrice || 0) : formatPrice(bird.breedPrice || 0)}
+                  </TableCell>
                   {/* <TableCell className='text-center'>Đã Bán</TableCell> */}
                   <TableCell>
                     {bird.type === 'sell' ? (

@@ -22,21 +22,21 @@ export const BreedContext = React.createContext<BreedContextType | null>(null)
 const BreedProvider = ({ children }: BreedProviderProps) => {
   const [birds, setBirds] = useLocalStorage<AllBirds>('breed_birds', [null, null])
   const [activeBreed, setActiveBreed] = useState(false)
+  //   const { setActiveCompare } = useCompareContext()
 
   const addToBreed = (bird: Bird) => {
     if (bird.gender === 'male') {
-      setBirds((prev) => {
-        prev[0] = bird
-        return prev
-      })
+      const cloneBirds = [...birds]
+      cloneBirds[0] = bird
+      setBirds(cloneBirds as AllBirds)
     } else {
-      setBirds((prev) => {
-        prev[1] = bird
-        return prev
-      })
+      const cloneBirds = [...birds]
+      cloneBirds[1] = bird
+      setBirds(cloneBirds as AllBirds)
     }
 
     setActiveBreed(true)
+    // setActiveCompare(false)
   }
 
   const deleteAllBirds = () => {

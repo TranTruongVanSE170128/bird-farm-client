@@ -1,14 +1,14 @@
 export const routes = [
   {
-    href: '/birds',
-    label: 'Chim Trưởng Thành'
+    href: '/birds?type=sell',
+    label: 'Chim kiểng'
+  },
+  {
+    href: '/birds?type=breed',
+    label: 'Chim phối giống'
   },
   {
     href: '/nests',
     label: 'Tổ Chim Non Có Sẵn'
-  },
-  {
-    href: '/breed-birds',
-    label: 'Chim phối giống'
   }
 ]

@@ -16,6 +16,7 @@ function BirdList() {
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
   const searchQuery = searchParams.get('searchQuery') || ''
   const specie = searchParams.get('specie') || ''
+  const type = searchParams.get('type') || ''
   const [birds, setBirds] = useState<Bird[]>([])
   const [isLoadingBirds, setIsLoadingBirds] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
@@ -23,7 +24,7 @@ function BirdList() {
   useEffect(() => {
     const fetchBirds = async () => {
       const { data } = await birdFarmApi.get(
-        `/api/birds/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}`
+        `/api/birds/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}&type=${type}`
       )
       setBirds(data?.birds || [])
       setTotalPages(data?.totalPages || null)
@@ -31,7 +32,7 @@ function BirdList() {
     }
 
     fetchBirds()
-  }, [pageNumber, searchQuery, specie])
+  }, [pageNumber, searchQuery, specie, type])
 
   return (
     <main>

@@ -6,6 +6,9 @@ import noImage from '@/assets/no-image.avif'
 import { useNavigate } from 'react-router-dom'
 import { useCompareContext } from '@/contexts/compare-provider'
 import { useBreedContext } from '@/contexts/breed-provider'
+import redHeart from '@/assets/red-heart.svg'
+import maleIcon from '@/assets/male.svg'
+import femaleIcon from '@/assets/female.svg'
 
 export function ComparatorAndBreeder() {
   const { birds: birdsCompare, activeCompare, setActiveCompare } = useCompareContext()
@@ -101,6 +104,7 @@ export function Comparator() {
               ) : (
                 <img className='aspect-square w-16 object-cover' src={firstBird.imageUrls[0]} />
               )}
+
               <div className='line-clamp-2'>{firstBird.name}</div>
 
               <Button
@@ -154,7 +158,7 @@ export function Comparator() {
           )}
         </div>
         <div className='col-span-1 border flex justify-center items-center'>
-          <div className='flex flex-col gap-3'>
+          <div className='flex flex-col gap-3 justify-center items-center'>
             <Button
               onClick={() => {
                 navigate(`/compare?firstBird=${firstBird?._id}&secondBird=${secondBird?._id}`)
@@ -165,7 +169,7 @@ export function Comparator() {
               So sánh ngay
             </Button>
             <div onClick={deleteAllBirds} className='cursor-pointer hover:text-primary select-none'>
-              Xóa tất cả sản phẩm
+              Xóa tất cả chim
             </div>
           </div>
         </div>
@@ -205,7 +209,10 @@ export function Breeder() {
           Thu gọn <ArrowDown />
         </div>
 
-        <div className='col-span-1 border flex justify-center items-center relative'>
+        <img src={redHeart} className='absolute z-50 top-1/2 -translate-y-1/2 left-1/3 -translate-x-1/2 w-12 h-12' />
+
+        <div className='col-span-1 flex justify-center items-center border relative'>
+          <img src={maleIcon} className='w-9 h-9 absolute translate-x-6 translate-y-2' />
           {firstBird ? (
             <div className='flex flex-col justify-center items-center gap-2'>
               {!firstBird?.imageUrls?.length ? (
@@ -235,7 +242,8 @@ export function Breeder() {
             </div>
           )}
         </div>
-        <div className='col-span-1 border flex justify-center items-center relative'>
+        <div className='col-span-1 flex justify-center items-center border relative'>
+          <img src={femaleIcon} className='w-8 h-8 absolute translate-x-6 translate-y-2 z-20' />
           {secondBird ? (
             <div className='flex flex-col justify-center items-center gap-2'>
               {!secondBird?.imageUrls?.length ? (
@@ -243,6 +251,7 @@ export function Breeder() {
               ) : (
                 <img className='aspect-square w-16 object-cover' src={secondBird.imageUrls[0]} />
               )}
+
               <div className='line-clamp-2'>{secondBird.name}</div>
 
               <Button
@@ -257,7 +266,7 @@ export function Breeder() {
               </Button>
             </div>
           ) : (
-            <div className='flex flex-col justify-center items-center gap-2'>
+            <div className='flex flex-col justify-center items-center gap-2 relative'>
               <div className='aspect-square w-16 flex justify-center items-center border-dashed border-2'>
                 <Plus />
               </div>
@@ -266,7 +275,7 @@ export function Breeder() {
           )}
         </div>
         <div className='col-span-1 border flex justify-center items-center'>
-          <div className='flex flex-col gap-3'>
+          <div className='flex flex-col gap-3 justify-center items-center'>
             <Button
               onClick={() => {
                 navigate(`/breed?firstBird=${firstBird?._id}&secondBird=${secondBird?._id}`)
@@ -277,7 +286,7 @@ export function Breeder() {
               Phối giống ngay
             </Button>
             <div onClick={deleteAllBirds} className='cursor-pointer hover:text-primary select-none'>
-              Xóa tất cả sản phẩm
+              Xóa tất cả chim
             </div>
           </div>
         </div>

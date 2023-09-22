@@ -7,6 +7,9 @@ import noImage from '@/assets/no-image.avif'
 import { useToast } from './ui/use-toast'
 import { useCartContext } from '@/contexts/cart-provider'
 import { useCompareContext } from '@/contexts/compare-provider'
+import { useBreedContext } from '@/contexts/breed-provider'
+import maleIcon from '@/assets/male.svg'
+import femaleIcon from '@/assets/female.svg'
 
 type Props = {
   className?: string
@@ -16,6 +19,7 @@ type Props = {
 function BirdCard({ className, bird }: Props) {
   const { addBirdToCart } = useCartContext()
   const { addToCompare } = useCompareContext()
+  const { addToBreed } = useBreedContext()
 
   const { toast } = useToast()
 
@@ -52,13 +56,40 @@ function BirdCard({ className, bird }: Props) {
           <div>
             <p className='font-semibold text-lg lg:text-xl line-clamp-1'>{bird?.name}</p>
           </div>
-          <div className='flex items-center justify-between lg:text-lg'>{formatPrice(bird?.price || 0)}</div>
+          <div className='flex items-center gap-2'>
+            Loại chim: {bird.type === 'sell' ? 'Chim kiểng' : 'Chim phối giống'}
+            {bird.type === 'breed' &&
+              (bird.gender === 'male' ? (
+                <img className='w-6 h-6' src={maleIcon} />
+              ) : (
+                <img className='w-6 h-6' src={femaleIcon} />
+              ))}
+          </div>
+          <div className='flex items-center justify-between lg:text-lg'>
+            {bird.type === 'sell'
+              ? `Giá bán: ${formatPrice(bird?.sellPrice || 0)}`
+              : `Giá phối giống: ${formatPrice(bird?.breedPrice || 0)}`}
+          </div>
         </CardContent>
         <CardFooter className='flex gap-2 flex-col'>
           <div className='flex w-full gap-2'>
-            <Button onClick={handleAddToCart} variant='outline' className='w-full'>
-              Thêm vào giỏ
-            </Button>
+            {bird.type === 'sell' ? (
+              <Button onClick={handleAddToCart} variant='outline' className='w-full'>
+                Thêm vào giỏ
+              </Button>
+            ) : (
+              <Button
+                onClick={(e) => {
+                  e.preventDefault()
+                  addToBreed(bird)
+                }}
+                variant='outline'
+                className='w-full'
+              >
+                Phối giống
+              </Button>
+            )}
+
             <Button
               onClick={(e) => {
                 e.preventDefault()
@@ -67,7 +98,7 @@ function BirdCard({ className, bird }: Props) {
               variant='outline'
               className='w-full'
             >
-              Thêm so sánh
+              So sánh
             </Button>
           </div>
           <Button onClick={handleBuyNow} className='w-full'>
