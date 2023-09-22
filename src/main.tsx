@@ -6,6 +6,7 @@ import './index.css'
 import CartProvider from './contexts/cart-provider.tsx'
 import AuthProvider from './contexts/auth-provider.tsx'
 import CompareProvider from './contexts/compare-provider.tsx'
+import BreedProvider from './contexts/breed-provider.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
@@ -13,7 +14,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <AuthProvider>
         <CartProvider>
           <CompareProvider>
-            <App />
+            <BreedProvider>
+              <App />
+            </BreedProvider>
           </CompareProvider>
         </CartProvider>
       </AuthProvider>

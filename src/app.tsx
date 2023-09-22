@@ -26,13 +26,12 @@ import AdminNestList from './pages/admin-nest-list'
 import AdminNestsNew from './pages/admin-nests-new'
 import AdminSpecieDetail from './pages/admin-specie-detail'
 import AdminBirdDetail from './pages/admin-bird-detail'
-import { Comparator } from './contexts/compare-provider'
+import BreedBirdList from './pages/breed-bird-list'
 
 function App() {
   return (
     <BrowserRouter>
       <Toaster />
-      <Comparator />
 
       <Routes>
         <Route path='/auth'>
@@ -46,6 +45,7 @@ function App() {
           <Route path='species' element={<SpecieList />} />
           <Route path='birds/:id' element={<BirdDetail />} />
           <Route path='birds' element={<BirdList />} />
+          <Route path='breed-birds' element={<BreedBirdList />} />
           <Route path='wishlist' element={<WishList />} />
           <Route path='profile' element={<Profile />} />
           <Route path='orders' element={<OrderList />} />

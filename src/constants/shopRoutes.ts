@@ -8,7 +8,7 @@ export const routes = [
     label: 'Tổ Chim Non Có Sẵn'
   },
   {
-    href: '/',
-    label: 'Đặt Tổ Chim Non'
+    href: '/breed-birds',
+    label: 'Chim phối giống'
   }
 ]
