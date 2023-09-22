@@ -8,6 +8,7 @@ import Discount from '@/assets/discount.png'
 import { Link } from 'react-router-dom'
 // import { loadStripe } from '@stripe/stripe-js'
 import { useEffect, useState } from 'react'
+import { Input } from '@/components/ui/input'
 
 type Products = {
   birds: Bird[]
@@ -130,7 +131,7 @@ function Cart() {
                 </div>
 
                 <div className='mt-3'>
-                  <input type='text' placeholder='nhập mã giảm giá ' className='w-full px-5 py-1 rounded-xl' />
+                  <Input type='text' placeholder='nhập mã giảm giá ' className='w-full px-5 py-1 rounded-xl' />
                 </div>
                 <div className='mt-3'>
                   <button className='px-7 py-2 bg-black text-white rounded-3xl'>Áp dụng</button>
@@ -138,7 +139,9 @@ function Cart() {
               </div>
 
               <div className='mt-4 w-80 m-auto'>
-                <Button className='w-full' onClick={createOrder}>Thanh Toán</Button>
+                <Button className='w-full' onClick={createOrder}>
+                  Thanh Toán
+                </Button>
               </div>
             </div>
           </div>
