@@ -38,7 +38,7 @@ function Pairing() {
         <div className='uppercase text-3xl mt-10'>Đặt tổ chim non theo yêu cầu</div>
         <div className='flex gap-4'>
           <div className='border-t-2 border-white w-52 my-2'></div>
-          <BirdIcon></BirdIcon>
+          <BirdIcon />
           <div className='border-t-2 border-white w-52 my-2'></div>
         </div>
       </div>
@@ -91,9 +91,9 @@ function Pairing() {
       </div>
 
       <div className='w-full flex justify-around gap-4'>
-        <div className='w-56 h-96 border border-white'></div>
+        <div className='w-56 h-96 border border-white'/>
         <div className='flex items-center'>
-          <Heart></Heart>
+          <Heart className='w-40 h-40' />
         </div>
         <div className='w-56 h-96 border border-white'></div>
       </div>

@@ -1,13 +1,14 @@
 import useLocalStorage from '@/hooks/use-local-storage'
 import React, { useContext, useEffect, useState } from 'react'
+import * as _ from 'lodash'
 
 type CartProviderProps = {
   children: React.ReactNode
 }
 
 type Cart = {
-  birds: Record<string, number>
-  nests: Record<string, number>
+  birds: string[]
+  nests: string[]
 }
 
 type CartContextType = {
@@ -21,29 +22,22 @@ export const CartContext = React.createContext<CartContextType | null>(null)
 
 const CartProvider = ({ children }: CartProviderProps) => {
   const [cart, setCart] = useLocalStorage<Cart>('cart', {
-    birds: {},
-    nests: {}
+    birds: [],
+    nests: []
   })
 
   const [quantityInCart, setQuantityInCart] = useState(0)
 
   const addBirdToCart = (id: string) => {
-    setCart({ ...cart, birds: { ...cart.birds, [id]: cart.birds[id] ? cart.birds[id] + 1 : 1 } })
+    setCart({ ...cart, birds: _.union([...cart.birds], [id]) })
   }
 
   const addNestToCart = (id: string) => {
-    setCart({ ...cart, nests: { ...cart.nests, [id]: cart.nests[id] ? cart.nests[id] + 1 : 1 } })
+    setCart({ ...cart, nests: _.union([...cart.nests], [id]) })
   }
 
   useEffect(() => {
-    let sum = 0
-    Object.keys(cart.birds).map((key) => {
-      sum += cart.birds[key] || 0
-    })
-    Object.keys(cart.nests).map((key) => {
-      sum += cart.nests[key] || 0
-    })
-    setQuantityInCart(sum)
+    setQuantityInCart(cart.birds.length + cart.nests.length)
   }, [cart])
 
   return (

@@ -1,28 +1,90 @@
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Ellipce from '@/assets/Ellipse2.png'
 import { ChevronUp, ChevronDown } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
-import { Bird, getSpecie } from '@/lib/types'
+import { useRef, useState } from 'react'
+// import { Bird, getSpecie } from '@/lib/types'
 import Container from '@/components/ui/container'
 import noImage from '@/assets/no-image.avif'
 import { calculateAge, formatPrice } from '@/lib/utils'
 import moment from 'moment'
 import 'moment/locale/vi'
-import { birdFarmApi } from '@/services/bird-farm-api'
+// import { birdFarmApi } from '@/services/bird-farm-api'
 
-const imageUrls = [
-  'https://daohieu.com/wp-content/uploads/2020/05/chim-vang-anh-917x1024.jpg',
-  'https://upload.wikimedia.org/wikipedia/commons/6/6f/Black-hooded_Oriole_%28Oriolus_xanthornus%29_in_Kolkata_I_IMG_2551.jpg',
-  'https://chimcanhalau.com/wp-content/uploads/2019/10/VA.jpg',
-  'https://suckhoecuocsong.vn/upload/Tri-thuc-song/chim-vang-anh1-suckhoecuocsong_com_vn.jpg',
-  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkJlqAxBlhLwSrnGQ966QR_pPRXZtEiCwVbw&usqp=CAU'
-]
+const bird = {
+  _id: '6506a456d2122d7e8013d4d6',
+  name: 'Chim Hoàng Anh mã 93acc6',
+  birth: '2023-06-22T05:50:43+00:00',
+  type: 'sell',
+  sellPrice: 620000,
+  specie: {
+    _id: '6504043d9b7a586cad8a4b86',
+    name: 'Chim Hoàng Anh'
+  },
+  imageUrls: [
+    'https://daohieu.com/wp-content/uploads/2020/05/chim-vang-anh-917x1024.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/6/6f/Black-hooded_Oriole_%28Oriolus_xanthornus%29_in_Kolkata_I_IMG_2551.jpg',
+    'https://chimcanhalau.com/wp-content/uploads/2019/10/VA.jpg',
+    'https://suckhoecuocsong.vn/upload/Tri-thuc-song/chim-vang-anh1-suckhoecuocsong_com_vn.jpg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkJlqAxBlhLwSrnGQ966QR_pPRXZtEiCwVbw&usqp=CAU'
+  ],
+  gender: 'female',
+  achievements: [
+    {
+      competition: 'Cuộc thi chim bắt mồi',
+      rank: 1
+    },
+    {
+      competition: 'Chim Việt Nam',
+      rank: 1
+    },
+    {
+      competition: 'Cuộc thi chim biểu diễn',
+      rank: 5
+    }
+  ],
+  description: 'Chim to béo khẻo, năng động.'
+}
+
+// const bird = {
+//   _id: '6506a456d2122d7e8013d4d6',
+//   name: 'Chim Hoàng Anh mã 93acc6',
+//   birth: '2023-06-22T05:50:43+00:00',
+//   type: 'breed',
+//   breedPrice: 620000,
+//   specie: {
+//     _id: '6504043d9b7a586cad8a4b86',
+//     name: 'Chim Hoàng Anh'
+//   },
+//   imageUrls: [
+//     'https://daohieu.com/wp-content/uploads/2020/05/chim-vang-anh-917x1024.jpg',
+//     'https://upload.wikimedia.org/wikipedia/commons/6/6f/Black-hooded_Oriole_%28Oriolus_xanthornus%29_in_Kolkata_I_IMG_2551.jpg',
+//     'https://chimcanhalau.com/wp-content/uploads/2019/10/VA.jpg',
+//     'https://suckhoecuocsong.vn/upload/Tri-thuc-song/chim-vang-anh1-suckhoecuocsong_com_vn.jpg',
+//     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkJlqAxBlhLwSrnGQ966QR_pPRXZtEiCwVbw&usqp=CAU'
+//   ],
+//   gender: 'male',
+//   achievements: [
+//     {
+//       competition: 'Cuộc thi chim bắt mồi',
+//       rank: 1
+//     },
+//     {
+//       competition: 'Chim Việt Nam',
+//       rank: 1
+//     },
+//     {
+//       competition: 'Cuộc thi chim biểu diễn',
+//       rank: 5
+//     }
+//   ],
+//   description: 'Chim to béo khẻo, năng động.'
+// }
 
 function BirdDetail() {
   moment.locale('vi')
-  const { id } = useParams()
-  const [bird, setBird] = useState<Bird | null>(null)
-  const navigate = useNavigate()
+  // const { id } = useParams()
+  // const [bird, setBird] = useState<Bird | null>(null)
+  // const navigate = useNavigate()
   const imageRef = useRef<HTMLImageElement | null>(null)
   const [isListVisible, setListVisible] = useState(false)
 
@@ -36,23 +98,23 @@ function BirdDetail() {
     setListVisible(!isListVisible)
   }
 
-  useEffect(() => {
-    const fetchBird = async () => {
-      try {
-        const { data } = await birdFarmApi.get(`/api/birds/${id}`)
+  // useEffect(() => {
+  //   const fetchBird = async () => {
+  //     try {
+  //       const { data } = await birdFarmApi.get(`/api/birds/${id}`)
 
-        setBird(data?.bird || null)
-      } catch (error) {
-        navigate('/not-found')
-      }
-    }
+  //       setBird(data?.bird || null)
+  //     } catch (error) {
+  //       navigate('/not-found')
+  //     }
+  //   }
 
-    fetchBird()
-  }, [id, navigate])
+  //   fetchBird()
+  // }, [id, navigate])
 
-  if (!bird) {
-    return <div>Loading</div>
-  }
+  // if (!bird) {
+  //   return <div>Loading</div>
+  // }
 
   return (
     <main className=' mt-5 container sm:flex-row transition-all '>
@@ -64,13 +126,13 @@ function BirdDetail() {
                 ref={imageRef}
                 className='w-full h-full aspect-square object-cover rounded cursor-pointer'
                 // src={bird?.imageUrls?.[0] || noImage}
-                src={imageUrls[0] || noImage}
+                src={bird.imageUrls[0] || noImage}
                 alt='bird'
               />
             </div>
             <div className='grid grid-cols-5 mt-2 gap-2 flex-wrap w-full'>
               {/* {bird?.imageUrls?.map((imageUrl) => { */}
-              {imageUrls.map((imageUrl) => {
+              {bird.imageUrls.map((imageUrl) => {
                 return (
                   <img
                     onMouseEnter={() => {
@@ -91,15 +153,15 @@ function BirdDetail() {
               <span className='font-semibold'>
                 Danh mục:{' '}
                 <Link
-                  to={`/birds?specie=${getSpecie(bird)._id}`}
+                  to={`/birds?specie=${bird.specie._id}`}
                   className='font-normal hover:text-primary hover:underline cursor-pointer'
                 >
-                  {getSpecie(bird)?.name}
+                  {bird.specie?.name}
                 </Link>
               </span>
             </p>
 
-            <p className='text-3xl text-red-500 font-medium '>{formatPrice(bird.price)}</p>
+            <p className='text-3xl text-red-500 font-medium '>{formatPrice(bird.sellPrice)}</p>
 
             <div className='flex justify-center gap-10 mt-3'>
               <div>
