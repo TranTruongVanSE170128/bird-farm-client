@@ -64,6 +64,9 @@ function AdminBirdDetail() {
           <div className='flex items-center gap-2 text-lg mb-4'>
             <div className='font-bold'>Loài chim:</div> {getSpecie(bird).name}
           </div>
+          <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='font-bold'>Giới tính:</div> {bird.gender}
+          </div>
           <div className='text-lg font-bold mb-2'>Ảnh</div>
           <div>
             {!bird?.imageUrls?.length ? (
@@ -89,7 +92,7 @@ function AdminBirdDetail() {
       ) : (
         <BirdForm setEdit={setEdit} action='update' btnTitle='Lưu' bird={bird} />
       )}
-      <BirdForm setEdit={setEdit} action='update' btnTitle='Lưu' bird={bird} />
+      {/* <BirdForm setEdit={setEdit} action='update' btnTitle='Lưu' bird={bird} /> */}
     </div>
   )
 }

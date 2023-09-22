@@ -4,11 +4,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Bird, getSpecie } from '@/lib/types'
 import { cn, formatPrice } from '@/lib/utils'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
-import { Check, MoreHorizontal, Plus, X } from 'lucide-react'
+import { MoreHorizontal, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
+import sellIcon from '@/assets/sell.svg'
+import breedIcon from '@/assets/breed.svg'
+import noImage from '@/assets/no-image.avif'
 import { useToast } from '@/components/ui/use-toast'
 import { buttonVariants } from '@/components/ui/button'
 import { birdFarmApi } from '@/services/bird-farm-api'
@@ -65,11 +68,11 @@ function AdminBirdList() {
         <TableHeader>
           <TableRow>
             <TableHead>Loài</TableHead>
-            <TableHead className='text-center'>Tên</TableHead>
+            <TableHead>Tên</TableHead>
             <TableHead className='text-center'>Ảnh</TableHead>
             <TableHead className='text-center'>Giá</TableHead>
             {/* <TableHead className='text-center'>Đã Bán</TableHead> */}
-            <TableHead className='text-center'>Đang Bán</TableHead>
+            <TableHead className='text-center'>Loại Chim</TableHead>
             <TableHead className='text-center'>Giới Tính</TableHead>
             <TableHead className='text-end'></TableHead>
           </TableRow>
@@ -80,17 +83,25 @@ function AdminBirdList() {
             {birds.map((bird) => {
               return (
                 <TableRow key={bird._id}>
-                  <TableCell className='line-clamp-1'>{getSpecie(bird).name}</TableCell>
-                  <TableCell className='text-center'>{bird.name}</TableCell>
-                  <TableCell className='text-center'>
-                    <img src={bird.imageUrls?.[0]} alt='' />
+                  <TableCell>{getSpecie(bird).name}</TableCell>
+                  <TableCell>{bird.name}</TableCell>
+                  <TableCell className='flex justify-center overflow-hidden'>
+                    {!bird?.imageUrls?.length ? (
+                      <img className='w-12 h-12 aspect-square rounded-md' src={noImage} alt='' />
+                    ) : (
+                      <img className='w-12 h-12 aspect-square rounded-md' src={bird.imageUrls[0]} alt='' />
+                    )}
                   </TableCell>
                   <TableCell className='text-center'>{formatPrice(bird.price)}</TableCell>
                   {/* <TableCell className='text-center'>Đã Bán</TableCell> */}
-                  <TableCell className='text-center flex justify-center'>
-                    <div>{bird.type ? <Check color='green' /> : <X color='red' />}</div>
+                  <TableCell>
+                    {bird.type === 'sell' ? (
+                      <img className='w-9 h-9 block mx-auto' src={sellIcon} alt='chim để bán' />
+                    ) : (
+                      <img className='w-8 h-8 block mx-auto' src={breedIcon} alt='chim phối giống' />
+                    )}
                   </TableCell>
-                  <TableCell className='text-center'>
+                  <TableCell>
                     {bird.gender === 'male' ? (
                       <img className='w-9 h-9 block mx-auto' src={maleIcon} alt='đực' />
                     ) : (
