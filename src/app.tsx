@@ -26,11 +26,14 @@ import AdminNestList from './pages/admin-nest-list'
 import AdminNestsNew from './pages/admin-nests-new'
 import AdminSpecieDetail from './pages/admin-specie-detail'
 import AdminBirdDetail from './pages/admin-bird-detail'
+import { Comparator } from './contexts/compare-provider'
 
 function App() {
   return (
     <BrowserRouter>
       <Toaster />
+      <Comparator />
+
       <Routes>
         <Route path='/auth'>
           <Route path='sign-in' element={<SignIn />} />

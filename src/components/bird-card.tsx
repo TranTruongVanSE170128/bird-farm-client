@@ -4,12 +4,9 @@ import { cn, formatPrice } from '@/lib/utils'
 import { Button } from './ui/button'
 import { Bird } from '@/lib/types'
 import noImage from '@/assets/no-image.avif'
-import redHeart from '@/assets/red-heart.svg'
-import blackHeart from '@/assets/black-heart.svg'
-import { useState } from 'react'
 import { useToast } from './ui/use-toast'
 import { useCartContext } from '@/contexts/cart-provider'
-import useLocalStorage from '@/hooks/use-local-storage'
+import { useCompareContext } from '@/contexts/compare-provider'
 
 type Props = {
   className?: string
@@ -17,9 +14,9 @@ type Props = {
 }
 
 function BirdCard({ className, bird }: Props) {
-  const [wishList, setWishList] = useLocalStorage<Record<string, boolean>>('wishlist', {})
   const { addBirdToCart } = useCartContext()
-  const [isInWishList, setIsInWishList] = useState(wishList[bird._id])
+  const { addToCompare } = useCompareContext()
+
   const { toast } = useToast()
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -28,30 +25,6 @@ function BirdCard({ className, bird }: Props) {
     toast({
       variant: 'success',
       title: 'Đã thêm chim vào giỏ hàng!',
-      duration: 2500
-    })
-  }
-
-  const handleAddToWishList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-    wishList[bird._id] = true
-    setWishList(wishList)
-    setIsInWishList(!isInWishList)
-    toast({
-      variant: 'success',
-      title: 'Đã thêm chim vào danh sách mong ước!',
-      duration: 2500
-    })
-  }
-
-  const handleRemoveFromWishList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-    delete wishList[bird._id]
-    localStorage.setItem('wishList', JSON.stringify(wishList))
-    setIsInWishList(!isInWishList)
-    toast({
-      variant: 'destructive',
-      title: 'Đã bỏ chim khỏi danh sách mong ước!',
       duration: 2500
     })
   }
@@ -86,15 +59,16 @@ function BirdCard({ className, bird }: Props) {
             <Button onClick={handleAddToCart} variant='outline' className='w-full'>
               Thêm vào giỏ
             </Button>
-            {isInWishList ? (
-              <Button onClick={handleRemoveFromWishList} className='p-1' variant='outline' size='icon'>
-                <img src={redHeart} alt='heart' />
-              </Button>
-            ) : (
-              <Button onClick={handleAddToWishList} className='p-1' variant='outline' size='icon'>
-                <img src={blackHeart} className='dark:filter dark:invert' alt='heart' />
-              </Button>
-            )}
+            <Button
+              onClick={(e) => {
+                e.preventDefault()
+                addToCompare(bird)
+              }}
+              variant='outline'
+              className='w-full'
+            >
+              Thêm so sánh
+            </Button>
           </div>
           <Button onClick={handleBuyNow} className='w-full'>
             Mua ngay
