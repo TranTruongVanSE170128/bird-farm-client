@@ -42,8 +42,8 @@ export type Nest = {
   description?: string
 }
 
-export function getSpecie(bird: Bird): Specie {
-  return bird.specie as Specie
+export function getSpecie(item: Bird | Nest): Specie {
+  return item.specie as Specie
 }
 
 export type Gender = 'male' | 'female'
