@@ -144,11 +144,11 @@ function Cart() {
           </div>
 
           <div className='container'>
-            <button className='mt-5'>
+            <Button className='mt-5'>
               <Link to='#' className='px-4 py-3 flex justify-center items-center gap-1 bg-black text-white rounded-lg'>
                 <ChevronLeft /> Tiếp tục xem sản phẩm{' '}
               </Link>
-            </button>
+            </Button>
           </div>
         </section>
       </Container>
