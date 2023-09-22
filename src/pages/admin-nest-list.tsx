@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { buttonVariants } from '@/components/ui/button'
 import { MoreHorizontal, Plus } from 'lucide-react'
-import { cn, formatPrice } from '@/lib/utils'
+import { addSearchParams, cn, formatPrice } from '@/lib/utils'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import Spinner from '@/components/ui/spinner'
@@ -16,7 +16,6 @@ function AdminNestList() {
   const [searchParams] = useSearchParams()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
   const searchQuery = searchParams.get('searchQuery') || ''
-  const nest = searchParams.get('nest') || ''
   const [nests, setNests] = useState<Nest[]>([])
   const [isLoadingNests, setIsLoadingNests] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
@@ -26,7 +25,7 @@ function AdminNestList() {
       setIsLoadingNests(true)
       try {
         const { data } = await birdFarmApi.get(
-          `/api/nests/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&nest=${nest}`
+          addSearchParams('/api/nests/pagination', { searchQuery, pageNumber, pageSize })
         )
         setNests(data?.nests || null)
         setIsLoadingNests(false)
@@ -37,7 +36,7 @@ function AdminNestList() {
     }
 
     fetchNests()
-  }, [pageNumber, searchQuery, nest])
+  }, [pageNumber, searchQuery])
 
   if (!nests) {
     return <div>Loading</div>

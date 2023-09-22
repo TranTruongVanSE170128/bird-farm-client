@@ -26,7 +26,7 @@ function Cart() {
     }
 
     fetchProducts()
-  }, [])
+  }, [cart])
 
   useEffect(() => {
     console.log(products)

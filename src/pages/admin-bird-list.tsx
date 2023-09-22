@@ -2,7 +2,7 @@ import Paginate from '@/components/paginate'
 import Spinner from '@/components/ui/spinner'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Bird, getSpecie } from '@/lib/types'
-import { cn, formatPrice } from '@/lib/utils'
+import { addSearchParams, cn, formatPrice } from '@/lib/utils'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
 import { MoreHorizontal, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -21,8 +21,8 @@ const pageSize = 12
 function AdminBirdList() {
   const [searchParams] = useSearchParams()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
-  const searchQuery = searchParams.get('searchQuery') || ''
-  const specie = searchParams.get('specie') || ''
+  const searchQuery = searchParams.get('searchQuery')
+  const specie = searchParams.get('specie')
   const [birds, setBirds] = useState<Bird[]>([])
   const [isLoadingBirds, setIsLoadingBirds] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
@@ -33,7 +33,7 @@ function AdminBirdList() {
       setIsLoadingBirds(true)
       try {
         const { data } = await birdFarmApi.get(
-          `/api/birds/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}`
+          addSearchParams('/api/birds/pagination?pageSize', { pageNumber, pageSize, searchQuery, specie })
         )
         setBirds(data?.birds || null)
         setIsLoadingBirds(false)
@@ -48,7 +48,7 @@ function AdminBirdList() {
     }
 
     fetchBirds()
-  }, [pageNumber, searchQuery, specie])
+  }, [pageNumber, searchQuery, specie, toast])
 
   if (!birds) {
     return <div>Loading</div>

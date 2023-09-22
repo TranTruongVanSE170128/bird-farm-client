@@ -91,7 +91,7 @@ function Pairing() {
       </div>
 
       <div className='w-full flex justify-around gap-4'>
-        <div className='w-56 h-96 border border-white'/>
+        <div className='w-56 h-96 border border-white' />
         <div className='flex items-center'>
           <Heart className='w-40 h-40' />
         </div>

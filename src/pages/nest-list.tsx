@@ -14,6 +14,7 @@ import { useSearchParams } from 'react-router-dom'
 import { Nest } from '@/lib/types'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import Paginate from '@/components/paginate'
+import { addSearchParams } from '@/lib/utils'
 
 const pageSize = 12
 
@@ -29,7 +30,7 @@ function NestList() {
   useEffect(() => {
     const fetchNests = async () => {
       const { data } = await birdFarmApi.get(
-        `/api/nests/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}`
+        addSearchParams('/api/nests/pagination', { pageNumber, pageSize, searchQuery, specie })
       )
       setNests(data?.nests || [])
       setTotalPages(data?.totalPages || null)
