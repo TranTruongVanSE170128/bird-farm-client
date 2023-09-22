@@ -1,5 +1,5 @@
 import Paginate from '@/components/paginate'
-import { Nest } from '@/lib/types'
+import { Nest, getSpecie } from '@/lib/types'
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { buttonVariants } from '@/components/ui/button'
@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import Spinner from '@/components/ui/spinner'
 import { birdFarmApi } from '@/services/bird-farm-api'
+import noImage from '@/assets/no-image.avif'
 
 const pageSize = 12
 
@@ -55,6 +56,8 @@ function AdminNestList() {
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>Loài</TableHead>
+            <TableHead>Tên</TableHead>
             <TableHead className='text-center'>Ảnh</TableHead>
             <TableHead className='text-center'>Giá</TableHead>
             {/* <TableHead className='text-center'>Đã Bán</TableHead> */}
@@ -67,8 +70,14 @@ function AdminNestList() {
             {nests.map((nest) => {
               return (
                 <TableRow key={nest._id}>
+                  <TableCell>{getSpecie(nest).name}</TableCell>
+                  <TableCell>{nest.name}</TableCell>
                   <TableCell className='text-center'>
-                    <img src={nest.imageUrls?.[0]} alt='' />
+                    {!nest.imageUrls?.length ? (
+                      <img className='aspect-square w-16 object-cover block mx-auto' src={noImage} alt='' />
+                    ) : (
+                      <img className='aspect-square w-16 object-cover block mx-auto' src={nest.imageUrls?.[0]} alt='' />
+                    )}
                   </TableCell>
                   <TableCell className='text-center'>{formatPrice(nest.price)}</TableCell>
                   {/* <TableCell className='text-center'>Đã Bán</TableCell> */}

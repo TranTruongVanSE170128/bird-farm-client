@@ -174,176 +174,213 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
   return (
     <Form {...form}>
       <form className='flex flex-col justify-start gap-10' onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name='specie'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormLabel>Loài*</FormLabel>
-              <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger asChild>
+        <div className='flex gap-4'>
+          <FormField
+            control={form.control}
+            name='specie'
+            render={({ field }) => (
+              <FormItem className='flex flex-col'>
+                <FormLabel>Loài*</FormLabel>
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        aria-expanded={open}
+                        variant='outline'
+                        role='combobox'
+                        className={cn('w-[200px] justify-between', !field.value && 'text-muted-foreground')}
+                      >
+                        {field.value ? species.find((specie) => specie._id === field.value)?.name : 'Chọn loài'}
+                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className='w-[200px] p-0'>
+                    <Command>
+                      <CommandInput placeholder='Search framework...' />
+                      <CommandEmpty>Không tìm thấy.</CommandEmpty>
+                      <CommandGroup>
+                        <ScrollArea className='h-96'>
+                          {species.map((specie) => (
+                            <CommandItem
+                              className='cursor-pointer'
+                              value={specie.name}
+                              key={specie._id}
+                              onSelect={() => {
+                                setOpen(false)
+                                form.setValue('specie', specie._id)
+                                form.setValue('name', specie.name + ' mã ' + code)
+                              }}
+                            >
+                              <Check
+                                className={cn('mr-2 h-4 w-4', specie._id === field.value ? 'opacity-100' : 'opacity-0')}
+                              />
+                              {specie.name}
+                            </CommandItem>
+                          ))}
+                        </ScrollArea>
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {form.getValues('specie') && (
+            <FormField
+              control={form.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem className='flex w-full flex-col'>
+                  <FormLabel className='font-bold'>Tên*</FormLabel>
                   <FormControl>
-                    <Button
-                      aria-expanded={open}
-                      variant='outline'
-                      role='combobox'
-                      className={cn('w-[200px] justify-between', !field.value && 'text-muted-foreground')}
-                    >
-                      {field.value ? species.find((specie) => specie._id === field.value)?.name : 'Chọn loài'}
-                      <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
-                    </Button>
+                    <Input disabled type='hidden' className='no-focus' {...field} />
                   </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className='w-[200px] p-0'>
-                  <Command>
-                    <CommandInput placeholder='Search framework...' />
-                    <CommandEmpty>Không tìm thấy.</CommandEmpty>
-                    <CommandGroup>
-                      <ScrollArea className='h-96'>
-                        {species.map((specie) => (
-                          <CommandItem
-                            className='cursor-pointer'
-                            value={specie.name}
-                            key={specie._id}
-                            onSelect={() => {
-                              setOpen(false)
-                              form.setValue('specie', specie._id)
-                              form.setValue('name', specie.name + ' mã ' + code)
-                            }}
-                          >
-                            <Check
-                              className={cn('mr-2 h-4 w-4', specie._id === field.value ? 'opacity-100' : 'opacity-0')}
-                            />
-                            {specie.name}
-                          </CommandItem>
-                        ))}
-                      </ScrollArea>
-                    </CommandGroup>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
-        {form.getValues('specie') && (
+                  <div className='flex h-10 w-full rounded-md border bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300 border-border'>
+                    {form.getValues('name')}
+                  </div>
+
+                  <FormDescription>Tên được tạo tự động</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+        </div>
+
+        <div className='flex gap-4 items-end'>
           <FormField
             control={form.control}
-            name='name'
+            name='gender'
             render={({ field }) => (
-              <FormItem className='flex w-full flex-col gap-3'>
-                <FormLabel className='font-bold'>Tên*</FormLabel>
-                <FormControl>
-                  <Input disabled type='hidden' className='no-focus' {...field} />
-                </FormControl>
-
-                <div className='flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300'>
-                  {form.getValues('name')}
-                </div>
-
-                <FormDescription>Tên được tạo tự động</FormDescription>
+              <FormItem className='shrink-0'>
+                <FormLabel>Giới Tính*</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder='Chọn giới tính cho chim' />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value='male'>
+                      <div className='flex items-center'>
+                        <img className='w-6 h-6 mr-1' src={maleIcon} alt='' />
+                        Đực
+                      </div>
+                    </SelectItem>
+                    <SelectItem className='flex items-center' value='female'>
+                      <div className='flex items-center'>
+                        <img className='w-6 h-6 mr-1' src={femaleIcon} alt='' />
+                        Cái
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
           />
-        )}
 
-        <FormField
-          control={form.control}
-          name='gender'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Giới Tính*</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder='Chọn giới tính cho chim' />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value='male'>
-                    <div className='flex items-center'>
-                      <img className='w-6 h-6 mr-1' src={maleIcon} alt='' />
-                      Đực
-                    </div>
-                  </SelectItem>
-                  <SelectItem className='flex items-center' value='female'>
-                    <div className='flex items-center'>
-                      <img className='w-6 h-6 mr-1' src={femaleIcon} alt='' />
-                      Cái
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name='type'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Loại Chim*</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder='Chọn loại chim' />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value='sell'>
-                    <div className='flex items-center'>
-                      <img className='w-6 h-6 mr-1' src={sellIcon} alt='' />
-                      Chim để bán
-                    </div>
-                  </SelectItem>
-                  <SelectItem className='flex items-center' value='breed'>
-                    <div className='flex items-center'>
-                      <img className='w-6 h-6 mr-1' src={breedIcon} alt='' />
-                      Chim để phối giống
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {form.getValues('type') === 'sell' && (
           <FormField
             control={form.control}
-            name='sellPrice'
+            name='type'
             render={({ field }) => (
-              <FormItem className='flex w-full flex-col gap-3'>
-                <FormLabel className='font-bold'>Giá bán*(vnđ)</FormLabel>
-                <FormControl>
-                  <Input placeholder='Giá bán...' type='text' className='no-focus' {...field} />
-                </FormControl>
+              <FormItem className='shrink-0'>
+                <FormLabel>Loại Chim*</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder='Chọn loại chim' />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value='sell'>
+                      <div className='flex items-center'>
+                        <img className='w-6 h-6 mr-1' src={sellIcon} alt='' />
+                        Chim để bán
+                      </div>
+                    </SelectItem>
+                    <SelectItem className='flex items-center' value='breed'>
+                      <div className='flex items-center'>
+                        <img className='w-6 h-6 mr-1' src={breedIcon} alt='' />
+                        Chim để phối giống
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
           />
-        )}
 
-        {form.getValues('type') === 'breed' && (
+          {form.getValues('type') === 'sell' && (
+            <FormField
+              control={form.control}
+              name='sellPrice'
+              render={({ field }) => (
+                <FormItem className='flex w-full flex-col'>
+                  <FormLabel className='font-bold'>Giá bán*(vnđ)</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Giá bán...' type='text' className='no-focus' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
+          {form.getValues('type') === 'breed' && (
+            <FormField
+              control={form.control}
+              name='breedPrice'
+              render={({ field }) => (
+                <FormItem className='flex w-full flex-col'>
+                  <FormLabel className='font-bold'>Giá phối giống*(vnđ)</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Giá phối giống...' type='text' className='no-focus' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
           <FormField
             control={form.control}
-            name='breedPrice'
+            name='birth'
             render={({ field }) => (
-              <FormItem className='flex w-full flex-col gap-3'>
-                <FormLabel className='font-bold'>Giá phối giống*(vnđ)</FormLabel>
-                <FormControl>
-                  <Input placeholder='Giá phối giống...' type='text' className='no-focus' {...field} />
-                </FormControl>
+              <FormItem className='flex flex-col'>
+                <FormLabel>Ngày Sinh</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={'outline'}
+                        className={cn('w-[240px] pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
+                      >
+                        {field.value ? format(field.value, 'PPP', { locale: vi }) : <span>Chọn ngày sinh</span>}
+                        <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className='w-auto p-0' align='start'>
+                    <Calendar
+                      mode='single'
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
                 <FormMessage />
               </FormItem>
             )}
           />
-        )}
+        </div>
 
         <FormField
           control={form.control}
@@ -371,39 +408,6 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
                   onChange={(e) => handleImage(e, field.onChange)}
                 />
               </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name='birth'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormLabel>Ngày Sinh</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={'outline'}
-                      className={cn('w-[240px] pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
-                    >
-                      {field.value ? format(field.value, 'PPP', { locale: vi }) : <span>Chọn ngày sinh</span>}
-                      <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className='w-auto p-0' align='start'>
-                  <Calendar
-                    mode='single'
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
               <FormMessage />
             </FormItem>
           )}
