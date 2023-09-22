@@ -36,3 +36,12 @@ export function calculateAge(birthday: Date | string | undefined): string {
   const ageInMonths = now.diff(birthdayMoment, 'months')
   return ageInMonths + ' tháng tuổi'
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function addSearchParams(url: string, params: Record<string, any>) {
+  url += '?'
+  Object.keys(params).forEach((key) => {
+    if (params[key]) url += key.toString() + '=' + params[key].toString() + '&'
+  })
+  return url
+}

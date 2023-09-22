@@ -5,6 +5,7 @@ import BirdCardSkeleton from '@/components/bird-card-skeleton'
 import Paginate from '@/components/paginate'
 import Container from '@/components/ui/container'
 import { Bird } from '@/lib/types'
+import { addSearchParams } from '@/lib/utils'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -14,9 +15,9 @@ const pageSize = 12
 function BirdList() {
   const [searchParams] = useSearchParams()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
-  const searchQuery = searchParams.get('searchQuery') || ''
-  const specie = searchParams.get('specie') || ''
-  const type = searchParams.get('type') || ''
+  const searchQuery = searchParams.get('searchQuery')
+  const specie = searchParams.get('specie')
+  const type = searchParams.get('type')
   const [birds, setBirds] = useState<Bird[]>([])
   const [isLoadingBirds, setIsLoadingBirds] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
@@ -24,7 +25,13 @@ function BirdList() {
   useEffect(() => {
     const fetchBirds = async () => {
       const { data } = await birdFarmApi.get(
-        `/api/birds/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}&type=${type}`
+        addSearchParams('/api/birds/pagination', {
+          pageSize,
+          pageNumber,
+          searchQuery,
+          specie,
+          type
+        })
       )
       setBirds(data?.birds || [])
       setTotalPages(data?.totalPages || null)

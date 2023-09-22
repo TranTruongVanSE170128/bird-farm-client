@@ -9,6 +9,6 @@ export const routes = [
   },
   {
     href: '/nests',
-    label: 'Tổ Chim Non Có Sẵn'
+    label: 'Tổ chim non có sẵn'
   }
 ]

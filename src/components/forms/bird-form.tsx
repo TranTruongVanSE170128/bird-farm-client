@@ -237,14 +237,11 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
                 <FormControl>
                   <Input disabled type='hidden' className='no-focus' {...field} />
                 </FormControl>
-                <div>
-                  <div className='text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-semibold text-light-2 mb-3'>
-                    Tên Chim*
-                  </div>
-                  <div className='flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300'>
-                    {form.getValues('name')}
-                  </div>
+
+                <div className='flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300'>
+                  {form.getValues('name')}
                 </div>
+
                 <FormDescription>Tên được tạo tự động</FormDescription>
                 <FormMessage />
               </FormItem>
@@ -316,19 +313,37 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name='price'
-          render={({ field }) => (
-            <FormItem className='flex w-full flex-col gap-3'>
-              <FormLabel className='font-bold'>Giá*(vnđ)</FormLabel>
-              <FormControl>
-                <Input placeholder='Giá chim...' type='text' className='no-focus' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {form.getValues('type') === 'sell' && (
+          <FormField
+            control={form.control}
+            name='sellPrice'
+            render={({ field }) => (
+              <FormItem className='flex w-full flex-col gap-3'>
+                <FormLabel className='font-bold'>Giá bán*(vnđ)</FormLabel>
+                <FormControl>
+                  <Input placeholder='Giá bán...' type='text' className='no-focus' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
+        {form.getValues('type') === 'breed' && (
+          <FormField
+            control={form.control}
+            name='breedPrice'
+            render={({ field }) => (
+              <FormItem className='flex w-full flex-col gap-3'>
+                <FormLabel className='font-bold'>Giá phối giống*(vnđ)</FormLabel>
+                <FormControl>
+                  <Input placeholder='Giá phối giống...' type='text' className='no-focus' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <FormField
           control={form.control}
