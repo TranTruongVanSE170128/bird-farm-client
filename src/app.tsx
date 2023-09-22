@@ -15,7 +15,7 @@ import WishList from './pages/wish-list'
 import Profile from './pages/profile'
 import OrderList from './pages/order-list'
 import AdminBirdList from './pages/admin-bird-list'
-import Pairing from './pages/pairing'
+import Breed from './pages/breed'
 import Cart from './pages/cart'
 import BirdComparing from './pages/bird-comparing'
 import NestList from './pages/nest-list'
@@ -53,7 +53,7 @@ function App() {
           <Route path='nests' element={<NestList />} />
           <Route path='compare' element={<BirdComparing />} />
           <Route path='not-found' element={<NotFound />} />
-          <Route path='pairing' element={<Pairing />} />
+          <Route path='breed' element={<Breed />} />
         </Route>
 
         <Route path='/admin' element={<LayoutAdmin />}>

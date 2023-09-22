@@ -73,20 +73,9 @@ function BirdCard({ className, bird }: Props) {
         </CardContent>
         <CardFooter className='flex gap-2 flex-col'>
           <div className='flex w-full gap-2'>
-            {bird.type === 'sell' ? (
+            {bird.type === 'sell' && (
               <Button onClick={handleAddToCart} variant='outline' className='w-full'>
                 Thêm vào giỏ
-              </Button>
-            ) : (
-              <Button
-                onClick={(e) => {
-                  e.preventDefault()
-                  addToBreed(bird)
-                }}
-                variant='outline'
-                className='w-full'
-              >
-                Phối giống
               </Button>
             )}
 
@@ -101,9 +90,22 @@ function BirdCard({ className, bird }: Props) {
               So sánh
             </Button>
           </div>
-          <Button onClick={handleBuyNow} className='w-full'>
-            Mua ngay
-          </Button>
+
+          {bird.type === 'sell' ? (
+            <Button onClick={handleBuyNow} className='w-full'>
+              Mua ngay
+            </Button>
+          ) : (
+            <Button
+              onClick={(e) => {
+                e.preventDefault()
+                addToBreed(bird)
+              }}
+              className='w-full'
+            >
+              Phối giống
+            </Button>
+          )}
         </CardFooter>
       </Card>
     </Link>

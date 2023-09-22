@@ -278,7 +278,7 @@ export function Breeder() {
           <div className='flex flex-col gap-3 justify-center items-center'>
             <Button
               onClick={() => {
-                navigate(`/breed?firstBird=${firstBird?._id}&secondBird=${secondBird?._id}`)
+                navigate(`/breed?maleBird=${firstBird?._id}&femaleBird=${secondBird?._id}`)
               }}
               disabled={numberOfBirds !== 2}
               className='mt-4'
