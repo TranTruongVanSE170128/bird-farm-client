@@ -143,7 +143,7 @@ function NestForm({ nest, btnTitle }: Props) {
                     <CommandInput placeholder='Search framework...' />
                     <CommandEmpty>Không tìm thấy.</CommandEmpty>
                     <CommandGroup>
-                      <ScrollArea className='max-h-96'>
+                      <ScrollArea className='h-96'>
                         {species.map((specie) => (
                           <CommandItem
                             value={specie.name}

@@ -199,7 +199,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
                     <CommandInput placeholder='Search framework...' />
                     <CommandEmpty>Không tìm thấy.</CommandEmpty>
                     <CommandGroup>
-                      <ScrollArea className='max-h-96'>
+                      <ScrollArea className='h-96'>
                         {species.map((specie) => (
                           <CommandItem
                             className='cursor-pointer'

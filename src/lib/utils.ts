@@ -24,7 +24,7 @@ export function formatPrice(num: number) {
 }
 
 // created by chatgpt
-export function calculateAge(birthday: Date | undefined): string {
+export function calculateAge(birthday: Date | string | undefined): string {
   if (!birthday) return 'Không có thông tin'
   const now = moment()
   const birthdayMoment = moment(birthday, 'YYYY-MM-DD')
