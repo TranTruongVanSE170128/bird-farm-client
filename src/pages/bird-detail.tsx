@@ -8,7 +8,7 @@ import noImage from '@/assets/no-image.avif'
 import { calculateAge, formatPrice } from '@/lib/utils'
 import moment from 'moment'
 import 'moment/locale/vi'
-import achivementLogo from "@/assets/achivementlogo.jpg";
+import achivementLogo from "@/assets/achivementLogo.png";
 // import { birdFarmApi } from '@/services/bird-farm-api'
 
 const bird = {
@@ -148,11 +148,12 @@ function BirdDetail() {
             </div>
           </div>
 
-          <div className='col-span-7 text-lg '>
+          <div className='col-span-7 text-lg'>
             <h3 className='text-4xl font-bold'>{bird.name}</h3>
             <p className='my-3'>
-              <span className='font-semibol'>
-                Danh mục:{' '}
+              <span className='font-semibol font-medium'>
+                Danh mục:{' '} </span>
+                <span>
                 <Link
                   to={`/birds?specie=${bird.specie._id}`}
                   className='font-normal hover:text-primary hover:underline cursor-pointer ml-2'
@@ -161,8 +162,9 @@ function BirdDetail() {
                 </Link>
               </span>
               <span className='mx-5 font-bold'>|</span>
-              <span>
-                Giới tính: {bird.gender=== "female"? "Cái":"Đực"}
+              <span className='font-medium'>
+                Giới tính: </span>
+                <span>{bird.gender=== "female"? "Cái":"Đực"}
               </span>
             </p>
 
