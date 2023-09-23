@@ -8,6 +8,7 @@ import noImage from '@/assets/no-image.avif'
 import { calculateAge, formatPrice } from '@/lib/utils'
 import moment from 'moment'
 import 'moment/locale/vi'
+import achivementLogo from "@/assets/achivementlogo.jpg";
 // import { birdFarmApi } from '@/services/bird-farm-api'
 
 const bird = {
@@ -119,7 +120,7 @@ function BirdDetail() {
   return (
     <main className=' mt-5 container sm:flex-row transition-all '>
       <Container>
-        <section className='grid grid-cols-12 gap-8'>
+        <section className='grid grid-cols-12 gap-8 '>
           <div className='col-span-5'>
             <div>
               <img
@@ -147,48 +148,78 @@ function BirdDetail() {
             </div>
           </div>
 
-          <div className='col-span-7'>
-            <h3 className='text-2xl font-bold'>{bird.name}</h3>
+          <div className='col-span-7 text-lg '>
+            <h3 className='text-4xl font-bold'>{bird.name}</h3>
             <p className='my-3'>
-              <span className='font-semibold'>
+              <span className='font-semibol'>
                 Danh mục:{' '}
                 <Link
                   to={`/birds?specie=${bird.specie._id}`}
-                  className='font-normal hover:text-primary hover:underline cursor-pointer'
+                  className='font-normal hover:text-primary hover:underline cursor-pointer ml-2'
+                >
+                  {bird.specie?.name}
+                </Link>
+              </span>
+              <span className='mx-5 font-bold'>|</span>
+              <span>
+                Giới tính: {bird.gender=== "female"? "Cái":"Đực"}
+              </span>
+            </p>
+
+            <p className='text-3xl text-red-500 font-medium '>{formatPrice(bird.sellPrice)}</p>
+            <p className='my-3 font-medium'>
+            <span className='font-semibol mr-10'>
+              <span className='pr-8'>Bố:{' '}</span>
+                <Link
+                  to={`/birds?specie=${bird.name}`}
+                  className='font-normal text-primary hover:underline cursor-pointer'
+                >
+                  {bird.specie?.name}
+                </Link>
+              </span>
+              <span className='font-semibol'>
+                <span className=''>Mẹ:{' '}</span>
+                <Link
+                  to={`/birds?specie=${bird.specie._id}`}
+                  className='font-normal text-primary hover:underline cursor-pointer'
                 >
                   {bird.specie?.name}
                 </Link>
               </span>
             </p>
-
-            <p className='text-3xl text-red-500 font-medium '>{formatPrice(bird.sellPrice)}</p>
-
-            <div className='flex justify-center gap-10 mt-3'>
-              <div>
-                <p className='mt-3'>Tuổi : {calculateAge(bird.birth)}</p>
-                <p className='mt-3'>Giới tính : {bird?.gender === 'male' ? 'Đực' : 'Cái'} </p>
-                <p className='mt-3'>Màu xám</p>
-                <p className='mt-3'>Sức khỏe : Ăn uống tốt , khỏe mạnh , nhanh nhẹn </p>
+            <div className='flex flex-col justify-center gap-3 mt-3'>
+              <div className='flex-col'>
+                <p>
+                <span className='pr-4 font-medium'>Tuổi :</span> <span> {calculateAge(bird.birth)}</span>
+                </p>
+                <p className='my-3'>
+                <span className='pr-1 font-medium'>Mô tả :</span> <span> {bird.description} </span>
+                </p>
               </div>
               <div>
-                <p className='mt-3'>Bố: Trương Văn(xem thông tin chim bố)</p>
-                <p className='mt-3'>Bố: Trương Văn(xem thông tin chim bố)</p>
-                <p className='mt-3'>Lịch sử sinh sản</p>
-                <p className='mt-3'>Vận chuyển: Miễn phí</p>
-                <p className='mt-3'>Thành tích thi đấu : Huy chương vàng cấp QG</p>
+                {bird.achievements.map((achievement) => {
+                  return (
+                    <div className='flex my-4'>
+                      <span className='pr-3'><img className='w-6' src={achivementLogo} ></img></span>
+                      <span>Hạng {achievement.rank} {achievement.competition}</span>
+                    </div>
+                    
+                  )
+                })}
               </div>
             </div>
-            <div className='flex gap-10 my-5'>
-              <button className='bg-black/60 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition-all'>
+            <div className='flex-col my-10'>
+              <div className='flex gap-4 my-5'>
+              <button className='bg-white text-black font-medium rounded-md px-4 py-2 border-2 border-primary hover:bg-purple-600 hover:text-white transition-all'>
                 Mua ngay
               </button>
-              <button className='bg-white text-black rounded-md px-4 py-2 border'>Thêm vào giỏ hàng</button>
+              <button className='bg-white text-black font-medium rounded-md px-4 py-2 border-2 border-primary hover:bg-purple-600 hover:text-white transition-all'>So sánh</button>
+              </div>
+              <div>
+                <button className='bg-primary text-white rounded-md px-10 py-2 hover:bg-purple-600 transition-all'>Thêm vào giỏ hàng</button>
+              </div>
             </div>
-            <div>
-              <h3 className='mt-3 text-medium font-semibold'>
-                Xem chim trực tiếp tại trang trại Bird 590 TRƯƠNG ĐỊNH(mặt bờ sông) Tuân mai hoàng mai hà nội
-              </h3>
-            </div>
+            
           </div>
         </section>
 
@@ -199,7 +230,7 @@ function BirdDetail() {
             href='tel:01201'
             className='flex justify-center items-center gap-3 px-5 py-3 text-black bg-yellow-300  rounded-full'
           >
-            <img src={Ellipce} alt='' className='w-[40px] h-[40px]' /> Hotline 033233005
+            <img src={Ellipce} alt='' className='w-[40px] h-[40px]' /> Hotline: 033233005
           </a>
         </div>
 
