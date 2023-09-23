@@ -6,9 +6,10 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 import { ChevronLeft, Trash2 } from 'lucide-react'
 import Discount from '@/assets/discount.png'
 import { Link } from 'react-router-dom'
+import { Input } from '@/components/ui/input'
 // import { loadStripe } from '@stripe/stripe-js'
 import { useEffect, useState } from 'react'
-import { Input } from '@/components/ui/input'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 type Products = {
   birds: Bird[]
@@ -70,43 +71,46 @@ function Cart() {
   return (
     <main>
       <Container>
-        <section className='my-7 px-5'>
+        <section className='my-7 px-5 container'>
           <div className='flex justify-center gap-2 '>
-            <span className='uppercase text-2xl text-black'>Giỏ HÀNG </span>
-            <span className='text-2xl text-black'>{'>'}</span>
+            <span className='uppercase text-2xl  '>Giỏ HÀNG </span>
+            <span className='text-2xl '>{'>'}</span>
             <span className='uppercase text-2xl  text-gray-500'>Chi tiết thanh toán</span>
           </div>
 
           <div className='flex gap-10 mt-10 w-full'>
-            <div className='flex justify-center gap-10 container'>
-              <table className='table-auto w-full'>
-                <thead>
-                  <tr className=''>
-                    <th className='capitalize text-left'> </th>
-                    <th className='capitalize text-left'>Sản phẩm </th>
-                    <th className='capitalize text-left'>Giá</th>
-                    <th className='capitalize text-left'>Hủy bỏ</th>
-                  </tr>
-                </thead>
-                <tbody className='border border-collapse border-gray-500'>
+            <div className='flex justify-center gap-10 flex-1 '>
+              <Table className=''>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className='w-[100px]'></TableHead>
+                    <TableHead className='font-bold'>Sản phẩm </TableHead>
+                    <TableHead className='font-bold'>Giá</TableHead>
+                    <TableHead className='font-bold'>Hủy bỏ</TableHead>
+                  </TableRow>
+                </TableHeader>
+
+                <TableBody>
                   {new Array(3).fill(null).map((i) => (
-                    <tr className='border border-collapse border-gray-500'>
-                      <td className=' text-left py-3 '>
+                    <TableRow key={i}>
+                      <TableCell className='font-medium'>
+                        {' '}
                         <img
                           src='https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI'
                           alt=''
                           className='h-[70px] w-[70px] object-cover rounded-lg m-auto'
                         />
-                      </td>
-                      <td className=' text-left'>Chào mào huế mã SE170128</td>
-                      <td className=' text-left'>5.000.000đ</td>
-                      <td className=' text-left'>
+                      </TableCell>
+                      <TableCell>Chào mào huế mã SE170128</TableCell>
+                      <TableCell>5.000.000đ</TableCell>
+                      <TableCell className='text-right'>
+                        {' '}
                         <Trash2 />
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
             <div>
               <h1 className='text-3xl font-bold uppercase w-[500px] text-center'>Đơn hàng</h1>
@@ -124,7 +128,7 @@ function Cart() {
                 <span className='w-1/2 text-end font-bold text-xl'>12.500.000đ</span>
               </div>
 
-              <div className='m-auto w-80 mt-5 py-3 px-5 rounded-2xl  shadow-lg'>
+              <div className='m-auto w-80 mt-5 py-3 px-5 bg-[#FFFAFA] rounded-2xl shadow-lg'>
                 <div className='inline-flex gap-3 px-5 py-4 justify-start items-center bg-[#ECEB98] rounded-2xl'>
                   <img src={Discount} alt='' />
                   <span>Phiếu ưu đãi</span>
@@ -134,7 +138,7 @@ function Cart() {
                   <Input type='text' placeholder='nhập mã giảm giá ' className='w-full px-5 py-1 rounded-xl' />
                 </div>
                 <div className='mt-3'>
-                  <button className='px-7 py-2 bg-black text-white rounded-3xl'>Áp dụng</button>
+                  <Button className='px-7 py-2 font-bold rounded-3xl'>Áp dụng</Button>
                 </div>
               </div>
 
@@ -148,7 +152,7 @@ function Cart() {
 
           <div className='container'>
             <Button className='mt-5'>
-              <Link to='#' className='px-4 py-3 flex justify-center items-center gap-1 bg-black text-white rounded-lg'>
+              <Link to='#' className='px-4 py-3 flex justify-start items-center gap-1 rounded-lg'>
                 <ChevronLeft /> Tiếp tục xem sản phẩm{' '}
               </Link>
             </Button>

@@ -16,7 +16,6 @@ function BirdComparing({ className, bird }: Props) {
   const toggleList = () => {
     setListVisible(!isListVisible)
   }
-
   return (
     <main>
       <Container>
@@ -24,6 +23,7 @@ function BirdComparing({ className, bird }: Props) {
           <p className='uppercase font-semibold text-2xl pt-3'>So sánh sản phẩm</p>
         </div>
         <div className='w-full h-[1px] bg-black mt-3'></div>
+      
         <div className='flex flex-col md:flex-row md:justify-between items-center'>
           <div className='md:flex-1 mx-10'>
             <Input className='mt-3 mb-3 text-center' placeholder='Tìm kiếm chim để so sánh...' />
@@ -41,9 +41,7 @@ function BirdComparing({ className, bird }: Props) {
               <p className='underline text-cyan-400 text-center pt-3'>Xem chi tiết</p>
             </Link>
           </div>
-          <div className=' mx-10'>
-            <img src='src/assets/compare.png' alt='compare' className='mx-auto w-[60px]' />
-          </div>
+         
           <div className='md:flex-1 mx-10'>
             <Input className='mt-3 mb-3 text-center' placeholder='Tìm kiếm chim để so sánh...' />
             <Link
@@ -60,7 +58,7 @@ function BirdComparing({ className, bird }: Props) {
               <p className='underline text-cyan-400 text-center pt-3'>Xem chi tiết</p>
             </Link>
           </div>
-        </div>
+        </div> 
         <div className='mt-3'>
           <p
             className='uppercase text-xl font-bold bg-primary py-2 mb-3  text-white cursor-pointer'
