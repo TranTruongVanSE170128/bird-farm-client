@@ -203,7 +203,8 @@ function BirdDetail() {
                   return (
                     <div className='flex my-4'>
                       <span className='pr-3'><img className='w-6' src={achivementLogo} ></img></span>
-                      <span>Hạng {achievement.rank} {achievement.competition}</span>
+                      <span className='font-medium mr-1'>Hạng {achievement.rank}</span>
+                      <span> {achievement.competition}</span>
                     </div>
                     
                   )
