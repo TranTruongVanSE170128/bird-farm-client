@@ -161,6 +161,7 @@ export function Comparator() {
           <div className='flex flex-col gap-3 justify-center items-center'>
             <Button
               onClick={() => {
+                setActiveCompare(false)
                 navigate(`/compare?firstBird=${firstBird?._id}&secondBird=${secondBird?._id}`)
               }}
               disabled={numberOfBirds !== 2}
@@ -278,6 +279,7 @@ export function Breeder() {
           <div className='flex flex-col gap-3 justify-center items-center'>
             <Button
               onClick={() => {
+                setActiveBreed(false)
                 navigate(`/breed?maleBird=${firstBird?._id}&femaleBird=${secondBird?._id}`)
               }}
               disabled={numberOfBirds !== 2}
