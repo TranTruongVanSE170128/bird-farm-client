@@ -24,6 +24,7 @@ function BirdList() {
 
   useEffect(() => {
     const fetchBirds = async () => {
+      setIsLoadingBirds(true)
       const { data } = await birdFarmApi.get(
         addSearchParams('/api/birds/pagination', {
           pageSize,
@@ -39,6 +40,8 @@ function BirdList() {
     }
 
     fetchBirds()
+
+    console.log({ searchQuery })
   }, [pageNumber, searchQuery, specie, type])
 
   return (
@@ -50,8 +53,8 @@ function BirdList() {
 
         {isLoadingBirds ? (
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-            {Array(...new Array(12)).map(() => {
-              return <BirdCardSkeleton />
+            {Array(...new Array(12)).map((_, i) => {
+              return <BirdCardSkeleton key={i} />
             })}
           </div>
         ) : (
@@ -65,7 +68,7 @@ function BirdList() {
         {!!totalPages && (
           <Paginate
             className='mt-8'
-            path={`/birds?searchQuery=${searchQuery}`}
+            path={`/birds?searchQuery=${searchQuery ?? ''}`}
             pageSize={pageSize}
             pageNumber={pageNumber}
             totalPages={totalPages}

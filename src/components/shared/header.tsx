@@ -34,6 +34,7 @@ function Header() {
     e.preventDefault()
     if (searchQuery === '') return
 
+    window.scrollTo(0, 0)
     if (typeSearch === 'sell') {
       navigate(`/birds?type=sell&searchQuery=${searchQuery}`)
       return
@@ -151,15 +152,17 @@ function Header() {
             <nav className='flex justify-between items-center pb-1 mt-2'>
               {routes.map((route) => {
                 return (
-                  <Button key={route.label} variant='ghost' asChild>
-                    <Link
-                      key={route.label}
-                      to={route.href}
-                      className='text-sm font-medium transition-colors flex items-center gap-1 hover:text-primary'
-                    >
-                      <img src={route.icon} className='w-6 h-6' />
-                      {route.label}
-                    </Link>
+                  <Button
+                    key={route.label}
+                    onClick={() => {
+                      window.scrollTo(0, 0)
+                      navigate(route.href)
+                    }}
+                    variant='ghost'
+                    className='text-sm font-medium transition-colors flex items-center gap-1 hover:text-primary'
+                  >
+                    <img src={route.icon} className='w-6 h-6' />
+                    {route.label}
                   </Button>
                 )
               })}
