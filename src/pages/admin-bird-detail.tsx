@@ -1,6 +1,6 @@
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Bird, getSpecie } from '@/lib/types'
-import { cn } from '@/lib/utils'
+import { calculateAge, cn, formatPrice } from '@/lib/utils'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { ArrowLeft, Edit } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -8,6 +8,10 @@ import { Link, useParams } from 'react-router-dom'
 import noImage from '@/assets/no-image.avif'
 import BirdForm from '@/components/forms/bird-form'
 import Spinner from '@/components/ui/spinner'
+import maleIcon from '@/assets/male.svg'
+import femaleIcon from '@/assets/female.svg'
+import sellIcon from '@/assets/sell.svg'
+import breedIcon from '@/assets/breed.svg'
 
 function AdminBirdDetail() {
   const { id } = useParams()
@@ -58,14 +62,54 @@ function AdminBirdDetail() {
       </div>
       {!edit ? (
         <>
-          <div className='flex items-center gap-2 text-lg mb-4'>
-            <div className='font-bold'>Tên chim:</div> {bird?.name}
+          <div className='flex gap-12'>
+            <div className='flex items-center gap-2 text-lg mb-4'>
+              <div className='font-bold'>Loài chim:</div> {getSpecie(bird).name}
+            </div>
+            <div className='flex items-center gap-2 text-lg mb-4'>
+              <div className='font-bold'>Tên chim:</div> {bird?.name}
+            </div>
           </div>
-          <div className='flex items-center gap-2 text-lg mb-4'>
-            <div className='font-bold'>Loài chim:</div> {getSpecie(bird).name}
-          </div>
-          <div className='flex items-center gap-2 text-lg mb-4'>
-            <div className='font-bold'>Giới tính:</div> {bird.gender}
+
+          <div className='flex gap-12'>
+            <div className='flex items-center gap-2 text-lg mb-4'>
+              <div className='font-bold'>Giới tính:</div>{' '}
+              {bird.gender === 'male' ? (
+                <div className='flex items-center'>
+                  <img className='w-6 h-6 mr-1' src={maleIcon} alt='' />
+                  Đực
+                </div>
+              ) : (
+                <div className='flex items-center'>
+                  <img className='w-6 h-6 mr-1' src={femaleIcon} alt='' />
+                  Cái
+                </div>
+              )}
+            </div>
+
+            <div className='flex items-center gap-2 text-lg mb-4'>
+              <div className='font-bold'>Loại chim:</div>{' '}
+              {bird.gender === 'male' ? (
+                <div className='flex items-center'>
+                  <img className='w-6 h-6 mr-1' src={sellIcon} alt='' />
+                  Chim để bán
+                </div>
+              ) : (
+                <div className='flex items-center'>
+                  <img className='w-6 h-6 mr-1' src={breedIcon} alt='' />
+                  Chim phối giống
+                </div>
+              )}
+            </div>
+
+            <div className='flex items-center gap-2 text-lg mb-4'>
+              <div className='font-bold'>{bird.type === 'sell' ? 'Giá bán:' : 'Giá phối giống:'}</div>{' '}
+              {formatPrice(bird.type === 'sell' ? bird.sellPrice : bird.breedPrice)}
+            </div>
+
+            <div className='flex items-center gap-2 text-lg mb-4'>
+              <div className='font-bold'>Tuổi:</div> {calculateAge(bird.birth)}
+            </div>
           </div>
           <div className='text-lg font-bold mb-2'>Ảnh</div>
           <div>
@@ -78,6 +122,31 @@ function AdminBirdDetail() {
                 })}
               </div>
             )}
+          </div>
+
+          <div>
+            <div className='font-bold text-lg mt-4'>Thành Tích Thi Đấu</div>
+            <div className='flex w-full'>
+              <div className='grid grid-cols-2 gap-3 w-full'>
+                <div className='col-span-1 text-sm flex items-end pb-3'>Tên Cuộc Thi</div>
+                <div className='col-span-1 text-sm flex items-end pb-3'>Xếp Hạng</div>
+              </div>
+              <Button size='icon' variant='outline' className='invisible'></Button>
+            </div>
+            <div className='flex flex-col gap-3'>
+              {bird?.achievements?.map((achievement) => {
+                return (
+                  <div key={achievement._id} className='flex w-full gap-3'>
+                    <div className='grid grid-cols-2 gap-3 w-full'>
+                      <div className='col-span-1 py-2 px-4 rounded-md border-border border'>
+                        {achievement.competition}
+                      </div>
+                      <div className='col-span-1 py-2 px-4 rounded-md border-border border'>{achievement.rank}</div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
 
           <div className='mt-6 text-xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold mb-3'>

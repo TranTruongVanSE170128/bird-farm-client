@@ -42,8 +42,31 @@ export type Nest = {
   description?: string
 }
 
+export type Order = {
+  _id: string
+  birds: Bird[] | string[]
+  nests: Nest[] | string[]
+  user: User | string
+  receiver: string
+  address: string
+  phone: string
+  createdAt: Date
+  totalMoney: number
+  status: OrderStatus
+}
+
 export function getSpecie(item: Bird | Nest): Specie {
   return item.specie as Specie
+}
+
+export function getUser(item: Order): User {
+  return item.user as User
+}
+export function getBirds(item: Order): Bird[] {
+  return item.birds as Bird[]
+}
+export function getNests(item: Order): Nest[] {
+  return item.nests as Nest[]
 }
 
 export type Gender = 'male' | 'female'
@@ -67,3 +90,4 @@ export type Discount = {
 }
 
 export type Role = 'customer' | 'staff' | 'manager' | 'admin' | 'guest'
+export type OrderStatus = 'processing' | 'delivering' | 'success' | 'canceled'
