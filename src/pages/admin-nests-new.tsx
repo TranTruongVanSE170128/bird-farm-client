@@ -3,7 +3,7 @@ import NestForm from '@/components/forms/nest-form'
 function AdminNestsNew() {
   return (
     <div>
-      <NestForm btnTitle='Tạo' />
+      <NestForm action='create' btnTitle='Tạo' />
     </div>
   )
 }
