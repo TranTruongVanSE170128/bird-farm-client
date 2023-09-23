@@ -87,7 +87,9 @@ function AdminNestList() {
                         <MoreHorizontal className='cursor-pointer' />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className='bg-background border border-border'>
-                        <DropdownMenuItem className='cursor-pointer py-2 px-4'>Chi Tiết</DropdownMenuItem>
+                        <DropdownMenuItem asChild className='cursor-pointer py-2 px-4'>
+                          <Link to={`/admin/nests/${nest._id}`}>Chi Tiết</Link>
+                        </DropdownMenuItem>
                         <DropdownMenuItem className='cursor-pointer py-2 px-4'>Bày Bán</DropdownMenuItem>
                         <DropdownMenuItem className='cursor-pointer py-2 px-4'>Ngừng Bán</DropdownMenuItem>
                       </DropdownMenuContent>

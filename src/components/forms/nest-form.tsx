@@ -5,7 +5,7 @@ import { v4 } from 'uuid'
 import { useForm } from 'react-hook-form'
 import { TNestSchema, nestSchema } from '@/lib/validations/nest'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Nest, Specie } from '@/lib/types'
+import { Nest, Specie, getSpecie } from '@/lib/types'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import noImage from '@/assets/no-image.avif'
@@ -23,11 +23,13 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 type Props = {
   nest?: Nest
   btnTitle: string
+  setEdit?: (val: boolean) => void
+  action: 'create' | 'update'
 }
 
 const code = generateRandomHexCode()
 
-function NestForm({ nest, btnTitle }: Props) {
+function NestForm({ nest, btnTitle, action, setEdit }: Props) {
   const [files, setFiles] = useState<File[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
@@ -38,11 +40,11 @@ function NestForm({ nest, btnTitle }: Props) {
   const form = useForm<TNestSchema>({
     resolver: zodResolver(nestSchema),
     defaultValues: {
-      imageUrls: nest?.imageUrls ? JSON.stringify(nest.imageUrls) : '', //
+      imageUrls: nest?.imageUrls,
       description: nest?.description ? nest.description : '', //
       name: nest?.name ? nest.name : code, //
       price: nest?.price ? nest.price : undefined, //
-      specie: nest?.specie ? (nest.specie as string) : '' //
+      specie: nest?.specie ? getSpecie(nest)._id : ''
     }
   })
 
@@ -57,22 +59,23 @@ function NestForm({ nest, btnTitle }: Props) {
         imageUrls = [await getDownloadURL(imageRef)]
       }
 
-      console.log({
+      const body = {
         ...values,
         imageUrls
-      })
+      }
 
-      await birdFarmApi.post('/api/nests', {
-        ...values,
-        imageUrls
-      })
+      const { data } =
+        action === 'create'
+          ? await birdFarmApi.post('/api/nests', body)
+          : await birdFarmApi.put(`/api/nests/${nest?._id}`, body)
 
       toast({
         variant: 'success',
-        title: 'Tạo tổ chim mới thành công'
+        title: action === 'create' ? 'Tạo chim mới thành công' : 'Cập nhật chim thành công'
       })
 
-      navigate('/admin/nests')
+      navigate(`/admin/nests/${data.nest._id}`)
+      window.location.reload()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log({ error })
@@ -118,81 +121,86 @@ function NestForm({ nest, btnTitle }: Props) {
   return (
     <Form {...form}>
       <form className='flex flex-col justify-start gap-10' onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name='specie'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormLabel>Loài*</FormLabel>
-              <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      aria-expanded={open}
-                      variant='outline'
-                      role='combobox'
-                      className={cn('w-[200px] justify-between', !field.value && 'text-muted-foreground')}
-                    >
-                      {field.value ? species.find((specie) => specie._id === field.value)?.name : 'Chọn loài'}
-                      <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className='w-[200px] p-0'>
-                  <Command>
-                    <CommandInput placeholder='Search framework...' />
-                    <CommandEmpty>Không tìm thấy.</CommandEmpty>
-                    <CommandGroup>
-                      <ScrollArea className='h-96'>
-                        {species.map((specie) => (
-                          <CommandItem
-                            value={specie.name}
-                            key={specie._id}
-                            onSelect={() => {
-                              setOpen(false)
-                              form.setValue('specie', specie._id)
-                              form.setValue('name', 'Tổ ' + specie.name + ' mã ' + code)
-                            }}
-                          >
-                            <Check
-                              className={cn('mr-2 h-4 w-4', specie._id === field.value ? 'opacity-100' : 'opacity-0')}
-                            />
-                            {specie.name}
-                          </CommandItem>
-                        ))}
-                      </ScrollArea>
-                    </CommandGroup>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className='flex gap-4'>
+          <FormField
+            control={form.control}
+            name='specie'
+            render={({ field }) => (
+              <FormItem className='flex flex-col'>
+                <FormLabel>Loài*</FormLabel>
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        aria-expanded={open}
+                        variant='outline'
+                        role='combobox'
+                        className={cn('w-[200px] justify-between', !field.value && 'text-muted-foreground')}
+                      >
+                        {field.value ? species.find((specie) => specie._id === field.value)?.name : 'Chọn loài'}
+                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className='w-[200px] p-0'>
+                    <Command>
+                      <CommandInput placeholder='Search framework...' />
+                      <CommandEmpty>Không tìm thấy.</CommandEmpty>
+                      <CommandGroup>
+                        <ScrollArea className='h-96'>
+                          {species.map((specie) => (
+                            <CommandItem
+                              className='cursor-pointer'
+                              value={specie.name}
+                              key={specie._id}
+                              onSelect={() => {
+                                setOpen(false)
+                                form.setValue('specie', specie._id)
+                                form.setValue('name', specie.name + ' mã ' + code)
+                              }}
+                            >
+                              <Check
+                                className={cn('mr-2 h-4 w-4', specie._id === field.value ? 'opacity-100' : 'opacity-0')}
+                              />
+                              {specie.name}
+                            </CommandItem>
+                          ))}
+                        </ScrollArea>
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name='name'
-          render={({ field }) => (
-            <FormItem className='flex w-full flex-col gap-3'>
-              <FormLabel className='font-bold text-light-2'>Tên Tổ Chim*</FormLabel>
-              <FormControl>
-                <Input type='hidden' className='' {...field} />
-              </FormControl>
-              <div className='flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300'>
-                {form.getValues('name')}
-              </div>
-              <FormDescription>Tên tổ chim được tạo tự động</FormDescription>
-              <FormMessage />
-            </FormItem>
+          {form.getValues('specie') && (
+            <FormField
+              control={form.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem className='flex w-full flex-col'>
+                  <FormLabel className='font-bold text-light-2'>Tên Tổ Chim*</FormLabel>
+                  <FormControl>
+                    <Input type='hidden' className='' {...field} />
+                  </FormControl>
+                  <div className='flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300'>
+                    {form.getValues('name')}
+                  </div>
+                  <FormDescription>Tên tổ chim được tạo tự động</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           )}
-        />
+        </div>
 
         <FormField
           control={form.control}
           name='price'
           render={({ field }) => (
-            <FormItem className='flex w-full flex-col gap-3'>
+            <FormItem className='flex w-full flex-col'>
               <FormLabel className='font-bold'>Giá*(vnđ)</FormLabel>
               <FormControl>
                 <Input placeholder='Giá chim...' type='text' className='no-focus' {...field} />
@@ -208,17 +216,15 @@ function NestForm({ nest, btnTitle }: Props) {
           render={({ field }) => (
             <FormItem className='flex items-center gap-4'>
               <FormLabel className=''>
-                <div className='font-bold text-light-2 mb-4'>Ảnh</div>
-                {field.value ? (
-                  <img
-                    src={field.value}
-                    alt='imageUrl'
-                    width={240}
-                    height={240}
-                    className='rounded-md object-contain'
-                  />
-                ) : (
+                <div className='font-bold mb-4'>Ảnh</div>
+                {!field.value?.length ? (
                   <img src={noImage} alt='imageUrl' width={240} height={240} className='object-contain rounded-md' />
+                ) : (
+                  field.value.map((url) => {
+                    return (
+                      <img src={url} alt='imageUrl' width={240} height={240} className='rounded-md object-contain' />
+                    )
+                  })
                 )}
               </FormLabel>
               <FormControl>
@@ -249,10 +255,24 @@ function NestForm({ nest, btnTitle }: Props) {
           )}
         />
 
-        <Button disabled={isSubmitting} type='submit'>
-          {btnTitle}
-          {isSubmitting && <Shell className='ml-1 animate-spin w-4 h-4' />}
-        </Button>
+        <div className='flex gap-2 justify-end'>
+          {setEdit && (
+            <Button
+              onClick={() => {
+                setEdit(false)
+              }}
+              disabled={isSubmitting}
+              variant='outline'
+              type='submit'
+            >
+              Hủy
+            </Button>
+          )}
+          <Button disabled={isSubmitting} type='submit'>
+            {btnTitle}
+            {isSubmitting && <Shell className='ml-1 animate-spin w-4 h-4' />}
+          </Button>
+        </div>
       </form>
     </Form>
   )

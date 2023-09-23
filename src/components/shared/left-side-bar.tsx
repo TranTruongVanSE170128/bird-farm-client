@@ -51,7 +51,7 @@ const LeftSidebar = () => {
             <div className='flex cursor-pointer gap-4 p-4'>
               <LogOut />
 
-              <p className='text-light-2 max-lg:hidden'>Logout</p>
+              <p className='text-light-2 max-lg:hidden'>Đăng xuất</p>
             </div>
           </div>
         )}
