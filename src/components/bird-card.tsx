@@ -2,13 +2,14 @@ import { Link } from 'react-router-dom'
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card'
 import { cn, formatPrice } from '@/lib/utils'
 import { Button } from './ui/button'
-import { Bird, getSpecie } from '@/lib/types'
+import { Bird } from '@/lib/types'
 import noImage from '@/assets/no-image.avif'
-import redHeart from '@/assets/red-heart.svg'
-import blackHeart from '@/assets/black-heart.svg'
-import { useState } from 'react'
 import { useToast } from './ui/use-toast'
 import { useCartContext } from '@/contexts/cart-provider'
+import { useCompareContext } from '@/contexts/compare-provider'
+import { useBreedContext } from '@/contexts/breed-provider'
+import maleIcon from '@/assets/male.svg'
+import femaleIcon from '@/assets/female.svg'
 
 type Props = {
   className?: string
@@ -16,9 +17,10 @@ type Props = {
 }
 
 function BirdCard({ className, bird }: Props) {
-  const wishList: Record<string, boolean> = JSON.parse(localStorage.getItem('wishList') || '{}')
   const { addBirdToCart } = useCartContext()
-  const [isInWishList, setIsInWishList] = useState(wishList[bird._id])
+  const { addToCompare } = useCompareContext()
+  const { addToBreed } = useBreedContext()
+
   const { toast } = useToast()
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -27,30 +29,6 @@ function BirdCard({ className, bird }: Props) {
     toast({
       variant: 'success',
       title: 'Đã thêm chim vào giỏ hàng!',
-      duration: 2500
-    })
-  }
-
-  const handleAddToWishList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-    wishList[bird._id] = true
-    localStorage.setItem('wishList', JSON.stringify(wishList))
-    setIsInWishList(!isInWishList)
-    toast({
-      variant: 'success',
-      title: 'Đã thêm chim vào danh sách mong ước!',
-      duration: 2500
-    })
-  }
-
-  const handleRemoveFromWishList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-    delete wishList[bird._id]
-    localStorage.setItem('wishList', JSON.stringify(wishList))
-    setIsInWishList(!isInWishList)
-    toast({
-      variant: 'destructive',
-      title: 'Đã bỏ chim khỏi danh sách mong ước!',
       duration: 2500
     })
   }
@@ -76,30 +54,58 @@ function BirdCard({ className, bird }: Props) {
         </CardHeader>
         <CardContent className='flex-col items-start'>
           <div>
-            <p className='font-semibold text-lg lg:text-xl'>
-              {getSpecie(bird).name} mã {bird?.name}
-            </p>
+            <p className='font-semibold text-lg lg:text-xl line-clamp-1'>{bird?.name}</p>
           </div>
-          <div className='flex items-center justify-between lg:text-lg'>{formatPrice(bird?.price || 0)}</div>
+          <div className='flex items-center gap-2'>
+            Loại chim: {bird.type === 'sell' ? 'Chim kiểng' : 'Chim phối giống'}
+            {bird.type === 'breed' &&
+              (bird.gender === 'male' ? (
+                <img className='w-6 h-6' src={maleIcon} />
+              ) : (
+                <img className='w-6 h-6' src={femaleIcon} />
+              ))}
+          </div>
+          <div className='flex items-center justify-between lg:text-lg'>
+            {bird.type === 'sell'
+              ? `Giá bán: ${formatPrice(bird?.sellPrice || 0)}`
+              : `Giá phối giống: ${formatPrice(bird?.breedPrice || 0)}`}
+          </div>
         </CardContent>
         <CardFooter className='flex gap-2 flex-col'>
           <div className='flex w-full gap-2'>
-            <Button onClick={handleAddToCart} variant='outline' className='w-full'>
-              Thêm vào giỏ
-            </Button>
-            {isInWishList ? (
-              <Button onClick={handleRemoveFromWishList} className='p-1' variant='outline' size='icon'>
-                <img src={redHeart} alt='heart' />
-              </Button>
-            ) : (
-              <Button onClick={handleAddToWishList} className='p-1' variant='outline' size='icon'>
-                <img src={blackHeart} alt='heart' />
+            {bird.type === 'sell' && (
+              <Button onClick={handleAddToCart} variant='outline' className='w-full'>
+                Thêm vào giỏ
               </Button>
             )}
+
+            <Button
+              onClick={(e) => {
+                e.preventDefault()
+                addToCompare(bird)
+              }}
+              variant='outline'
+              className='w-full'
+            >
+              So sánh
+            </Button>
           </div>
-          <Button onClick={handleBuyNow} className='w-full'>
-            Mua ngay
-          </Button>
+
+          {bird.type === 'sell' ? (
+            <Button onClick={handleBuyNow} className='w-full'>
+              Mua ngay
+            </Button>
+          ) : (
+            <Button
+              onClick={(e) => {
+                e.preventDefault()
+                addToBreed(bird)
+              }}
+              className='w-full'
+            >
+              Phối giống
+            </Button>
+          )}
         </CardFooter>
       </Card>
     </Link>

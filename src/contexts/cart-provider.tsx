@@ -6,42 +6,48 @@ type CartProviderProps = {
 }
 
 type Cart = {
-  birds: Record<string, number>
-  nests: Record<string, number>
+  birds: string[]
+  nests: string[]
 }
 
 type CartContextType = {
   cart: Cart
   addBirdToCart: (id: string) => void
+  addNestToCart: (id: string) => void
   quantityInCart: number
 }
 
 export const CartContext = React.createContext<CartContextType | null>(null)
 
 const CartProvider = ({ children }: CartProviderProps) => {
-  const { localStorageValue: cart, setLocalStorageStateValue: setCart } = useLocalStorage<Cart>('cart', {
-    birds: {},
-    nests: {}
+  const [cart, setCart] = useLocalStorage<Cart>('cart', {
+    birds: [],
+    nests: []
   })
 
   const [quantityInCart, setQuantityInCart] = useState(0)
 
   const addBirdToCart = (id: string) => {
-    setCart({ ...cart, birds: { ...cart.birds, [id]: cart.birds[id] ? cart.birds[id] + 1 : 1 } })
+    if (!cart.birds.includes(id)) {
+      setCart({ ...cart, birds: [...cart.birds, id] })
+    }
+  }
+
+  const addNestToCart = (id: string) => {
+    if (!cart.nests.includes(id)) {
+      setCart({ ...cart, nests: [...cart.nests, id] })
+    }
   }
 
   useEffect(() => {
-    let sum = 0
-    Object.keys(cart.birds).map((key) => {
-      sum += cart.birds[key] || 0
-    })
-    Object.keys(cart.nests).map((key) => {
-      sum += cart.nests[key] || 0
-    })
-    setQuantityInCart(sum)
+    setQuantityInCart(cart.birds.length + cart.nests.length)
   }, [cart])
 
-  return <CartContext.Provider value={{ cart, addBirdToCart, quantityInCart }}>{children}</CartContext.Provider>
+  return (
+    <CartContext.Provider value={{ cart, addBirdToCart, quantityInCart, addNestToCart }}>
+      {children}
+    </CartContext.Provider>
+  )
 }
 
 export default CartProvider

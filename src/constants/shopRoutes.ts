@@ -1,14 +1,21 @@
+import breedIcon from '@/assets/breed.svg'
+import birdIcon from '@/assets/bird-color.svg'
+import nestIcon from '@/assets/nest-color.svg'
+
 export const routes = [
   {
-    href: '/',
-    label: 'Chim Trưởng Thành'
+    href: '/birds?type=sell',
+    label: 'Chim kiểng',
+    icon: birdIcon
   },
   {
-    href: '/',
-    label: 'Tổ Chim Non Có Sẵn'
+    href: '/birds?type=breed',
+    label: 'Chim phối giống',
+    icon: breedIcon
   },
   {
-    href: '/',
-    label: 'Đặt Tổ Chim Non'
+    href: '/nests',
+    label: 'Tổ chim non có sẵn',
+    icon: nestIcon
   }
 ]

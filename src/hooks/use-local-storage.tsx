@@ -1,35 +1,23 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function useLocalStorage<T>(key: string, defaultValue: T) {
-  const [localStorageValue, setLocalStorageValue] = useState<T>(() => {
-    try {
-      const value = localStorage.getItem(key)
+  const [value, setValue] = useState<T>(() => {
+    let currentValue
 
-      if (value) {
-        return JSON.parse(value)
-      } else {
-        localStorage.setItem(key, JSON.stringify(defaultValue))
-        return defaultValue
-      }
+    try {
+      currentValue = JSON.parse(localStorage.getItem(key) || String(defaultValue))
     } catch (error) {
-      localStorage.setItem(key, JSON.stringify(defaultValue))
-      return defaultValue
+      currentValue = defaultValue
     }
+
+    return currentValue
   })
 
-  const setLocalStorageStateValue = (valueOrFn: T) => {
-    let newValue
-    if (typeof valueOrFn === 'function') {
-      const fn = valueOrFn
-      newValue = fn(localStorageValue)
-    } else {
-      newValue = valueOrFn
-    }
-    localStorage.setItem(key, JSON.stringify(newValue))
-    setLocalStorageValue(newValue)
-  }
-  return { localStorageValue, setLocalStorageStateValue }
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value))
+  }, [value, key])
+
+  return [value, setValue] as [T, React.Dispatch<React.SetStateAction<T>>]
 }
 
 export default useLocalStorage

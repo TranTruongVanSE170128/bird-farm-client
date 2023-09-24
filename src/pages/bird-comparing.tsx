@@ -1,237 +1,107 @@
 import Container from '@/components/ui/container'
-import { Link } from 'react-router-dom'
-import { useState } from 'react'
-import { ChevronUp, ChevronDown } from 'lucide-react'
-import { Card } from '@/components/ui/card'
-import { SelectContent, SelectGroup, SelectTrigger, SelectValue, Select, SelectItem } from '@/components/ui/select'
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { useSearchParams } from 'react-router-dom'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { useEffect, useState } from 'react'
+import { Bird } from '@/lib/types'
+import { birdFarmApi } from '@/services/bird-farm-api'
+import BirdCard from '@/components/bird-card'
+import Spinner from '@/components/ui/spinner'
+import versusIcon from '@/assets/versus.png'
 
 function BirdComparing() {
-  const [isListVisible, setListVisible] = useState(false)
-  const toggleList = () => {
-    setListVisible(!isListVisible)
+  const [searchParams] = useSearchParams()
+  const [firstBird, setFirstBird] = useState<Bird | null>(null)
+  const [secondBird, setSecondBird] = useState<Bird | null>(null)
+
+  useEffect(() => {
+    const fetchBirds = async () => {
+      try {
+        const { data } = await birdFarmApi.post('/api/birds/get-by-ids', {
+          birds: [searchParams.get('firstBird'), searchParams.get('secondBird')]
+        })
+
+        if (data.birds.length === 2) {
+          setFirstBird(data.birds[0])
+          setSecondBird(data.birds[1])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchBirds()
+  }, [searchParams])
+
+  if (!firstBird || !secondBird) {
+    return <Spinner />
   }
 
   return (
-    <main>
+    <main className='mt-12'>
       <Container>
-        <section className='container mt-5'>
-          <div className='flex gap-5'>
-            <div className='basis-1/3 my-auto'>
-              <div>
-                <h3 className='text-2xl uppercase font-bold text-center'>So sánh chim trưởng thành</h3>
-              </div>
-              <div className='flex flex-col gap-7 items-center mt-11'>
-                <div className='text-center'>
-                  <h2 className='text-3xl'>Chim Chào Mào Huế </h2>
-                  <h2 className='text-3xl'>Mã(SE170112)</h2>
-                </div>
-                <h3 className='text-3xl'>&</h3>
-                <div className='text-center'>
-                  <h2 className='text-3xl'>Chim Chào Mào Huế</h2>
-                  <h2 className='text-3xl'>Mã(SE170112)</h2>
-                </div>
-              </div>
-            </div>
-            <div className='basis-1/3 container'>
-              <Select>
-                <SelectTrigger className='w-full p-6'>
-                  <SelectValue className='font-semibold' placeholder={` Chọn chim muốn so sánh`} />
-                </SelectTrigger>
-                <SelectContent className='max-h-[300px] overflow-y-auto'>
-                  <SelectGroup>
-                    {new Array(10).fill(null).map((i, index) => (
-                      <SelectItem value={index.toString()} key={index}>
-                        <div className='flex p-2 justify-between items-center gap-3  rounded-lg  '>
-                          <img
-                            src='https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI'
-                            alt=''
-                            className='aspect-auto object-cover w-[50px] rounded-lg'
-                          />
-                          <p>Chim Chào Mào Huế mã SE170112</p>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-
-              <Card className='mt-5 p-3 bg-gray-200'>
-                <img
-                  src='https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI'
-                  alt=''
-                />
-                <p className='mt-2'>Chim chào mào huế, mã SE170112</p>
-                <p className='mt-2'>Loài: chim Chào mào </p>
-                <p className='text-2xl text-red-300 mt-2'>5.500.000 đ </p>
-                <Link to='#' className='underline underline-offset-3 mt-2'>
-                  {' '}
-                  Xem chi tiết
-                </Link>
-              </Card>
-            </div>
-            <div className='basis-1/3 container'>
-              <Select>
-                <SelectTrigger className='w-full p-6'>
-                  <SelectValue className='font-semibold ' placeholder={` Chọn chim muốn so sánh`} />
-                </SelectTrigger>
-                <SelectContent className='max-h-[300px] overflow-y-auto'>
-                  <SelectGroup>
-                    {new Array(15).fill(null).map((i, index) => (
-                      <SelectItem value={index.toString()} key={index}>
-                        <div className='flex p-2 justify-between items-center gap-3  rounded-lg  '>
-                          <img
-                            src='https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI'
-                            alt=''
-                            className='aspect-auto object-cover w-[50px] rounded-lg'
-                          />
-                          <p>Chim Chào Mào Huế mã SE170112</p>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-
-              <Card className='mt-5 p-3 bg-gray-200'>
-                <img
-                  src='https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI'
-                  alt=''
-                />
-                <p className='mt-2'>Chim chào mào huế, mã SE170112</p>
-                <p className='mt-2'>Loài: chim Chào mào </p>
-                <p className='text-2xl text-red-300 mt-2'>5.500.000 đ </p>
-                <Link to='#' className='underline underline-offset-3 mt-2'>
-                  {' '}
-                  Xem chi tiết
-                </Link>
-              </Card>
-            </div>
+        <h1 className='text-3xl font-bold'>So sánh chim kiểng</h1>
+        <div className='flex mt-4'>
+          <div className='flex flex-col border justify-center items-center basis-1/3'>
+            <div className='text-center text-xl font-medium'>{firstBird?.name}</div>
+            <img src={versusIcon} className='w-32 h-32' />
+            <div className='text-center text-xl font-medium'>{firstBird?.name}</div>
           </div>
 
-          <div className='mt-3'>
-            <div className='mt-3 p-3 transition-all'>
-              <p
-                className='uppercase text-xl font-bold bg-primary py-2 mb-3  px-4 text-white cursor-pointer'
-                onClick={toggleList}
-              >
-                <div className='flex gap-4 px-3 items-center'>
-                  {isListVisible ? <ChevronUp></ChevronUp> : <ChevronDown></ChevronDown>}
-                  Mô tả chi tiết
-                </div>
-              </p>
-              {isListVisible && (
-                <Table>
-                  <TableCaption>A list of bird information.</TableCaption>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b  border-collapse'>
-                        Thông tin so sánh
-                      </TableHead>
-                      <TableHead className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b border-x-2 border-collapse'>
-                        Chim chào mào huế, mã SE170112
-                      </TableHead>
-                      <TableHead className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b'>
-                        Chim chào mào huế, mã SE170112
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b  border-collapse'>
-                        Bố
-                      </TableCell>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b border-x-2 border-collapse'>
-                        Trương Văn(xem thông tin chi tiết)
-                      </TableCell>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b'>
-                        Trương Văn(xem thông tin chi tiết)
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b  border-collapse'>
-                        Mẹ
-                      </TableCell>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b border-x-2 border-collapse'>
-                        Trương Văn(xem thông tin chi tiết)
-                      </TableCell>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b'>
-                        Trương Văn(xem thông tin chi tiết)
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b  border-collapse'>
-                        Ngày sinh
-                      </TableCell>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b border-x-2 border-collapse'>
-                        30/12/2015
-                      </TableCell>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b'>
-                        30/12/0201
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b  border-collapse'>
-                        Giới tính
-                      </TableCell>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b border-x-2 border-collapse'>
-                        Chim đực
-                      </TableCell>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b'>
-                        Chim đực
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b  border-collapse'>
-                        Sức khỏe
-                      </TableCell>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b border-x-2 border-collapse'>
-                        Ăn uống tốt, khỏe mạnh, nhanh nhẹn
-                      </TableCell>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b'>
-                        Ăn uống tốt, khỏe mạnh, nhanh nhẹn
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b  border-collapse'>
-                        Thành tích thi đấu
-                      </TableCell>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b border-x-2 border-collapse'>
-                        Huy chương vàng cấp QG
-                      </TableCell>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b'>
-                        Huy chương vàng cấp QG
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b  border-collapse'>
-                        Giá
-                      </TableCell>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b border-x-2 border-collapse'>
-                        5.500.000 đ
-                      </TableCell>
-                      <TableCell className='text-left basis-1/3 border-spacing-3  px-4 py-2 border-b'>
-                        5.500.000 đ
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              )}
-            </div>
+          <div className='basis-1/3 flex justify-center border'>
+            <BirdCard className='max-w-[350px]' bird={firstBird} />
           </div>
-        </section>
+
+          <div className='basis-1/3 flex justify-center border'>
+            <BirdCard className='max-w-[350px]' bird={secondBird} />
+          </div>
+        </div>
+
+        <Table className=''>
+          <TableHeader>
+            <TableRow className='grid grid-cols-12'>
+              <TableHead className='border col-span-4 text-base'>Thông tin so sánh</TableHead>
+              <TableHead className='border col-span-4 text-base'>Chim chào mào huế, mã SE170112</TableHead>
+              <TableHead className='border col-span-4 text-base'>Chim chào mào huế, mã SE170112</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4'>Bố</TableCell>
+              <TableCell className='border col-span-4'>Trương Văn(xem thông tin chi tiết)</TableCell>
+              <TableCell className='border col-span-4'>Trương Văn(xem thông tin chi tiết)</TableCell>
+            </TableRow>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4'>Mẹ</TableCell>
+              <TableCell className='border col-span-4'>Trương Văn(xem thông tin chi tiết)</TableCell>
+              <TableCell className='border col-span-4'>Trương Văn(xem thông tin chi tiết)</TableCell>
+            </TableRow>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4'>Ngày sinh</TableCell>
+              <TableCell className='border col-span-4'>30/12/2015</TableCell>
+              <TableCell className='border col-span-4'>30/12/0201</TableCell>
+            </TableRow>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4'>Giới tính</TableCell>
+              <TableCell className='border col-span-4'>Chim đực</TableCell>
+              <TableCell className='border col-span-4'>Chim đực</TableCell>
+            </TableRow>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4'>Sức khỏe</TableCell>
+              <TableCell className='border col-span-4'>Ăn uống tốt, khỏe mạnh, nhanh nhẹn</TableCell>
+              <TableCell className='border col-span-4'>Ăn uống tốt, khỏe mạnh, nhanh nhẹn</TableCell>
+            </TableRow>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4'>Thành tích thi đấu</TableCell>
+              <TableCell className='border col-span-4'>Huy chương vàng cấp QG</TableCell>
+              <TableCell className='border col-span-4'>Huy chương vàng cấp QG</TableCell>
+            </TableRow>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4'>Giá</TableCell>
+              <TableCell className='border col-span-4'>5.500.000 đ</TableCell>
+              <TableCell className='border col-span-4'>5.500.000 đ</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </Container>
     </main>
   )

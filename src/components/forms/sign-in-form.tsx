@@ -4,17 +4,18 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { TSignInSchema, signInSchema } from '@/lib/validations/auth'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
-import axios from 'axios'
 import googleIcon from '@/assets/google.svg'
 import { Link, useNavigate } from 'react-router-dom'
 import { Shell } from 'lucide-react'
 import { useState } from 'react'
 import { useToast } from '../ui/use-toast'
 import { useGoogleLogin } from '@react-oauth/google'
+import { useAuthContext } from '@/contexts/auth-provider'
+import { birdFarmApi } from '@/services/bird-farm-api'
 
 export function SignInForm() {
   const navigate = useNavigate()
-
+  const { setAccessToken } = useAuthContext()
   const { toast } = useToast()
   const form = useForm<TSignInSchema>({
     resolver: zodResolver(signInSchema)
@@ -26,11 +27,11 @@ export function SignInForm() {
     onSuccess: async (codeResponse) => {
       setIsLoggingGoogle(true)
       try {
-        const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login-google`, {
+        const { data } = await birdFarmApi.post('/api/auth/login-google', {
           accessTokenGoogle: codeResponse.access_token
         })
         const accessToken = data.accessToken
-        localStorage.setItem('access_token', accessToken)
+        setAccessToken(accessToken)
         navigate('/')
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
@@ -47,8 +48,8 @@ export function SignInForm() {
   async function onSubmit(values: TSignInSchema) {
     setIsSubmitting(true)
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/sign-in`, values)
-      localStorage.setItem('access_token', data?.accessToken)
+      const { data } = await birdFarmApi.post('/api/auth/sign-in', values)
+      setAccessToken(data?.accessToken)
       navigate('/')
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
