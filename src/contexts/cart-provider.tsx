@@ -36,9 +36,9 @@ const CartProvider = ({ children }: CartProviderProps) => {
     setCart({ ...cart, nests: _.union([...cart.nests], [id]) })
   }
 
-  useEffect(() => {
-    setQuantityInCart(cart.birds.length + cart.nests.length)
-  }, [cart])
+  // useEffect(() => {
+  //   setQuantityInCart(cart.birds.length + cart.nests.length)
+  // }, [cart])
 
   return (
     <CartContext.Provider value={{ cart, addBirdToCart, quantityInCart, addNestToCart }}>
