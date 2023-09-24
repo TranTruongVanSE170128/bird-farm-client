@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/select'
 import NestCard from '@/components/nest-card'
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { Nest } from '@/lib/types'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Nest, Specie } from '@/lib/types'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import Paginate from '@/components/paginate'
 import { addSearchParams } from '@/lib/utils'
@@ -27,6 +27,17 @@ function NestList() {
   const [nests, setNests] = useState<Nest[]>([])
   const [isLoadingNests, setIsLoadingNests] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
+  const [species, setSpecies] = useState<Specie[]>([])
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const fetchSpecies = async () => {
+      const { data } = await birdFarmApi.get('/api/species')
+
+      setSpecies(data?.species || [])
+    }
+    fetchSpecies()
+  }, [])
 
   useEffect(() => {
     const fetchNests = async () => {
@@ -41,6 +52,7 @@ function NestList() {
 
     fetchNests()
   }, [pageNumber, searchQuery, specie])
+
   return (
     <main>
       <Container>
@@ -50,17 +62,22 @@ function NestList() {
 
         <div className='pt-5 font-medium text-2xl'>Bộ Lọc</div>
 
-        <Select>
+        <Select
+          value={specie}
+          onValueChange={(value) => {
+            navigate(addSearchParams('/nests', { searchQuery, specie: value }))
+          }}
+        >
           <SelectTrigger className='w-[180px] mt-3 mb-6'>
             <SelectValue className='font-semibold' placeholder='Lọc loài chim' />
           </SelectTrigger>
           <SelectContent>
-            <SelectGroup>
+            <SelectGroup className='h-96'>
               <SelectLabel>Loài chim</SelectLabel>
-              <SelectItem value='Chim sẻ'>Chim sẻ</SelectItem>
-              <SelectItem value='Chim vành khuyên'>Chim vành khuyên</SelectItem>
-              <SelectItem value='Chim sáo'>Chim sáo</SelectItem>
-              <SelectItem value='Chim mật'>Chim mật</SelectItem>
+              <SelectItem value=''>Tất cả</SelectItem>
+              {species.map((specie) => {
+                return <SelectItem value={specie._id}>{specie.name}</SelectItem>
+              })}
             </SelectGroup>
           </SelectContent>
         </Select>

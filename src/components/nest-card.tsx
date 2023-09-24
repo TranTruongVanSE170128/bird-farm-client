@@ -32,7 +32,7 @@ function NestCard({ className, nest }: Props) {
 
   return (
     <Link
-      to={`/birds/${nest._id}`}
+      to={`/nests/${nest._id}`}
       className={cn('focus:ring-2 rounded-lg hover:ring-2 ring-primary transition duration-300', className)}
     >
       <Card className='border-2 overflow-hidden'>

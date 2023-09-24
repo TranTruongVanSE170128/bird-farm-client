@@ -39,7 +39,7 @@ function BirdComparing() {
   }, [searchParams])
 
   if (!firstBird || !secondBird) {
-    return <Spinner />
+    return <Spinner className='mt-12' />
   }
 
   return (
