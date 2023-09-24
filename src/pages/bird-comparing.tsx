@@ -1,126 +1,222 @@
 import Container from '@/components/ui/container'
-import { Input } from '@/components/ui/input'
-import { Link } from 'react-router-dom'
-import { Bird } from '@/lib/types'
-import { cn } from '@/lib/utils'
-import { useState } from 'react'
-import { ChevronUp, ChevronDown } from 'lucide-react'
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Link, useSearchParams } from 'react-router-dom'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { useEffect, useState } from 'react'
+import { Bird, getDad, getMom, getSpecie } from '@/lib/types'
+import { birdFarmApi } from '@/services/bird-farm-api'
+import BirdCard from '@/components/bird-card'
+import Spinner from '@/components/ui/spinner'
+import versusIcon from '@/assets/versus.png'
+import { calculateAge, formatPrice } from '@/lib/utils'
+import maleIcon from '@/assets/male.svg'
+import femaleIcon from '@/assets/female.svg'
+import medalIcon from '@/assets/medal.svg'
+import birdIcon from '@/assets/bird-color.svg'
+import breedIcon from '@/assets/breed.svg'
 
-type Props = {
-  className?: string
-  bird?: Bird
-}
-function BirdComparing({ className, bird }: Props) {
-  const [isListVisible, setListVisible] = useState(false)
-  const toggleList = () => {
-    setListVisible(!isListVisible)
+function BirdComparing() {
+  const [searchParams] = useSearchParams()
+  const [firstBird, setFirstBird] = useState<Bird | null>(null)
+  const [secondBird, setSecondBird] = useState<Bird | null>(null)
+
+  useEffect(() => {
+    const fetchBirds = async () => {
+      try {
+        const { data } = await birdFarmApi.post('/api/birds/get-by-ids', {
+          birds: [searchParams.get('firstBird'), searchParams.get('secondBird')]
+        })
+
+        if (data.birds.length === 2) {
+          setFirstBird(data.birds[0])
+          setSecondBird(data.birds[1])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchBirds()
+  }, [searchParams])
+
+  if (!firstBird || !secondBird) {
+    return <Spinner />
   }
+
   return (
-    <main>
+    <main className='mt-12'>
       <Container>
-        <div className='flex flex-col md:flex-row md:items-center justify-start'>
-          <p className='uppercase font-semibold text-2xl pt-3'>So sánh sản phẩm</p>
-        </div>
-        <div className='w-full h-[1px] bg-black mt-3'></div>
-      
-        <div className='flex flex-col md:flex-row md:justify-between items-center'>
-          <div className='md:flex-1 mx-10'>
-            <Input className='mt-3 mb-3 text-center' placeholder='Tìm kiếm chim để so sánh...' />
-            <Link
-              to={`/birds/${bird?._id}`}
-              className={cn('focus:ring-2 rounded-lg hover:ring-2 ring-primary transition duration-300', className)}
-            >
-              <div>
-                <img
-                  className='rounded'
-                  src='https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI'
-                  alt=''
-                />
-              </div>
-              <p className='underline text-cyan-400 text-center pt-3'>Xem chi tiết</p>
-            </Link>
+        <h1 className='text-3xl font-bold'>So sánh chim kiểng</h1>
+        <div className='flex mt-4'>
+          <div className='flex flex-col border justify-center items-center basis-1/3'>
+            <div className='text-center text-xl font-medium'>{firstBird?.name}</div>
+            <img src={versusIcon} className='w-32 h-32' />
+            <div className='text-center text-xl font-medium'>{firstBird?.name}</div>
           </div>
-         
-          <div className='md:flex-1 mx-10'>
-            <Input className='mt-3 mb-3 text-center' placeholder='Tìm kiếm chim để so sánh...' />
-            <Link
-              to={`/birds/${bird?._id}`}
-              className={cn('focus:ring-2 rounded-lg hover:ring-2 ring-primary transition duration-300', className)}
-            >
-              <div>
-                <img
-                  className='rounded'
-                  src='https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI'
-                  alt=''
-                />
-              </div>
-              <p className='underline text-cyan-400 text-center pt-3'>Xem chi tiết</p>
-            </Link>
+
+          <div className='basis-1/3 flex justify-center border'>
+            <BirdCard className='max-w-[350px]' bird={firstBird} />
           </div>
-        </div> 
-        <div className='mt-3'>
-          <p
-            className='uppercase text-xl font-bold bg-primary py-2 mb-3  text-white cursor-pointer'
-            onClick={toggleList}
-          >
-            <div className='flex gap-4 px-3 items-center'>
-              {isListVisible ? <ChevronUp></ChevronUp> : <ChevronDown></ChevronDown>}
-              Thông tin so sánh
-            </div>
-          </p>
-          {!isListVisible && (
-            <div className='flex justify-center'>
-              <Table className='w-full leading-normal'>
-                <TableCaption></TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className='text-center text-xl'>Chim chào mã SE170112</TableHead>
-                    <TableHead className='text-center text-xl'>Thông tin</TableHead>
-                    <TableHead className='text-center text-xl'>Chim yến mã SE170128</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow className='text-center'>
-                    <TableCell>Alex</TableCell>
-                    <TableCell className='font-bold'>Bố</TableCell>
-                    <TableCell>Wilson</TableCell>
-                  </TableRow>
-                  <TableRow className='text-center'>
-                    <TableCell>Alison</TableCell>
-                    <TableCell className='font-bold'>Mẹ</TableCell>
-                    <TableCell>Jenny</TableCell>
-                  </TableRow>
-                  <TableRow className='text-center'>
-                    <TableCell>20/12/2022</TableCell>
-                    <TableCell className='font-bold'>Ngày sinh</TableCell>
-                    <TableCell>19/3/2015</TableCell>
-                  </TableRow>
-                  <TableRow className='text-center'>
-                    <TableCell>Đực</TableCell>
-                    <TableCell className='font-bold'>Giới tính</TableCell>
-                    <TableCell>Cái</TableCell>
-                  </TableRow>
-                  <TableRow className='text-center'>
-                    <TableCell>Tốt, nhanh nhẹn</TableCell>
-                    <TableCell className='font-bold'>Sức khỏe</TableCell>
-                    <TableCell>Cần được chăm sóc</TableCell>
-                  </TableRow>
-                  <TableRow className='text-center'>
-                    <TableCell>Không có thành tích</TableCell>
-                    <TableCell className='font-bold'>Thành tích thi đấu</TableCell>
-                    <TableCell>3 lần huy chương vàng quốc gia</TableCell>
-                  </TableRow>
-                  <TableRow className='text-center'>
-                    <TableCell>15.000.000đ</TableCell>
-                    <TableCell className='font-bold'>Giá</TableCell>
-                    <TableCell>19.780.000đ</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </div>
-          )}
+
+          <div className='basis-1/3 flex justify-center border'>
+            <BirdCard className='max-w-[350px]' bird={secondBird} />
+          </div>
         </div>
+
+        <Table className=''>
+          <TableHeader>
+            <TableRow className='grid grid-cols-12'>
+              <TableHead className='border col-span-4 font-medium text-base pt-3'>Tên</TableHead>
+              <TableHead className='border col-span-4 text-base pt-3'>{firstBird.name}</TableHead>
+              <TableHead className='border col-span-4 text-base pt-3'>{secondBird.name}</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4 font-medium text-base'>Loài chim</TableCell>
+              <TableCell className='border col-span-4'>{getSpecie(firstBird).name}</TableCell>
+              <TableCell className='border col-span-4'>{getSpecie(secondBird).name}</TableCell>
+            </TableRow>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4 font-medium text-base'>Bố</TableCell>
+              <TableCell className='border col-span-4'>
+                {getDad(firstBird) ? (
+                  <Link to={`/birds/${getDad(firstBird)._id}`}>{getDad(firstBird).name}</Link>
+                ) : (
+                  'Không có thông tin'
+                )}
+              </TableCell>
+              <TableCell className='border col-span-4'>
+                {getDad(secondBird) ? (
+                  <Link to={`/birds/${getDad(secondBird)._id}`}>{getDad(secondBird).name}</Link>
+                ) : (
+                  'Không có thông tin'
+                )}
+              </TableCell>
+            </TableRow>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4 font-medium text-base'>Mẹ</TableCell>
+              <TableCell className='border col-span-4'>
+                {getMom(firstBird) ? (
+                  <Link to={`/birds/${getMom(firstBird)._id}`}>{getMom(firstBird).name}</Link>
+                ) : (
+                  'Không có thông tin'
+                )}
+              </TableCell>
+              <TableCell className='border col-span-4'>
+                {getMom(secondBird) ? (
+                  <Link to={`/birds/${getMom(secondBird)._id}`}>{getMom(secondBird).name}</Link>
+                ) : (
+                  'Không có thông tin'
+                )}
+              </TableCell>
+            </TableRow>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4 font-medium text-base'>Tuổi</TableCell>
+              <TableCell className='border col-span-4'>
+                {firstBird.birth ? calculateAge(firstBird.birth) : 'Không có thông tin'}
+              </TableCell>
+              <TableCell className='border col-span-4'>
+                {secondBird.birth ? calculateAge(secondBird.birth) : 'Không có thông tin'}
+              </TableCell>
+            </TableRow>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4 font-medium text-base'>Giới tính</TableCell>
+              <TableCell className='border col-span-4'>
+                {firstBird.gender === 'male' ? (
+                  <div className='flex items-center mt-[2px]'>
+                    Đực
+                    <img className='w-6 h-6 ml-1' src={maleIcon} alt='' />
+                  </div>
+                ) : (
+                  <div className='flex items-center mt-[2px]'>
+                    Cái
+                    <img className='w-6 h-6 ml-1' src={femaleIcon} alt='' />
+                  </div>
+                )}
+              </TableCell>
+              <TableCell className='border col-span-4'>
+                {secondBird.gender === 'male' ? (
+                  <div className='flex items-center mt-[2px]'>
+                    Đực
+                    <img className='w-6 h-6 ml-1' src={maleIcon} alt='' />
+                  </div>
+                ) : (
+                  <div className='flex items-center mt-[2px]'>
+                    Cái
+                    <img className='w-6 h-6 ml-1' src={femaleIcon} alt='' />
+                  </div>
+                )}
+              </TableCell>
+            </TableRow>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4 font-medium text-base'>Loại chim</TableCell>
+              <TableCell className='border col-span-4'>
+                {firstBird.type === 'sell' ? (
+                  <div className='flex items-center gap-2'>
+                    <img src={birdIcon} className='w-6 h-6' />
+                    Chim kiểng
+                  </div>
+                ) : (
+                  <div className='flex items-center gap-2'>
+                    <img src={breedIcon} className='w-6 h-6' />
+                    Chim phối giống
+                  </div>
+                )}
+              </TableCell>
+              <TableCell className='border col-span-4'>
+                {secondBird.type === 'sell' ? (
+                  <div className='flex items-center gap-2'>
+                    <img src={birdIcon} className='w-6 h-6' />
+                    Chim kiểng
+                  </div>
+                ) : (
+                  <div className='flex items-center gap-2'>
+                    <img src={breedIcon} className='w-6 h-6' />
+                    Chim phối giống
+                  </div>
+                )}
+              </TableCell>
+            </TableRow>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4 font-medium text-base'>Giá bán/Giá phối giống</TableCell>
+              <TableCell className='border col-span-4'>
+                {firstBird.type === 'sell' ? formatPrice(firstBird.sellPrice) : formatPrice(firstBird.breedPrice)}
+              </TableCell>
+              <TableCell className='border col-span-4'>
+                {secondBird.type === 'sell' ? formatPrice(secondBird.sellPrice) : formatPrice(secondBird.breedPrice)}
+              </TableCell>
+            </TableRow>
+            <TableRow className='grid grid-cols-12'>
+              <TableCell className='border col-span-4 font-medium text-base'>Thành tích thi đấu</TableCell>
+              <TableCell className='border col-span-4 gap-2 flex flex-col'>
+                {firstBird?.achievements?.map((achievement) => {
+                  return (
+                    <div className='flex items-center'>
+                      <span className='pr-3'>
+                        <img className='w-6' src={medalIcon}></img>
+                      </span>
+                      <span className='font-medium mr-1'>Hạng {achievement.rank}</span>
+                      <span> {achievement.competition}</span>
+                    </div>
+                  )
+                })}
+              </TableCell>
+              <TableCell className='border col-span-4 gap-2 flex flex-col'>
+                {secondBird?.achievements?.map((achievement) => {
+                  return (
+                    <div className='flex items-center'>
+                      <span className='pr-3'>
+                        <img className='w-6' src={medalIcon}></img>
+                      </span>
+                      <span className='font-medium mr-1'>Hạng {achievement.rank}</span>
+                      <span> {achievement.competition}</span>
+                    </div>
+                  )
+                })}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </Container>
     </main>
   )
