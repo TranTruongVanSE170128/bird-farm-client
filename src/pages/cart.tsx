@@ -6,11 +6,13 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 import { Trash2 } from 'lucide-react'
 import voucherIcon from '@/assets/voucher.png'
 import { Input } from '@/components/ui/input'
-// import { loadStripe } from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { useEffect, useState } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import noImage from '@/assets/no-image.avif'
 import { formatPrice } from '@/lib/utils'
+import { useAuthContext } from '@/contexts/auth-provider'
+import { useToast } from '@/components/ui/use-toast'
 
 type Products = {
   birds: Bird[]
@@ -21,37 +23,53 @@ function Cart() {
   const { cart, removeBirdFromCart, removeNestFromCart } = useCartContext()
   const [products, setProducts] = useState<Products>({ birds: [], nests: [] })
   const [totalMoney, setTotalMoney] = useState(0)
+  const { user } = useAuthContext()
+  const { toast } = useToast()
 
-  // const makePayment = async () => {
-  //   try {
-  //     const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY)
+  const makePayment = async () => {
+    if (!user) {
+      toast({
+        title: 'Hãy đăng nhập để tiếp tục mua hàng',
+        variant: 'destructive'
+      })
+    }
 
-  //     const { data: session } = await birdFarmApi.post('/api/checkout/create-checkout-session', {
-  //       products: cart
-  //     })
+    try {
+      const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY)
 
-  //     const result = await stripe?.redirectToCheckout({
-  //       sessionId: session.id
-  //     })
+      const { data: session } = await birdFarmApi.post('/api/stripe/create-checkout-session', {
+        products: cart
+      })
 
-  //     if (result?.error) {
-  //       console.log(result.error)
-  //     }
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
+      const result = await stripe?.redirectToCheckout({
+        sessionId: session.id
+      })
+
+      if (result?.error) {
+        console.log(result.error)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // const createOrder = async () => {
+  // if (!user) {
+  //   toast({
+  //     title: 'Hãy đăng nhập để tiếp tục mua hàng',
+  //     variant: 'destructive'
+  //   })
   // }
 
-  const createOrder = async () => {
-    const { data } = await birdFarmApi.post('/api/orders', {
-      receiver: 'Trần Trương Văn',
-      phone: '0933131464',
-      address: 'chung cư Ricca',
-      birds: products?.birds.map((bird) => bird._id),
-      nests: products?.nests.map((nest) => nest._id)
-    })
-    console.log(data)
-  }
+  //   const { data } = await birdFarmApi.post('/api/orders', {
+  //     receiver: 'Trần Trương Văn',
+  //     phone: '0933131464',
+  //     address: 'chung cư Ricca',
+  //     birds: products?.birds.map((bird) => bird._id),
+  //     nests: products?.nests.map((nest) => nest._id)
+  //   })
+  //   console.log(data)
+  // }
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -179,14 +197,14 @@ function Cart() {
                 <span className='w-1/2 text-start font-bold'>Giảm giá</span>
                 <span className='w-1/2 text-end font-bold'>0%</span>
               </div>
-              <div className='border border-black mt-2 m-auto'></div>
+              <div className='border mt-4 m-auto'></div>
               <div className='flex m-auto mt-5'>
                 <span className='w-1/2 text-start font-bold'>Tổng</span>
                 <span className='w-1/2 text-end font-bold'>{formatPrice(totalMoney)}</span>
               </div>
 
-              <div className='m-auto mt-5 py-3 px-5 bg-[#FFFAFA] rounded-2xl shadow-lg'>
-                <div className='inline-flex gap-3 px-5 py-4 justify-start items-center bg-[#ECEB98] rounded-2xl'>
+              <div className='m-auto mt-5 py-3 px-5 bg-accent rounded-2xl shadow-lg'>
+                <div className='inline-flex gap-3 px-5 py-4 justify-start items-center bg-yellow-300 rounded-2xl text-slate-600'>
                   <img src={voucherIcon} alt='' />
                   <span>Phiếu ưu đãi</span>
                 </div>
@@ -200,8 +218,8 @@ function Cart() {
               </div>
 
               <div className='mt-4 m-auto'>
-                <Button className='w-full' onClick={createOrder}>
-                  Thanh Toán
+                <Button className='w-full' onClick={makePayment}>
+                  Mua hàng
                 </Button>
               </div>
             </div>

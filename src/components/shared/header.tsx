@@ -128,7 +128,16 @@ function Header() {
               <div className='flex items-center justify-end'>
                 <ModeToggle className='shrink-0' />
 
-                <Button asChild variant='ghost' size='icon' className='shrink-0 relative' aria-label='Shopping Cart'>
+                <Button
+                  onClick={() => {
+                    window.scrollTo(0, 0)
+                  }}
+                  asChild
+                  variant='ghost'
+                  size='icon'
+                  className='shrink-0 relative'
+                  aria-label='Shopping Cart'
+                >
                   <Link to='/cart'>
                     <ShoppingCart className='h-6 w-6' />
                     {!!quantityInCart && (
