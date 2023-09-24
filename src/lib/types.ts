@@ -59,6 +59,14 @@ export function getSpecie(item: Bird | Nest): Specie {
   return item.specie as Specie
 }
 
+export function getDad(item: Bird): Bird {
+  return item.parent?.dad as Bird
+}
+
+export function getMom(item: Bird): Bird {
+  return item.parent?.mom as Bird
+}
+
 export function getUser(item: Order): User {
   return item.user as User
 }
@@ -74,8 +82,8 @@ export type Gender = 'male' | 'female'
 export type BirdType = 'sell' | 'breed'
 
 export type Parent = {
-  dad?: string
-  mom?: string
+  dad?: string | Bird
+  mom?: string | Bird
 }
 export type Achievement = {
   competition: string
