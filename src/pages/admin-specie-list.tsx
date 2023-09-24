@@ -7,7 +7,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import noImage from '@/assets/no-image.avif'
 import { buttonVariants } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { addSearchParams, cn } from '@/lib/utils'
 import { birdFarmApi } from '@/services/bird-farm-api'
 
 const pageSize = 12
@@ -25,7 +25,7 @@ function AdminSpecieList() {
       setIsLoadingSpecies(true)
       try {
         const { data } = await birdFarmApi.get(
-          `/api/species/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}`
+          addSearchParams('/api/species/pagination', { pageNumber, pageSize, searchQuery })
         )
         setSpecies(data?.species || null)
         setIsLoadingSpecies(false)

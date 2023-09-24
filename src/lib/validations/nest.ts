@@ -6,7 +6,7 @@ export const nestSchema = z.object({
   dad: z.string().optional(),
   mom: z.string().optional(),
   price: z.number(),
-  imageUrls: z.string().optional(),
+  imageUrls: z.array(z.string()).optional(),
   description: z.string().optional()
 })
 

@@ -3,6 +3,7 @@ import SpecieCard from '@/components/specie-card'
 import SpecieCardSkeleton from '@/components/specie-card-skeleton'
 import Container from '@/components/ui/container'
 import { Specie } from '@/lib/types'
+import { addSearchParams } from '@/lib/utils'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -20,7 +21,7 @@ function SpecieList() {
   useEffect(() => {
     const fetchSpecies = async () => {
       const { data } = await birdFarmApi.get(
-        `/api/species/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}`
+        addSearchParams('/api/species/pagination', { pageNumber, pageSize, searchQuery })
       )
 
       setSpecies(data?.species || [])

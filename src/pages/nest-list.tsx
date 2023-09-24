@@ -14,6 +14,8 @@ import { useSearchParams } from 'react-router-dom'
 import { Nest } from '@/lib/types'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import Paginate from '@/components/paginate'
+import { addSearchParams } from '@/lib/utils'
+import NestCardSkeleton from '@/components/nest-card-skeleton'
 
 const pageSize = 12
 
@@ -28,8 +30,9 @@ function NestList() {
 
   useEffect(() => {
     const fetchNests = async () => {
+      setIsLoadingNests(true)
       const { data } = await birdFarmApi.get(
-        `/api/nests/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}`
+        addSearchParams('/api/nests/pagination', { pageNumber, pageSize, searchQuery, specie })
       )
       setNests(data?.nests || [])
       setTotalPages(data?.totalPages || null)
@@ -64,9 +67,9 @@ function NestList() {
 
         {isLoadingNests ? (
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-            {/* {Array(...new Array(12)).map(() => {
-              return <NestCardSkeleton />
-            })} */}
+            {Array(...new Array(12)).map((_, i) => {
+              return <NestCardSkeleton key={i} />
+            })}
           </div>
         ) : (
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
@@ -79,7 +82,7 @@ function NestList() {
         {!!totalPages && (
           <Paginate
             className='mt-8'
-            path={`/nests?searchQuery=${searchQuery}`}
+            path={`/nests?searchQuery=${searchQuery ?? ''}`}
             pageSize={pageSize}
             pageNumber={pageNumber}
             totalPages={totalPages}

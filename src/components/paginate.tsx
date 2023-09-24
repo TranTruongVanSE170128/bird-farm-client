@@ -18,7 +18,7 @@ const Paginate = ({ totalPages, path, pageSize, className, pageNumber }: Paginat
     const pathWithPaginate = `${path}${path.indexOf('?') === -1 ? '?' : '&'}pageNumber=${
       selected + 1
     }&pageSize=${pageSize}`
-
+    window.scrollTo(0, 0)
     navigate(pathWithPaginate)
   }
 

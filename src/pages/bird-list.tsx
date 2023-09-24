@@ -5,6 +5,7 @@ import BirdCardSkeleton from '@/components/bird-card-skeleton'
 import Paginate from '@/components/paginate'
 import Container from '@/components/ui/container'
 import { Bird } from '@/lib/types'
+import { addSearchParams } from '@/lib/utils'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -14,16 +15,24 @@ const pageSize = 12
 function BirdList() {
   const [searchParams] = useSearchParams()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
-  const searchQuery = searchParams.get('searchQuery') || ''
-  const specie = searchParams.get('specie') || ''
+  const searchQuery = searchParams.get('searchQuery')
+  const specie = searchParams.get('specie')
+  const type = searchParams.get('type')
   const [birds, setBirds] = useState<Bird[]>([])
   const [isLoadingBirds, setIsLoadingBirds] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
 
   useEffect(() => {
     const fetchBirds = async () => {
+      setIsLoadingBirds(true)
       const { data } = await birdFarmApi.get(
-        `/api/birds/pagination?pageSize=${pageSize}&pageNumber=${pageNumber}&searchQuery=${searchQuery}&specie=${specie}`
+        addSearchParams('/api/birds/pagination', {
+          pageSize,
+          pageNumber,
+          searchQuery,
+          specie,
+          type
+        })
       )
       setBirds(data?.birds || [])
       setTotalPages(data?.totalPages || null)
@@ -31,7 +40,9 @@ function BirdList() {
     }
 
     fetchBirds()
-  }, [pageNumber, searchQuery, specie])
+
+    console.log({ searchQuery })
+  }, [pageNumber, searchQuery, specie, type])
 
   return (
     <main>
@@ -42,8 +53,8 @@ function BirdList() {
 
         {isLoadingBirds ? (
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-            {Array(...new Array(12)).map(() => {
-              return <BirdCardSkeleton />
+            {Array(...new Array(12)).map((_, i) => {
+              return <BirdCardSkeleton key={i} />
             })}
           </div>
         ) : (
@@ -57,7 +68,7 @@ function BirdList() {
         {!!totalPages && (
           <Paginate
             className='mt-8'
-            path={`/birds?searchQuery=${searchQuery}`}
+            path={`/birds?searchQuery=${searchQuery ?? ''}`}
             pageSize={pageSize}
             pageNumber={pageNumber}
             totalPages={totalPages}

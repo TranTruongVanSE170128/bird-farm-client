@@ -5,13 +5,19 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import './index.css'
 import CartProvider from './contexts/cart-provider.tsx'
 import AuthProvider from './contexts/auth-provider.tsx'
+import CompareProvider from './contexts/compare-provider.tsx'
+import BreedProvider from './contexts/breed-provider.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
     <ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
       <AuthProvider>
         <CartProvider>
-          <App />
+          <CompareProvider>
+            <BreedProvider>
+              <App />
+            </BreedProvider>
+          </CompareProvider>
         </CartProvider>
       </AuthProvider>
     </ThemeProvider>
