@@ -1,6 +1,5 @@
 import useLocalStorage from '@/hooks/use-local-storage'
 import React, { useContext, useEffect, useState } from 'react'
-import * as _ from 'lodash'
 
 type CartProviderProps = {
   children: React.ReactNode
@@ -29,16 +28,20 @@ const CartProvider = ({ children }: CartProviderProps) => {
   const [quantityInCart, setQuantityInCart] = useState(0)
 
   const addBirdToCart = (id: string) => {
-    setCart({ ...cart, birds: _.union([...cart.birds], [id]) })
+    if (!cart.birds.includes(id)) {
+      setCart({ ...cart, birds: [...cart.birds, id] })
+    }
   }
 
   const addNestToCart = (id: string) => {
-    setCart({ ...cart, nests: _.union([...cart.nests], [id]) })
+    if (!cart.nests.includes(id)) {
+      setCart({ ...cart, nests: [...cart.nests, id] })
+    }
   }
 
-  // useEffect(() => {
-  //   setQuantityInCart(cart.birds.length + cart.nests.length)
-  // }, [cart])
+  useEffect(() => {
+    setQuantityInCart(cart.birds.length + cart.nests.length)
+  }, [cart])
 
   return (
     <CartContext.Provider value={{ cart, addBirdToCart, quantityInCart, addNestToCart }}>

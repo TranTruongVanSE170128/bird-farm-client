@@ -4,7 +4,7 @@ import { useCartContext } from '@/contexts/cart-provider'
 import { Bird, Nest } from '@/lib/types'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { ChevronLeft, Trash2 } from 'lucide-react'
-import Discount from '@/assets/discount.png'
+import voucherIcon from '@/assets/voucher.png'
 import { Link } from 'react-router-dom'
 import { Input } from '@/components/ui/input'
 // import { loadStripe } from '@stripe/stripe-js'
@@ -130,7 +130,7 @@ function Cart() {
 
               <div className='m-auto w-80 mt-5 py-3 px-5 bg-[#FFFAFA] rounded-2xl shadow-lg'>
                 <div className='inline-flex gap-3 px-5 py-4 justify-start items-center bg-[#ECEB98] rounded-2xl'>
-                  <img src={Discount} alt='' />
+                  <img src={voucherIcon} alt='' />
                   <span>Phiếu ưu đãi</span>
                 </div>
 
