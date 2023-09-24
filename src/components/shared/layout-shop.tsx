@@ -8,7 +8,7 @@ function LayoutShop() {
     <div className='relative'>
       <ComparatorAndBreeder />
       <Header />
-      <div className='px-4 sm:px-8 pb-12 pt-24'>
+      <div className='px-4 sm:px-8 pb-12 pt-28'>
         <Outlet />
       </div>
       <Footer />

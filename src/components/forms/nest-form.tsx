@@ -156,7 +156,7 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
                               onSelect={() => {
                                 setOpen(false)
                                 form.setValue('specie', specie._id)
-                                form.setValue('name', specie.name + ' mã ' + code)
+                                form.setValue('name', 'Tổ ' + specie.name + ' mã ' + code)
                               }}
                             >
                               <Check
