@@ -82,7 +82,7 @@ function NestList() {
         {!!totalPages && (
           <Paginate
             className='mt-8'
-            path={`/nests?searchQuery=${searchQuery ?? ''}`}
+            path={addSearchParams('/nests', { searchQuery, specie })}
             pageSize={pageSize}
             pageNumber={pageNumber}
             totalPages={totalPages}

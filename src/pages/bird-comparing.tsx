@@ -45,7 +45,7 @@ function BirdComparing() {
   return (
     <main className='mt-12'>
       <Container>
-        <h1 className='text-3xl font-bold'>So sánh chim kiểng</h1>
+        <h1 className='text-3xl font-bold'>So sánh chim</h1>
         <div className='flex mt-4'>
           <div className='flex flex-col border justify-center items-center basis-1/3'>
             <div className='text-center text-xl font-medium'>{firstBird?.name}</div>

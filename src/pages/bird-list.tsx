@@ -68,7 +68,7 @@ function BirdList() {
         {!!totalPages && (
           <Paginate
             className='mt-8'
-            path={`/birds?searchQuery=${searchQuery ?? ''}`}
+            path={addSearchParams('/birds', { searchQuery, type, specie })}
             pageSize={pageSize}
             pageNumber={pageNumber}
             totalPages={totalPages}
