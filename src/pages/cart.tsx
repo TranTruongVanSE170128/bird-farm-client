@@ -18,7 +18,7 @@ type Products = {
 }
 
 function Cart() {
-  const { cart } = useCartContext()
+  const { cart, removeBirdFromCart, removeNestFromCart } = useCartContext()
   const [products, setProducts] = useState<Products>({ birds: [], nests: [] })
   const [totalMoney, setTotalMoney] = useState(0)
 
@@ -122,7 +122,15 @@ function Cart() {
                         <TableCell className='text-center'>Chim kiểng</TableCell>
                         <TableCell className='text-center'>{formatPrice(bird.sellPrice)}</TableCell>
                         <TableCell>
-                          <Trash2 />
+                          <Button
+                            onClick={() => {
+                              removeBirdFromCart(bird._id)
+                            }}
+                            size='icon'
+                            variant='ghost'
+                          >
+                            <Trash2 />
+                          </Button>
                         </TableCell>
                       </TableRow>
                     )
@@ -145,7 +153,15 @@ function Cart() {
                         <TableCell className='text-center'>Tổ chim non</TableCell>
                         <TableCell className='text-center'>{formatPrice(nest.price)}</TableCell>
                         <TableCell>
-                          <Trash2 />
+                          <Button
+                            onClick={() => {
+                              removeNestFromCart(nest._id)
+                            }}
+                            size='icon'
+                            variant='ghost'
+                          >
+                            <Trash2 />
+                          </Button>
                         </TableCell>
                       </TableRow>
                     )

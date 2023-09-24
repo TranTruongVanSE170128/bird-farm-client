@@ -14,6 +14,8 @@ type CartContextType = {
   cart: Cart
   addBirdToCart: (id: string) => void
   addNestToCart: (id: string) => void
+  removeBirdFromCart: (id: string) => void
+  removeNestFromCart: (id: string) => void
   quantityInCart: number
 }
 
@@ -33,10 +35,22 @@ const CartProvider = ({ children }: CartProviderProps) => {
     }
   }
 
+  const removeBirdFromCart = (id: string) => {
+    const newCart = { ...cart }
+    newCart.birds = newCart.birds.filter((item) => item !== id)
+    setCart(newCart)
+  }
+
   const addNestToCart = (id: string) => {
     if (!cart.nests.includes(id)) {
       setCart({ ...cart, nests: [...cart.nests, id] })
     }
+  }
+
+  const removeNestFromCart = (id: string) => {
+    const newCart = { ...cart }
+    newCart.nests = newCart.nests.filter((item) => item !== id)
+    setCart(newCart)
   }
 
   useEffect(() => {
@@ -44,7 +58,9 @@ const CartProvider = ({ children }: CartProviderProps) => {
   }, [cart])
 
   return (
-    <CartContext.Provider value={{ cart, addBirdToCart, quantityInCart, addNestToCart }}>
+    <CartContext.Provider
+      value={{ cart, addBirdToCart, quantityInCart, addNestToCart, removeBirdFromCart, removeNestFromCart }}
+    >
       {children}
     </CartContext.Provider>
   )
