@@ -31,6 +31,7 @@ import AdminNestDetail from '@/pages/admin-nest-detail'
 import AdminOrderList from '@/pages/admin-order-list'
 import AdminOrderDetail from '@/pages/admin-order-detail'
 import NestDetail from './pages/nest-detail'
+import YourNest from './pages/your-nest'
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
           <Route path='compare' element={<BirdComparing />} />
           <Route path='not-found' element={<NotFound />} />
           <Route path='breed' element={<Breed />} />
+          <Route path='your-nest' element={<YourNest />} />
         </Route>
 
         <Route path='/admin' element={<LayoutAdmin />}>
