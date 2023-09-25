@@ -9,6 +9,8 @@ import { useBreedContext } from '@/contexts/breed-provider'
 import redHeart from '@/assets/red-heart.svg'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
+import { getSpecie } from '@/lib/types'
+import { useToast } from './use-toast'
 
 export function ComparatorAndBreeder() {
   const { birds: birdsCompare, activeCompare, setActiveCompare } = useCompareContext()
@@ -161,6 +163,7 @@ export function Comparator() {
           <div className='flex flex-col gap-3 justify-center items-center'>
             <Button
               onClick={() => {
+                setActiveCompare(false)
                 navigate(`/compare?firstBird=${firstBird?._id}&secondBird=${secondBird?._id}`)
               }}
               disabled={numberOfBirds !== 2}
@@ -189,7 +192,7 @@ export function Breeder() {
       return count
     }
   }, 0)
-
+  const { toast } = useToast()
   const navigate = useNavigate()
 
   return (
@@ -278,6 +281,14 @@ export function Breeder() {
           <div className='flex flex-col gap-3 justify-center items-center'>
             <Button
               onClick={() => {
+                if (getSpecie(firstBird!)._id !== getSpecie(secondBird!)._id) {
+                  toast({
+                    title: 'Chỉ có thể phối giống chim cùng loài',
+                    variant: 'destructive'
+                  })
+                  return
+                }
+                setActiveBreed(false)
                 navigate(`/breed?maleBird=${firstBird?._id}&femaleBird=${secondBird?._id}`)
               }}
               disabled={numberOfBirds !== 2}

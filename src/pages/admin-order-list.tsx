@@ -2,13 +2,12 @@ import Paginate from '@/components/paginate'
 import Spinner from '@/components/ui/spinner'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Order, getUser } from '@/lib/types'
-import { addSearchParams, cn, formatDate, formatPrice, statusToVariant, statusToVi } from '@/lib/utils'
+import { addSearchParams, formatDate, formatPrice, statusToVariant, statusToVi } from '@/lib/utils'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
-import { MoreHorizontal, Plus } from 'lucide-react'
+import { MoreHorizontal } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useToast } from '@/components/ui/use-toast'
-import { buttonVariants } from '@/components/ui/button'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { Badge } from '@/components/ui/badge'
 
@@ -52,11 +51,7 @@ function AdminOrderList() {
   return (
     <div>
       <div className='flex items-center justify-between mb-6'>
-        <div className='text-3xl font-bold'>Danh sách chim</div>
-        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/orders/new'>
-          <span>Tạo Chim</span>
-          <Plus className='w-5 h-5' />
-        </Link>
+        <div className='text-3xl font-bold'>Danh sách đơn hàng</div>
       </div>
 
       <Table>

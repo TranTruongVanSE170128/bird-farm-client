@@ -21,7 +21,7 @@ const pageSize = 12
 function AdminBirdList() {
   const [searchParams] = useSearchParams()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
-  const searchQuery = searchParams.get('searchQuery')
+  const searchQuery = searchParams.get('searchQuery') || ''
   const specie = searchParams.get('specie')
   const [birds, setBirds] = useState<Bird[]>([])
   const [isLoadingBirds, setIsLoadingBirds] = useState(true)
@@ -134,7 +134,7 @@ function AdminBirdList() {
       {!!totalPages && (
         <Paginate
           className='mt-8'
-          path={`/admin/birds?searchQuery=${searchQuery}`}
+          path={`/admin/birds?searchQuery=${searchQuery || ''}`}
           pageSize={pageSize}
           pageNumber={pageNumber}
           totalPages={totalPages}

@@ -4,11 +4,20 @@ import BirdCard from '@/components/bird-card'
 import BirdCardSkeleton from '@/components/bird-card-skeleton'
 import Paginate from '@/components/paginate'
 import Container from '@/components/ui/container'
-import { Bird } from '@/lib/types'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
+import { Bird, Specie } from '@/lib/types'
 import { addSearchParams } from '@/lib/utils'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 const pageSize = 12
 
@@ -16,14 +25,26 @@ function BirdList() {
   const [searchParams] = useSearchParams()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
   const searchQuery = searchParams.get('searchQuery')
-  const specie = searchParams.get('specie')
+  const specie = searchParams.get('specie') || ''
   const type = searchParams.get('type')
   const [birds, setBirds] = useState<Bird[]>([])
   const [isLoadingBirds, setIsLoadingBirds] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
+  const [species, setSpecies] = useState<Specie[]>([])
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const fetchSpecies = async () => {
+      const { data } = await birdFarmApi.get('/api/species')
+
+      setSpecies(data?.species || [])
+    }
+    fetchSpecies()
+  }, [])
 
   useEffect(() => {
     const fetchBirds = async () => {
+      setIsLoadingBirds(true)
       const { data } = await birdFarmApi.get(
         addSearchParams('/api/birds/pagination', {
           pageSize,
@@ -39,6 +60,8 @@ function BirdList() {
     }
 
     fetchBirds()
+
+    console.log({ searchQuery })
   }, [pageNumber, searchQuery, specie, type])
 
   return (
@@ -48,10 +71,32 @@ function BirdList() {
           <h1 className='text-3xl font-bold'>Chim đang bán tại cửa hàng</h1>
         </div>
 
+        <div className='pt-5 font-medium text-2xl'>Bộ Lọc</div>
+
+        <Select
+          value={specie}
+          onValueChange={(value) => {
+            navigate(addSearchParams('/birds', { searchQuery, type, specie: value }))
+          }}
+        >
+          <SelectTrigger className='w-[180px] mt-3 mb-6'>
+            <SelectValue className='font-semibold' placeholder='Lọc loài chim' />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup className='h-96'>
+              <SelectLabel>Loài chim</SelectLabel>
+              <SelectItem value=''>Tất cả</SelectItem>
+              {species.map((specie) => {
+                return <SelectItem value={specie._id}>{specie.name}</SelectItem>
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
         {isLoadingBirds ? (
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-            {Array(...new Array(12)).map(() => {
-              return <BirdCardSkeleton />
+            {Array(...new Array(12)).map((_, i) => {
+              return <BirdCardSkeleton key={i} />
             })}
           </div>
         ) : (
@@ -65,7 +110,7 @@ function BirdList() {
         {!!totalPages && (
           <Paginate
             className='mt-8'
-            path={`/birds?searchQuery=${searchQuery}`}
+            path={addSearchParams('/birds', { searchQuery, type, specie })}
             pageSize={pageSize}
             pageNumber={pageNumber}
             totalPages={totalPages}

@@ -10,6 +10,8 @@ import { useCompareContext } from '@/contexts/compare-provider'
 import { useBreedContext } from '@/contexts/breed-provider'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
+import breedIcon from '@/assets/breed.svg'
+import birdIcon from '@/assets/bird-color.svg'
 
 type Props = {
   className?: string
@@ -57,18 +59,32 @@ function BirdCard({ className, bird }: Props) {
             <p className='font-semibold text-lg lg:text-xl line-clamp-1'>{bird?.name}</p>
           </div>
           <div className='flex items-center gap-2'>
-            Loại chim: {bird.type === 'sell' ? 'Chim kiểng' : 'Chim phối giống'}
-            {bird.type === 'breed' &&
-              (bird.gender === 'male' ? (
-                <img className='w-6 h-6' src={maleIcon} />
-              ) : (
-                <img className='w-6 h-6' src={femaleIcon} />
-              ))}
+            Loại chim:{' '}
+            {bird.type === 'sell' ? (
+              <>
+                Chim kiểng
+                <img className='w-6 h-6' src={birdIcon} />
+              </>
+            ) : (
+              <>
+                Chim phối giống
+                <img className='w-6 h-6' src={breedIcon} />
+              </>
+            )}
           </div>
-          <div className='flex items-center justify-between lg:text-lg'>
-            {bird.type === 'sell'
-              ? `Giá bán: ${formatPrice(bird?.sellPrice || 0)}`
-              : `Giá phối giống: ${formatPrice(bird?.breedPrice || 0)}`}
+          <div className='flex items-center gap-2 lg:text-lg'>
+            {bird.type === 'sell' ? (
+              `Giá bán: ${formatPrice(bird?.sellPrice || 0)}`
+            ) : (
+              <>
+                Giá phối giống: {formatPrice(bird?.breedPrice || 0)}
+                {bird.gender === 'male' ? (
+                  <img className='w-6 h-6' src={maleIcon} />
+                ) : (
+                  <img className='w-6 h-6' src={femaleIcon} />
+                )}
+              </>
+            )}
           </div>
         </CardContent>
         <CardFooter className='flex gap-2 flex-col'>

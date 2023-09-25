@@ -31,6 +31,7 @@ import AdminNestDetail from './pages/admin-nest-detail'
 import AdminOrderList from './pages/admin-order-list'
 import AdminOrderDetail from './pages/admin-order-detail'
 import DisplayRating from './pages/rating-display'
+import NestDetail from './pages/nest-detail'
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
           <Route path='profile' element={<Profile />} />
           <Route path='orders' element={<OrderList />} />
           <Route path='cart' element={<Cart />} />
+          <Route path='nests/:id' element={<NestDetail />} />
           <Route path='nests' element={<NestList />} />
           <Route path='compare' element={<BirdComparing />} />
           <Route path='not-found' element={<NotFound />} />

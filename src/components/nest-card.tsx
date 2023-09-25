@@ -2,14 +2,10 @@ import { Link } from 'react-router-dom'
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card'
 import { cn, formatPrice } from '@/lib/utils'
 import { Button } from './ui/button'
-import redHeart from '@/assets/red-heart.svg'
-import blackHeart from '@/assets/black-heart.svg'
 import { Nest } from '@/lib/types'
 import noImage from '@/assets/no-image.avif'
 import { useToast } from './ui/use-toast'
 import { useCartContext } from '@/contexts/cart-provider'
-import { useState } from 'react'
-import useLocalStorage from '@/hooks/use-local-storage'
 
 type Props = {
   className?: string
@@ -17,10 +13,8 @@ type Props = {
 }
 
 function NestCard({ className, nest }: Props) {
-  const [wishList, setWishList] = useLocalStorage<Record<string, boolean>>('wishlist', {})
   const { toast } = useToast()
   const { addNestToCart } = useCartContext()
-  const [isInWishList, setIsInWishList] = useState(wishList[nest._id])
 
   const addToCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
@@ -31,29 +25,6 @@ function NestCard({ className, nest }: Props) {
       duration: 2500
     })
   }
-  const handleAddToWishList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-    wishList[nest._id] = true
-    setWishList(wishList)
-    setIsInWishList(!isInWishList)
-    toast({
-      variant: 'success',
-      title: 'Đã thêm tổ chim vào danh sách mong ước!',
-      duration: 2500
-    })
-  }
-
-  const handleRemoveFromWishList = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-    delete wishList[nest._id]
-    localStorage.setItem('wishList', JSON.stringify(wishList))
-    setIsInWishList(!isInWishList)
-    toast({
-      variant: 'destructive',
-      title: 'Đã bỏ tổ chim khỏi danh sách mong ước!',
-      duration: 2500
-    })
-  }
 
   const handleBuyNow = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
@@ -61,7 +32,7 @@ function NestCard({ className, nest }: Props) {
 
   return (
     <Link
-      to={`/birds/${nest._id}`}
+      to={`/nests/${nest._id}`}
       className={cn('focus:ring-2 rounded-lg hover:ring-2 ring-primary transition duration-300', className)}
     >
       <Card className='border-2 overflow-hidden'>
@@ -85,15 +56,6 @@ function NestCard({ className, nest }: Props) {
             <Button onClick={addToCart} variant='outline' className='w-full'>
               Thêm vào giỏ
             </Button>
-            {isInWishList ? (
-              <Button onClick={handleRemoveFromWishList} className='p-1' variant='outline' size='icon'>
-                <img src={redHeart} alt='heart' />
-              </Button>
-            ) : (
-              <Button onClick={handleAddToWishList} className='p-1' variant='outline' size='icon'>
-                <img src={blackHeart} className='dark:filter dark:invert' alt='heart' />
-              </Button>
-            )}
           </div>
           <Button onClick={handleBuyNow} className='w-full'>
             Mua ngay
