@@ -39,9 +39,9 @@ const CartProvider = ({ children }: CartProviderProps) => {
     }
   }
 
-  // useEffect(() => {
-  //   setQuantityInCart(cart.birds.length + cart.nests.length)
-  // }, [cart])
+  useEffect(() => {
+    setQuantityInCart(cart.birds.length + cart.nests.length)
+  }, [cart])
 
   return (
     <CartContext.Provider value={{ cart, addBirdToCart, quantityInCart, addNestToCart }}>
