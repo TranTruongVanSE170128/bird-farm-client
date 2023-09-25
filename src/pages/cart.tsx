@@ -38,7 +38,10 @@ function Cart() {
       const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY)
 
       const { data: session } = await birdFarmApi.post('/api/stripe/create-checkout-session', {
-        products: cart
+        products: cart,
+        receiver: 'Trần Trương Văn',
+        phone: '0933131464',
+        address: 'chung cư Ricca'
       })
 
       const result = await stripe?.redirectToCheckout({
@@ -62,9 +65,9 @@ function Cart() {
   // }
 
   //   const { data } = await birdFarmApi.post('/api/orders', {
-  //     receiver: 'Trần Trương Văn',
-  //     phone: '0933131464',
-  //     address: 'chung cư Ricca',
+  // receiver: 'Trần Trương Văn',
+  // phone: '0933131464',
+  // address: 'chung cư Ricca',
   //     birds: products?.birds.map((bird) => bird._id),
   //     nests: products?.nests.map((nest) => nest._id)
   //   })
