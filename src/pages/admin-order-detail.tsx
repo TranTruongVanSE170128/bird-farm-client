@@ -1,11 +1,11 @@
 import { Badge } from '@/components/ui/badge'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Order, getBirds, getNests, getUser } from '@/lib/types'
 import { cn, formatDate, formatPrice, statusToVariant, statusToVi } from '@/lib/utils'
 import { birdFarmApi } from '@/services/bird-farm-api'
-import { ArrowLeft, Edit } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import noImage from '@/assets/no-image.avif'
@@ -13,7 +13,7 @@ import noImage from '@/assets/no-image.avif'
 function AdminOrderDetail() {
   const { id } = useParams()
   const [order, setOrder] = useState<Order | null>(null)
-  const [edit, setEdit] = useState(false)
+  // const [edit, setEdit] = useState(false)
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -36,11 +36,11 @@ function AdminOrderDetail() {
     <div>
       <div className='flex items-center justify-between mb-6'>
         <div className='flex gap-2'>
-          <div className='text-3xl font-bold'>{!edit ? 'Chi tiết đơn hàng' : 'Chỉnh sửa đơn hàng'}</div>
+          <div className='text-3xl font-bold'>Chi tiết đơn hàng</div>
         </div>
 
         <div className='flex gap-2'>
-          {!edit && (
+          {/* {!edit && (
             <Button
               onClick={() => {
                 setEdit(true)
@@ -50,7 +50,7 @@ function AdminOrderDetail() {
               <span>Chỉnh sửa</span>
               <Edit className='w-5 h-5' />
             </Button>
-          )}
+          )} */}
           <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/orders'>
             <span>Quay lại</span>
             <ArrowLeft className='w-5 h-5' />
