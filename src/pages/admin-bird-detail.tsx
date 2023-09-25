@@ -89,7 +89,7 @@ function AdminBirdDetail() {
 
             <div className='flex items-center gap-2 text-lg mb-4'>
               <div className='font-bold'>Loại chim:</div>{' '}
-              {bird.gender === 'male' ? (
+              {bird.type === 'sell' ? (
                 <div className='flex items-center'>
                   <img className='w-6 h-6 mr-1' src={sellIcon} alt='' />
                   Chim để bán

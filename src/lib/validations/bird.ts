@@ -12,7 +12,12 @@ export const birdSchema = z
     type: z.enum(['sell', 'breed']),
     gender: z.enum(['male', 'female']),
     imageUrls: z.array(z.string()).optional(),
-    parent: z.string().optional(),
+    parent: z
+      .object({
+        dad: z.string().optional(),
+        mom: z.string().optional()
+      })
+      .optional(),
     achievements: z
       .array(
         z.object({

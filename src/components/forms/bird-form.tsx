@@ -5,7 +5,7 @@ import { v4 } from 'uuid'
 import { useForm } from 'react-hook-form'
 import { TBirdSchema, birdSchema } from '@/lib/validations/bird'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Bird, Specie, getSpecie } from '@/lib/types'
+import { Bird, Specie, getDad, getMom, getSpecie } from '@/lib/types'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import noImage from '@/assets/no-image.avif'
@@ -52,12 +52,15 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
       specie: bird?.specie ? getSpecie(bird)._id : '',
       name: bird?.name || code,
       birth: bird?.birth ? new Date(bird.birth) : undefined,
-      parent: bird?.parent ? JSON.stringify(bird.parent) : undefined //
+      parent: bird?.parent ? { dad: getDad(bird)._id, mom: getMom(bird)._id } : undefined
     }
   })
   const [achievements, setAchievements] = useState(form.getValues('achievements'))
   const newCompetition = useRef<HTMLInputElement>(null)
   const newRank = useRef<HTMLInputElement>(null)
+  const [ableBirdDads, setAbleBirdDads] = useState<Bird[]>([])
+  const [ableBirdMoms, setAbleBirdMoms] = useState<Bird[]>([])
+  const specie = form.getValues('specie')
 
   const onSubmit = async (values: TBirdSchema) => {
     setIsSubmitting(true)
@@ -170,6 +173,19 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
     }
     fetchSpecies()
   }, [])
+
+  useEffect(() => {
+    const fetchAbleParent = async () => {
+      const { data } = await birdFarmApi.get(`/api/birds/breed?specie=${specie}`)
+
+      setAbleBirdDads(data?.birdsMale || [])
+      setAbleBirdMoms(data?.birdsFemale || [])
+    }
+
+    if (specie) {
+      fetchAbleParent()
+    }
+  }, [specie])
 
   return (
     <Form {...form}>
