@@ -8,8 +8,7 @@ function DisplayRating() {
         <Container>
             <section className="bg-secondary">
                 <div className="text-center p-6">
-                    <span className="text-gray-600 text-4xl uppercase">Đánh giá</span>
-                    <h1 className="text-white bg-primary text-4xl font-semibold p-2 inline-block">Nhận xét</h1>
+                    <h1 className=" text-4xl font-semibold">Đánh giá và Nhận xét</h1>
                 </div>
         
                 {/* Review 1 */}
