@@ -32,7 +32,7 @@ import AdminOrderList from '@/pages/admin-order-list'
 import AdminOrderDetail from '@/pages/admin-order-detail'
 import NestDetail from './pages/nest-detail'
 import DisplayRating from './pages/rating-display'
-
+import Checkout from './pages/checkout'
 function App() {
   return (
     <BrowserRouter>
@@ -61,6 +61,7 @@ function App() {
           <Route path='not-found' element={<NotFound />} />
           <Route path='breed' element={<Breed />} />
           <Route path='rating' element={<DisplayRating />} />
+          <Route path='checkout' element={<Checkout />} />
         </Route>
 
         <Route path='/admin' element={<LayoutAdmin />}>
