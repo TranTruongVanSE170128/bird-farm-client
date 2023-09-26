@@ -32,8 +32,8 @@ export type Bird = {
 
 export type Nest = {
   _id: string
-  dad: Bird | string
-  mom: Bird | string
+  dad: Bird
+  mom: Bird
   name: string
   specie: Specie | string
   sold: boolean

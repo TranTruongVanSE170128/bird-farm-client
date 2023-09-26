@@ -67,8 +67,32 @@ function AdminNestDetail() {
             </div>
           </div>
 
-          <div className='flex items-center gap-2 text-lg mb-4'>
-            <div className='font-bold'>Giá:</div> {formatPrice(nest?.price)}
+          <div className='flex gap-12'>
+            <div className='flex items-center gap-2 text-lg mb-4'>
+              <div className='font-bold'>Bố:</div>{' '}
+              {nest.dad ? (
+                <Link className='hover:underline hover:text-primary' to={`/admin/birds/${nest.dad._id}`}>
+                  {nest.dad.name}
+                </Link>
+              ) : (
+                'Không có thông tin'
+              )}
+            </div>
+
+            <div className='flex items-center gap-2 text-lg mb-4'>
+              <div className='font-bold'>Mẹ:</div>{' '}
+              {nest.mom?._id ? (
+                <Link className='hover:underline hover:text-primary' to={`/admin/birds/${nest.mom._id}`}>
+                  {nest.mom.name}
+                </Link>
+              ) : (
+                'Không có thông tin'
+              )}
+            </div>
+
+            <div className='flex items-center gap-2 text-lg mb-4'>
+              <div className='font-bold'>Giá:</div> {formatPrice(nest?.price)}
+            </div>
           </div>
 
           <div className='text-lg font-bold mb-2'>Ảnh</div>
