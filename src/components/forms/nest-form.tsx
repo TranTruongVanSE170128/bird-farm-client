@@ -5,7 +5,7 @@ import { v4 } from 'uuid'
 import { useForm } from 'react-hook-form'
 import { TNestSchema, nestSchema } from '@/lib/validations/nest'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Nest, Specie, getSpecie } from '@/lib/types'
+import { Bird, Nest, Specie, getSpecie } from '@/lib/types'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import noImage from '@/assets/no-image.avif'
@@ -19,6 +19,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '../ui/command'
 import { ScrollArea } from '../ui/scroll-area'
 import { birdFarmApi } from '@/services/bird-farm-api'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
 type Props = {
   nest?: Nest
@@ -36,17 +37,23 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [species, setSpecies] = useState<Specie[]>([])
+  const [ableBirdDads, setAbleBirdDads] = useState<Bird[]>([])
+  const [ableBirdMoms, setAbleBirdMoms] = useState<Bird[]>([])
 
   const form = useForm<TNestSchema>({
     resolver: zodResolver(nestSchema),
     defaultValues: {
       imageUrls: nest?.imageUrls,
-      description: nest?.description ? nest.description : '', //
+      description: nest?.description,
       name: nest?.name ? nest.name : code, //
-      price: nest?.price ? nest.price : undefined, //
-      specie: nest?.specie ? getSpecie(nest)._id : ''
+      price: nest?.price,
+      specie: nest?.specie ? getSpecie(nest)._id : '',
+      dad: nest?.dad?._id,
+      mom: nest?.mom?._id
     }
   })
+
+  const specie = form.getValues('specie')
 
   const onSubmit = async (values: TNestSchema) => {
     setIsSubmitting(true)
@@ -117,6 +124,19 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
     }
     fetchSpecies()
   }, [])
+
+  useEffect(() => {
+    const fetchAbleParent = async () => {
+      const { data } = await birdFarmApi.get(`/api/birds/breed?specie=${specie}`)
+
+      setAbleBirdDads(data?.birdsMale || [])
+      setAbleBirdMoms(data?.birdsFemale || [])
+    }
+
+    if (specie) {
+      fetchAbleParent()
+    }
+  }, [specie])
 
   return (
     <Form {...form}>
@@ -196,19 +216,61 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
           )}
         </div>
 
-        <FormField
-          control={form.control}
-          name='price'
-          render={({ field }) => (
-            <FormItem className='flex w-full flex-col'>
-              <FormLabel className='font-bold'>Giá*(vnđ)</FormLabel>
+        <div className='flex gap-4'>
+          <FormItem className='w-64'>
+            <FormLabel>Chim bố</FormLabel>
+            <Select
+              onValueChange={(value: string) => {
+                form.setValue('dad', value)
+              }}
+            >
               <FormControl>
-                <Input placeholder='Giá chim...' type='text' className='no-focus' {...field} />
+                <SelectTrigger>
+                  <SelectValue placeholder='Chọn chim bố...' />
+                </SelectTrigger>
               </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+              <SelectContent>
+                {ableBirdDads.map((bird) => {
+                  return <SelectItem value={bird._id}>{bird.name}</SelectItem>
+                })}
+              </SelectContent>
+            </Select>
+          </FormItem>
+
+          <FormItem className='w-64'>
+            <FormLabel>Chim mẹ</FormLabel>
+            <Select
+              onValueChange={(value: string) => {
+                form.setValue('mom', value)
+              }}
+            >
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder='Chọn chim mẹ...' />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {ableBirdMoms.map((bird) => {
+                  return <SelectItem value={bird._id}>{bird.name}</SelectItem>
+                })}
+              </SelectContent>
+            </Select>
+          </FormItem>
+
+          <FormField
+            control={form.control}
+            name='price'
+            render={({ field }) => (
+              <FormItem className='flex w-full flex-col gap-2 mt-[3px]'>
+                <FormLabel className='font-bold'>Giá*(vnđ)</FormLabel>
+                <FormControl>
+                  <Input placeholder='Giá chim...' type='text' className='no-focus' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}

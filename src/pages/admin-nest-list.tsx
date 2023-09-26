@@ -57,8 +57,10 @@ function AdminNestList() {
         <TableHeader>
           <TableRow>
             <TableHead>Loài</TableHead>
-            <TableHead>Tên</TableHead>
             <TableHead className='text-center'>Ảnh</TableHead>
+            <TableHead>Tổ chim</TableHead>
+            <TableHead>Chim bố</TableHead>
+            <TableHead>Chim mẹ</TableHead>
             <TableHead className='text-center'>Giá</TableHead>
             {/* <TableHead className='text-center'>Đã Bán</TableHead> */}
             <TableHead className='text-end'></TableHead>
@@ -71,12 +73,30 @@ function AdminNestList() {
               return (
                 <TableRow key={nest._id}>
                   <TableCell>{getSpecie(nest).name}</TableCell>
-                  <TableCell>{nest.name}</TableCell>
                   <TableCell className='text-center'>
                     {!nest.imageUrls?.length ? (
                       <img className='aspect-square w-16 object-cover block mx-auto' src={noImage} alt='' />
                     ) : (
                       <img className='aspect-square w-16 object-cover block mx-auto' src={nest.imageUrls?.[0]} alt='' />
+                    )}
+                  </TableCell>
+                  <TableCell>{nest.name}</TableCell>
+                  <TableCell>
+                    {nest.dad ? (
+                      <Link className='hover:underline hover:text-primary' to={`/admin/birds/${nest.dad._id}`}>
+                        {nest.dad.name}
+                      </Link>
+                    ) : (
+                      'Không có thông tin'
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {nest.mom ? (
+                      <Link className='hover:underline hover:text-primary' to={`/admin/birds/${nest.mom._id}`}>
+                        {nest.mom.name}
+                      </Link>
+                    ) : (
+                      'Không có thông tin'
                     )}
                   </TableCell>
                   <TableCell className='text-center'>{formatPrice(nest.price)}</TableCell>
