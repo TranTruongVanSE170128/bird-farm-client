@@ -30,7 +30,7 @@ import BreedBirdList from './pages/breed-bird-list'
 import AdminNestDetail from './pages/admin-nest-detail'
 import AdminOrderList from './pages/admin-order-list'
 import AdminOrderDetail from './pages/admin-order-detail'
-import DisplayRating from './pages/rating-display'
+import DisplayRating from './pages/rating'
 
 function App() {
   return (
