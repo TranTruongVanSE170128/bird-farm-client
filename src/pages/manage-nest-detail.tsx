@@ -9,7 +9,7 @@ import noImage from '@/assets/no-image.avif'
 import NestForm from '@/components/forms/nest-form'
 import Spinner from '@/components/ui/spinner'
 
-function AdminNestDetail() {
+function ManageNestDetail() {
   const { id } = useParams()
   const [nest, setNest] = useState<Nest | null>(null)
   const [edit, setEdit] = useState(false)
@@ -124,4 +124,4 @@ function AdminNestDetail() {
   )
 }
 
-export default AdminNestDetail
+export default ManageNestDetail

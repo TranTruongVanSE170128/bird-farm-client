@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 import { ArrowLeft } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-function AdminSpecieNew() {
+function ManageSpecieNew() {
   return (
     <main>
       <div className='flex items-center justify-between mb-6'>
@@ -21,4 +21,4 @@ function AdminSpecieNew() {
   )
 }
 
-export default AdminSpecieNew
+export default ManageSpecieNew

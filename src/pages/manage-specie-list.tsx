@@ -12,7 +12,7 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 
 const pageSize = 12
 
-function AdminSpecieList() {
+function ManageSpecieList() {
   const [searchParams] = useSearchParams()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
   const searchQuery = searchParams.get('searchQuery') || ''
@@ -97,4 +97,4 @@ function AdminSpecieList() {
   )
 }
 
-export default AdminSpecieList
+export default ManageSpecieList

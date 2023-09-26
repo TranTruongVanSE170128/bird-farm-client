@@ -14,24 +14,26 @@ import LayoutAdmin from '@/components/shared/layout-admin'
 import WishList from '@/pages/wish-list'
 import Profile from '@/pages/profile'
 import OrderList from '@/pages/order-list'
-import AdminBirdList from '@/pages/admin-bird-list'
 import Breed from '@/pages/breed'
 import Cart from '@/pages/cart'
 import BirdComparing from '@/pages/bird-comparing'
 import NestList from '@/pages/nest-list'
-import AdminSpecieList from '@/pages/admin-specie-list'
-import AdminSpeciesNew from '@/pages/admin-species-new'
-import AdminBirdsNew from '@/pages/admin-birds-new'
-import AdminNestList from '@/pages/admin-nest-list'
-import AdminNestsNew from '@/pages/admin-nests-new'
-import AdminSpecieDetail from '@/pages/admin-specie-detail'
-import AdminBirdDetail from '@/pages/admin-bird-detail'
 import BreedBirdList from '@/pages/breed-bird-list'
-import AdminNestDetail from '@/pages/admin-nest-detail'
-import AdminOrderList from '@/pages/admin-order-list'
-import AdminOrderDetail from '@/pages/admin-order-detail'
 import NestDetail from './pages/nest-detail'
 import DisplayRating from './pages/rating-display'
+import LayoutManager from './components/shared/layout-manager'
+import LayoutStaff from './components/shared/layout-staff'
+import ManageSpecieList from './pages/manage-specie-list'
+import ManageSpecieDetail from './pages/manage-specie-detail'
+import ManageBirdList from './pages/manage-bird-list'
+import ManageBirdNew from './pages/manage-bird-new'
+import ManageBirdDetail from './pages/manage-bird-detail'
+import ManageNestList from './pages/manage-nest-list'
+import ManageNestNew from './pages/manage-nest-new'
+import ManageNestDetail from './pages/manage-nest-detail'
+import ManageOrderList from './pages/manage-order-list'
+import ManageOrderDetail from './pages/manage-order-detail'
+import ManageSpecieNew from './pages/manage-specie-new'
 
 function App() {
   return (
@@ -65,17 +67,25 @@ function App() {
 
         <Route path='/admin' element={<LayoutAdmin />}>
           <Route path='' element={<Dashboard />} />
-          <Route path='species' element={<AdminSpecieList />} />
-          <Route path='species/new' element={<AdminSpeciesNew />} />
-          <Route path='species/:id' element={<AdminSpecieDetail />} />
-          <Route path='birds' element={<AdminBirdList />} />
-          <Route path='birds/new' element={<AdminBirdsNew />} />
-          <Route path='birds/:id' element={<AdminBirdDetail />} />
-          <Route path='nests' element={<AdminNestList />} />
-          <Route path='nests/new' element={<AdminNestsNew />} />
-          <Route path='nests/:id' element={<AdminNestDetail />} />
-          <Route path='orders' element={<AdminOrderList />} />
-          <Route path='orders/:id' element={<AdminOrderDetail />} />
+        </Route>
+
+        <Route path='/manager' element={<LayoutManager />}>
+          <Route path='' element={<Dashboard />} />
+          <Route path='species' element={<ManageSpecieList />} />
+          <Route path='species/new' element={<ManageSpecieNew />} />
+          <Route path='species/:id' element={<ManageSpecieDetail />} />
+          <Route path='birds' element={<ManageBirdList />} />
+          <Route path='birds/new' element={<ManageBirdNew />} />
+          <Route path='birds/:id' element={<ManageBirdDetail />} />
+          <Route path='nests' element={<ManageNestList />} />
+          <Route path='nests/new' element={<ManageNestNew />} />
+          <Route path='nests/:id' element={<ManageNestDetail />} />
+        </Route>
+
+        <Route path='/staff' element={<LayoutStaff />}>
+          <Route path='' element={<Dashboard />} />
+          <Route path='orders' element={<ManageOrderList />} />
+          <Route path='orders/:id' element={<ManageOrderDetail />} />
         </Route>
 
         <Route path='*' element={<NotFound />} />

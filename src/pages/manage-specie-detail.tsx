@@ -9,7 +9,7 @@ import noImage from '@/assets/no-image.avif'
 import SpecieForm from '@/components/forms/specie-form'
 import Spinner from '@/components/ui/spinner'
 
-function AdminSpecieDetail() {
+function ManageSpecieDetail() {
   const { id } = useParams()
   const [specie, setSpecie] = useState<Specie | null>(null)
   const [edit, setEdit] = useState(false)
@@ -94,4 +94,4 @@ function AdminSpecieDetail() {
   )
 }
 
-export default AdminSpecieDetail
+export default ManageSpecieDetail

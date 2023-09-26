@@ -1,9 +1,12 @@
-import { routes } from '@/constants/adminRoutes'
 import { cn } from '@/lib/utils'
 import { Link, useLocation } from 'react-router-dom'
 import { useTheme } from '../theme-provider'
 
-function BottomBar() {
+type Props = {
+  routes: { icon: string; route: string; label: string }[]
+}
+
+function BottomBar({ routes }: Props) {
   const pathname = useLocation().pathname
   const { theme } = useTheme()
 

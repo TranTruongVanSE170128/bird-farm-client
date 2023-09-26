@@ -13,7 +13,7 @@ import femaleIcon from '@/assets/female.svg'
 import sellIcon from '@/assets/sell.svg'
 import breedIcon from '@/assets/breed.svg'
 
-function AdminBirdDetail() {
+function ManageBirdDetail() {
   const { id } = useParams()
   const [bird, setBird] = useState<Bird | null>(null)
   const [edit, setEdit] = useState(false)
@@ -187,4 +187,4 @@ function AdminBirdDetail() {
   )
 }
 
-export default AdminBirdDetail
+export default ManageBirdDetail

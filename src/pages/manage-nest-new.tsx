@@ -1,6 +1,6 @@
 import NestForm from '@/components/forms/nest-form'
 
-function AdminNestsNew() {
+function ManageNestNew() {
   return (
     <div>
       <NestForm action='create' btnTitle='Tạo' />
@@ -8,4 +8,4 @@ function AdminNestsNew() {
   )
 }
 
-export default AdminNestsNew
+export default ManageNestNew

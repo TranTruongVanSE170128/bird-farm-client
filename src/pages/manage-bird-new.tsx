@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { ArrowLeft } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-function AdminBirdsNew() {
+function ManageBirdNew() {
   return (
     <div>
       <div className='flex items-center justify-between mb-6'>
@@ -19,4 +19,4 @@ function AdminBirdsNew() {
   )
 }
 
-export default AdminBirdsNew
+export default ManageBirdNew

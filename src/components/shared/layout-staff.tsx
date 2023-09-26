@@ -3,12 +3,12 @@ import LeftSidebar from './left-side-bar'
 import TopBar from './top-bar'
 import BottomBar from './bottom-bar'
 import { useAuthContext } from '@/contexts/auth-provider'
-import { routes } from '@/constants/adminRoutes'
+import { routes } from '@/constants/staffRoutes'
 
-function LayoutAdmin() {
+function LayoutStaff() {
   const { role } = useAuthContext()
 
-  if (role && !(role === 'admin')) {
+  if (role && !(role === 'staff')) {
     return <Navigate to='/' />
   }
 
@@ -29,4 +29,4 @@ function LayoutAdmin() {
   )
 }
 
-export default LayoutAdmin
+export default LayoutStaff

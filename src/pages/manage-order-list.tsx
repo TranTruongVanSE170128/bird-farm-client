@@ -13,7 +13,7 @@ import { Badge } from '@/components/ui/badge'
 
 const pageSize = 12
 
-function AdminOrderList() {
+function ManageOrderList() {
   const [searchParams] = useSearchParams()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
   const searchQuery = searchParams.get('searchQuery')
@@ -114,4 +114,4 @@ function AdminOrderList() {
   )
 }
 
-export default AdminOrderList
+export default ManageOrderList

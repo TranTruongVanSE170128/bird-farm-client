@@ -13,7 +13,7 @@ import noImage from '@/assets/no-image.avif'
 
 const pageSize = 12
 
-function AdminNestList() {
+function ManageNestList() {
   const [searchParams] = useSearchParams()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
   const searchQuery = searchParams.get('searchQuery') || ''
@@ -135,4 +135,4 @@ function AdminNestList() {
   )
 }
 
-export default AdminNestList
+export default ManageNestList

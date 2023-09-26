@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import noImage from '@/assets/no-image.avif'
 
-function AdminOrderDetail() {
+function ManageOrderDetail() {
   const { id } = useParams()
   const [order, setOrder] = useState<Order | null>(null)
   // const [edit, setEdit] = useState(false)
@@ -161,4 +161,4 @@ function AdminOrderDetail() {
   )
 }
 
-export default AdminOrderDetail
+export default ManageOrderDetail

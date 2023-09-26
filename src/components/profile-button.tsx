@@ -16,6 +16,8 @@ import { cn } from '@/lib/utils'
 import orderIcon from '@/assets/order.svg'
 import { useAuthContext } from '@/contexts/auth-provider'
 import adminIcon from '@/assets/admin.svg'
+import managerIcon from '@/assets/manager.svg'
+import staffIcon from '@/assets/staff.svg'
 import storeIcon from '@/assets/store.svg'
 
 type Props = {
@@ -82,6 +84,36 @@ function ProfileButton({ className }: Props) {
                 <Link to='/admin'>
                   <img src={adminIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
                   <span>Admin</span>
+                </Link>
+              )}
+            </DropdownMenuItem>
+          )}
+          {user.role === 'manager' && (
+            <DropdownMenuItem asChild className='cursor-pointer'>
+              {pathname.includes('manager') ? (
+                <Link to='/'>
+                  <img src={storeIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                  <span>Xem cửa hàng</span>
+                </Link>
+              ) : (
+                <Link to='/manager'>
+                  <img src={managerIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                  <span>Quản lý</span>
+                </Link>
+              )}
+            </DropdownMenuItem>
+          )}
+          {user.role === 'staff' && (
+            <DropdownMenuItem asChild className='cursor-pointer'>
+              {pathname.includes('staff') ? (
+                <Link to='/'>
+                  <img src={storeIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                  <span>Xem cửa hàng</span>
+                </Link>
+              ) : (
+                <Link to='/staff'>
+                  <img src={staffIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                  <span>Nhân viên</span>
                 </Link>
               )}
             </DropdownMenuItem>

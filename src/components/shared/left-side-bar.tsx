@@ -1,11 +1,14 @@
-import { routes } from '@/constants/adminRoutes'
 import { cn } from '@/lib/utils'
 import { LogOut } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../theme-provider'
 import { useAuthContext } from '@/contexts/auth-provider'
 
-const LeftSidebar = () => {
+type Props = {
+  routes: { icon: string; route: string; label: string }[]
+}
+
+const LeftSidebar = ({ routes }: Props) => {
   const navigate = useNavigate()
   const pathname = useLocation().pathname
   const { theme } = useTheme()
