@@ -1,5 +1,5 @@
 import { Button, buttonVariants } from '@/components/ui/button'
-import { Bird, getSpecie } from '@/lib/types'
+import { Bird, getDad, getMom, getSpecie } from '@/lib/types'
 import { calculateAge, cn, formatPrice } from '@/lib/utils'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { ArrowLeft, Edit } from 'lucide-react'
@@ -106,11 +106,32 @@ function AdminBirdDetail() {
               <div className='font-bold'>{bird.type === 'sell' ? 'Giá bán:' : 'Giá phối giống:'}</div>{' '}
               {formatPrice(bird.type === 'sell' ? bird.sellPrice : bird.breedPrice)}
             </div>
+          </div>
+
+          <div className='flex gap-12'>
+            <div className='flex items-center gap-2 text-lg mb-4'>
+              <div className='font-bold'>Bố:</div>{' '}
+              {getDad(bird)?._id ? (
+                <Link className='hover:underline hover:text-primary' to={`/admin/birds/${getDad(bird)._id}`}>{getDad(bird).name}</Link>
+              ) : (
+                'Không có thông tin'
+              )}
+            </div>
+
+            <div className='flex items-center gap-2 text-lg mb-4'>
+              <div className='font-bold'>Mẹ:</div>{' '}
+              {getMom(bird)?._id ? (
+                <Link className='hover:underline hover:text-primary' to={`/admin/birds/${getMom(bird)._id}`}>{getMom(bird).name}</Link>
+              ) : (
+                'Không có thông tin'
+              )}
+            </div>
 
             <div className='flex items-center gap-2 text-lg mb-4'>
               <div className='font-bold'>Tuổi:</div> {calculateAge(bird.birth)}
             </div>
           </div>
+
           <div className='text-lg font-bold mb-2'>Ảnh</div>
           <div>
             {!bird?.imageUrls?.length ? (

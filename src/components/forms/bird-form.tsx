@@ -272,7 +272,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
             control={form.control}
             name='gender'
             render={({ field }) => (
-              <FormItem className='shrink-0'>
+              <FormItem className='shrink-0 w-48'>
                 <FormLabel>Giới Tính*</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
@@ -304,7 +304,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
             control={form.control}
             name='type'
             render={({ field }) => (
-              <FormItem className='shrink-0'>
+              <FormItem className='shrink-0 w-56'>
                 <FormLabel>Loại Chim*</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
@@ -363,19 +363,61 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
               )}
             />
           )}
+        </div>
+
+        <div className='flex gap-4'>
+          <FormItem className='w-64'>
+            <FormLabel>Chim bố</FormLabel>
+            <Select
+              onValueChange={(value: string) => {
+                form.setValue('parent', { ...form.getValues('parent'), dad: value })
+              }}
+            >
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder='Chọn chim bố...' />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {ableBirdDads.map((bird) => {
+                  return <SelectItem value={bird._id}>{bird.name}</SelectItem>
+                })}
+              </SelectContent>
+            </Select>
+          </FormItem>
+
+          <FormItem className='w-64'>
+            <FormLabel>Chim mẹ</FormLabel>
+            <Select
+              onValueChange={(value: string) => {
+                form.setValue('parent', { ...form.getValues('parent'), mom: value })
+              }}
+            >
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder='Chọn chim mẹ...' />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {ableBirdMoms.map((bird) => {
+                  return <SelectItem value={bird._id}>{bird.name}</SelectItem>
+                })}
+              </SelectContent>
+            </Select>
+          </FormItem>
 
           <FormField
             control={form.control}
             name='birth'
             render={({ field }) => (
-              <FormItem className='flex flex-col'>
+              <FormItem className='flex flex-col gap-[10px]'>
                 <FormLabel>Ngày Sinh</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
                         variant={'outline'}
-                        className={cn('w-[240px] pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
+                        className={cn('w-[240px] text-left font-normal', !field.value && 'text-muted-foreground')}
                       >
                         {field.value ? format(field.value, 'PPP', { locale: vi }) : <span>Chọn ngày sinh</span>}
                         <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
