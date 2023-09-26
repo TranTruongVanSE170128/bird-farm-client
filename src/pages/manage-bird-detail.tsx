@@ -112,7 +112,9 @@ function ManageBirdDetail() {
             <div className='flex items-center gap-2 text-lg mb-4'>
               <div className='font-bold'>Bố:</div>{' '}
               {getDad(bird)?._id ? (
-                <Link className='hover:underline hover:text-primary' to={`/admin/birds/${getDad(bird)._id}`}>{getDad(bird).name}</Link>
+                <Link className='hover:underline hover:text-primary' to={`/admin/birds/${getDad(bird)._id}`}>
+                  {getDad(bird).name}
+                </Link>
               ) : (
                 'Không có thông tin'
               )}
@@ -121,7 +123,9 @@ function ManageBirdDetail() {
             <div className='flex items-center gap-2 text-lg mb-4'>
               <div className='font-bold'>Mẹ:</div>{' '}
               {getMom(bird)?._id ? (
-                <Link className='hover:underline hover:text-primary' to={`/admin/birds/${getMom(bird)._id}`}>{getMom(bird).name}</Link>
+                <Link className='hover:underline hover:text-primary' to={`/admin/birds/${getMom(bird)._id}`}>
+                  {getMom(bird).name}
+                </Link>
               ) : (
                 'Không có thông tin'
               )}

@@ -3,12 +3,14 @@ import { LogOut } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../theme-provider'
 import { useAuthContext } from '@/contexts/auth-provider'
+import { Role } from '@/lib/types'
 
 type Props = {
   routes: { icon: string; route: string; label: string }[]
+  role: Role
 }
 
-const LeftSidebar = ({ routes }: Props) => {
+const LeftSidebar = ({ routes, role }: Props) => {
   const navigate = useNavigate()
   const pathname = useLocation().pathname
   const { theme } = useTheme()
@@ -19,9 +21,9 @@ const LeftSidebar = ({ routes }: Props) => {
       <div className='flex w-full flex-1 flex-col gap-6 px-6'>
         {routes.map((link) => {
           const isActive =
-            pathname === '/admin'
-              ? link.route === '/admin'
-              : link.route === '/admin'
+            pathname === `/${role}`
+              ? link.route === `/${role}`
+              : link.route === `/${role}`
               ? false
               : pathname.includes(link.route)
 

@@ -67,6 +67,17 @@ function App() {
 
         <Route path='/admin' element={<LayoutAdmin />}>
           <Route path='' element={<Dashboard />} />
+          <Route path='species' element={<ManageSpecieList />} />
+          <Route path='species/new' element={<ManageSpecieNew />} />
+          <Route path='species/:id' element={<ManageSpecieDetail />} />
+          <Route path='birds' element={<ManageBirdList />} />
+          <Route path='birds/new' element={<ManageBirdNew />} />
+          <Route path='birds/:id' element={<ManageBirdDetail />} />
+          <Route path='nests' element={<ManageNestList />} />
+          <Route path='nests/new' element={<ManageNestNew />} />
+          <Route path='nests/:id' element={<ManageNestDetail />} />
+          <Route path='orders' element={<ManageOrderList />} />
+          <Route path='orders/:id' element={<ManageOrderDetail />} />
         </Route>
 
         <Route path='/manager' element={<LayoutManager />}>

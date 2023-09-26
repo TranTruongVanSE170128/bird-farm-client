@@ -16,7 +16,7 @@ function LayoutManager() {
     <main className='relative'>
       <TopBar />
       <div className='flex'>
-        <LeftSidebar routes={routes} />
+        <LeftSidebar routes={routes} role='manager' />
         <section className='flex min-h-screen flex-1 flex-col items-center bg-dark-1 px-4 pb-10 pt-28 max-md:pb-32 sm:px-8'>
           <div className='w-full max-w-7xl'>
             <Outlet />
@@ -24,7 +24,7 @@ function LayoutManager() {
         </section>
       </div>
 
-      <BottomBar routes={routes} />
+      <BottomBar routes={routes} role='manager' />
     </main>
   )
 }

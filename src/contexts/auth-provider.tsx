@@ -29,6 +29,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setRole('guest')
         return
       }
+
       try {
         const { data } = await birdFarmApi.get('/api/users/who-am-i')
         if (data?.user) {
