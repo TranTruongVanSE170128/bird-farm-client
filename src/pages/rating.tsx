@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 function DisplayRating() {
-  const [selectedButton, setSelectedButton] = useState('all');
+  const [selectedButton, setSelectedButton] = useState('all')
   const buttons = [
     { label: 'Tất cả', value: 'all' },
     { label: '5 Sao', value: '5' },
@@ -13,12 +13,12 @@ function DisplayRating() {
     { label: '3 Sao', value: '3' },
     { label: '2 Sao', value: '2' },
     { label: '1 Sao', value: '1' },
-    { label: 'Có Hình ảnh', value: '0' },
-  ];
+    { label: 'Có Hình ảnh', value: '0' }
+  ]
 
-  const handleButtonClick = (value:string) => {
-    setSelectedButton(value);
-  };
+  const handleButtonClick = (value: string) => {
+    setSelectedButton(value)
+  }
   return (
     <main className=''>
       <Container>
@@ -43,33 +43,16 @@ function DisplayRating() {
               {buttons.map((button) => (
                 <Button
                   key={button.value}
-                  onClick={() => handleButtonClick(button.value)} variant='outline' className={cn('border border-primary mx-4 text-base',
-                  selectedButton === button.value ? "text-secondary bg-primary" : "")}
+                  onClick={() => handleButtonClick(button.value)}
+                  variant={selectedButton === button.value ? 'default' : 'outline'}
+                  className={cn(
+                    'border border-primary mx-4 text-base',
+                    selectedButton === button.value ? 'text-primary-foreground bg-primary' : ''
+                  )}
                 >
                   {button.label}
                 </Button>
               ))}
-              {/* <Button variant='outline' className='border border-primary mx-4'>
-                Tất cả(5)
-              </Button>
-              <Button variant='outline' className='border border-primary mx-4'>
-                5 Sao(1)
-              </Button>
-              <Button variant='outline' className='border border-primary mx-4'>
-                4 Sao(0)
-              </Button>
-              <Button variant='outline' className='border border-primary mx-4'>
-                3 Sao(0)
-              </Button>
-              <Button variant='outline' className='border border-primary mx-4'>
-                2 Sao(0)
-              </Button>
-              <Button variant='outline' className='border border-primary mx-4'>
-                1 Sao(0)
-              </Button>
-              <Button variant='outline' className='border border-primary mx-4 text-[#ee4d2d] border-[#ee4d2d]'>
-                Có Hình Ảnh/Video(9)
-              </Button> */}
             </div>
           </div>
           {/* Review 1 */}
@@ -97,12 +80,10 @@ function DisplayRating() {
               </div>
 
               <div className='text-foreground text-xl mx-10'>
-                <p>Sản phẩm tuyệt vời, shop tận tình chu đáo
-                Sản phẩm tuyệt vời, shop tận tình chu đáo
-                Sản phẩm tuyệt vời, shop tận tình chu đáo
-                Sản phẩm tuyệt vời, shop tận tình chu đáo
-                Sản phẩm tuyệt vời, shop tận tình chu đáo
-                Giao hàng nhanh chóng
+                <p>
+                  Sản phẩm tuyệt vời, shop tận tình chu đáo Sản phẩm tuyệt vời, shop tận tình chu đáo Sản phẩm tuyệt
+                  vời, shop tận tình chu đáo Sản phẩm tuyệt vời, shop tận tình chu đáo Sản phẩm tuyệt vời, shop tận tình
+                  chu đáo Giao hàng nhanh chóng
                 </p>
               </div>
 
@@ -138,11 +119,9 @@ function DisplayRating() {
               </div>
 
               <div className='text-foreground text-xl mx-10'>
-                <p>Sản phẩm tuyệt vời, shop tận tình chu đáo
-                  Phục vụ tận tình
+                <p>
+                  Sản phẩm tuyệt vời, shop tận tình chu đáo Phục vụ tận tình Sản phẩm tuyệt vời, shop tận tình chu đáo
                   Sản phẩm tuyệt vời, shop tận tình chu đáo
-                  Sản phẩm tuyệt vời, shop tận tình chu đáo
-
                 </p>
               </div>
 
@@ -178,10 +157,9 @@ function DisplayRating() {
               </div>
 
               <div className='text-foreground text-xl mx-10'>
-                <p>Sản phẩm tuyệt vời, shop tận tình chu đáo
-                Sản phẩm tuyệt vời, shop tận tình chu đáo
-                Sản phẩm tuyệt vời, shop tận tình chu đáo
-                Sản phẩm tuyệt vời, shop tận tình chu đáo
+                <p>
+                  Sản phẩm tuyệt vời, shop tận tình chu đáo Sản phẩm tuyệt vời, shop tận tình chu đáo Sản phẩm tuyệt
+                  vời, shop tận tình chu đáo Sản phẩm tuyệt vời, shop tận tình chu đáo
                 </p>
               </div>
 
