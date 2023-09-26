@@ -4,13 +4,17 @@ import { Input } from '@/components/ui/input'
 import axios from 'axios'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import Cash from '@/assets/cash.png'
 import Vnpay from '@/assets/vnpay.png'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
-
+;('use client')
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { toast } from '@/components/ui/use-toast'
 type Province = {
   code: string
   isDeleted: boolean
@@ -32,6 +36,36 @@ type District = {
   parent_code: string
   isDeleted: false
 }
+const FormSchema = z.object({
+  type: z.enum(['cash', 'vnpay'], {
+    required_error: 'You need to select a notification type.'
+  }),
+  firstName: z.string().min(2, {
+    message: 'Username must be at least 2 characters.'
+  }),
+  lastName: z.string().min(2, {
+    message: 'Lastname must be at least 2 characters.'
+  }),
+  phoneNumber: z.string().min(11, {
+    message: 'PhoneNumber must be at least 11 characters.'
+  }),
+  province: z.string().min(11, {
+    message: 'Province not be blank.'
+  }),
+  district: z.string().min(11, {
+    message: 'District not be blank.'
+  }),
+  ward: z.string().min(11, {
+    message: 'Ward not be blank.'
+  }),
+  address: z.string().min(0, {
+    message: ''
+  }),
+  notice: z.string().min(0, {
+    message: ''
+  })
+})
+
 function Checkout() {
   const [listProvinces, setListPorvinces] = useState<Province[]>([])
   const [listDistrict, setListDistrict] = useState<District[]>([])
@@ -86,6 +120,30 @@ function Checkout() {
     setSelectedProvinceCode(provinceCode)
   }
 
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+      province: '',
+      district: '',
+      ward: '',
+      address: '',
+      notice: ''
+    }
+  })
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    toast({
+      title: 'You submitted the following values:',
+      description: (
+        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
+        </pre>
+      )
+    })
+  }
   return (
     <main>
       <Container>
@@ -98,93 +156,215 @@ function Checkout() {
           <div className='flex flex-col mt-8 md:flex-row md:justify-between'>
             <div className='basis-3/4 md:w-3/5'>
               <p className='uppercase text-3xl font-bold'>thông tin thanh toán</p>
-              <p>(Thông tin có dấu * là bắt buộc)</p>
-              <div className='flex justify-between mt-5 mr-12'>
-                <Input className='basis-1/2 mr-3' placeholder='Họ*' />
-                <Input className='basis-1/2' placeholder='Tên*' />
-              </div>
-              <div className='mt-5 mr-12'>
-                <Input className='' placeholder='Số điện thoại*' />
-              </div>
-              <div className='mt-5 flex justify-between mr-12'>
-                <Select>
-                  <SelectTrigger className='bisis-1/3 mr-3'>
-                    <SelectValue placeholder='Tỉnh*' />
-                  </SelectTrigger>
-                  <SelectContent className='max-h-[250px] overflow-y-auto absolute w-[250px]'>
-                    {listProvinces.map((province) => (
-                      <SelectItem key={province?.slug} value={province.code}>
-                        {province?.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Select>
-                  <SelectTrigger className='bisis-1/3 mr-3'>
-                    <SelectValue placeholder='Huyện*' />
-                  </SelectTrigger>
-                  <SelectContent className='max-h-[250px] overflow-y-auto absolute '>
-                    {listDistrict.map((district) => (
-                      <SelectItem key={district?.slug} value={district.slug}>
-                        {district?.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Select>
-                  <SelectTrigger className='bisis-1/3'>
-                    <SelectValue placeholder='Xã*' />
-                  </SelectTrigger>
-                  <SelectContent className='max-h-[250px] overflow-y-auto absolute'>
-                    {listDistrict.map((district) => (
-                      <SelectItem key={district?.slug} value={district.slug}>
-                        {district?.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className='mt-5 mr-12'>
-                <Input className='' placeholder='Địa chỉ cụ thể...' />
-              </div>
-              <div className='mt-5 mr-12'>
-                <p className='uppercase font-bold text-[20px]'>Thông tin bổ sung</p>
-                <div className='w-[220px] h-[1px] border'></div>
-                <p className='font-bold text-[15px] mt-5'>Ghi chú đơn hàng (có thể có hoặc không)</p>
-                <Textarea
-                  className='mt-3 h-[150px]'
-                  placeholder='Ghi chú đơn hàng, ví dụ: Thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn'
-                />
-              </div>
-              <div className='mt-5'>
-                <p className='uppercase font-bold text-3xl'>hình thức thanh toán</p>
-                <div className='mt-5 '>
-                  <RadioGroup defaultValue='option-one'>
-                    <div className='flex items-center space-x-2 border py-10 px-5 mr-12 rounded-md'>
-                      <RadioGroupItem value='option-one' id='option-one' />
-                      <div>
-                        <img src={Cash} alt='' className='w-[30px] h-[30px] ml-9' />
-                      </div>
-                      <Label htmlFor='option-one' className='text-[17px]'>
-                        Thanh toán khi nhận hàng
-                      </Label>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+                  <div className='flex justify-between mt-5 mr-12'>
+                    <FormField
+                      control={form.control}
+                      name='firstName'
+                      render={({ field }) => (
+                        <FormItem className='basis-1/2 mr-3'>
+                          <FormControl>
+                            <Input placeholder='Họ*' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name='lastName'
+                      render={({ field }) => (
+                        <FormItem className='basis-1/2'>
+                          <FormControl>
+                            <Input placeholder='Tên*' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <FormField
+                      control={form.control}
+                      name='phoneNumber'
+                      render={({ field }) => (
+                        <FormItem className='mr-12'>
+                          <FormControl>
+                            <Input placeholder='Số điện thoại*' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className='mt-5 flex justify-between mr-12'>
+                    <FormField
+                      control={form.control}
+                      name='province'
+                      render={({ field }) => (
+                        <FormItem className='basis-1/3 mr-3'>
+                          <FormControl>
+                            <Select>
+                              <SelectTrigger>
+                                <SelectValue placeholder='Tỉnh*' />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {listProvinces.map((province) => (
+                                  <SelectItem key={province?.slug} value={province?.code}>
+                                    {province?.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name='district'
+                      render={({ field }) => (
+                        <FormItem className='basis-1/3 mr-3'>
+                          <FormControl>
+                            <Select>
+                              <SelectTrigger>
+                                <SelectValue placeholder='Huyện*' />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {listDistrict.map((district) => (
+                                  <SelectItem key={district?.slug} value={district?.slug}>
+                                    {district?.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name='ward'
+                      render={({ field }) => (
+                        <FormItem className='basis-1/3'>
+                          <FormControl>
+                            <Select>
+                              <SelectTrigger>
+                                <SelectValue placeholder='Huyện*' />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {listDistrict.map((district) => (
+                                  <SelectItem key={district?.slug} value={district?.slug}>
+                                    {district?.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className='mt-5 mr-12'>
+                    <FormField
+                      control={form.control}
+                      name='address'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input placeholder='Địa chỉ cụ thể' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className='mt-5 mr-12'>
+                    <p className='uppercase font-bold text-[20px]'>Thông tin bổ sung</p>
+                    <div className='w-[220px] h-[1px] border'></div>
+
+                    <FormField
+                      control={form.control}
+                      name='notice'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Textarea
+                              className='mt-3 h-[150px]'
+                              placeholder='Ghi chú đơn hàng, ví dụ: Thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn'
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className='mt-5'>
+                    <p className='uppercase font-bold text-3xl'>hình thức thanh toán</p>
+                    <div className='mt-5 '>
+                      <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className='w-full space-y-6'>
+                          <FormField
+                            control={form.control}
+                            name='type'
+                            render={({ field }) => (
+                              <FormItem className='space-y-3'>
+                                <FormLabel></FormLabel>
+                                <FormControl>
+                                  <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className='flex flex-col space-y-1'
+                                  >
+                                    <FormItem className='flex items-center space-x-3 space-y-0 border py-10 px-5 rounded-md mr-12 '>
+                                      <FormControl>
+                                        <RadioGroupItem value='cash' />
+                                      </FormControl>
+                                      <div>
+                                        <img src={Cash} alt='' className='w-[30px] h-[30px] ml-9' />
+                                      </div>
+                                      <FormLabel className='font-normal text-[17px]'>
+                                        {' '}
+                                        Thanh toán khi nhận hàng
+                                      </FormLabel>
+                                    </FormItem>
+                                    <FormItem className='flex items-center space-x-3 space-y-0 border py-10 px-5 rounded-md mr-12'>
+                                      <FormControl>
+                                        <RadioGroupItem value='vnpay' />
+                                      </FormControl>
+                                      <div>
+                                        <img src={Vnpay} alt='' className='w-[30px] h-[30px] ml-9' />
+                                      </div>
+                                      <FormLabel className='font-normal text-[17px]'>
+                                        {' '}
+                                        Thẻ ATM/Thẻ tín dụng (Credit Card)
+                                      </FormLabel>
+                                    </FormItem>
+                                  </RadioGroup>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <div className='mr-12'>
+                            <Button type='submit' className='w-full p-7 text-[20px] font-bold'>
+                              Thanh toán
+                            </Button>
+                          </div>
+                        </form>
+                      </Form>
                     </div>
-                    <div className='flex items-center space-x-2 border py-10 px-5 mr-12 rounded-md'>
-                      <RadioGroupItem value='option-two' id='option-two' />
-                      <div>
-                        <img src={Vnpay} alt='' className='w-[30px] h-[30px] ml-9' />
-                      </div>
-                      <Label htmlFor='option-two' className='text-[17px]'>
-                        Thẻ ATM/Thẻ tín dụng (Credit Card)
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-              </div>
+                  </div>
+                </form>
+              </Form>
             </div>
             <div className='basis-1/4 md:w-2/5 mt-8 md:mt-0'>
               <p className='text-3xl font-bold uppercase'>Đơn hàng</p>
-              <div className='border rounded-md p-3 mt-10'>
+              <div className='border rounded-md p-3 mt-5'>
                 <p className='uppercase text-gray-500 font-bold'>sản phẩm</p>
                 <ScrollArea className='h-[300px] w-[350px] rounded-md p-4'>
                   {new Array(10).fill(null).map((i, index) => (
@@ -215,9 +395,6 @@ function Checkout() {
                   <span className='w-1/2 text-start font-bold'>Tổng</span>
                   <span className='w-1/2 text-end font-bold'>25.000.000đ</span>
                 </div>
-              </div>
-              <div className='md:flex justify-end mt-8 hidden'>
-                <Button className='w-full p-7 text-[20px] font-bold'>Thanh toán </Button>
               </div>
             </div>
           </div>
