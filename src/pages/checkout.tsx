@@ -5,6 +5,7 @@ import axios from 'axios'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { toast } from '@/components/ui/use-toast'
 import Cash from '@/assets/cash.png'
 import Vnpay from '@/assets/vnpay.png'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -14,7 +15,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { toast } from '@/components/ui/use-toast'
 type Province = {
   code: string
   isDeleted: boolean
