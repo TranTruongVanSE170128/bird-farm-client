@@ -15,8 +15,8 @@ function DisplayRating() {
                 </div>
                 <div className='bg-purple-100 flex mx-20'>
                     <div className='mx-10'>
-                        <span className='font-medium text-6xl mx-2'>5</span>
-                        <span className='font-medium text-2xl'>trên 5</span>
+                        <span className='font-medium text-6xl mx-4'>5</span>
+                        <span className='font-medium text-2xl'>/ 5</span>
                         <div className='flex my-2'>
                             <Star fill='yellow' color='yellow'></Star>
                             <Star fill='yellow' color='yellow'></Star>
@@ -42,9 +42,7 @@ function DisplayRating() {
                         <button className='px-4 my-6 mx-6 bg-card rounded-md border border-primary hover:bg-primary hover:text-card'>
                             1 sao(0)
                         </button>
-                        <button className='px-4 my-6 mx-6 bg-card rounded-md border border-primary hover:bg-primary hover:text-card'>
-                            0 sao(0)
-                        </button>
+                        
 
                     </div>
                     
