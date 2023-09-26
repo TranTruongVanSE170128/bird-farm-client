@@ -13,7 +13,7 @@ function DisplayRating() {
                 <div className="text-center p-6">
                     <h1 className=" text-4xl font-semibold">Đánh giá và Nhận xét</h1>
                 </div>
-                <div className='bg-purple-100 flex mx-20'>
+                <div className='shadow-lg flex mx-20'>
                     <div className='mx-10'>
                         <span className='font-medium text-6xl mx-4'>5</span>
                         <span className='font-medium text-2xl'>/ 5</span>
@@ -26,7 +26,7 @@ function DisplayRating() {
                         </div>
                     </div>
 
-                    <div className='flex bg-purple-100'>
+                    <div className='flex shadow-lg'>
                         <button className='px-4 my-6 mx-6 bg-card rounded-md border border-primary hover:bg-primary hover:text-card' >
                             5 sao(1)
                         </button>
@@ -54,7 +54,7 @@ function DisplayRating() {
                                 <img className='w-20 rounded-2xl' src={image} alt="Profile Image" />
                                 <strong className= " text-xl m-5">thuongminhlsr</strong>
                         </div>
-                        <div className="shadow-lg ml-14 bg-purple-200 rounded-xl">
+                        <div className="shadow-lg ml-14 rounded-xl">
                            <div className='flex justify-between items-center -mt-6 '>
                                 <div className="flex mt-4 mx-10">
                                     <Star fill='yellow' color='yellow'></Star>
@@ -96,7 +96,7 @@ function DisplayRating() {
                                 <img className='w-20 rounded-2xl' src={image} alt="Profile Image" />
                                 <strong className= " text-xl m-5">thuongminhlsr</strong>
                         </div>
-                        <div className="shadow-lg ml-14 bg-purple-200 rounded-xl">
+                        <div className="shadow-lg ml-14 rounded-xl">
                            <div className='flex justify-between items-center -mt-6 '>
                                 <div className="flex mt-4 mx-10">
                                     <Star fill='yellow' color='yellow'></Star>
@@ -143,7 +143,7 @@ function DisplayRating() {
                                 <img className='w-20 rounded-2xl' src={image} alt="Profile Image" />
                                 <strong className= " text-xl m-5">thuongminhlsr</strong>
                         </div>
-                        <div className="shadow-lg ml-14 bg-purple-200 rounded-xl">
+                        <div className="shadow-lg ml-14 rounded-xl">
                            <div className='flex justify-between items-center -mt-6 '>
                                 <div className="flex mt-4 mx-10">
                                     <Star fill='yellow' color='yellow'></Star>
