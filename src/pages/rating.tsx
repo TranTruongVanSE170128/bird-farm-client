@@ -8,7 +8,7 @@ import { useState } from 'react'
 function DisplayRating() {
   const [selectedButton, setSelectedButton] = useState('all');
   const buttons = [
-    { label: 'All', value: 'all' },
+    { label: 'Tất cả', value: 'all' },
     { label: '5 Sao', value: '5' },
     { label: '4 Sao', value: '4' },
     { label: '3 Sao', value: '3' },
@@ -52,6 +52,7 @@ function DisplayRating() {
                     padding: '10px 25px',
                     cursor: 'pointer',
                     margin: '10px',
+                    fontSize:'20px'
                   }}
                 >
                   {button.label}
