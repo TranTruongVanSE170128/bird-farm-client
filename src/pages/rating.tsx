@@ -1,10 +1,9 @@
-import React from 'react'
 import Container from '@/components/ui/container'
 import image from '@/assets/anhdaidien.jpg'
-import star from '@/assets/star.png'
-import { Star, StarOff, Stars, StarsIcon } from 'lucide-react'
+import { Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
+import { cn } from '@/lib/utils'
 function DisplayRating() {
   const [selectedButton, setSelectedButton] = useState('all');
   const buttons = [
@@ -14,7 +13,7 @@ function DisplayRating() {
     { label: '3 Sao', value: '3' },
     { label: '2 Sao', value: '2' },
     { label: '1 Sao', value: '1' },
-    { label: 'Có Hình ảnh/Video', value: '0' },
+    { label: 'Có Hình ảnh', value: '0' },
   ];
 
   const handleButtonClick = (value:string) => {
@@ -42,21 +41,13 @@ function DisplayRating() {
 
             <div className=''>
               {buttons.map((button) => (
-                <button
+                <Button
                   key={button.value}
-                  onClick={() => handleButtonClick(button.value)}
-                  style={{
-                    border: selectedButton === button.value ? '2px solid #ee4d2d' : '1px solid purple',
-                    color: selectedButton === button.value ? '#ee4d2d' : 'black',
-                    borderRadius: '5px',
-                    padding: '10px 25px',
-                    cursor: 'pointer',
-                    margin: '10px',
-                    fontSize:'20px'
-                  }}
+                  onClick={() => handleButtonClick(button.value)} variant='outline' className={cn('border border-primary mx-4 text-base',
+                  selectedButton === button.value ? "text-secondary bg-primary" : "")}
                 >
                   {button.label}
-                </button>
+                </Button>
               ))}
               {/* <Button variant='outline' className='border border-primary mx-4'>
                 Tất cả(5)
