@@ -52,7 +52,7 @@ function Header() {
   }
 
   return (
-    <header className='px-4 sm:flex sm:justify-between sm:items-center border-b fixed top-0 w-full z-50 bg-background'>
+    <header className='px-4 sm:flex sm:justify-between sm:items-center border-b fixed top-0 w-full z-50 bg-card'>
       <Container>
         <div className='flex gap-8 pt-6'>
           <Link to='/' className='shrink-0'>

@@ -1,24 +1,56 @@
 import { useState, useEffect } from 'react'
 import Container from '@/components/ui/container'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { cn } from '@/lib/utils'
+import { addSearchParams, cn, formatPrice, statusToMessage, statusToVi } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import { Order, getBirds, getNests, getSpecie } from '@/lib/types'
+import { birdFarmApi } from '@/services/bird-farm-api'
+import Paginate from '@/components/paginate'
+import noImage from '@/assets/no-image.avif'
+import femaleIcon from '@/assets/female.svg'
+import maleIcon from '@/assets/male.svg'
+import birdIcon from '@/assets/bird-color.svg'
+import nestIcon from '@/assets/nest-color.svg'
+import Spinner from '@/components/ui/spinner'
+import { useToast } from '@/components/ui/use-toast'
 
 const tabItems = [
   { label: 'Tất cả', value: 'all' },
   { label: 'Đang xử lý', value: 'processing' },
   { label: 'Đang giao', value: 'delivering' },
   { label: 'Hoàn thành', value: 'success' },
-  { label: 'Đã hủy', value: 'cancel' }
+  { label: 'Đã hủy', value: 'canceled' }
 ] as const
 
 const tabWidthPercentage = 20
+const pageSize = 5
 
 function OrderList() {
   const [searchParams] = useSearchParams()
   const activeTab = searchParams.get('tab') || 'all'
   const navigate = useNavigate()
   const [barStyle, setBarStyle] = useState({ left: '0%', width: '0%' })
+  const pageNumber = Number(searchParams.get('pageNumber') || 1)
+  const [orders, setOrders] = useState<Order[]>([])
+  const [isLoadingOrders, setIsLoadingOrders] = useState(true)
+  const [totalPages, setTotalPages] = useState<number | null>(null)
+  const { toast } = useToast()
+
+  const receiveOrder = async (id: string) => {
+    try {
+      await birdFarmApi.put(`api/orders/${id}/receive`)
+      navigate('/orders?tab=success')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const messageError = error.response.data.message
+
+      toast({
+        title: 'Không thể nhận hàng',
+        description: messageError || 'Không rõ nguyên nhân',
+        variant: 'destructive'
+      })
+    }
+  }
 
   useEffect(() => {
     const activeTabIndex = tabItems.findIndex((tab) => tab.value === activeTab)
@@ -26,10 +58,24 @@ function OrderList() {
     setBarStyle({ left: `${barPosition}%`, width: `${tabWidthPercentage}%` })
   }, [activeTab])
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      setIsLoadingOrders(true)
+      const { data } = await birdFarmApi.get(
+        addSearchParams('/api/orders/pagination', { pageNumber, pageSize, status: activeTab !== 'all' && activeTab })
+      )
+      setOrders(data?.orders || [])
+      setTotalPages(data?.totalPages || null)
+      setIsLoadingOrders(false)
+    }
+
+    fetchOrders()
+  }, [pageNumber, activeTab])
+
   return (
     <main>
       <Container>
-        <div className='w-full h-12 shadow-l border-border border relative mt-6'>
+        <div className='w-full h-14 shadow-l border-border border relative mt-6 bg-card'>
           <div className='bg-primary h-1 absolute bottom-0 transition-all duration-300' style={barStyle} />
           <ul className='flex justify-around h-full items-center'>
             {tabItems.map((tab) => (
@@ -46,44 +92,139 @@ function OrderList() {
             ))}
           </ul>
         </div>
-        <div className='mt-8 rounded p-4 md:p-8 border border-border'>
-          <div className='flex justify-end'>
-            <p className='mt-2 text-teal-500'>Đơn hàng đã được giao thành công</p>
-            <div className='w-[1px] h-[20px] bg-border mx-4 mt-2 ' />
-            <p className='uppercase text-red-600 mt-2'>hoàn thành</p>
-          </div>
-          <div className='min-w-full h-[1px] bg-border mt-2' />
-          <div className='flex flex-col md:flex-row justify-between'>
-            <div className='flex items-center my-5 md:w-1/2'>
-              <div className='w-[70px] h-[70px] mx-5'>
-                <img
-                  className='w-full h-full'
-                  src='https://thuvienthucung.com/wp-content/uploads/2021/09/Cam-Nang-Nuoi-Cham-Soc-Chim-Chao-Mao.jpg'
-                  alt=''
-                />
+        {isLoadingOrders && <Spinner className='mt-12' />}
+
+        {!isLoadingOrders &&
+          orders.map((order) => {
+            type TStateButton = { title: string; handleClick: () => void }
+
+            const stateButtons: TStateButton[] = []
+            if (order.status === 'success' && !order.rated) {
+              stateButtons.push({ title: 'Đánh Giá', handleClick: () => {} })
+            }
+
+            if (order.status === 'delivering') {
+              stateButtons.push({
+                title: 'Đã Nhận Hàng',
+                handleClick: () => {
+                  receiveOrder(order._id)
+                }
+              })
+            }
+
+            stateButtons.push({ title: 'Liên Hệ Shop', handleClick: () => {} })
+
+            if (order.status === 'processing') {
+              stateButtons.push({ title: 'Hủy Đơn Hàng', handleClick: () => {} })
+            }
+
+            return (
+              <div className='mt-4 rounded px-8 py-4 border bg-card'>
+                <div className='flex justify-end'>
+                  {order?.cancelMessage ? (
+                    <p className='mt-2 text-teal-500'>{order?.cancelMessage}</p>
+                  ) : (
+                    <p className='mt-2 text-teal-500'>{statusToMessage[order.status]}</p>
+                  )}
+
+                  <div className='w-[1px] h-[20px] bg-border mx-4 mt-2 ' />
+                  <p className='uppercase text-primary mt-2'>{statusToVi[order.status]}</p>
+                </div>
+                <div className='min-w-full h-[1px] bg-border my-4' />
+                {getBirds(order).map((bird) => (
+                  <div className='flex flex-row justify-between mb-3'>
+                    <div className='flex items-center gap-4'>
+                      {!bird.imageUrls?.length ? (
+                        <img
+                          className='w-20 aspect-square object-cover rounded cursor-pointer'
+                          src={noImage}
+                          alt='bird'
+                        />
+                      ) : (
+                        <img
+                          className='w-20 aspect-square object-cover rounded cursor-pointer'
+                          src={bird.imageUrls[0]}
+                          alt='bird'
+                        />
+                      )}
+                      <div>
+                        <p className='font-semibold text-center md:text-left'>{bird.name}</p>
+                        <p className='flex items-center'>
+                          Loài: {getSpecie(bird).name}
+                          {bird.gender === 'male' ? (
+                            <img className='w-6 h-6 ml-1' src={maleIcon} alt='' />
+                          ) : (
+                            <img className='w-6 h-6 ml-1' src={femaleIcon} alt='' />
+                          )}
+                        </p>
+                        <p className='flex items-center'>
+                          Phân loại: Chim kiểng <img src={birdIcon} className='w-5 h-5 ml-1' />
+                        </p>
+                      </div>
+                    </div>
+                    <div className='flex items-center'>
+                      {/* <p className='mx-6 line-through text-slate-500'>500.000.000đ</p> */}
+                      <p>{formatPrice(bird.sellPrice)}</p>
+                    </div>
+                  </div>
+                ))}
+                {getNests(order).map((nest) => (
+                  <div className='flex flex-row justify-between mb-4'>
+                    <div className='flex items-center gap-4'>
+                      {!nest.imageUrls?.length ? (
+                        <img
+                          className='w-20 aspect-square object-cover rounded cursor-pointer'
+                          src={noImage}
+                          alt='nest'
+                        />
+                      ) : (
+                        <img
+                          className='w-20 aspect-square object-cover rounded cursor-pointer'
+                          src={nest.imageUrls[0]}
+                          alt='nest'
+                        />
+                      )}
+                      <div>
+                        <p className='font-semibold text-center md:text-left'>{nest.name}</p>
+                        <p className='flex items-center'>Loài: {getSpecie(nest).name}</p>
+                        <p className='flex items-center'>
+                          Phân loại: Tổ chim non <img src={nestIcon} className='w-5 h-5 ml-1' />
+                        </p>
+                      </div>
+                    </div>
+                    <div className='flex items-center'>
+                      {/* <p className='mx-6 line-through text-slate-500'>500.000.000đ</p> */}
+                      <p>{formatPrice(nest.price)}</p>
+                    </div>
+                  </div>
+                ))}
+                <div className='min-w-full h-[1px] bg-border' />
+                <div className='flex gap-3 justify-end mt-6 items-center'>
+                  <p className='font-medium text-lg mt-1'>Thành tiền:</p>
+                  <p className='text-primary text-2xl font-medium'>{formatPrice(order.totalMoney)}</p>
+                </div>
+                <div className='flex flex-col md:flex-row justify-end items-center mt-5 gap-3'>
+                  {stateButtons.map((button, i) => {
+                    return (
+                      <Button variant={i === 0 ? 'default' : 'outline'} onClick={button.handleClick} size='lg'>
+                        {button.title}
+                      </Button>
+                    )
+                  })}
+                </div>
               </div>
-              <div>
-                <p className='font-semibold text-center md:text-left'>Chim chào mào huế, mã SE170112</p>
-                <p className='text-[13px] text-center md:text-left'>Giống: Chim chào mào | Đực</p>
-                <p className='text-[13px] text-center md:text-left'>Phân loại: Chim trưởng thành</p>
-              </div>
-            </div>
-            <div className='my-7 text-center md:text-right md:w-1/2'>
-              <p className='font-bold'>Thành tiền</p>
-              <div className='flex justify-center md:justify-end'>
-                <p className='mx-6 line-through text-slate-500'>500.000.000đ</p>
-                <p className='text-red-600'>4.999.000đ</p>
-              </div>
-            </div>
-          </div>
-          <div className='min-w-full h-[1px] bg-border' />
-          <div className='flex flex-col md:flex-row justify-end items-center mt-5'>
-            <Button className='md:mx-0'>Đánh giá</Button>
-            <Button variant='outline' className='mt-3 md:mt-0 md:ml-5'>
-              Liên hệ shop
-            </Button>
-          </div>
-        </div>
+            )
+          })}
+
+        {!!totalPages && (
+          <Paginate
+            className='mt-8'
+            path={addSearchParams('/orders', { tab: activeTab })}
+            pageSize={pageSize}
+            pageNumber={pageNumber}
+            totalPages={totalPages}
+          />
+        )}
       </Container>
     </main>
   )

@@ -54,6 +54,13 @@ export const statusToVi: Record<OrderStatus, string> = {
   canceled: 'Đã hủy'
 }
 
+export const statusToMessage: Record<OrderStatus, string> = {
+  processing: 'Đơn hàng đang được chuẩn bị',
+  delivering: 'Đơn hàng đang trên đường đến tay bạn',
+  success: 'Đơn hàng đã được giao thành công',
+  canceled: 'Đơn hàng đã bị hủy'
+}
+
 type Variant = 'warning' | 'info' | 'success' | 'destructive'
 
 export const statusToVariant: Record<OrderStatus, Variant> = {

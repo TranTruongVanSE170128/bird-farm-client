@@ -53,6 +53,8 @@ export type Order = {
   createdAt: Date
   totalMoney: number
   status: OrderStatus
+  cancelMessage?: string
+  rated: boolean
 }
 
 export function getSpecie(item: Bird | Nest): Specie {
