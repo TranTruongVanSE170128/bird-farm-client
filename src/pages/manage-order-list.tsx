@@ -27,7 +27,7 @@ function ManageOrderList() {
       setIsLoadingOrders(true)
       try {
         const { data } = await birdFarmApi.get(
-          addSearchParams('/api/orders/pagination/admin?pageSize', { pageNumber, pageSize, searchQuery })
+          addSearchParams('/api/orders/pagination/admin', { pageNumber, pageSize, searchQuery })
         )
         setOrders(data?.orders || null)
         setIsLoadingOrders(false)

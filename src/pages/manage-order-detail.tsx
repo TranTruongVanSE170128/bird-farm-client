@@ -1,19 +1,41 @@
 import { Badge } from '@/components/ui/badge'
-import { buttonVariants } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Order, getBirds, getNests, getUser } from '@/lib/types'
-import { cn, formatDate, formatPrice, statusToVariant, statusToVi } from '@/lib/utils'
+import { formatDate, formatPrice, statusToVariant, statusToVi } from '@/lib/utils'
 import { birdFarmApi } from '@/services/bird-farm-api'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Shell } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import noImage from '@/assets/no-image.avif'
+import cancel from '@/assets/cancel.svg'
+import approve from '@/assets/approve.svg'
+import { useToast } from '@/components/ui/use-toast'
 
 function ManageOrderDetail() {
   const { id } = useParams()
   const [order, setOrder] = useState<Order | null>(null)
+  const [approvingOrder, setApprovingOrder] = useState(false)
+  const { toast } = useToast()
   // const [edit, setEdit] = useState(false)
+
+  const approveOrder = async () => {
+    try {
+      setApprovingOrder(true)
+      await birdFarmApi.put(`/api/orders/${id}/approve`)
+      window.location.reload()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const msg = error?.response?.data?.message
+      toast({
+        title: 'Chấp nhận đơn hàng thất bại',
+        description: msg || 'Không rõ lý do',
+        variant: 'destructive'
+      })
+      setApprovingOrder(false)
+    }
+  }
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -40,21 +62,12 @@ function ManageOrderDetail() {
         </div>
 
         <div className='flex gap-2'>
-          {/* {!edit && (
-            <Button
-              onClick={() => {
-                setEdit(true)
-              }}
-              className='mb-6 flex items-center gap-1 my-auto'
-            >
-              <span>Chỉnh sửa</span>
-              <Edit className='w-5 h-5' />
-            </Button>
-          )} */}
-          <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/orders'>
-            <span>Quay lại</span>
-            <ArrowLeft className='w-5 h-5' />
-          </Link>
+          <Button disabled={approvingOrder} asChild>
+            <Link className='mb-6 flex items-center gap-1 my-auto' to='/admin/orders'>
+              <span>Quay lại</span>
+              <ArrowLeft className='w-5 h-5' />
+            </Link>
+          </Button>
         </div>
       </div>
 
@@ -111,6 +124,20 @@ function ManageOrderDetail() {
         </div>
       </div>
 
+      <div className='flex justify-end gap-4 mt-4'>
+        <Button disabled={approvingOrder} onClick={() => {}} className='mb-6 flex items-center gap-1 my-auto'>
+          <span>Hủy đơn hàng</span>
+          <img src={cancel} className='w-5 h-5 filter invert' />
+        </Button>
+        {order.status === 'processing' && (
+          <Button disabled={approvingOrder} onClick={approveOrder} className='mb-6 flex items-center gap-1 my-auto'>
+            <span>Chấp nhận đơn hàng</span>
+            <img src={approve} className='w-5 h-5 filter invert' />
+            {approvingOrder && <Shell className='animate-spin w-4 h-4 ml-1' />}
+          </Button>
+        )}
+      </div>
+
       <div className='flex items-center justify-between mt-6 mb-2 text-2xl font-medium'>Danh sách sản phẩm</div>
 
       <Table>
@@ -125,7 +152,7 @@ function ManageOrderDetail() {
         <TableBody>
           {getBirds(order).map((bird) => {
             return (
-              <TableRow>
+              <TableRow key={bird._id}>
                 <TableCell>
                   {!bird.imageUrls?.length ? (
                     <img className='aspect-square w-16 object-cover' src={noImage} alt='' />
@@ -141,7 +168,7 @@ function ManageOrderDetail() {
           })}
           {getNests(order).map((nest) => {
             return (
-              <TableRow>
+              <TableRow key={nest._id}>
                 <TableCell>
                   {!nest.imageUrls?.length ? (
                     <img className='aspect-square w-16 object-cover' src={noImage} alt='' />
