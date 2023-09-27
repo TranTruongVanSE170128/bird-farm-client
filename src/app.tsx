@@ -20,7 +20,6 @@ import BirdComparing from '@/pages/bird-comparing'
 import NestList from '@/pages/nest-list'
 import BreedBirdList from '@/pages/breed-bird-list'
 import NestDetail from './pages/nest-detail'
-import DisplayRating from './pages/rating-display'
 import LayoutManager from './components/shared/layout-manager'
 import LayoutStaff from './components/shared/layout-staff'
 import ManageSpecieList from './pages/manage-specie-list'
@@ -34,6 +33,7 @@ import ManageNestDetail from './pages/manage-nest-detail'
 import ManageOrderList from './pages/manage-order-list'
 import ManageOrderDetail from './pages/manage-order-detail'
 import ManageSpecieNew from './pages/manage-specie-new'
+import DisplayRating from './pages/rating'
 
 function App() {
   return (
