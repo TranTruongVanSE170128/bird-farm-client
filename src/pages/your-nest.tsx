@@ -24,60 +24,24 @@ const ListNest = [
       img: noImage
     },
     stage1: {
-      status: 'Trạng thái: Tốt',
-      numberOfBird: 'So luong: chua xac dinh',
+      status: 'Tốt',
+      numberOfBird: 'chua xac dinh',
       img: yourbird1
     },
     stage2: {
-      status: 'Trạng thái: Tốt',
-      numberOfBird: 'So luong: 15',
+      status: 'Tốt',
+      numberOfBird: '15',
       img: yourbird2
     },
     stage3: {
-      status: 'Trạng thái: Tốt',
-      numberOfBird: 'So luong: 15',
+      status: 'Tốt',
+      numberOfBird: '15',
       img: yourbird3
     },
     stage4: {
-      status: 'Trạng thái: Tốt',
-      numberOfBird: 'So luong: 15',
-      img: yourbird4
-    }
-  },
-  {
-    dad: {
-      name: 'Chim chao mao Hue, ma SE170999',
-      specie: 'Chim chao mao',
-      type: 'chim phoi giong',
-      gender: 'Duc',
-      img: noImage
-    },
-    mom: {
-      name: 'Chim chao mao Hue, ma SE170999',
-      specie: 'Chim chao mao',
-      type: 'chim phoi giong',
-      gender: 'Cai',
-      img: noImage
-    },
-    stage1: {
-      status: 'Trạng thái: Tốt',
-      numberOfBird: 'So luong: chua xac dinh',
-      img: yourbird1
-    },
-    stage2: {
-      status: 'Trạng thái: Tốt',
-      numberOfBird: 'So luong: 15',
-      img: yourbird2
-    },
-    stage3: {
-      status: 'Trạng thái: Tốt',
-      numberOfBird: 'So luong: 15',
-      img: yourbird3
-    },
-    stage4: {
-      status: 'Trạng thái: Tốt',
-      numberOfBird: 'So luong: 15',
-      img: yourbird4
+      status: undefined,
+      numberOfBird: undefined,
+      img: undefined,
     }
   }
 ]
@@ -85,15 +49,19 @@ const ListNest = [
 function YourNest() {
   const [selectImage, setSelectImage] = useState<string | undefined>(undefined)
   const [indexButtonActive, setIndexButtonActive] = useState(-1)
-  
-  for (let i = 1; i <= ListNest.length; i++) {
-    const [selectImage, setSelectImage] = useState<string | undefined>(undefined)
-    const [indexButtonActive, setIndexButtonActive] = useState(-1)
-  }
+  const [selectStatus, setSelectStatus] = useState<string | undefined>(undefined)
+  const [selectNumberOfBird, setSelectNumberOfBird] = useState<string | undefined>(undefined)
 
-  const handleStageClick = (image: string | undefined, index: number) => {
+  const handleStageClick = (
+    image: string | undefined,
+    index: number,
+    status: string | undefined,
+    numberOfBird: string | undefined
+  ) => {
     setSelectImage(image)
     setIndexButtonActive(index)
+    setSelectStatus(status)
+    setSelectNumberOfBird(numberOfBird)
   }
 
   return (
@@ -107,8 +75,10 @@ function YourNest() {
               </div>
             </div>
           ) : (
-            ListNest.map((nest) => (
-              <div className='flex flex-col gap-5 rounded-3xl border py-5 shadow-xl mb-10'>
+            <div>
+              <div className='font-bold uppercase my-5 text-2xl'>Theo dõi quá trình phát triển của tổ chim đã đặt</div>
+              {ListNest.map((nest) => (
+              <div className='flex flex-col gap-6 rounded-3xl border py-5 shadow-xl mb-10'>
                 <div className='flex'>
                   <div className='w-1/2 flex flex-col justify-center gap-5 mx-28'>
                     <div className='flex'>
@@ -132,7 +102,15 @@ function YourNest() {
                       </div>
                     </div>
                   </div>
-                  {selectImage && <img className='h-40 w-64' src={selectImage} alt='Selected Image' />}
+                  {selectImage && (
+                    <div>
+                      <img className='h-40 w-64 rounded-xl object-coverz' src={selectImage} alt='Selected Image' />
+                      <div className='flex flex-col items-center gap-2 mt-2'>
+                        <div className='flex'>Trạng Thái: <div className='font-bold'>{selectStatus}</div></div>
+                        <div className='flex'>Số lượng: <div className='font-bold'>{selectNumberOfBird}</div></div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className='flex flex-wrap justify-between mt-10 relative w-full'>
@@ -143,7 +121,7 @@ function YourNest() {
                         'h-5 aspect-square rounded-full',
                         indexButtonActive === 1 ? 'bg-primary' : 'bg-foreground'
                       )}
-                      onClick={() => handleStageClick(nest.stage1.img, 1)}
+                      onClick={() => handleStageClick(nest.stage1.img, 1, nest.stage1.status, nest.stage1.numberOfBird)}
                     />
                     <div>Thanh cong phoi giong</div>
                   </div>
@@ -153,7 +131,7 @@ function YourNest() {
                         'h-5 aspect-square rounded-full',
                         indexButtonActive === 2 ? 'bg-primary' : 'bg-foreground'
                       )}
-                      onClick={() => handleStageClick(nest.stage2.img, 2)}
+                      onClick={() => handleStageClick(nest.stage2.img, 2, nest.stage2.status, nest.stage2.numberOfBird)}
                     />
                     <div>Chim da de</div>
                   </div>
@@ -163,7 +141,7 @@ function YourNest() {
                         'h-5 aspect-square rounded-full',
                         indexButtonActive === 3 ? 'bg-primary' : 'bg-foreground'
                       )}
-                      onClick={() => handleStageClick(nest.stage3.img, 3)}
+                      onClick={() => handleStageClick(nest.stage3.img, 3, nest.stage3.status, nest.stage3.numberOfBird)}
                     />
                     <div>To chim da no</div>
                   </div>
@@ -173,13 +151,14 @@ function YourNest() {
                         'h-5 aspect-square rounded-full',
                         indexButtonActive === 4 ? 'bg-primary' : 'bg-foreground'
                       )}
-                      onClick={() => handleStageClick(nest.stage4.img, 4)}
+                      onClick={() => handleStageClick(nest.stage4.img, 4, nest.stage4.status, nest.stage4.numberOfBird)}
                     />
                     <div>To chim sau 15 ngay</div>
                   </div>
                 </div>
               </div>
-            ))
+            ))}
+            </div>
           )}
         </div>
       </Container>
