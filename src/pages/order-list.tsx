@@ -13,6 +13,7 @@ import birdIcon from '@/assets/bird-color.svg'
 import nestIcon from '@/assets/nest-color.svg'
 import Spinner from '@/components/ui/spinner'
 import { useToast } from '@/components/ui/use-toast'
+import { useModalStore } from '@/store/use-modal'
 
 const tabItems = [
   { label: 'Tất cả', value: 'all' },
@@ -35,6 +36,18 @@ function OrderList() {
   const [isLoadingOrders, setIsLoadingOrders] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
   const { toast } = useToast()
+  const { showModal } = useModalStore()
+
+  const showModalCancelOrder = () => {
+    showModal({
+      title: 'Bạn có chắc muốn hủy đơn hàng không',
+      titleAction: 'Hủy đơn hàng',
+      titleCancel: 'Không phải bây giờ',
+      handleAction: async () => {
+        console.log('hello')
+      }
+    })
+  }
 
   const receiveOrder = async (id: string) => {
     try {
@@ -95,7 +108,7 @@ function OrderList() {
         {isLoadingOrders && <Spinner className='mt-12' />}
 
         {!isLoadingOrders &&
-          orders.map((order) => {
+          orders?.map((order) => {
             type TStateButton = { title: string; handleClick: () => void }
 
             const stateButtons: TStateButton[] = []
@@ -115,11 +128,11 @@ function OrderList() {
             stateButtons.push({ title: 'Liên Hệ Shop', handleClick: () => {} })
 
             if (order.status === 'processing') {
-              stateButtons.push({ title: 'Hủy Đơn Hàng', handleClick: () => {} })
+              stateButtons.push({ title: 'Hủy Đơn Hàng', handleClick: showModalCancelOrder })
             }
 
             return (
-              <div className='mt-4 rounded px-8 py-4 border bg-card'>
+              <div key={order._id} className='mt-4 rounded px-8 py-4 border bg-card'>
                 <div className='flex justify-end'>
                   {order?.cancelMessage ? (
                     <p className='mt-2 text-teal-500'>{order?.cancelMessage}</p>
@@ -206,7 +219,12 @@ function OrderList() {
                 <div className='flex flex-col md:flex-row justify-end items-center mt-5 gap-3'>
                   {stateButtons.map((button, i) => {
                     return (
-                      <Button variant={i === 0 ? 'default' : 'outline'} onClick={button.handleClick} size='lg'>
+                      <Button
+                        key={button.title}
+                        variant={i === 0 ? 'default' : 'outline'}
+                        onClick={button.handleClick}
+                        size='lg'
+                      >
                         {button.title}
                       </Button>
                     )

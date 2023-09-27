@@ -34,11 +34,13 @@ import ManageOrderList from './pages/manage-order-list'
 import ManageOrderDetail from './pages/manage-order-detail'
 import ManageSpecieNew from './pages/manage-specie-new'
 import DisplayRating from './pages/rating'
+import Modal from './components/ui/modal'
 
 function App() {
   return (
     <BrowserRouter>
       <Toaster />
+      <Modal />
 
       <Routes>
         <Route path='/auth'>
