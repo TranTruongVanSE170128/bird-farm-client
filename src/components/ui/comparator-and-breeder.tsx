@@ -4,17 +4,17 @@ import { cn } from '@/lib/utils'
 import { ArrowDown, Plus, X } from 'lucide-react'
 import noImage from '@/assets/no-image.avif'
 import { useNavigate } from 'react-router-dom'
-import { useCompareContext } from '@/contexts/compare-provider'
-import { useBreedContext } from '@/contexts/breed-provider'
 import redHeart from '@/assets/red-heart.svg'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
 import { getSpecie } from '@/lib/types'
 import { useToast } from './use-toast'
+import { useCompareStore } from '@/store/use-compare'
+import { useBreedStore } from '@/store/use-breed'
 
 export function ComparatorAndBreeder() {
-  const { birds: birdsCompare, activeCompare, setActiveCompare } = useCompareContext()
-  const { birds: birdsBreed, activeBreed, setActiveBreed } = useBreedContext()
+  const { birds: birdsCompare, activeCompare } = useCompareStore()
+  const { birds: birdsBreed, activeBreed } = useBreedStore()
 
   const numberOfBirdsCompare = birdsCompare.reduce<number>((count, currentValue) => {
     if (currentValue !== null) {
@@ -37,7 +37,7 @@ export function ComparatorAndBreeder() {
       <div className='fixed bottom-4 left-4 flex flex-col gap-2 z-50'>
         <Button
           onClick={() => {
-            setActiveBreed(true)
+            useBreedStore.setState({ activeBreed: true })
           }}
           variant='outline'
           className={cn(
@@ -50,7 +50,7 @@ export function ComparatorAndBreeder() {
 
         <Button
           onClick={() => {
-            setActiveCompare(true)
+            useCompareStore.setState({ activeCompare: true })
           }}
           variant='outline'
           className={cn(
@@ -68,7 +68,7 @@ export function ComparatorAndBreeder() {
   )
 }
 export function Comparator() {
-  const { birds, activeCompare, setActiveCompare, deleteAllBirds, deleteOneBird } = useCompareContext()
+  const { birds, activeCompare, deleteAllBirds, deleteOneBird } = useCompareStore()
   const firstBird = birds[0]
   const secondBird = birds[1]
   const numberOfBirds = birds.reduce<number>((count, currentValue) => {
@@ -91,7 +91,7 @@ export function Comparator() {
       <div className='h-32 bg-background border shadow-md w-full relative grid grid-cols-3 max-w-4xl'>
         <div
           onClick={() => {
-            setActiveCompare(false)
+            useCompareStore.setState({ activeCompare: false })
           }}
           className='absolute right-0 -translate-y-full bg-background p-2 border rounded-t-lg flex items-center gap-1 hover:text-primary cursor-pointer'
         >
@@ -163,7 +163,7 @@ export function Comparator() {
           <div className='flex flex-col gap-3 justify-center items-center'>
             <Button
               onClick={() => {
-                setActiveCompare(false)
+                useCompareStore.setState({ activeCompare: false })
                 navigate(`/compare?firstBird=${firstBird?._id}&secondBird=${secondBird?._id}`)
               }}
               disabled={numberOfBirds !== 2}
@@ -182,7 +182,7 @@ export function Comparator() {
 }
 
 export function Breeder() {
-  const { birds, activeBreed, setActiveBreed, deleteAllBirds, deleteOneBird } = useBreedContext()
+  const { birds, activeBreed, deleteAllBirds, deleteOneBird } = useBreedStore()
   const firstBird = birds[0]
   const secondBird = birds[1]
   const numberOfBirds = birds.reduce<number>((count, currentValue) => {
@@ -205,7 +205,7 @@ export function Breeder() {
       <div className='h-32 bg-background border shadow-md w-full relative grid grid-cols-3 max-w-4xl'>
         <div
           onClick={() => {
-            setActiveBreed(false)
+            useBreedStore.setState({ activeBreed: false })
           }}
           className='absolute right-0 -translate-y-full bg-background p-2 border rounded-t-lg flex items-center gap-1 hover:text-primary cursor-pointer'
         >
@@ -288,7 +288,7 @@ export function Breeder() {
                   })
                   return
                 }
-                setActiveBreed(false)
+                useBreedStore.setState({ activeBreed: false })
                 navigate(`/breed?maleBird=${firstBird?._id}&femaleBird=${secondBird?._id}`)
               }}
               disabled={numberOfBirds !== 2}

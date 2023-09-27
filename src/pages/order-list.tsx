@@ -145,7 +145,7 @@ function OrderList() {
                 </div>
                 <div className='min-w-full h-[1px] bg-border my-4' />
                 {getBirds(order).map((bird) => (
-                  <div className='flex flex-row justify-between mb-3'>
+                  <div key={bird._id} className='flex flex-row justify-between mb-3'>
                     <div className='flex items-center gap-4'>
                       {!bird.imageUrls?.length ? (
                         <img
@@ -182,7 +182,7 @@ function OrderList() {
                   </div>
                 ))}
                 {getNests(order).map((nest) => (
-                  <div className='flex flex-row justify-between mb-4'>
+                  <div key={nest._id} className='flex flex-row justify-between mb-4'>
                     <div className='flex items-center gap-4'>
                       {!nest.imageUrls?.length ? (
                         <img

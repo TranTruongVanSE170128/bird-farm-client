@@ -11,13 +11,13 @@ import { useTheme } from '../theme-provider'
 import { useCartContext } from '@/contexts/cart-provider'
 import { useAuthContext } from '@/contexts/auth-provider'
 import nestEmpty from '@/assets/nest-empty.svg'
-import { useBreedContext } from '@/contexts/breed-provider'
 import { ModeToggle } from '../mode-toggle'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import breedIcon from '@/assets/breed.svg'
 import birdIcon from '@/assets/bird-color.svg'
 import nestIcon from '@/assets/nest-color.svg'
 import { useState } from 'react'
+import { useBreedStore } from '@/store/use-breed'
 
 type TTypeSearch = 'sell' | 'breed' | 'nest'
 
@@ -25,7 +25,6 @@ function Header() {
   const { theme } = useTheme()
   const { user } = useAuthContext()
   const { quantityInCart } = useCartContext()
-  const { setActiveBreed } = useBreedContext()
   const [searchQuery, setSearchQuery] = useState('')
   const [typeSearch, setTypeSearch] = useState<TTypeSearch>('sell')
   const navigate = useNavigate()
@@ -177,7 +176,7 @@ function Header() {
               })}
               <Button
                 onClick={() => {
-                  setActiveBreed(true)
+                  useBreedStore.setState({ activeBreed: true })
                 }}
                 variant='ghost'
                 className='text-sm font-medium transition-colors flex items-center gap-1 hover:text-primary'

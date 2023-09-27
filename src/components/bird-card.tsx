@@ -6,12 +6,12 @@ import { Bird } from '@/lib/types'
 import noImage from '@/assets/no-image.avif'
 import { useToast } from './ui/use-toast'
 import { useCartContext } from '@/contexts/cart-provider'
-import { useCompareContext } from '@/contexts/compare-provider'
-import { useBreedContext } from '@/contexts/breed-provider'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
 import breedIcon from '@/assets/breed.svg'
 import birdIcon from '@/assets/bird-color.svg'
+import { useCompareStore } from '@/store/use-compare'
+import { useBreedStore } from '@/store/use-breed'
 
 type Props = {
   className?: string
@@ -20,8 +20,8 @@ type Props = {
 
 function BirdCard({ className, bird }: Props) {
   const { addBirdToCart } = useCartContext()
-  const { addToCompare } = useCompareContext()
-  const { addToBreed } = useBreedContext()
+  const { addToCompare } = useCompareStore()
+  const { addToBreed } = useBreedStore()
 
   const { toast } = useToast()
 

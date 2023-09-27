@@ -12,13 +12,13 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
 import { Button } from '@/components/ui/button'
-import { useCompareContext } from '@/contexts/compare-provider'
-import { useBreedContext } from '@/contexts/breed-provider'
 import { useCartContext } from '@/contexts/cart-provider'
 import { useToast } from '@/components/ui/use-toast'
 import Spinner from '@/components/ui/spinner'
 import BirdCardSkeleton from '@/components/bird-card-skeleton'
 import BirdCard from '@/components/bird-card'
+import { useCompareStore } from '@/store/use-compare'
+import { useBreedStore } from '@/store/use-breed'
 
 function BirdDetail() {
   moment.locale('vi')
@@ -26,8 +26,8 @@ function BirdDetail() {
   const [bird, setBird] = useState<Bird | null>(null)
   const navigate = useNavigate()
   const imageRef = useRef<HTMLImageElement | null>(null)
-  const { addToCompare } = useCompareContext()
-  const { addToBreed } = useBreedContext()
+  const { addToCompare } = useCompareStore()
+  const { addToBreed } = useBreedStore()
   const { addBirdToCart } = useCartContext()
   const { toast } = useToast()
   const [sameBirds, setSameBirds] = useState<Bird[]>([])
