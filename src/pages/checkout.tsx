@@ -19,6 +19,7 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 import { Shell } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthContext } from '@/contexts/auth-provider'
+import { loadStripe } from '@stripe/stripe-js'
 
 type Province = {
   code: number
@@ -141,7 +142,7 @@ function Checkout() {
     }
 
     const address = [data.province, data.district, data.ward, data.address].filter(Boolean).join(', ')
-    const receiver = [data.firstName, data.lastName].filter(Boolean).join(', ')
+    const receiver = [data.firstName, data.lastName].filter(Boolean).join(' ')
     const phone = data.phoneNumber
     const notice = data.notice
     const cart: Cart = JSON.parse(localStorage.getItem('cart') || String({ birds: [], nests: [] }))
@@ -160,7 +161,38 @@ function Checkout() {
         const messageError = error.response.data.message
         toast({
           variant: 'destructive',
-          title: messageError
+          title: messageError || 'Không rõ nguyễn nhân'
+        })
+        setIsSubmitting(false)
+      }
+    } else {
+      try {
+        setIsSubmitting(true)
+        const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY)
+
+        const { data: session } = await birdFarmApi.post('/api/stripe/create-checkout-session', {
+          products: cart,
+          receiver,
+          phone,
+          address,
+          notice
+        })
+
+        const result = await stripe?.redirectToCheckout({
+          sessionId: session.id
+        })
+
+        localStorage.removeItem('cart')
+
+        if (result?.error) {
+          console.log(result.error)
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        const messageError = error.response.data.message
+        toast({
+          variant: 'destructive',
+          title: messageError || 'Không rõ nguyễn nhân'
         })
         setIsSubmitting(false)
       }

@@ -27,36 +27,6 @@ function Cart() {
   const { user } = useAuthContext()
   const navigate = useNavigate()
 
-  // const makePayment = async () => {
-  //   if (!user) {
-  //     toast({
-  //       title: 'Hãy đăng nhập để tiếp tục mua hàng',
-  //       variant: 'destructive'
-  //     })
-  //   }
-
-  //   try {
-  //     const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY)
-
-  //     const { data: session } = await birdFarmApi.post('/api/stripe/create-checkout-session', {
-  //       products: cart,
-  //       receiver: 'Trần Trương Văn',
-  //       phone: '0933131464',
-  //       address: 'chung cư Ricca'
-  //     })
-
-  //     const result = await stripe?.redirectToCheckout({
-  //       sessionId: session.id
-  //     })
-
-  //     if (result?.error) {
-  //       console.log(result.error)
-  //     }
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
   useEffect(() => {
     const fetchProducts = async () => {
       const birdsData = birdFarmApi.post('/api/birds/get-by-ids', { birds: cart.birds }).then((res) => res.data.birds)
