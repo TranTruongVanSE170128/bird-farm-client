@@ -182,8 +182,6 @@ function Checkout() {
           sessionId: session.id
         })
 
-        localStorage.removeItem('cart')
-
         if (result?.error) {
           console.log(result.error)
         }

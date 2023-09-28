@@ -36,6 +36,8 @@ import ManageSpecieNew from './pages/manage-specie-new'
 import DisplayRating from './pages/rating'
 import Modal from './components/ui/modal'
 import Checkout from './pages/checkout'
+import PaymentSuccess from './pages/payment-success'
+import PaymentCancel from './pages/payment-cancel'
 
 function App() {
   return (
@@ -58,6 +60,8 @@ function App() {
           <Route path='breed-birds' element={<BreedBirdList />} />
           <Route path='wishlist' element={<WishList />} />
           <Route path='profile' element={<Profile />} />
+          <Route path='orders/payment-success' element={<PaymentSuccess />} />
+          <Route path='orders/payment-cancel' element={<PaymentCancel />} />
           <Route path='orders' element={<OrderList />} />
           <Route path='cart' element={<Cart />} />
           <Route path='nests/:id' element={<NestDetail />} />
