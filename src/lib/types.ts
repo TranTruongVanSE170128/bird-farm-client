@@ -57,6 +57,14 @@ export type Order = {
   rated: boolean
 }
 
+export type Rating = {
+  value: number
+  content?: string
+  imageUrls?: string[]
+  user: User | string
+  createdAt: Date
+}
+
 export function getSpecie(item: Bird | Nest): Specie {
   return item.specie as Specie
 }
@@ -69,7 +77,7 @@ export function getMom(item: Bird): Bird {
   return item.parent?.mom as Bird
 }
 
-export function getUser(item: Order): User {
+export function getUser(item: Order | Rating): User {
   return item.user as User
 }
 export function getBirds(item: Order): Bird[] {
@@ -105,4 +113,9 @@ export type OrderStatus = 'processing' | 'delivering' | 'success' | 'canceled'
 export type Cart = {
   birds: string[]
   nests: string[]
+}
+
+export type Products = {
+  birds: Bird[]
+  nests: Nest[]
 }

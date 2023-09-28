@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import Container from '@/components/ui/container'
 import { useCartContext } from '@/contexts/cart-provider'
-import { Bird, Nest } from '@/lib/types'
+import { Products } from '@/lib/types'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { Trash2 } from 'lucide-react'
 import voucherIcon from '@/assets/voucher.png'
@@ -13,11 +13,6 @@ import { formatPrice } from '@/lib/utils'
 import { useToast } from '@/components/ui/use-toast'
 import { useAuthContext } from '@/contexts/auth-provider'
 import { useNavigate } from 'react-router-dom'
-
-type Products = {
-  birds: Bird[]
-  nests: Nest[]
-}
 
 function Cart() {
   const { cart, removeBirdFromCart, removeNestFromCart } = useCartContext()

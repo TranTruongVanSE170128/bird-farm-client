@@ -13,13 +13,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Cart } from '@/lib/types'
+import { Cart, Products } from '@/lib/types'
 import { toast } from '@/components/ui/use-toast'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { Shell } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthContext } from '@/contexts/auth-provider'
 import { loadStripe } from '@stripe/stripe-js'
+import { useCartContext } from '@/contexts/cart-provider'
+import { formatPrice } from '@/lib/utils'
+import noImage from '@/assets/no-image.avif'
 
 type Province = {
   code: number
@@ -74,6 +77,9 @@ function Checkout() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const navigate = useNavigate()
   const { user } = useAuthContext()
+  const [totalMoney, setTotalMoney] = useState(0)
+  const [products, setProducts] = useState<Products>({ birds: [], nests: [] })
+  const { cart } = useCartContext()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -90,6 +96,19 @@ function Checkout() {
   })
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      const birdsData = birdFarmApi.post('/api/birds/get-by-ids', { birds: cart.birds }).then((res) => res.data.birds)
+      const nestsData = birdFarmApi.post('/api/nests/get-by-ids', { nests: cart.nests }).then((res) => res.data.nests)
+
+      const [birds, nests] = await Promise.all([birdsData, nestsData])
+
+      setProducts({ birds, nests })
+    }
+
+    fetchProducts()
+  }, [cart])
+
+  useEffect(() => {
     const fetchProvinces = async () => {
       const response = await axios.get('https://provinces.open-api.vn/api/p/')
       setProvinces(
@@ -101,6 +120,20 @@ function Checkout() {
 
     fetchProvinces()
   }, [])
+
+  useEffect(() => {
+    let temp = 0
+
+    products.birds.forEach((bird) => {
+      temp += bird.sellPrice
+    })
+
+    products.nests.forEach((nest) => {
+      temp += nest.price
+    })
+
+    setTotalMoney(temp)
+  }, [products])
 
   useEffect(() => {
     const handleProvinceChange = async () => {
@@ -449,16 +482,33 @@ function Checkout() {
               <div className='border rounded-md p-3 mt-5'>
                 <p className='uppercase text-gray-500 font-bold'>sản phẩm</p>
                 <ScrollArea className='h-[300px] w-[350px] rounded-md p-4'>
-                  {new Array(10).fill(null).map((_, index) => (
-                    <div key={index} className='flex p-2 justify-between items-center gap-3  rounded-lg '>
-                      <img
-                        src='https://upload.wikimedia.org/wikipedia/commons/8/89/Black-naped_Oriole.jpg?fbclid=IwAR2NXjH7Wi1KWHPwvNvmESdLhjUE42zhr9Y-9KZneFisiKtkAimoH1ws8XI'
-                        alt=''
-                        className='aspect-auto object-cover w-[80px] rounded-lg'
-                      />
+                  {products.birds?.map((bird) => (
+                    <div key={bird._id} className='flex p-2 items-center gap-3  rounded-lg '>
+                      {!bird?.imageUrls?.length ? (
+                        <img src={noImage} className='aspect-square object-cover w-20 rounded-lg' />
+                      ) : (
+                        <div className='flex gap-2 flex-wrap'>
+                          <img src={bird.imageUrls[0]} className='aspect-square object-cover w-20 rounded-lg' />
+                        </div>
+                      )}
                       <div>
-                        <p className='text-[15px]'>Chim Chào Mào Huế mã SE170112</p>
-                        <p className='text-red-600'>5.000.000đ</p>
+                        <p className='line-clamp-1 text-sm'>{bird.name}</p>
+                        <p className='text-red-600'>{formatPrice(bird.sellPrice)}</p>
+                      </div>
+                    </div>
+                  ))}
+                  {products.nests?.map((nest) => (
+                    <div key={nest._id} className='flex p-2 items-center gap-3  rounded-lg '>
+                      {!nest?.imageUrls?.length ? (
+                        <img src={noImage} className='aspect-square object-cover w-20 rounded-lg' />
+                      ) : (
+                        <div className='flex gap-2 flex-wrap'>
+                          <img src={nest.imageUrls[0]} className='aspect-square object-cover w-20 rounded-lg' />
+                        </div>
+                      )}
+                      <div>
+                        <p className='line-clamp-1 text-sm'>{nest.name}</p>
+                        <p className='text-red-600'>{formatPrice(nest.price)}</p>
                       </div>
                     </div>
                   ))}
@@ -466,16 +516,16 @@ function Checkout() {
                 <div className='w-full h-[1px] border'></div>
                 <div className='flex m-auto mt-5'>
                   <span className='w-1/2 text-start font-bold'>Tạm tính</span>
-                  <span className='w-1/2 text-end font-bold'>50.000.000đ</span>
+                  <span className='w-1/2 text-end font-bold'>{formatPrice(totalMoney)}</span>
                 </div>
                 <div className='flex m-auto mt-5'>
                   <span className='w-1/2 text-start font-bold'>Giảm giá</span>
-                  <span className='w-1/2 text-end font-bold'>50%</span>
+                  <span className='w-1/2 text-end font-bold'>0%</span>
                 </div>
                 <div className='border mt-4 m-auto'></div>
                 <div className='flex m-auto mt-5'>
                   <span className='w-1/2 text-start font-bold'>Tổng</span>
-                  <span className='w-1/2 text-end font-bold'>25.000.000đ</span>
+                  <span className='w-1/2 text-end font-bold'>{formatPrice(totalMoney)}</span>
                 </div>
               </div>
             </div>

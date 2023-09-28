@@ -14,6 +14,7 @@ import nestIcon from '@/assets/nest-color.svg'
 import Spinner from '@/components/ui/spinner'
 import { useToast } from '@/components/ui/use-toast'
 import { useModalStore } from '@/store/use-modal'
+import { useRatingFormStore } from '@/store/use-rating-form'
 
 const tabItems = [
   { label: 'Tất cả', value: 'all' },
@@ -36,6 +37,7 @@ function OrderList() {
   const [isLoadingOrders, setIsLoadingOrders] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
   const { toast } = useToast()
+  const { showRatingForm } = useRatingFormStore()
   const { showModal } = useModalStore()
 
   const showModalCancelOrder = (id: string) => {
@@ -121,11 +123,11 @@ function OrderList() {
 
         {!isLoadingOrders &&
           orders?.map((order) => {
-            type TStateButton = { title: string; handleClick: () => void }
+            type TStateButton = { title: string; disabled?: boolean; className?: string; handleClick: () => void }
 
             const stateButtons: TStateButton[] = []
             if (order.status === 'success' && !order.rated) {
-              stateButtons.push({ title: 'Đánh Giá', handleClick: () => {} })
+              stateButtons.push({ title: 'Đánh Giá', handleClick: () => showRatingForm(order._id) })
             }
 
             if (order.status === 'delivering') {
@@ -141,6 +143,15 @@ function OrderList() {
 
             if (order.status === 'processing') {
               stateButtons.push({ title: 'Hủy Đơn Hàng', handleClick: () => showModalCancelOrder(order._id) })
+            }
+
+            if (order.status === 'success' && order.rated) {
+              stateButtons.push({
+                title: 'Đã Đánh Giá',
+                disabled: true,
+                handleClick: () => showRatingForm(order._id),
+                className: 'border-primary text-primary select-none'
+              })
             }
 
             return (
@@ -233,8 +244,10 @@ function OrderList() {
                     return (
                       <Button
                         key={button.title}
+                        disabled={button.disabled}
                         variant={i === 0 ? 'default' : 'outline'}
                         onClick={button.handleClick}
+                        className={button.className}
                         size='lg'
                       >
                         {button.title}

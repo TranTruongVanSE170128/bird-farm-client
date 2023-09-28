@@ -5,8 +5,6 @@ import { Bird, getDad, getMom, getSpecie } from '@/lib/types'
 import Container from '@/components/ui/container'
 import noImage from '@/assets/no-image.avif'
 import { calculateAge, formatPrice } from '@/lib/utils'
-import moment from 'moment'
-import 'moment/locale/vi'
 import medalIcon from '@/assets/medal.png'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import maleIcon from '@/assets/male.svg'
@@ -21,7 +19,6 @@ import { useCompareStore } from '@/store/use-compare'
 import { useBreedStore } from '@/store/use-breed'
 
 function BirdDetail() {
-  moment.locale('vi')
   const { id } = useParams()
   const [bird, setBird] = useState<Bird | null>(null)
   const navigate = useNavigate()

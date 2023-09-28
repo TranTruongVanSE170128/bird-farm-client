@@ -15,6 +15,7 @@ import { ModeToggle } from '../mode-toggle'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import breedIcon from '@/assets/breed.svg'
 import birdIcon from '@/assets/bird-color.svg'
+import starFillIcon from '@/assets/star-fill.svg'
 import nestIcon from '@/assets/nest-color.svg'
 import { useState } from 'react'
 import { useBreedStore } from '@/store/use-breed'
@@ -183,6 +184,17 @@ function Header() {
               >
                 <img src={nestEmpty} className='w-6 h-6' />
                 Đặt tổ chim non
+              </Button>
+              <Button
+                onClick={() => {
+                  window.scrollTo(0, 0)
+                  navigate('/ratings')
+                }}
+                variant='ghost'
+                className='text-sm font-medium transition-colors flex items-center gap-1 hover:text-primary'
+              >
+                <img src={starFillIcon} className='w-6 h-6' />
+                Đánh giá của shop
               </Button>
             </nav>
           </div>

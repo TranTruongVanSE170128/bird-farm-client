@@ -14,9 +14,10 @@ function Modal() {
           <div className='w-[500px] bg-background rounded-md p-6'>
             <div className='font-medium text-lg mb-2'>{title}</div>
             {content}
+
             <div className='flex justify-end gap-3 mt-2'>
               <Button disabled={acting} onClick={resetModal} variant='outline'>
-                {titleCancel || 'Hủy'}
+                {titleCancel || 'Trở lại'}
               </Button>
               <Button
                 disabled={acting}

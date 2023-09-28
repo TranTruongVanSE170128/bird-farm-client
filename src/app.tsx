@@ -33,17 +33,19 @@ import ManageNestDetail from './pages/manage-nest-detail'
 import ManageOrderList from './pages/manage-order-list'
 import ManageOrderDetail from './pages/manage-order-detail'
 import ManageSpecieNew from './pages/manage-specie-new'
-import DisplayRating from './pages/rating'
+import Ratings from './pages/ratings'
 import Modal from './components/ui/modal'
 import Checkout from './pages/checkout'
 import PaymentSuccess from './pages/payment-success'
 import PaymentCancel from './pages/payment-cancel'
+import { RatingForm } from './components/forms/rating-form'
 
 function App() {
   return (
     <BrowserRouter>
       <Toaster />
       <Modal />
+      <RatingForm />
 
       <Routes>
         <Route path='/auth'>
@@ -69,7 +71,7 @@ function App() {
           <Route path='compare' element={<BirdComparing />} />
           <Route path='not-found' element={<NotFound />} />
           <Route path='breed' element={<Breed />} />
-          <Route path='rating' element={<DisplayRating />} />
+          <Route path='ratings' element={<Ratings />} />
           <Route path='checkout' element={<Checkout />} />
         </Route>
 
