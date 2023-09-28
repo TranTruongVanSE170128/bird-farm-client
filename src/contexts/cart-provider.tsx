@@ -1,13 +1,9 @@
 import useLocalStorage from '@/hooks/use-local-storage'
+import { Cart } from '@/lib/types'
 import React, { useContext, useEffect, useState } from 'react'
 
 type CartProviderProps = {
   children: React.ReactNode
-}
-
-type Cart = {
-  birds: string[]
-  nests: string[]
 }
 
 type CartContextType = {

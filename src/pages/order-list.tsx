@@ -38,13 +38,25 @@ function OrderList() {
   const { toast } = useToast()
   const { showModal } = useModalStore()
 
-  const showModalCancelOrder = () => {
+  const showModalCancelOrder = (id: string) => {
     showModal({
-      title: 'Bạn có chắc muốn hủy đơn hàng không',
+      title: 'Bạn có chắc muốn hủy đơn hàng không?',
       titleAction: 'Hủy đơn hàng',
       titleCancel: 'Không phải bây giờ',
       handleAction: async () => {
-        console.log('hello')
+        try {
+          await birdFarmApi.put(`api/orders/${id}/cancel`)
+          navigate('/orders?tab=canceled')
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+          const messageError = error.response.data.message
+
+          toast({
+            title: 'Không thể hủy đơn hàng',
+            description: messageError || 'Không rõ nguyên nhân',
+            variant: 'destructive'
+          })
+        }
       }
     })
   }
@@ -128,7 +140,7 @@ function OrderList() {
             stateButtons.push({ title: 'Liên Hệ Shop', handleClick: () => {} })
 
             if (order.status === 'processing') {
-              stateButtons.push({ title: 'Hủy Đơn Hàng', handleClick: showModalCancelOrder })
+              stateButtons.push({ title: 'Hủy Đơn Hàng', handleClick: () => showModalCancelOrder(order._id) })
             }
 
             return (

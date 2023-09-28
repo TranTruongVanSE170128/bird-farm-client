@@ -101,3 +101,8 @@ export type Discount = {
 
 export type Role = 'customer' | 'staff' | 'manager' | 'admin' | 'guest'
 export type OrderStatus = 'processing' | 'delivering' | 'success' | 'canceled'
+
+export type Cart = {
+  birds: string[]
+  nests: string[]
+}

@@ -6,13 +6,13 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 import { Trash2 } from 'lucide-react'
 import voucherIcon from '@/assets/voucher.png'
 import { Input } from '@/components/ui/input'
-import { loadStripe } from '@stripe/stripe-js'
 import { useEffect, useState } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import noImage from '@/assets/no-image.avif'
 import { formatPrice } from '@/lib/utils'
-import { useAuthContext } from '@/contexts/auth-provider'
 import { useToast } from '@/components/ui/use-toast'
+import { useAuthContext } from '@/contexts/auth-provider'
+import { useNavigate } from 'react-router-dom'
 
 type Products = {
   birds: Bird[]
@@ -23,55 +23,38 @@ function Cart() {
   const { cart, removeBirdFromCart, removeNestFromCart } = useCartContext()
   const [products, setProducts] = useState<Products>({ birds: [], nests: [] })
   const [totalMoney, setTotalMoney] = useState(0)
-  const { user } = useAuthContext()
   const { toast } = useToast()
+  const { user } = useAuthContext()
+  const navigate = useNavigate()
 
-  const makePayment = async () => {
-    if (!user) {
-      toast({
-        title: 'Hãy đăng nhập để tiếp tục mua hàng',
-        variant: 'destructive'
-      })
-    }
+  // const makePayment = async () => {
+  //   if (!user) {
+  //     toast({
+  //       title: 'Hãy đăng nhập để tiếp tục mua hàng',
+  //       variant: 'destructive'
+  //     })
+  //   }
 
-    try {
-      const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY)
+  //   try {
+  //     const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY)
 
-      const { data: session } = await birdFarmApi.post('/api/stripe/create-checkout-session', {
-        products: cart,
-        receiver: 'Trần Trương Văn',
-        phone: '0933131464',
-        address: 'chung cư Ricca'
-      })
+  //     const { data: session } = await birdFarmApi.post('/api/stripe/create-checkout-session', {
+  //       products: cart,
+  //       receiver: 'Trần Trương Văn',
+  //       phone: '0933131464',
+  //       address: 'chung cư Ricca'
+  //     })
 
-      const result = await stripe?.redirectToCheckout({
-        sessionId: session.id
-      })
+  //     const result = await stripe?.redirectToCheckout({
+  //       sessionId: session.id
+  //     })
 
-      if (result?.error) {
-        console.log(result.error)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  // const createOrder = async () => {
-  // if (!user) {
-  //   toast({
-  //     title: 'Hãy đăng nhập để tiếp tục mua hàng',
-  //     variant: 'destructive'
-  //   })
-  // }
-
-  //   const { data } = await birdFarmApi.post('/api/orders', {
-  // receiver: 'Trần Trương Văn',
-  // phone: '0933131464',
-  // address: 'chung cư Ricca',
-  //     birds: products?.birds.map((bird) => bird._id),
-  //     nests: products?.nests.map((nest) => nest._id)
-  //   })
-  //   console.log(data)
+  //     if (result?.error) {
+  //       console.log(result.error)
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
   // }
 
   useEffect(() => {
@@ -221,7 +204,20 @@ function Cart() {
               </div>
 
               <div className='mt-4 m-auto'>
-                <Button className='w-full' onClick={makePayment}>
+                <Button
+                  className='w-full'
+                  onClick={() => {
+                    if (!user) {
+                      toast({
+                        title: 'Hãy đăng nhập để tiếp tục mua hàng',
+                        variant: 'destructive'
+                      })
+                      return
+                    }
+
+                    navigate('/checkout')
+                  }}
+                >
                   Mua hàng
                 </Button>
               </div>

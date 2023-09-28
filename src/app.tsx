@@ -35,6 +35,7 @@ import ManageOrderDetail from './pages/manage-order-detail'
 import ManageSpecieNew from './pages/manage-specie-new'
 import DisplayRating from './pages/rating'
 import Modal from './components/ui/modal'
+import Checkout from './pages/checkout'
 
 function App() {
   return (
@@ -65,6 +66,7 @@ function App() {
           <Route path='not-found' element={<NotFound />} />
           <Route path='breed' element={<Breed />} />
           <Route path='rating' element={<DisplayRating />} />
+          <Route path='checkout' element={<Checkout />} />
         </Route>
 
         <Route path='/admin' element={<LayoutAdmin />}>
