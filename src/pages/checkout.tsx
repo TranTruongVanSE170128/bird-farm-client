@@ -36,6 +36,18 @@ type District = {
   parent_code: string
   isDeleted: false
 }
+type Ward = {
+  _id: string
+  name: string
+  type: string
+  slug: string
+  name_with_type: string
+  path: string
+  path_with_type: string
+  code: string
+  parent_code: string
+  isDeleted: false
+}
 const FormSchema = z.object({
   type: z.enum(['cod', 'online'], {
     required_error: 'Bạn cần lựa chọn phương thức thanh toán'
@@ -62,10 +74,11 @@ const FormSchema = z.object({
 })
 
 function Checkout() {
-  const [listProvinces, setListPorvinces] = useState<Province[]>([])
+  const [listProvinces, setListProvinces] = useState<Province[]>([])
   const [listDistrict, setListDistrict] = useState<District[]>([])
+  const [listWard, setListWard] = useState<Ward[]>([])
   const [selectedProvinceCode, setSelectedProvinceCode] = useState<string | null>(null)
-
+  const [selectedDistrictCode, setSelectedDistrictCode] = useState<string | null>(null)
   useEffect(() => {
     const getProvince = async () => {
       try {
@@ -80,7 +93,7 @@ function Checkout() {
     const fetchData = async () => {
       const data = await getProvince()
       console.log('Province', data)
-      setListPorvinces(data)
+      setListProvinces(data)
     }
     fetchData()
   }, [])
@@ -109,12 +122,37 @@ function Checkout() {
     }
     fetchData()
   }, [selectedProvinceCode])
+  useEffect(() => {
+    const getWard = async () => {
+      if (selectedDistrictCode) {
+        try {
+          const result = await axios.get(
+            `https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${selectedDistrictCode}2&limit=-1`
+          )
+          return result.data.data.data
+        } catch (error) {
+          console.error(error)
+          return []
+        }
+      } else {
+        return []
+      }
+    }
+
+    const fetchData = async () => {
+      const data = await getWard()
+      console.log('Ward', data)
+      setListWard(data)
+    }
+    fetchData()
+  }, [selectedDistrictCode])
 
   const handleProvinceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const provinceCode = event.target.value
-    setSelectedProvinceCode(provinceCode)
+    setSelectedProvinceCode(event.target.value)
   }
-
+  const handleDistrictChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedDistrictCode(event.target.value)
+  }
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -200,13 +238,13 @@ function Checkout() {
                       render={({ field }) => (
                         <FormItem className='basis-1/3 mr-3'>
                           <FormControl>
-                            <Select>
-                              <SelectTrigger>
+                            <Select value={selectedProvinceCode ?? ''} onValueChange={() => handleProvinceChange}>
+                              <SelectTrigger >
                                 <SelectValue placeholder='Tỉnh*' />
                               </SelectTrigger>
-                              <SelectContent>
+                              <SelectContent className='max-h-[250px] overflow-y-auto absolute w-[250px]'>
                                 {listProvinces.map((province) => (
-                                  <SelectItem key={province?.slug} value={province?.code}>
+                                  <SelectItem key={province.code} value={province.code}>
                                     {province?.name}
                                   </SelectItem>
                                 ))}
@@ -223,13 +261,13 @@ function Checkout() {
                       render={({ field }) => (
                         <FormItem className='basis-1/3 mr-3'>
                           <FormControl>
-                            <Select>
+                            <Select value={selectedDistrictCode ?? ''} onValueChange={() => handleDistrictChange}>
                               <SelectTrigger>
                                 <SelectValue placeholder='Huyện*' />
                               </SelectTrigger>
-                              <SelectContent>
+                              <SelectContent className='max-h-[250px] overflow-y-auto absolute w-[250px]'>
                                 {listDistrict.map((district) => (
-                                  <SelectItem key={district?.slug} value={district?.slug}>
+                                  <SelectItem key={district.code} value={district.code}>
                                     {district?.name}
                                   </SelectItem>
                                 ))}
@@ -248,12 +286,12 @@ function Checkout() {
                           <FormControl>
                             <Select>
                               <SelectTrigger>
-                                <SelectValue placeholder='Huyện*' />
+                                <SelectValue placeholder='Xã*' />
                               </SelectTrigger>
-                              <SelectContent>
-                                {listDistrict.map((district) => (
-                                  <SelectItem key={district?.slug} value={district?.slug}>
-                                    {district?.name}
+                              <SelectContent className='max-h-[250px] overflow-y-auto absolute w-[250px]'>
+                                {listWard.map((ward) => (
+                                  <SelectItem key={ward?.code} value={ward?.code}>
+                                    {ward?.name}
                                   </SelectItem>
                                 ))}
                               </SelectContent>
@@ -317,7 +355,7 @@ function Checkout() {
                                   >
                                     <FormItem className='flex items-center space-x-3 space-y-0 border py-10 px-5 rounded-md mr-12 '>
                                       <FormControl>
-                                        <RadioGroupItem value='cash' />
+                                        <RadioGroupItem value='cod' id='cod' />
                                       </FormControl>
                                       <div>
                                         <img src={Cash} alt='' className='w-[30px] h-[30px] ml-9' />
@@ -329,7 +367,7 @@ function Checkout() {
                                     </FormItem>
                                     <FormItem className='flex items-center space-x-3 space-y-0 border py-10 px-5 rounded-md mr-12'>
                                       <FormControl>
-                                        <RadioGroupItem value='vnpay' />
+                                        <RadioGroupItem value='online' id='online' />
                                       </FormControl>
                                       <div>
                                         <img src={Vnpay} alt='' className='w-[30px] h-[30px] ml-9' />
