@@ -6,11 +6,27 @@ import { useEffect, useState } from 'react'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { Bird } from '@/lib/types'
 import noImage from '@/assets/no-image.avif'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
+import { formatPrice } from '@/lib/utils'
+import { toast } from '@/components/ui/use-toast'
+import { loadStripe } from '@stripe/stripe-js'
 
 function Pairing() {
   const [searchParams] = useSearchParams()
   const [maleBird, setMaleBird] = useState<Bird | null>(null)
   const [femaleBird, setFemaleBird] = useState<Bird | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     const fetchBirds = async () => {
@@ -30,6 +46,34 @@ function Pairing() {
   useEffect(() => {
     console.log({ maleBird, femaleBird })
   }, [maleBird, femaleBird])
+
+  const deposit = async () => {
+    try {
+      setIsSubmitting(true)
+      const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY)
+
+      const { data: session } = await birdFarmApi.post('/api/stripe/create-deposit-session', {
+        maleBird: maleBird?._id,
+        femaleBird: femaleBird?._id
+      })
+
+      const result = await stripe?.redirectToCheckout({
+        sessionId: session.id
+      })
+
+      if (result?.error) {
+        console.log(result.error)
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const messageError = error.response.data.message
+      toast({
+        variant: 'destructive',
+        title: messageError || 'Không rõ nguyễn nhân'
+      })
+      setIsSubmitting(false)
+    }
+  }
 
   return (
     <Container>
@@ -65,6 +109,30 @@ function Pairing() {
           <div className='font-bold text-lg mt-6'>{femaleBird?.name}</div>
         </div>
       </div>
+
+      <AlertDialog>
+        <AlertDialogTrigger>
+          <Button>Đặt tổ chim non</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Đạt cọc cho tổ chim non</AlertDialogTitle>
+            <AlertDialogDescription>
+              Để có thể đặt tổ chim non, bạn cần đặt cọc trước một khoảng tiền = giá phối giống chim bố + giá phối giống
+              chim mẹ ={` ${formatPrice(maleBird?.breedPrice || 0)} + ${formatPrice(femaleBird?.breedPrice || 0)} `}=
+              {` ${formatPrice((maleBird?.breedPrice || 0) + (femaleBird?.breedPrice || 0))}`}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Trở lại</AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button onClick={deposit} disabled={isSubmitting}>
+                Đặt cọc
+              </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Container>
   )
 }

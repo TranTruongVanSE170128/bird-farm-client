@@ -41,7 +41,7 @@ export function ComparatorAndBreeder() {
           }}
           variant='outline'
           className={cn(
-            'shadow-md shadow-foreground rounded-2xl hover:text-primary',
+            'shadow shadow-foreground rounded-2xl hover:text-primary',
             (activeBreed || activeCompare) && 'hidden'
           )}
         >
@@ -54,7 +54,7 @@ export function ComparatorAndBreeder() {
           }}
           variant='outline'
           className={cn(
-            'shadow-md shadow-foreground rounded-2xl hover:text-primary',
+            'shadow shadow-foreground rounded-2xl hover:text-primary',
             (activeBreed || activeCompare) && 'hidden'
           )}
         >

@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { OrderStatus } from './types'
+import { OrderNestStatus, OrderStatus } from './types'
 import moment from 'moment'
 import 'moment/dist/locale/vi'
 
@@ -55,11 +55,12 @@ export function addSearchParams(url: string, params: Record<string, any>) {
   return url
 }
 
-export const statusToVi: Record<OrderStatus, string> = {
+export const statusToVi: Record<OrderNestStatus, string> = {
   processing: 'Đang xử lý',
   delivering: 'Đang vận chuyển',
   success: 'Hoàn thành',
-  canceled: 'Đã hủy'
+  canceled: 'Đã hủy',
+  breeding: 'Đang phối giống'
 }
 
 export const statusToMessage: Record<OrderStatus, string> = {
@@ -69,11 +70,12 @@ export const statusToMessage: Record<OrderStatus, string> = {
   canceled: 'Đơn hàng đã bị hủy'
 }
 
-type Variant = 'warning' | 'info' | 'success' | 'destructive'
+type Variant = 'warning' | 'info' | 'success' | 'destructive' | 'breed'
 
-export const statusToVariant: Record<OrderStatus, Variant> = {
+export const statusToVariant: Record<OrderNestStatus, Variant> = {
   processing: 'warning',
   delivering: 'info',
+  breeding: 'breed',
   success: 'success',
   canceled: 'destructive'
 }

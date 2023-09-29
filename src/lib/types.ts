@@ -57,6 +57,20 @@ export type Order = {
   rated: boolean
 }
 
+export type OrderNest = {
+  _id: string
+  dad: Bird
+  mom: Bird
+  childPriceMale: number
+  childPriceFemale: number
+  numberChildPriceMale: number
+  numberChildPriceFemale: number
+  user: User | string
+  rated: boolean
+  createdAt: Date
+  status: OrderNestStatus
+}
+
 export type Rating = {
   value: number
   content?: string
@@ -77,7 +91,7 @@ export function getMom(item: Bird): Bird {
   return item.parent?.mom as Bird
 }
 
-export function getUser(item: Order | Rating): User {
+export function getUser(item: Order | Rating | OrderNest): User {
   return item.user as User
 }
 export function getBirds(item: Order): Bird[] {
@@ -108,7 +122,10 @@ export type Discount = {
 }
 
 export type Role = 'customer' | 'staff' | 'manager' | 'admin' | 'guest'
+
 export type OrderStatus = 'processing' | 'delivering' | 'success' | 'canceled'
+
+export type OrderNestStatus = 'processing' | 'delivering' | 'success' | 'canceled' | 'breeding'
 
 export type Cart = {
   birds: string[]

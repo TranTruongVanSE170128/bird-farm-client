@@ -1,13 +1,14 @@
 import { PhoneCall } from 'lucide-react'
 import { Mail } from 'lucide-react'
-import Container from './ui/container'
+import Container from '../ui/container'
+import { Button } from '../ui/button'
 
 function Footer() {
   return (
     <footer className='bg-primary text-primary-foreground'>
       <Container>
         <div className='w-full h-full pt-5'>
-          <div className='flex text-white mt-6 gap-14'>
+          <div className='flex mt-6 gap-14'>
             <div className='flex flex-col flex-1 gap-1'>
               <div className='text-2xl font-bold'>Thông tin cửa hàng</div>
               <p className='text-xs sm:text-base'>
@@ -29,20 +30,20 @@ function Footer() {
                   <strong>Email:</strong> birdfarmswp@gmail.com
                 </div>
                 <div className='text-xs sm:text-base'>
-                  <strong>Website:</strong> <a href='https://bird-farm.netlify.app/'>https://bird-farm.netlify.app/</a>
+                  <strong>Website:</strong> <a href='https://bird-farm.vercel.app/'>https://bird-farm.vercel.app/</a>
                 </div>
               </div>
             </div>
 
             <div className='flex flex-col flex-1 gap-1'>
               <div className='text-2xl font-bold'>Hỗ trợ khách hàng</div>
-              <div className='flex gap-10 mt-5'>
-                <a href=''>
-                  <PhoneCall></PhoneCall>
-                </a>
-                <a href=''>
-                  <Mail></Mail>
-                </a>
+              <div className='flex 4 mt-5'>
+                <Button variant='ghost'>
+                  <PhoneCall />
+                </Button>
+                <Button variant='ghost'>
+                  <Mail />
+                </Button>
               </div>
             </div>
           </div>

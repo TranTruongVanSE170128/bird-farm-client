@@ -18,7 +18,6 @@ import Breed from '@/pages/breed'
 import Cart from '@/pages/cart'
 import BirdComparing from '@/pages/bird-comparing'
 import NestList from '@/pages/nest-list'
-import BreedBirdList from '@/pages/breed-bird-list'
 import NestDetail from './pages/nest-detail'
 import LayoutManager from './components/shared/layout-manager'
 import LayoutStaff from './components/shared/layout-staff'
@@ -39,6 +38,10 @@ import Checkout from './pages/checkout'
 import PaymentSuccess from './pages/payment-success'
 import PaymentCancel from './pages/payment-cancel'
 import { RatingForm } from './components/forms/rating-form'
+import DepositSuccess from './pages/deposit-success'
+import DepositCancel from './pages/deposit-cancel'
+import ManageOrderNestList from './pages/manage-order-nest-list'
+import ManageOrderNestDetail from './pages/manage-order-nest-detail'
 
 function App() {
   return (
@@ -59,7 +62,6 @@ function App() {
           <Route path='species' element={<SpecieList />} />
           <Route path='birds/:id' element={<BirdDetail />} />
           <Route path='birds' element={<BirdList />} />
-          <Route path='breed-birds' element={<BreedBirdList />} />
           <Route path='wishlist' element={<WishList />} />
           <Route path='profile' element={<Profile />} />
           <Route path='orders/payment-success' element={<PaymentSuccess />} />
@@ -70,6 +72,8 @@ function App() {
           <Route path='nests' element={<NestList />} />
           <Route path='compare' element={<BirdComparing />} />
           <Route path='not-found' element={<NotFound />} />
+          <Route path='breed/deposit-success' element={<DepositSuccess />} />
+          <Route path='breed/deposit-cancel' element={<DepositCancel />} />
           <Route path='breed' element={<Breed />} />
           <Route path='ratings' element={<Ratings />} />
           <Route path='checkout' element={<Checkout />} />
@@ -77,17 +81,6 @@ function App() {
 
         <Route path='/admin' element={<LayoutAdmin />}>
           <Route path='' element={<Dashboard />} />
-          <Route path='species' element={<ManageSpecieList />} />
-          <Route path='species/new' element={<ManageSpecieNew />} />
-          <Route path='species/:id' element={<ManageSpecieDetail />} />
-          <Route path='birds' element={<ManageBirdList />} />
-          <Route path='birds/new' element={<ManageBirdNew />} />
-          <Route path='birds/:id' element={<ManageBirdDetail />} />
-          <Route path='nests' element={<ManageNestList />} />
-          <Route path='nests/new' element={<ManageNestNew />} />
-          <Route path='nests/:id' element={<ManageNestDetail />} />
-          <Route path='orders' element={<ManageOrderList />} />
-          <Route path='orders/:id' element={<ManageOrderDetail />} />
         </Route>
 
         <Route path='/manager' element={<LayoutManager />}>
@@ -107,6 +100,8 @@ function App() {
           <Route path='' element={<Dashboard />} />
           <Route path='orders' element={<ManageOrderList />} />
           <Route path='orders/:id' element={<ManageOrderDetail />} />
+          <Route path='order-nests/:id' element={<ManageOrderNestDetail />} />
+          <Route path='order-nests' element={<ManageOrderNestList />} />
         </Route>
 
         <Route path='*' element={<NotFound />} />

@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import Header from '@/components/shared/header'
-import Footer from '../footer'
+import Footer from './footer'
 import { ComparatorAndBreeder } from '../ui/comparator-and-breeder'
 
 function LayoutShop() {

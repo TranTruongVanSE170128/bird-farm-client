@@ -18,7 +18,7 @@ type Action = {
 
 export const useBreedStore = create<State & Action>((set) => ({
   //   birds: useLocalStorage<AllBirds>('breed_birds', [null, null])[0],
-  birds: JSON.parse(localStorage.getItem('breed_birds') || String([null, null])),
+  birds: JSON.parse(localStorage.getItem('breed_birds') || JSON.stringify([null, null])),
   activeBreed: false,
   setBirds: (birds: AllBirds) => {
     localStorage.setItem('breed_birds', JSON.stringify(birds))

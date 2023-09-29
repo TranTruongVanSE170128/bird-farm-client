@@ -1,8 +1,8 @@
 import Paginate from '@/components/paginate'
 import Spinner from '@/components/ui/spinner'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Order, OrderNestStatus, getUser } from '@/lib/types'
-import { addSearchParams, formatDate, formatPrice, statusToVariant, statusToVi } from '@/lib/utils'
+import { OrderNest, getUser } from '@/lib/types'
+import { addSearchParams, formatDate, statusToVariant, statusToVi } from '@/lib/utils'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
 import { MoreHorizontal } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -13,26 +13,26 @@ import { Badge } from '@/components/ui/badge'
 
 const pageSize = 12
 
-function ManageOrderList() {
+function ManageOrderNestList() {
   const [searchParams] = useSearchParams()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
-  const [orders, setOrders] = useState<Order[]>([])
-  const [isLoadingOrders, setIsLoadingOrders] = useState(true)
+  const [orderNests, setOrderNests] = useState<OrderNest[]>([])
+  const [isLoadingOrderNests, setIsLoadingOrderNests] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
   const { toast } = useToast()
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      setIsLoadingOrders(true)
+    const fetchOrderNests = async () => {
+      setIsLoadingOrderNests(true)
       try {
         const { data } = await birdFarmApi.get(
-          addSearchParams('/api/orders/pagination/manage', { pageNumber, pageSize })
+          addSearchParams('/api/order-nests/pagination/manage', { pageNumber, pageSize })
         )
-        setOrders(data?.orders || null)
-        setIsLoadingOrders(false)
+        setOrderNests(data?.orderNests || null)
+        setIsLoadingOrderNests(false)
         setTotalPages(data?.totalPages || null)
       } catch (error) {
-        setIsLoadingOrders(false)
+        setIsLoadingOrderNests(false)
         toast({
           variant: 'destructive',
           title: 'Có lỗi xảy ra'
@@ -40,55 +40,63 @@ function ManageOrderList() {
       }
     }
 
-    fetchOrders()
+    fetchOrderNests()
   }, [pageNumber, toast])
 
-  if (!orders) {
+  if (!orderNests) {
     return <div>Loading</div>
   }
 
   return (
     <div>
       <div className='flex items-center justify-between mb-6'>
-        <div className='text-3xl font-bold'>Danh sách đơn hàng</div>
+        <div className='text-3xl font-bold'>Danh sách đơn tổ chim</div>
       </div>
 
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Tên khách hàng</TableHead>
-            <TableHead>Tên người nhận</TableHead>
-            <TableHead className='text-center'>Số điện thoại</TableHead>
-            <TableHead className='text-center'>Tổng tiền</TableHead>
+            <TableHead>Chim bố</TableHead>
+            <TableHead>Chim mẹ</TableHead>
             <TableHead className='text-center'>Ngày đặt</TableHead>
             <TableHead className='text-center'>Trạng thái</TableHead>
             <TableHead className='text-end'></TableHead>
           </TableRow>
         </TableHeader>
 
-        {!isLoadingOrders && (
+        {!isLoadingOrderNests && (
           <TableBody>
-            {orders.map((order) => {
+            {orderNests.map((orderNest) => {
               return (
-                <TableRow key={order._id}>
-                  <TableCell>{getUser(order).name}</TableCell>
-                  <TableCell>{order.receiver}</TableCell>
-                  <TableCell className='text-center'>{order.phone}</TableCell>
-                  <TableCell className='text-center'>{formatPrice(order.totalMoney)}</TableCell>
-                  <TableCell className='text-center'>{formatDate(order.createdAt)}</TableCell>
+                <TableRow key={orderNest._id}>
+                  <TableCell>{getUser(orderNest).name}</TableCell>
+                  <TableCell>
+                    {orderNest.dad ? (
+                      <div className='hover:underline hover:text-primary'>{orderNest.dad.name}</div>
+                    ) : (
+                      'Không có thông tin'
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {orderNest.mom ? (
+                      <div className='hover:underline hover:text-primary'>{orderNest.mom.name}</div>
+                    ) : (
+                      'Không có thông tin'
+                    )}
+                  </TableCell>
+                  <TableCell className='text-center'>{formatDate(orderNest.createdAt)}</TableCell>
                   <TableCell className='text-center'>
-                    <Badge variant={statusToVariant[order.status as OrderNestStatus]}>
-                      {statusToVi[order.status as OrderNestStatus]}
-                    </Badge>
+                    <Badge variant={statusToVariant[orderNest.status]}>{statusToVi[orderNest.status]}</Badge>
                   </TableCell>
                   <TableCell className='text-center'>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <MoreHorizontal className='cursor-pointer' />
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent className='bg-background border border-border'>
+                      <DropdownMenuContent className='bg-background borderNest borderNest-borderNest'>
                         <DropdownMenuItem asChild className='cursor-pointer py-2 px-4'>
-                          <Link to={`/admin/orders/${order._id}`}>Chi Tiết</Link>
+                          <Link to={`/staff/order-nests/${orderNest._id}`}>Chi Tiết</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className='cursor-pointer py-2 px-4'>Bày Bán</DropdownMenuItem>
                         <DropdownMenuItem className='cursor-pointer py-2 px-4'>Ngừng Bán</DropdownMenuItem>
@@ -101,11 +109,11 @@ function ManageOrderList() {
           </TableBody>
         )}
       </Table>
-      {isLoadingOrders && <Spinner className='mt-5' />}
+      {isLoadingOrderNests && <Spinner className='mt-5' />}
       {!!totalPages && (
         <Paginate
           className='mt-8'
-          path={`/admin/orders`}
+          path={`/staff/order-nests`}
           pageSize={pageSize}
           pageNumber={pageNumber}
           totalPages={totalPages}
@@ -115,4 +123,4 @@ function ManageOrderList() {
   )
 }
 
-export default ManageOrderList
+export default ManageOrderNestList

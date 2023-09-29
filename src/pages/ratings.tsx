@@ -65,7 +65,7 @@ function Ratings() {
 
         <div className='flex justify-start items-center border rounded-sm mb-4 p-4'>
           <div className='mx-10'>
-            <span className='font-medium text-4xl mx-4'>{averageRatings?.toFixed(1)}</span>
+            <span className='font-medium text-4xl mx-4'>{averageRatings?.toFixed(1) || 0}</span>
             <span className='font-medium text-2xl'>/ 5</span>
             <div className='flex my-2'>
               <svg viewBox='0 0 1000 200' className='mb-0'>

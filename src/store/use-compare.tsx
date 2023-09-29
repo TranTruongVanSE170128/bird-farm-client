@@ -18,7 +18,7 @@ type Action = {
 }
 
 export const useCompareStore = create<State & Action>((set) => ({
-  birds: JSON.parse(localStorage.getItem('compare_birds') || String([null, null])),
+  birds: JSON.parse(localStorage.getItem('compare_birds') || JSON.stringify([null, null])),
   activeCompare: false,
   setBirds: (birds: AllBirds) => {
     localStorage.setItem('compare_birds', JSON.stringify(birds))
