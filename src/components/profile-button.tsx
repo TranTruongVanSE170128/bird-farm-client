@@ -1,4 +1,4 @@
-import { Heart, LogIn, LogOut, User as UserIcon } from 'lucide-react'
+import { LogIn, LogOut, User as UserIcon } from 'lucide-react'
 import registerIcon from '@/assets/register.svg'
 import {
   DropdownMenu,
@@ -122,12 +122,6 @@ function ProfileButton({ className }: Props) {
             <Link to='/profile'>
               <UserIcon className='mr-2 h-4 w-4' />
               <span>Hồ sơ người dùng</span>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild className='cursor-pointer'>
-            <Link to='/wishlist'>
-              <Heart className='mr-2 h-4 w-4' />
-              <span>Danh sách mong ước</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild className='cursor-pointer'>
