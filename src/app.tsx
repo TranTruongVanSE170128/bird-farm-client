@@ -42,6 +42,7 @@ import DepositSuccess from './pages/deposit-success'
 import DepositCancel from './pages/deposit-cancel'
 import ManageOrderNestList from './pages/manage-order-nest-list'
 import ManageOrderNestDetail from './pages/manage-order-nest-detail'
+import YourNest from './pages/your-nest'
 
 function App() {
   return (
@@ -77,6 +78,7 @@ function App() {
           <Route path='breed' element={<Breed />} />
           <Route path='ratings' element={<Ratings />} />
           <Route path='checkout' element={<Checkout />} />
+          <Route path='your-nest' element={<YourNest />} />
         </Route>
 
         <Route path='/admin' element={<LayoutAdmin />}>
