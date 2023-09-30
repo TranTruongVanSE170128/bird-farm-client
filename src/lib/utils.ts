@@ -56,7 +56,7 @@ export function addSearchParams(url: string, params: Record<string, any>) {
 }
 
 export const statusToVi: Record<OrderNestStatus, string> = {
-  processing: 'Đang xử lý',
+  processing: 'Đang chờ xử lý',
   delivering: 'Đang vận chuyển',
   success: 'Hoàn thành',
   canceled: 'Đã hủy',

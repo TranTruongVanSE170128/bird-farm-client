@@ -19,6 +19,7 @@ import adminIcon from '@/assets/admin.svg'
 import managerIcon from '@/assets/manager.svg'
 import staffIcon from '@/assets/staff.svg'
 import storeIcon from '@/assets/store.svg'
+import nestIcon from '@/assets/nest.svg'
 
 type Props = {
   className?: string
@@ -128,6 +129,12 @@ function ProfileButton({ className }: Props) {
             <Link to='/orders'>
               <img src={orderIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
               <span>Đơn hàng</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild className='cursor-pointer'>
+            <Link to='/your-nest'>
+              <img src={nestIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+              <span>Tổ chim của bạn</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>

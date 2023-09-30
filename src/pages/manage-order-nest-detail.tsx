@@ -65,12 +65,12 @@ function ManageOrderNestDetail() {
     <div>
       <div className='flex items-center justify-between mb-6'>
         <div className='flex gap-2'>
-          <div className='text-3xl font-bold'>Chi tiết đơn hàng</div>
+          <div className='text-3xl font-bold'>Chi tiết đơn tổ chim</div>
         </div>
 
         <div className='flex gap-2'>
           <Button disabled={approvingOrderNest} asChild>
-            <Link className='mb-6 flex items-center gap-1 my-auto' to='/admin/orderNests'>
+            <Link className='mb-6 flex items-center gap-1 my-auto' to='/staff/order-nests'>
               <span>Quay lại</span>
               <ArrowLeft className='w-5 h-5' />
             </Link>
@@ -96,7 +96,7 @@ function ManageOrderNestDetail() {
         )}
       </div>
 
-      {!openAddStageForm && (
+      {!openAddStageForm && orderNest.status === 'breeding' && (
         <Button
           onClick={() => {
             setOpenAddStageForm(true)

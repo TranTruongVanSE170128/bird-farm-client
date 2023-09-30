@@ -69,6 +69,8 @@ export type OrderNest = {
   rated: boolean
   createdAt: Date
   status: OrderNestStatus
+  specie: Specie
+  stages: Stage[]
 }
 
 export type Rating = {
@@ -79,7 +81,7 @@ export type Rating = {
   createdAt: Date
 }
 
-export function getSpecie(item: Bird | Nest): Specie {
+export function getSpecie(item: Bird | Nest | OrderNest): Specie {
   return item.specie as Specie
 }
 
@@ -99,6 +101,12 @@ export function getBirds(item: Order): Bird[] {
 }
 export function getNests(item: Order): Nest[] {
   return item.nests as Nest[]
+}
+
+export type Stage = {
+  name: string
+  imageUrl: string
+  description: string
 }
 
 export type Gender = 'male' | 'female'
