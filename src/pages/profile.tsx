@@ -1,10 +1,10 @@
 import { useState, useRef } from 'react'
 import Container from '@/components/ui/container'
 import { Button } from '@/components/ui/button'
-import userIcon from '@/assets/icon_user.png'
-import voucherIcon from '@/assets/icon_voucher.png'
-import iconNotification from '@/assets/icon_notification.png'
+import userIcon from '@/assets/user.png'
+import voucherIcon from '@/assets/voucher.svg'
 import { Input } from '@/components/ui/input'
+import { Bell } from 'lucide-react'
 
 function Profile() {
   const [activeTab, setActiveTab] = useState('account-general')
@@ -85,7 +85,7 @@ function Profile() {
                   </a>
                 </div>
                 <div className='flex items-center ml-10 mb-6'>
-                  <img src={iconNotification} className='w-10 h-10 mr-1' />
+                  <Bell className='w-10 h-10 mr-1' />
                   <a
                     className={` hover:text-primary rounded-md ${
                       activeTab === 'account-notifications' ? 'text-primary' : ''
