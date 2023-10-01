@@ -1,9 +1,11 @@
-import React, { useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import Container from '@/components/ui/container'
 import { Button } from '@/components/ui/button'
 import userIcon from '@/assets/icon_user.png'
 import voucherIcon from '@/assets/icon_voucher.png'
 import iconNotification from '@/assets/icon_Notification.png'
+import { Input } from '@/components/ui/input'
+
 function Profile() {
   const [activeTab, setActiveTab] = useState('account-general')
   const [showPasswordFields, setShowPasswordFields] = useState(false)
@@ -35,15 +37,15 @@ function Profile() {
   }
 
   const handleUploadButtonClick = () => {
-    // Trigger the file input click event
+    // Trigger the file Input click event
     if (fileInputRef.current) {
-      (fileInputRef.current as HTMLInputElement).click()
+      ;(fileInputRef.current as HTMLInputElement).click()
     }
   }
   return (
     <main>
       <Container className='p-10'>
-        <main className=' shadow-md rounded-lg'>
+        <div className=' shadow-md rounded-lg'>
           <div className='flex'>
             <div className='w-1/4 p-4'>
               <div className='flex flex-col'>
@@ -98,10 +100,8 @@ function Profile() {
             </div>
 
             <div className='w-3/4 p-4 bg-card'>
-              <div >
-                <div
-                  className={`${activeTab === 'account-general' ? 'block' : 'hidden'}`}
-                >
+              <div>
+                <div className={`${activeTab === 'account-general' ? 'block' : 'hidden'}`}>
                   <h1 className='text-2xl font-semibold mb-4'>Hồ sơ của tôi</h1>
 
                   <div className='flex items-center mb-4'>
@@ -113,7 +113,7 @@ function Profile() {
                       <Button className='' onClick={handleUploadButtonClick}>
                         Upload new photo
                       </Button>
-                      <input
+                      <Input
                         type='file'
                         className='hidden'
                         ref={fileInputRef}
@@ -126,12 +126,12 @@ function Profile() {
                   <div className=''>
                     <div className=''>
                       <label>Tên người dùng</label>
-                      <input type='text' className='w-full p-2 mb-2 border border-muted-foreground rounded-md' />
+                      <Input type='text' className='w-full p-2 mb-2 border border-muted-foreground rounded-md' />
                     </div>
 
                     <div className=''>
                       <label className=''>E-mail</label>
-                      <input type='text' className='w-full p-2 mb-2 border border-muted-foreground rounded-md' />
+                      <Input type='text' className='w-full p-2 mb-2 border border-muted-foreground rounded-md' />
                       <div className='flex flex-col justify-center bg-yellow-300 w-4/5 rounded-md h-16 p-4 '>
                         Your email is not confirmed. Please check your inbox.
                         <br />
@@ -142,15 +142,15 @@ function Profile() {
                     </div>
                     <div className=''>
                       <label className=''>Điện thoại</label>
-                      <input type='number' className='w-full p-2 mb-2 border border-muted-foreground rounded-md' />
+                      <Input type='number' className='w-full p-2 mb-2 border border-muted-foreground rounded-md' />
                     </div>
                     <div className=''>
                       <label className=''>Địa chỉ</label>
-                      <input type='text' className='w-full p-2 mb-2 border border-muted-foreground rounded-md' />
+                      <Input type='text' className='w-full p-2 mb-2 border border-muted-foreground rounded-md' />
                     </div>
                     <div className=''>
                       <label className=''>Password</label>
-                      <input
+                      <Input
                         type='password'
                         className='w-full p-2 mb-2 border border-muted-foreground rounded-md'
                         id='currentPassword'
@@ -161,7 +161,7 @@ function Profile() {
                       <div id='passwordFields'>
                         <div className=''>
                           <label className=''>New Password</label>
-                          <input
+                          <Input
                             type='password'
                             className='w-full p-2 mb-2 border border-muted-foreground rounded-md'
                             value={newPassword}
@@ -170,7 +170,7 @@ function Profile() {
                         </div>
                         <div className=''>
                           <label className=''>Confirm Password</label>
-                          <input
+                          <Input
                             type='password'
                             className='w-full p-2 mb-2 border border-muted-foreground rounded-md'
                             value={confirmPassword}
@@ -192,9 +192,7 @@ function Profile() {
                   </div>
                 </div>
 
-                <div
-                  className={`${activeTab === 'account-vouchers' ? 'block' : 'hidden'}`}
-                >
+                <div className={`${activeTab === 'account-vouchers' ? 'block' : 'hidden'}`}>
                   <div className=''>
                     <h5 className='text-2xl font-semibold mb-3'>Voucher của bạn:</h5>
                     <div className='flex justify-between items-center border border-muted-foreground p-2 mb-2'>
@@ -240,9 +238,7 @@ function Profile() {
                   </div>
                 </div>
 
-                <div
-                  className={`${activeTab === 'account-notifications' ? 'block' : 'hidden'}`}
-                >
+                <div className={`${activeTab === 'account-notifications' ? 'block' : 'hidden'}`}>
                   <div>
                     <h3 className='text-lg font-semibold'>Đơn mua</h3>
                     <div className='flex my-4 justify-between items-center'>
@@ -252,18 +248,14 @@ function Profile() {
                         alt='Notification 1'
                       />
                       <div className='flex-1 ml-4'>
-                        <span>
-                          Đã xác nhận thanh toán. Đơn hàng vadj2341 đã được đặt vui lòng kiểm tra đơn hàng
-                        </span>
+                        <span>Đã xác nhận thanh toán. Đơn hàng vadj2341 đã được đặt vui lòng kiểm tra đơn hàng</span>
                       </div>
-                      <Button>
-                        Xem chi tiết
-                      </Button>
+                      <Button>Xem chi tiết</Button>
                     </div>
                   </div>
 
                   <div>
-                    <hr/>
+                    <hr />
                     <h3 className='text-lg font-semibold'>Đơn đặt</h3>
                     <div className='flex my-4 justify-between items-center'>
                       <img
@@ -272,20 +264,16 @@ function Profile() {
                         alt='Notification 2'
                       />
                       <div className='flex-1 ml-4'>
-                        <span>
-                          Đơn đặt của bạn đã có cập nhật mới từ shop, vui lòng kiểm tra
-                        </span>
+                        <span>Đơn đặt của bạn đã có cập nhật mới từ shop, vui lòng kiểm tra</span>
                       </div>
-                      <Button>
-                        Xem chi tiết
-                      </Button>
+                      <Button>Xem chi tiết</Button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </main>
+        </div>
       </Container>
     </main>
   )

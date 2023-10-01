@@ -46,6 +46,16 @@ export function calculateTime(time: Date | string | undefined): string {
   return moment(time).locale('vi').fromNow()
 }
 
+export function calculateExpired(time: Date | string | undefined) {
+  moment.locale('vi')
+  const now = moment()
+  const diff = moment(time).diff(now)
+
+  const duration = moment.duration(diff)
+
+  return duration.humanize()
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function addSearchParams(url: string, params: Record<string, any>) {
   url += '?'

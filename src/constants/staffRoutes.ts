@@ -1,6 +1,7 @@
 import orderIcon from '@/assets/order.svg'
-import orderNestIcon from '@/assets/order-nest.svg'
+import voucherIcon from '@/assets/voucher.svg'
 
+import orderNestIcon from '@/assets/order-nest.svg'
 export const routes = [
   {
     icon: orderIcon,
@@ -11,5 +12,10 @@ export const routes = [
     icon: orderNestIcon,
     route: '/staff/order-nests',
     label: 'Đơn Tổ Chim'
+  },
+  {
+    icon: voucherIcon,
+    route: '/staff/vouchers',
+    label: 'Voucher'
   }
 ]

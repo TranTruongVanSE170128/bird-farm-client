@@ -43,6 +43,7 @@ import DepositCancel from './pages/deposit-cancel'
 import ManageOrderNestList from './pages/manage-order-nest-list'
 import ManageOrderNestDetail from './pages/manage-order-nest-detail'
 import YourNest from './pages/your-nest'
+import ManageVoucherList from './pages/manage-voucher-list'
 
 function App() {
   return (
@@ -104,6 +105,7 @@ function App() {
           <Route path='orders/:id' element={<ManageOrderDetail />} />
           <Route path='order-nests/:id' element={<ManageOrderNestDetail />} />
           <Route path='order-nests' element={<ManageOrderNestList />} />
+          <Route path='vouchers' element={<ManageVoucherList />} />
         </Route>
 
         <Route path='*' element={<NotFound />} />

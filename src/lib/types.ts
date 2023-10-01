@@ -27,7 +27,6 @@ export type Bird = {
   imageUrls?: string[]
   parent?: Parent
   achievements?: Achievement[]
-  discount?: Discount
 }
 
 export type Nest = {
@@ -123,10 +122,13 @@ export type Achievement = {
   _id: string
 }
 
-export type Discount = {
+export type Voucher = {
+  _id: string
   discountPercent: number
-  startDate: Date
-  endDate: Date
+  maxDiscountValue: number
+  conditionPrice: number
+  quantity: number
+  expiredAt: Date
 }
 
 export type Role = 'customer' | 'staff' | 'manager' | 'admin' | 'guest'

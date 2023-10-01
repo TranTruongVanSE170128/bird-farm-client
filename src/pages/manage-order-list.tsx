@@ -43,10 +43,6 @@ function ManageOrderList() {
     fetchOrders()
   }, [pageNumber, toast])
 
-  if (!orders) {
-    return <div>Loading</div>
-  }
-
   return (
     <div>
       <div className='flex items-center justify-between mb-6'>
