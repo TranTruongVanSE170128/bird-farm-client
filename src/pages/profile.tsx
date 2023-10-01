@@ -3,7 +3,7 @@ import Container from '@/components/ui/container'
 import { Button } from '@/components/ui/button'
 import userIcon from '@/assets/icon_user.png'
 import voucherIcon from '@/assets/icon_voucher.png'
-import iconNotification from '@/assets/icon_Notification.png'
+import iconNotification from '@/assets/icon_notification.png'
 import { Input } from '@/components/ui/input'
 
 function Profile() {
