@@ -84,7 +84,7 @@ function ManageOrderList() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className='bg-background border border-border'>
                         <DropdownMenuItem asChild className='cursor-pointer py-2 px-4'>
-                          <Link to={`/admin/orders/${order._id}`}>Chi Tiết</Link>
+                          <Link to={`/staff/orders/${order._id}`}>Chi Tiết</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className='cursor-pointer py-2 px-4'>Bày Bán</DropdownMenuItem>
                         <DropdownMenuItem className='cursor-pointer py-2 px-4'>Ngừng Bán</DropdownMenuItem>

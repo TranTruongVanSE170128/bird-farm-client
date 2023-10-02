@@ -13,15 +13,15 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Cart, Products } from '@/lib/types'
+import { Cart, Products, Voucher } from '@/lib/types'
 import { toast } from '@/components/ui/use-toast'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { Shell } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuthContext } from '@/contexts/auth-provider'
 import { loadStripe } from '@stripe/stripe-js'
 import { useCartContext } from '@/contexts/cart-provider'
-import { formatPrice } from '@/lib/utils'
+import { calculateDiscount, formatPrice } from '@/lib/utils'
 import noImage from '@/assets/no-image.avif'
 
 type Province = {
@@ -67,6 +67,10 @@ const formSchema = z.object({
 })
 
 function Checkout() {
+  const [searchParams] = useSearchParams()
+  const voucherId = searchParams.get('voucher')
+  const [voucher, setVoucher] = useState<Voucher | null>(null)
+
   const [provinces, setProvinces] = useState<Province[]>([])
   const [districts, setDistricts] = useState<District[]>([])
   const [wards, setWards] = useState<Ward[]>([])
@@ -79,7 +83,7 @@ function Checkout() {
   const { user } = useAuthContext()
   const [totalMoney, setTotalMoney] = useState(0)
   const [products, setProducts] = useState<Products>({ birds: [], nests: [] })
-  const { cart } = useCartContext()
+  const { cart, clearCart } = useCartContext()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -107,6 +111,15 @@ function Checkout() {
 
     fetchProducts()
   }, [cart])
+
+  useEffect(() => {
+    const fetchVouchers = async () => {
+      const { data } = await birdFarmApi.get(`/api/vouchers/${voucherId}`)
+      setVoucher(data.voucher || null)
+    }
+
+    fetchVouchers()
+  }, [voucherId])
 
   useEffect(() => {
     const fetchProvinces = async () => {
@@ -187,8 +200,8 @@ function Checkout() {
       try {
         await birdFarmApi.post('/api/orders', { address, receiver, phone, birds, nests, notice })
 
+        clearCart()
         navigate('/orders?tab=processing')
-        localStorage.removeItem('cart')
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         const messageError = error.response.data.message
@@ -520,12 +533,18 @@ function Checkout() {
                 </div>
                 <div className='flex m-auto mt-5'>
                   <span className='w-1/2 text-start font-bold'>Giảm giá</span>
-                  <span className='w-1/2 text-end font-bold'>0%</span>
+                  <span className='w-1/2 text-end font-bold'>
+                    {voucher ? formatPrice(calculateDiscount(totalMoney, voucher)) : formatPrice(0)}
+                  </span>
                 </div>
                 <div className='border mt-4 m-auto'></div>
                 <div className='flex m-auto mt-5'>
                   <span className='w-1/2 text-start font-bold'>Tổng</span>
-                  <span className='w-1/2 text-end font-bold'>{formatPrice(totalMoney)}</span>
+                  <span className='w-1/2 text-end font-bold'>
+                    {voucher
+                      ? formatPrice(totalMoney - calculateDiscount(totalMoney, voucher))
+                      : formatPrice(totalMoney)}
+                  </span>
                 </div>
               </div>
             </div>

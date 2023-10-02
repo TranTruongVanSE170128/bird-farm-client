@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { OrderNestStatus, OrderStatus } from './types'
+import { OrderNestStatus, OrderStatus, Voucher } from './types'
 import moment from 'moment'
 import 'moment/dist/locale/vi'
 
@@ -44,6 +44,22 @@ export function calculateAge(birthday: Date | string | undefined): string {
 export function calculateTime(time: Date | string | undefined): string {
   moment.locale('vi')
   return moment(time).locale('vi').fromNow()
+}
+
+export function calculateDiscount(originPrice: number, voucher: Voucher): number {
+  if (voucher.quantity <= 0) {
+    return 0
+  }
+  if (voucher.expiredAt < new Date()) {
+    return 0
+  }
+  if (originPrice < voucher.conditionPrice) {
+    return 0
+  }
+  const discountByPercent = Math.round((originPrice * voucher.discountPercent) / 100)
+  console.log(discountByPercent)
+
+  return discountByPercent > voucher.maxDiscountValue ? voucher.maxDiscountValue : discountByPercent
 }
 
 export function calculateExpired(time: Date | string | undefined) {

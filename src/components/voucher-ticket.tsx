@@ -1,20 +1,39 @@
 import { Voucher } from '@/lib/types'
-import { calculateExpired, formatPrice } from '@/lib/utils'
+import { calculateExpired, cn, formatPrice } from '@/lib/utils'
 import logo from '@/assets/icon.png'
 import { useTheme } from './theme-provider'
 
 type Props = {
   voucher: Voucher
+  className?: string
+  context?: boolean
+  contextContent?: 'Lựa chọn tốt nhất' | 'Hết hàng' | 'Hết hạn' | 'Không đủ điều kiện' | 'Số lượng có hạn'
 }
 
-function VoucherTicket({ voucher }: Props) {
+function VoucherTicket({ voucher, className, context = true, contextContent = 'Số lượng có hạn' }: Props) {
   const { theme } = useTheme()
   const { conditionPrice, expiredAt, discountPercent, maxDiscountValue, quantity } = voucher
+
+  const contextElement = () => {
+    if (quantity <= 0) {
+      return <div className='text-xs absolute rounded-sm top-2 p-0.5 text-white bg-red-500'>Đã hết</div>
+    }
+    if (expiredAt < new Date()) {
+      return <div className='text-xs absolute rounded-sm top-2 p-0.5 text-white bg-red-500'>Hết hạn</div>
+    }
+    switch (contextContent) {
+      case 'Lựa chọn tốt nhất':
+        return <div className='text-xs absolute rounded-sm top-2 p-0.5 text-white bg-green-500'>Lựa chọn tốt nhất</div>
+      case 'Không đủ điều kiện':
+        return <div className='text-xs absolute rounded-sm top-2 p-0.5 text-white bg-red-500'>Không đủ điều kiện</div>
+      default:
+        return <div className='text-xs absolute rounded-sm top-2 p-0.5 text-white bg-yellow-500'>Số lượng có hạn</div>
+    }
+  }
+
   return (
-    <div className='flex aspect-[25/9] w-96 relative'>
-      <div className='text-xs bg-yellow-500 absolute rounded-sm top-2 p-0.5 text-white'>
-        {quantity ? 'Số lượng có hạn' : 'Đã hết'}
-      </div>
+    <div className={cn('flex aspect-[25/9] w-96 relative', className)}>
+      {context && contextElement()}
 
       <div
         style={{
