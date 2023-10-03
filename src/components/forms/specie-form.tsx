@@ -65,7 +65,7 @@ function SpecieForm({ specie, btnTitle, action, setEdit }: Props) {
         title: action === 'create' ? 'Tạo loài mới thành công' : 'Cập nhật loài thành công'
       })
 
-      navigate(`/admin/species/${data.specie._id}`)
+      navigate(`/manager/species/${data.specie._id}`)
       window.location.reload()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

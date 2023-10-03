@@ -25,13 +25,22 @@ export function RatingForm() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [rateValue, setRateValue] = useState(5)
-  const { display, orderId } = useRatingFormStore()
+  const { display, orderId, orderNestId } = useRatingFormStore()
   const navigate = useNavigate()
 
   async function onSubmit(values: TRatingSchema) {
     try {
       setIsSubmitting(true)
-      await birdFarmApi.post('/api/ratings', { ...values, order: orderId })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const body: any = { ...values }
+      if (orderId) {
+        body.order = orderId
+      } else if (orderNestId) {
+        body.orderNest = orderNestId
+      }
+      console.log(body)
+
+      await birdFarmApi.post('/api/ratings', body)
       useRatingFormStore.setState({ display: false })
       navigate('/ratings')
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

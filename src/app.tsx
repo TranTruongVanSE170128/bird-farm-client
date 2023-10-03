@@ -34,7 +34,7 @@ import ManageOrderDetail from './pages/manage-order-detail'
 import ManageSpecieNew from './pages/manage-specie-new'
 import Ratings from './pages/ratings'
 import Modal from './components/ui/modal'
-import Checkout from './pages/checkout'
+import CheckoutOrder from './pages/checkout-order'
 import PaymentSuccess from './pages/payment-success'
 import PaymentCancel from './pages/payment-cancel'
 import { RatingForm } from './components/forms/rating-form'
@@ -44,6 +44,7 @@ import ManageOrderNestList from './pages/manage-order-nest-list'
 import ManageOrderNestDetail from './pages/manage-order-nest-detail'
 import YourNest from './pages/your-nest'
 import ManageVoucherList from './pages/manage-voucher-list'
+import CheckoutOrderNest from './pages/checkout-order-nest'
 
 function App() {
   return (
@@ -78,7 +79,8 @@ function App() {
           <Route path='breed/deposit-cancel' element={<DepositCancel />} />
           <Route path='breed' element={<Breed />} />
           <Route path='ratings' element={<Ratings />} />
-          <Route path='checkout' element={<Checkout />} />
+          <Route path='checkout-order' element={<CheckoutOrder />} />
+          <Route path='checkout-order-nest' element={<CheckoutOrderNest />} />
           <Route path='your-nest' element={<YourNest />} />
         </Route>
 

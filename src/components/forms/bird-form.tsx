@@ -89,7 +89,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
         title: action === 'create' ? 'Tạo chim mới thành công' : 'Cập nhật chim thành công'
       })
 
-      navigate(`/admin/birds/${data.bird._id}`)
+      navigate(`/manager/birds/${data.bird._id}`)
       window.location.reload()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

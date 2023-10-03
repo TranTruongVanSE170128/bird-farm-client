@@ -6,7 +6,7 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 import { useSearchParams } from 'react-router-dom'
 import Paginate from '@/components/paginate'
 import Spinner from '@/components/ui/spinner'
-import OrderNestCard from '@/components/ui/order-nest-card'
+import OrderNestCard from '@/components/order-nest-card'
 
 const pageSize = 5
 

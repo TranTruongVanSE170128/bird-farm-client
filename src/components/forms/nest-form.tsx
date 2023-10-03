@@ -81,7 +81,7 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
         title: action === 'create' ? 'Tạo chim mới thành công' : 'Cập nhật chim thành công'
       })
 
-      navigate(`/admin/nests/${data.nest._id}`)
+      navigate(`/manager/nests/${data.nest._id}`)
       window.location.reload()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

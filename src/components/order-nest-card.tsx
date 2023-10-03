@@ -1,12 +1,18 @@
 import noImage from '@/assets/no-image.avif'
 import { useState } from 'react'
-import { cn, statusToVi } from '@/lib/utils'
+import { cn, formatPrice, statusToMessage, statusToVi } from '@/lib/utils'
 import { OrderNest, Stage, getSpecie } from '@/lib/types'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import breedIcon from '@/assets/breed.svg'
 import greyBirdIcon from '@/assets/grey-bird.svg'
+import { birdFarmApi } from '@/services/bird-farm-api'
+import { useModalStore } from '@/store/use-modal'
+import { toast } from './ui/use-toast'
+import { Button } from './ui/button'
+import { Shell } from 'lucide-react'
+import { useRatingFormStore } from '@/store/use-rating-form'
 
 type Props = {
   orderNest: OrderNest
@@ -15,20 +21,85 @@ type Props = {
 function OrderNestCard({ orderNest }: Props) {
   const [indexActive, setIndexActive] = useState(orderNest.stages.length ? 0 : -1)
   const [selectedStage, setSelectedStage] = useState<Stage | null>(orderNest?.stages?.[0] || null)
+  const { showModal } = useModalStore()
+  const navigate = useNavigate()
+  const [isReceivingOrder, setIsReceivingOrder] = useState(false)
+  const { showRatingForm } = useRatingFormStore()
+
+  const receiveOrderNest = async (id: string) => {
+    setIsReceivingOrder(true)
+    try {
+      await birdFarmApi.put(`api/order-nests/${id}/receive`)
+      window.location.reload()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const messageError = error.response.data.message
+      setIsReceivingOrder(false)
+      toast({
+        title: 'Không thể nhận hàng',
+        description: messageError || 'Không rõ nguyên nhân',
+        variant: 'destructive'
+      })
+    }
+  }
+
+  const redirectToCheckout = () => {
+    navigate(`/checkout-order-nest?orderNest=${orderNest._id}`)
+  }
+
+  const showModalCancelOrderNest = (id: string) => {
+    showModal({
+      title: 'Bạn có chắc muốn hủy đơn hàng không?',
+      titleAction: 'Hủy đơn hàng',
+      titleCancel: 'Không phải bây giờ',
+      handleAction: async () => {
+        try {
+          await birdFarmApi.put(`api/order-nests/${id}/cancel`)
+          navigate('/orders?tab=canceled')
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+          const messageError = error.response.data.message
+
+          toast({
+            title: 'Không thể hủy đơn hàng',
+            description: messageError || 'Không rõ nguyên nhân',
+            variant: 'destructive'
+          })
+        }
+      }
+    })
+  }
 
   return (
-    <div className='flex flex-col gap-6 rounded-3xl border shadow-xl mb-10 p-10'>
-      <div className='grid grid-cols-2'>
+    <div className='flex flex-col gap-6 rounded-3xl border shadow-xl mb-10 p-10 pt-5'>
+      <div className='flex justify-end'>
+        {orderNest?.cancelMessage ? (
+          <p className='mt-2 text-teal-500'>{orderNest?.cancelMessage}</p>
+        ) : (
+          <p className='mt-2 text-teal-500'>{statusToMessage[orderNest.status]}</p>
+        )}
+
+        <div className='w-[1px] h-[20px] bg-border mx-4 mt-2 ' />
+        <p className='uppercase text-primary mt-2'>{statusToVi[orderNest.status]}</p>
+      </div>
+      <div className='min-w-full h-[1px] bg-border mb-4' />
+      <div className='grid grid-cols-2 gap-12'>
         <div className='col-span-1 flex flex-col gap-2'>
-          <div className='font-medium text-lg'>
-            Trạng thái: <span className='font-normal'>{statusToVi[orderNest.status]}</span>
-          </div>
           <div className='flex gap-4'>
             <div className='font-medium text-lg'>
               Chim non đực: <span className='font-normal'>{orderNest.numberChildPriceMale} con</span>
             </div>
             <div className='font-medium text-lg'>
               Chim non cái: <span className='font-normal'>{orderNest.numberChildPriceFemale} con</span>
+            </div>
+          </div>
+
+          <div className='flex gap-4'>
+            <div className='font-medium text-lg'>
+              Giá chim non đực: <span className='font-normal'>{formatPrice(orderNest.childPriceMale)}/con</span>
+            </div>
+            <div className='font-medium text-lg'>
+              Giá chim non cái: <span className='font-normal'>{formatPrice(orderNest.childPriceFemale)}/con</span>
             </div>
           </div>
 
@@ -59,16 +130,69 @@ function OrderNestCard({ orderNest }: Props) {
               </div>
             </div>
           </Link>
+
+          <div className='flex flex-row items-center gap-3 mt-8'>
+            {orderNest.status === 'processing' && (
+              <>
+                <Button>Liên hệ shop</Button>
+
+                <Button onClick={() => showModalCancelOrderNest(orderNest._id)} variant='outline'>
+                  Hủy đơn hàng
+                </Button>
+              </>
+            )}
+
+            {orderNest.status === 'breeding' && <Button>Liên hệ shop</Button>}
+
+            {orderNest.status === 'wait-for-payment' && (
+              <>
+                <Button onClick={() => redirectToCheckout()}>Thanh toán ngay</Button>
+                <Button variant='outline'>Liên hệ shop</Button>
+              </>
+            )}
+
+            {orderNest.status === 'delivering' && (
+              <>
+                <Button
+                  onClick={() => {
+                    receiveOrderNest(orderNest._id)
+                  }}
+                  disabled={isReceivingOrder}
+                >
+                  Đã nhận hàng {isReceivingOrder && <Shell className='ml-1 animate-spin w-4 h-4' />}
+                </Button>
+                <Button variant='outline'>Liên hệ shop</Button>
+              </>
+            )}
+
+            {orderNest.status === 'success' && !orderNest.rated && (
+              <>
+                <Button onClick={() => showRatingForm({ orderNestId: orderNest._id })} disabled={isReceivingOrder}>
+                  Đánh giá {isReceivingOrder && <Shell className='ml-1 animate-spin w-4 h-4' />}
+                </Button>
+                <Button variant='outline'>Liên hệ shop</Button>
+              </>
+            )}
+
+            {orderNest.status === 'success' && orderNest.rated && (
+              <>
+                <Button>Liên hệ shop</Button>
+                <Button variant='outline' disabled={true} className='border-primary text-primary'>
+                  Đã Đánh Giá
+                </Button>
+              </>
+            )}
+          </div>
         </div>
 
         {selectedStage && (
           <div className='col-span-1 flex flex-col items-center'>
             <img
-              className='aspect-video rounded-xl object-cover w-3/4'
+              className='aspect-video rounded-xl object-cover w-full'
               src={selectedStage.imageUrl}
               alt='Selected Image'
             />
-            <div className='flex flex-col items-center gap-2 mt-2'>{selectedStage.description}</div>
+            <div className='flex flex-col items-center gap-2 mt-2 text-lg'>{selectedStage.description}</div>
           </div>
         )}
 

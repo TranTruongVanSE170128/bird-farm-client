@@ -13,16 +13,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Cart, Products, Voucher } from '@/lib/types'
+import { OrderNest } from '@/lib/types'
 import { toast } from '@/components/ui/use-toast'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { Shell } from 'lucide-react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuthContext } from '@/contexts/auth-provider'
+import { formatPrice } from '@/lib/utils'
 import { loadStripe } from '@stripe/stripe-js'
-import { useCartContext } from '@/contexts/cart-provider'
-import { calculateDiscount, formatPrice } from '@/lib/utils'
-import noImage from '@/assets/no-image.avif'
 
 type Province = {
   code: number
@@ -66,10 +64,10 @@ const formSchema = z.object({
   notice: z.string().trim().optional()
 })
 
-function Checkout() {
+function CheckoutOrderNest() {
   const [searchParams] = useSearchParams()
-  const voucherId = searchParams.get('voucher')
-  const [voucher, setVoucher] = useState<Voucher | null>(null)
+  const orderNestId = searchParams.get('orderNest')
+  const [orderNest, setOrderNest] = useState<OrderNest | null>(null)
 
   const [provinces, setProvinces] = useState<Province[]>([])
   const [districts, setDistricts] = useState<District[]>([])
@@ -81,9 +79,6 @@ function Checkout() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const navigate = useNavigate()
   const { user } = useAuthContext()
-  const [totalMoney, setTotalMoney] = useState(0)
-  const [products, setProducts] = useState<Products>({ birds: [], nests: [] })
-  const { cart, clearCart } = useCartContext()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -100,26 +95,13 @@ function Checkout() {
   })
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const birdsData = birdFarmApi.post('/api/birds/get-by-ids', { birds: cart.birds }).then((res) => res.data.birds)
-      const nestsData = birdFarmApi.post('/api/nests/get-by-ids', { nests: cart.nests }).then((res) => res.data.nests)
-
-      const [birds, nests] = await Promise.all([birdsData, nestsData])
-
-      setProducts({ birds, nests })
+    const fetchOrderNests = async () => {
+      const { data } = await birdFarmApi.get(`/api/order-nests/${orderNestId}`)
+      setOrderNest(data.orderNest || null)
     }
 
-    fetchProducts()
-  }, [cart])
-
-  useEffect(() => {
-    const fetchVouchers = async () => {
-      const { data } = await birdFarmApi.get(`/api/vouchers/${voucherId}`)
-      setVoucher(data.voucher || null)
-    }
-
-    fetchVouchers()
-  }, [voucherId])
+    fetchOrderNests()
+  }, [orderNestId])
 
   useEffect(() => {
     const fetchProvinces = async () => {
@@ -133,20 +115,6 @@ function Checkout() {
 
     fetchProvinces()
   }, [])
-
-  useEffect(() => {
-    let temp = 0
-
-    products.birds.forEach((bird) => {
-      temp += bird.sellPrice
-    })
-
-    products.nests.forEach((nest) => {
-      temp += nest.price
-    })
-
-    setTotalMoney(temp)
-  }, [products])
 
   useEffect(() => {
     const handleProvinceChange = async () => {
@@ -191,23 +159,20 @@ function Checkout() {
     const receiver = [data.firstName, data.lastName].filter(Boolean).join(' ')
     const phone = data.phoneNumber
     const notice = data.notice
-    const cart: Cart = JSON.parse(localStorage.getItem('cart') || String({ birds: [], nests: [] }))
-    const birds = cart.birds
-    const nests = cart.nests
 
     if (data.type === 'cod') {
       setIsSubmitting(true)
       try {
-        await birdFarmApi.post('/api/orders', { address, receiver, phone, birds, nests, notice })
+        await birdFarmApi.post(`/api/order-nests/${orderNest?._id}/payment-rest`, { address, receiver, phone, notice })
 
-        clearCart()
-        navigate('/orders?tab=processing')
+        navigate('/your-nest')
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         const messageError = error.response.data.message
         toast({
           variant: 'destructive',
-          title: messageError || 'Không rõ nguyễn nhân'
+          description: messageError || 'Không rõ nguyễn nhân',
+          title: 'Không thể thanh toán'
         })
         setIsSubmitting(false)
       }
@@ -215,19 +180,16 @@ function Checkout() {
       try {
         setIsSubmitting(true)
         const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY)
-
-        const { data: session } = await birdFarmApi.post('/api/stripe/create-checkout-session', {
-          products: cart,
+        const { data: session } = await birdFarmApi.post('/api/stripe/create-payment-rest-session', {
+          orderNestId: orderNest?._id,
           receiver,
           phone,
           address,
           notice
         })
-
         const result = await stripe?.redirectToCheckout({
           sessionId: session.id
         })
-
         if (result?.error) {
           console.log(result.error)
         }
@@ -236,7 +198,8 @@ function Checkout() {
         const messageError = error.response.data.message
         toast({
           variant: 'destructive',
-          title: messageError || 'Không rõ nguyễn nhân'
+          description: messageError || 'Không rõ nguyễn nhân',
+          title: 'Không thể thanh toán'
         })
         setIsSubmitting(false)
       }
@@ -247,17 +210,12 @@ function Checkout() {
     <main>
       <Container>
         <section className='my-7 px-5'>
-          <div className='flex justify-center gap-2 '>
-            <span className='uppercase text-2xl  text-gray-500 '>Giỏ HÀNG </span>
-            <span className='text-2xl '>{'>'}</span>
-            <span className='uppercase text-2xl '>Chi tiết thanh toán</span>
-          </div>
-          <div className='flex flex-col mt-8 md:flex-row md:justify-between'>
+          <div className='flex flex-col mt-8 md:flex-row md:justify-between gap-12'>
             <div className='basis-3/4 md:w-3/5'>
               <p className='uppercase text-2xl font-bold'>thông tin thanh toán</p>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-                  <div className='flex justify-between mt-5 mr-12'>
+                  <div className='flex justify-between mt-5'>
                     <FormField
                       control={form.control}
                       name='firstName'
@@ -290,7 +248,7 @@ function Checkout() {
                       control={form.control}
                       name='phoneNumber'
                       render={({ field }) => (
-                        <FormItem className='mr-12'>
+                        <FormItem className=''>
                           <FormLabel>Số điện thoại*</FormLabel>
                           <FormControl>
                             <Input {...field} />
@@ -300,7 +258,7 @@ function Checkout() {
                       )}
                     />
                   </div>
-                  <div className='mt-5 flex justify-between mr-12'>
+                  <div className='mt-5 flex justify-between'>
                     <FormField
                       control={form.control}
                       name='province'
@@ -405,7 +363,7 @@ function Checkout() {
                       )}
                     />
                   </div>
-                  <div className='mt-5 mr-12'>
+                  <div className='mt-5'>
                     <FormField
                       control={form.control}
                       name='address'
@@ -420,7 +378,7 @@ function Checkout() {
                       )}
                     />
                   </div>
-                  <div className='mt-5 mr-12'>
+                  <div className='mt-5'>
                     <p className='uppercase font-bold text-[20px]'>Thông tin bổ sung</p>
                     <div className='w-[220px] h-[1px] border'></div>
 
@@ -457,30 +415,35 @@ function Checkout() {
                                 defaultValue={field.value}
                                 className='flex flex-col space-y-1'
                               >
-                                <FormItem className='flex items-center space-x-3 space-y-0 border py-10 px-5 rounded-md mr-12 '>
+                                <FormItem className='flex items-center space-y-0 border pl-4 rounded-md '>
                                   <FormControl>
-                                    <RadioGroupItem value='cod' id='cod' />
+                                    <RadioGroupItem value='cod' />
                                   </FormControl>
-                                  <div>
-                                    <img src={Cash} alt='' className='w-8 h-w-8 ml-9' />
-                                  </div>
-                                  <FormLabel className='font-normal'> Thanh toán khi nhận hàng</FormLabel>
+                                  <FormLabel className='font-normal flex items-center gap-4 py-6 cursor-pointer'>
+                                    <div>
+                                      <img src={Cash} alt='' className='w-8 h-w-8 ml-9' />
+                                    </div>
+                                    Thanh toán khi nhận hàng
+                                  </FormLabel>
                                 </FormItem>
-                                <FormItem className='flex items-center space-x-3 space-y-0 border py-10 px-5 rounded-md mr-12'>
+                                <FormItem className='flex items-center space-y-0 border pl-4 rounded-md'>
                                   <FormControl>
-                                    <RadioGroupItem value='online' id='online' />
+                                    <RadioGroupItem value='online' />
                                   </FormControl>
-                                  <div>
-                                    <img src={creditIcon} alt='' className='w-8 h-w-8 ml-9 mb-2' />
-                                  </div>
-                                  <FormLabel className='font-normal'> Thẻ ATM/Thẻ tín dụng (Credit Card)</FormLabel>
+
+                                  <FormLabel className='font-normal flex items-center gap-4 py-6 cursor-pointer'>
+                                    <div>
+                                      <img src={creditIcon} alt='' className='w-8 h-w-8 ml-9 mb-2' />
+                                    </div>
+                                    Thẻ ATM/Thẻ tín dụng (Credit Card)
+                                  </FormLabel>
                                 </FormItem>
                               </RadioGroup>
                             </FormControl>
                           </FormItem>
                         )}
                       />
-                      <div className='mr-12'>
+                      <div className='mt-4'>
                         <Button disabled={isSubmitting} type='submit' className='w-full p-7 text-[20px] font-bold'>
                           Thanh toán{isSubmitting && <Shell className='animate-spin w-4 h-4 ml-1' />}
                         </Button>
@@ -493,57 +456,27 @@ function Checkout() {
             <div className='basis-1/4 md:w-2/5 mt-8 md:mt-0'>
               <p className='text-2xl font-bold uppercase'>Đơn hàng</p>
               <div className='border rounded-md p-3 mt-5'>
-                <p className='uppercase text-gray-500 font-bold'>sản phẩm</p>
-                <ScrollArea className='h-[300px] w-[350px] rounded-md p-4'>
-                  {products.birds?.map((bird) => (
-                    <div key={bird._id} className='flex p-2 items-center gap-3  rounded-lg '>
-                      {!bird?.imageUrls?.length ? (
-                        <img src={noImage} className='aspect-square object-cover w-20 rounded-lg' />
-                      ) : (
-                        <div className='flex gap-2 flex-wrap'>
-                          <img src={bird.imageUrls[0]} className='aspect-square object-cover w-20 rounded-lg' />
-                        </div>
-                      )}
-                      <div>
-                        <p className='line-clamp-1 text-sm'>{bird.name}</p>
-                        <p className='text-red-600'>{formatPrice(bird.sellPrice)}</p>
-                      </div>
-                    </div>
-                  ))}
-                  {products.nests?.map((nest) => (
-                    <div key={nest._id} className='flex p-2 items-center gap-3  rounded-lg '>
-                      {!nest?.imageUrls?.length ? (
-                        <img src={noImage} className='aspect-square object-cover w-20 rounded-lg' />
-                      ) : (
-                        <div className='flex gap-2 flex-wrap'>
-                          <img src={nest.imageUrls[0]} className='aspect-square object-cover w-20 rounded-lg' />
-                        </div>
-                      )}
-                      <div>
-                        <p className='line-clamp-1 text-sm'>{nest.name}</p>
-                        <p className='text-red-600'>{formatPrice(nest.price)}</p>
-                      </div>
-                    </div>
-                  ))}
-                </ScrollArea>
+                <div className='font-bold'>
+                  Nội dung: <span className='font-medium'>Thanh toán phần còn lại của đơn đặt tổ chim non</span>
+                </div>
                 <div className='w-full h-[1px] border'></div>
                 <div className='flex m-auto mt-5'>
                   <span className='w-1/2 text-start font-bold'>Tạm tính</span>
-                  <span className='w-1/2 text-end font-bold'>{formatPrice(totalMoney)}</span>
+                  <span className='w-1/2 text-end font-bold'>{formatPrice(orderNest?.totalMoney || 0)}</span>
                 </div>
+
                 <div className='flex m-auto mt-5'>
-                  <span className='w-1/2 text-start font-bold'>Giảm giá</span>
-                  <span className='w-1/2 text-end font-bold'>
-                    {voucher ? formatPrice(calculateDiscount(totalMoney, voucher)) : formatPrice(0)}
+                  <span className='w-1/2 text-start font-bold'>Đã đặt cọc</span>
+                  <span className='w-1/2 text-end font-bold text-primary'>
+                    -{formatPrice(orderNest?.childPriceMale || 0)}
                   </span>
                 </div>
+
                 <div className='border mt-4 m-auto'></div>
                 <div className='flex m-auto mt-5'>
                   <span className='w-1/2 text-start font-bold'>Tổng</span>
                   <span className='w-1/2 text-end font-bold'>
-                    {voucher
-                      ? formatPrice(totalMoney - calculateDiscount(totalMoney, voucher))
-                      : formatPrice(totalMoney)}
+                    {formatPrice((orderNest?.totalMoney || 0) - (orderNest?.childPriceMale || 0))}
                   </span>
                 </div>
               </div>
@@ -555,4 +488,4 @@ function Checkout() {
   )
 }
 
-export default Checkout
+export default CheckoutOrderNest

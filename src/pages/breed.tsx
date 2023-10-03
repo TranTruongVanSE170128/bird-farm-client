@@ -144,8 +144,8 @@ function Pairing() {
             <AlertDialogHeader>
               <AlertDialogTitle>Đạt cọc cho tổ chim non</AlertDialogTitle>
               <AlertDialogDescription>
-                Để có thể đặt tổ chim non, bạn cần đặt cọc trước một khoảng tiền bằng với giá tiền của 1 chim non cái ={' '}
-                {formatPrice(priceYoungBird)}
+                Để có thể đặt tổ chim non, bạn cần đặt cọc trước một khoảng tiền bằng với giá tiền của 1 chim non đực ={' '}
+                {formatPrice(priceYoungBird * 2)}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

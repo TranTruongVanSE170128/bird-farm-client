@@ -70,6 +70,8 @@ export type OrderNest = {
   status: OrderNestStatus
   specie: Specie
   stages: Stage[]
+  totalMoney?: number
+  cancelMessage?: string
 }
 
 export type Rating = {
@@ -135,7 +137,7 @@ export type Role = 'customer' | 'staff' | 'manager' | 'admin' | 'guest'
 
 export type OrderStatus = 'processing' | 'delivering' | 'success' | 'canceled'
 
-export type OrderNestStatus = 'processing' | 'delivering' | 'success' | 'canceled' | 'breeding'
+export type OrderNestStatus = 'processing' | 'delivering' | 'success' | 'canceled' | 'breeding' | 'wait-for-payment'
 
 export type Cart = {
   birds: string[]

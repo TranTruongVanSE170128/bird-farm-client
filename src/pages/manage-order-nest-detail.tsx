@@ -19,6 +19,7 @@ import { cn } from '@/lib/utils'
 import { imageDB } from '@/services/firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { v4 } from 'uuid'
+import paymentIcon from '@/assets/payment.svg'
 
 function ManageOrderNestDetail() {
   const { id } = useParams()
@@ -26,6 +27,8 @@ function ManageOrderNestDetail() {
   const [approvingOrderNest, setApprovingOrderNest] = useState(false)
   const { toast } = useToast()
   const [openAddStageForm, setOpenAddStageForm] = useState(false)
+
+  const [requestingPayment, setRequestingPayment] = useState(false)
 
   const approveOrderNest = async () => {
     try {
@@ -41,6 +44,23 @@ function ManageOrderNestDetail() {
         variant: 'destructive'
       })
       setApprovingOrderNest(false)
+    }
+  }
+
+  const requestPayment = async () => {
+    try {
+      setRequestingPayment(true)
+      await birdFarmApi.put(`/api/order-nests/${id}/request-payment`)
+      window.location.reload()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const msg = error?.response?.data?.message
+      toast({
+        title: 'Yêu cầu thanh toán thất bại',
+        description: msg || 'Không rõ lý do',
+        variant: 'destructive'
+      })
+      setRequestingPayment(false)
     }
   }
 
@@ -79,9 +99,14 @@ function ManageOrderNestDetail() {
       </div>
 
       <div className='flex justify-end gap-4 mt-4'>
-        <Button disabled={approvingOrderNest} onClick={() => {}} className='mb-6 flex items-center gap-1 my-auto'>
+        <Button
+          variant='outline'
+          disabled={approvingOrderNest || requestingPayment}
+          onClick={() => {}}
+          className='mb-6 flex items-center gap-1 my-auto'
+        >
           <span>Hủy đơn hàng</span>
-          <img src={cancel} className='w-5 h-5 filter invert' />
+          <img src={cancel} className='w-5 h-5 dark:filter dark:invert ml-1' />
         </Button>
         {orderNest.status === 'processing' && (
           <Button
@@ -92,6 +117,17 @@ function ManageOrderNestDetail() {
             <span>Chấp nhận đơn hàng</span>
             <img src={approve} className='w-5 h-5 filter invert' />
             {approvingOrderNest && <Shell className='animate-spin w-4 h-4 ml-1' />}
+          </Button>
+        )}
+        {orderNest.status === 'breeding' && (
+          <Button
+            disabled={requestingPayment}
+            onClick={requestPayment}
+            className='mb-6 flex items-center gap-1 my-auto'
+          >
+            <span>Yêu cầu thanh toán</span>
+            <img src={paymentIcon} className='w-5 h-5 filter invert' />
+            {requestingPayment && <Shell className='animate-spin w-4 h-4 ml-1' />}
           </Button>
         )}
       </div>

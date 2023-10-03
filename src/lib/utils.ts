@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { OrderNestStatus, OrderStatus, Voucher } from './types'
+import { OrderNestStatus, Voucher } from './types'
 import moment from 'moment'
 import 'moment/dist/locale/vi'
 
@@ -86,14 +86,17 @@ export const statusToVi: Record<OrderNestStatus, string> = {
   delivering: 'Đang vận chuyển',
   success: 'Hoàn thành',
   canceled: 'Đã hủy',
-  breeding: 'Đang phối giống'
+  breeding: 'Đang phối giống',
+  'wait-for-payment': 'Chờ thanh toán'
 }
 
-export const statusToMessage: Record<OrderStatus, string> = {
+export const statusToMessage: Record<OrderNestStatus, string> = {
   processing: 'Đơn hàng đang được chuẩn bị',
   delivering: 'Đơn hàng đang trên đường đến tay bạn',
   success: 'Đơn hàng đã được giao thành công',
-  canceled: 'Đơn hàng đã bị hủy'
+  canceled: 'Đơn hàng đã bị hủy',
+  breeding: 'Tổ chim đang trong quá trình phát triển',
+  'wait-for-payment': 'Tổ chim đã sẵn sàng vận chuyển, hãy thanh toán phần còn lại'
 }
 
 type Variant = 'warning' | 'info' | 'success' | 'destructive' | 'breed'
@@ -103,7 +106,8 @@ export const statusToVariant: Record<OrderNestStatus, Variant> = {
   delivering: 'info',
   breeding: 'breed',
   success: 'success',
-  canceled: 'destructive'
+  canceled: 'destructive',
+  'wait-for-payment': 'info'
 }
 
 const options: Intl.DateTimeFormatOptions = {

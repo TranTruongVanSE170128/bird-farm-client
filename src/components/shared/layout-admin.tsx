@@ -14,7 +14,7 @@ function LayoutAdmin() {
 
   return (
     <main className='relative'>
-      <TopBar />
+      <TopBar baseUrl='/admin' />
       <div className='flex'>
         <LeftSidebar routes={routes} role='admin' />
         <section className='flex min-h-screen flex-1 flex-col items-center bg-dark-1 px-4 pb-10 pt-28 max-md:pb-32 sm:px-8'>

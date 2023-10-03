@@ -127,7 +127,7 @@ function OrderList() {
 
             const stateButtons: TStateButton[] = []
             if (order.status === 'success' && !order.rated) {
-              stateButtons.push({ title: 'Đánh Giá', handleClick: () => showRatingForm(order._id) })
+              stateButtons.push({ title: 'Đánh Giá', handleClick: () => showRatingForm({ orderId: order._id }) })
             }
 
             if (order.status === 'delivering') {
@@ -149,7 +149,7 @@ function OrderList() {
               stateButtons.push({
                 title: 'Đã Đánh Giá',
                 disabled: true,
-                handleClick: () => showRatingForm(order._id),
+                handleClick: () => showRatingForm({ orderId: order._id }),
                 className: 'border-primary text-primary select-none'
               })
             }

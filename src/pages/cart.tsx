@@ -282,7 +282,7 @@ function Cart() {
                       return
                     }
 
-                    navigate(addSearchParams('/checkout', { voucher: selectedVoucher?._id }))
+                    navigate(addSearchParams('/checkout-order', { voucher: selectedVoucher?._id }))
                   }}
                 >
                   Mua hàng
