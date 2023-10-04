@@ -14,7 +14,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import { cn } from '@/lib/utils'
 import { imageDB } from '@/services/firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
@@ -240,11 +240,13 @@ const AddStageForm = ({ id, setOpenAddStageForm }: AddStageFormProps) => {
             <FormItem className='flex items-center gap-4'>
               <FormLabel className=''>
                 <div className='font-bold mb-4'>Ảnh</div>
-                {!field.value ? (
-                  <img src={noImage} alt='imageUrl' width={240} height={240} className='object-cover rounded-md' />
-                ) : (
-                  <img src={field.value} alt='imageUrl' width={240} height={240} className='rounded-md object-cover' />
-                )}
+                <img
+                  src={field.value || noImage}
+                  alt='imageUrl'
+                  width={240}
+                  height={240}
+                  className='rounded-md object-cover border'
+                />
               </FormLabel>
               <FormControl>
                 <Input

@@ -179,10 +179,10 @@ function BirdComparing() {
             </TableRow>
             <TableRow className='grid grid-cols-12'>
               <TableCell className='border col-span-4 font-medium text-base'>Giá bán/Giá phối giống</TableCell>
-              <TableCell className='border col-span-4'>
+              <TableCell className='border col-span-4 font-medium text-primary text-lg'>
                 {firstBird.type === 'sell' ? formatPrice(firstBird.sellPrice) : formatPrice(firstBird.breedPrice)}
               </TableCell>
-              <TableCell className='border col-span-4'>
+              <TableCell className='border col-span-4 font-medium text-primary text-lg'>
                 {secondBird.type === 'sell' ? formatPrice(secondBird.sellPrice) : formatPrice(secondBird.breedPrice)}
               </TableCell>
             </TableRow>

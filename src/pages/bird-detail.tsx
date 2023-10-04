@@ -1,9 +1,8 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import Ellipce from '@/assets/Ellipse2.png'
 import { useEffect, useRef, useState } from 'react'
 import { Bird, getDad, getMom, getSpecie } from '@/lib/types'
 import Container from '@/components/ui/container'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import { calculateAge, formatPrice } from '@/lib/utils'
 import medalIcon from '@/assets/medal.png'
 import { birdFarmApi } from '@/services/bird-farm-api'
@@ -75,21 +74,12 @@ function BirdDetail() {
         <section className='grid grid-cols-12 gap-8 '>
           <div className='col-span-5'>
             <div>
-              {!bird.imageUrls?.length ? (
-                <img
-                  ref={imageRef}
-                  className='w-full h-full aspect-square object-cover rounded cursor-pointer'
-                  src={noImage}
-                  alt='bird'
-                />
-              ) : (
-                <img
-                  ref={imageRef}
-                  className='w-full h-full aspect-square object-cover rounded cursor-pointer'
-                  src={bird.imageUrls[0]}
-                  alt='bird'
-                />
-              )}
+              <img
+                ref={imageRef}
+                className='w-full h-full aspect-square object-cover rounded cursor-pointer border'
+                src={bird?.imageUrls?.[0] || noImage}
+                alt='bird'
+              />
             </div>
             <div className='grid grid-cols-5 mt-2 gap-2 flex-wrap w-full'>
               {bird.imageUrls?.map((imageUrl) => {
@@ -265,7 +255,7 @@ function BirdDetail() {
           </div>
         </section>
 
-        <div className='text-center flex flex-col gap-3 mt-7 items-center'>
+        {/* <div className='text-center flex flex-col gap-3 mt-7 items-center'>
           <h3 className='text-3xl uppercase font-bold'>gọi ngay cho trang trại</h3>
           <p>Để được tư vấn trực tiếp</p>
           <Button
@@ -274,7 +264,7 @@ function BirdDetail() {
           >
             <img src={Ellipce} alt='' className='w-12 h-w-12' /> Hotline: 033233005
           </Button>
-        </div>
+        </div> */}
 
         <div className='font-medium text-2xl my-4'>Sản phẩm tương tự</div>
 

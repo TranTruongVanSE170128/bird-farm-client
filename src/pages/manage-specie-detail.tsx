@@ -5,7 +5,7 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 import { ArrowLeft, Edit } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import SpecieForm from '@/components/forms/specie-form'
 import Spinner from '@/components/ui/spinner'
 
@@ -65,17 +65,13 @@ function ManageSpecieDetail() {
             Ảnh
           </div>
           <div>
-            {specie?.imageUrl ? (
-              <img
-                src={specie.imageUrl}
-                alt='imageUrl'
-                width={240}
-                height={240}
-                className='rounded-md object-contain'
-              />
-            ) : (
-              <img src={noImage} alt='imageUrl' width={240} height={240} className='object-contain rounded-md' />
-            )}
+            <img
+              src={specie.imageUrl || noImage}
+              alt='imageUrl'
+              width={240}
+              height={240}
+              className='rounded-md object-contain border'
+            />
           </div>
 
           <div className='mt-6 text-xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold text-light-2 mb-3'>

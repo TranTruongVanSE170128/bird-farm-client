@@ -6,7 +6,7 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 import { Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import { addSearchParams, calculateDiscount, formatPrice } from '@/lib/utils'
 import { useToast } from '@/components/ui/use-toast'
 import { useAuthContext } from '@/contexts/auth-provider'
@@ -107,19 +107,11 @@ function Cart() {
                         return (
                           <TableRow key={bird._id}>
                             <TableCell className='font-medium'>
-                              {!bird.imageUrls?.length ? (
-                                <img
-                                  src={noImage}
-                                  alt=''
-                                  className='h-[70px] w-[70px] object-cover rounded-lg mx-auto'
-                                />
-                              ) : (
-                                <img
-                                  src={bird.imageUrls[0]}
-                                  alt=''
-                                  className='h-[70px] w-[70px] object-cover rounded-lg mx-auto'
-                                />
-                              )}
+                              <img
+                                src={bird?.imageUrls?.[0] || noImage}
+                                alt=''
+                                className='h-[70px] w-[70px] object-cover rounded-lg mx-auto border'
+                              />
                             </TableCell>
                             <TableCell>{bird.name}</TableCell>
                             <TableCell className='text-center'>Chim kiểng</TableCell>
@@ -142,19 +134,11 @@ function Cart() {
                         return (
                           <TableRow key={nest._id}>
                             <TableCell className='font-medium'>
-                              {!nest.imageUrls?.length ? (
-                                <img
-                                  src={noImage}
-                                  alt=''
-                                  className='h-[70px] w-[70px] object-cover rounded-lg mx-auto'
-                                />
-                              ) : (
-                                <img
-                                  src={nest.imageUrls[0]}
-                                  alt=''
-                                  className='h-[70px] w-[70px] object-cover rounded-lg mx-auto'
-                                />
-                              )}
+                              <img
+                                src={nest?.imageUrls?.[0] || noImage}
+                                alt=''
+                                className='h-[70px] w-[70px] object-cover rounded-lg mx-auto border'
+                              />
                             </TableCell>
                             <TableCell>{nest.name}</TableCell>
                             <TableCell className='text-center'>Tổ chim non</TableCell>
@@ -238,7 +222,7 @@ function Cart() {
                                     key={voucher._id}
                                     voucher={voucher}
                                   />
-                                  <Button asChild>
+                                  <Button disabled={totalMoney < voucher.conditionPrice} asChild>
                                     <AlertDialogCancel onClick={() => setSelectedVoucher(voucher)}>
                                       Lưu
                                     </AlertDialogCancel>

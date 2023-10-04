@@ -5,7 +5,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { Bird } from '@/lib/types'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -94,7 +94,10 @@ function Pairing() {
       <div className='w-full flex justify-around gap-4 items-center'>
         <div className='w-full flex justify-center flex-col items-center'>
           <Link to={`/birds/${maleBird?._id}`}>
-            <img src={maleBird?.imageUrls?.[0] || noImage} className='w-full aspect-square border max-w-xs' />
+            <img
+              src={maleBird?.imageUrls?.[0] || noImage}
+              className='w-full aspect-square border max-w-xs rounded-lg'
+            />
           </Link>
           <div className='font-bold text-xl mt-6 flex items-center gap-1'>
             {maleBird?.name} <img className='w-8 h-8' src={maleIcon} />
@@ -109,7 +112,10 @@ function Pairing() {
 
         <div className='w-full flex justify-center flex-col items-center'>
           <Link to={`/birds/${femaleBird?._id}`}>
-            <img src={femaleBird?.imageUrls?.[0] || noImage} className='w-full aspect-square border max-w-xs' />
+            <img
+              src={femaleBird?.imageUrls?.[0] || noImage}
+              className='w-full aspect-square border max-w-xs rounded-lg'
+            />
           </Link>
           <div className='font-bold text-xl mt-6 flex items-center gap-1'>
             {femaleBird?.name} <img className='w-8 h-8' src={femaleIcon} />
@@ -142,7 +148,7 @@ function Pairing() {
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Đạt cọc cho tổ chim non</AlertDialogTitle>
+              <AlertDialogTitle>Đặt cọc cho tổ chim non</AlertDialogTitle>
               <AlertDialogDescription>
                 Để có thể đặt tổ chim non, bạn cần đặt cọc trước một khoảng tiền bằng với giá tiền của 1 chim non đực ={' '}
                 {formatPrice(priceYoungBird * 2)}

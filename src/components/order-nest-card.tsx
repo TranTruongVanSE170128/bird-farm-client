@@ -1,4 +1,4 @@
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import { useState } from 'react'
 import { cn, formatPrice, statusToMessage, statusToVi } from '@/lib/utils'
 import { OrderNest, Stage, getSpecie } from '@/lib/types'
@@ -104,7 +104,10 @@ function OrderNestCard({ orderNest }: Props) {
           </div>
 
           <Link to={`/birds/${orderNest.dad._id}`} className='flex group'>
-            <img className='w-24 aspect-square object-cover rounded-md' src={orderNest.dad.imageUrls?.[0] || noImage} />
+            <img
+              className='w-24 aspect-square object-cover border rounded-md'
+              src={orderNest.dad.imageUrls?.[0] || noImage}
+            />
             <div className='flex flex-col justify-around mx-5'>
               <div className='font-bold group-hover:text-primary'>Chim bố: {orderNest.dad.name}</div>
               <div className='flex gap-2'>
@@ -118,7 +121,10 @@ function OrderNestCard({ orderNest }: Props) {
           </Link>
 
           <Link to={`/birds/${orderNest.mom._id}`} className='flex group'>
-            <img className='w-24 aspect-square object-cover rounded-md' src={orderNest.mom.imageUrls?.[0] || noImage} />
+            <img
+              className='w-24 aspect-square object-cover rounded-md border'
+              src={orderNest.mom.imageUrls?.[0] || noImage}
+            />
             <div className='flex flex-col justify-around mx-5'>
               <div className='font-bold group-hover:text-primary'>Chim mẹ: {orderNest.mom.name}</div>
               <div className='flex gap-2'>

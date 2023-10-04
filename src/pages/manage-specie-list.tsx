@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Specie } from '@/lib/types'
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import { buttonVariants } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { addSearchParams, cn } from '@/lib/utils'
@@ -63,7 +63,7 @@ function ManageSpecieList() {
           {species.map((specie) => {
             return (
               <Link
-                to={`/admin/species/${specie._id}`}
+                to={`/manager/species/${specie._id}`}
                 className='outline-0 focus:border-2 hover:border-2 border-primary transition duration-300 rounded-2xl overflow-hidden'
               >
                 <Card className='border-2 rounded-2xl overflow-hidden'>

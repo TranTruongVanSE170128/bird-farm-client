@@ -9,7 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import Spinner from '@/components/ui/spinner'
 import { birdFarmApi } from '@/services/bird-farm-api'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 
 const pageSize = 12
 
@@ -74,11 +74,11 @@ function ManageNestList() {
                 <TableRow key={nest._id}>
                   <TableCell>{getSpecie(nest).name}</TableCell>
                   <TableCell className='text-center'>
-                    {!nest.imageUrls?.length ? (
-                      <img className='aspect-square w-16 object-cover block mx-auto' src={noImage} alt='' />
-                    ) : (
-                      <img className='aspect-square w-16 object-cover block mx-auto' src={nest.imageUrls?.[0]} alt='' />
-                    )}
+                    <img
+                      className='aspect-square w-16 object-cover block mx-auto border rounded-md'
+                      src={nest.imageUrls?.[0] || noImage}
+                      alt=''
+                    />
                   </TableCell>
                   <TableCell>{nest.name}</TableCell>
                   <TableCell>

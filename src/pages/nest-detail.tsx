@@ -1,11 +1,10 @@
 import Container from '@/components/ui/container'
 import { useEffect, useRef, useState } from 'react'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import { formatPrice } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useCartContext } from '@/contexts/cart-provider'
 import { useToast } from '@/components/ui/use-toast'
-import Ellipce from '@/assets/Ellipse2.png'
 import { Nest, getSpecie } from '@/lib/types'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { Link, useParams } from 'react-router-dom'
@@ -64,20 +63,12 @@ function NestDetail() {
         <section className='grid grid-cols-12 gap-8 mt-10'>
           <div className='col-span-5'>
             <div>
-              {!nest.imageUrls?.length ? (
-                <img
-                  className='w-full h-full aspect-square object-cover rounded cursor-pointer'
-                  src={noImage}
-                  alt='nest'
-                />
-              ) : (
-                <img
-                  ref={imageRef}
-                  className='w-full h-full aspect-square object-cover rounded cursor-pointer'
-                  src={nest.imageUrls[0]}
-                  alt='nest'
-                />
-              )}
+              <img
+                ref={imageRef}
+                className='w-full h-full aspect-square object-cover rounded-md border cursor-pointer'
+                src={nest?.imageUrls?.[0] || noImage}
+                alt='nest'
+              />
             </div>
             <div className='grid grid-cols-5 mt-2 gap-2 flex-wrap w-full'>
               {nest.imageUrls?.map((imageUrl) => {
@@ -166,7 +157,7 @@ function NestDetail() {
             </div>
           </div>
         </section>
-        <div className='text-center flex flex-col gap-3 mt-7 items-center'>
+        {/* <div className='text-center flex flex-col gap-3 mt-7 items-center'>
           <h3 className='text-3xl uppercase font-bold'>gọi ngay cho trang trại</h3>
           <p>Để được tư vấn trực tiếp</p>
           <Button
@@ -175,7 +166,7 @@ function NestDetail() {
           >
             <img src={Ellipce} alt='' className='w-12 h-w-12' /> Hotline: 033233005
           </Button>
-        </div>
+        </div> */}
 
         <div className='font-medium text-2xl my-4'>Sản phẩm tương tự</div>
 

@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils'
 import { Link } from 'react-router-dom'
 import { Card, CardContent, CardHeader } from './ui/card'
 import { Specie } from '@/lib/types'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 
 type Props = { className?: string; specie: Specie }
 

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Order, getBirds, getNests, getSpecie } from '@/lib/types'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import Paginate from '@/components/paginate'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import femaleIcon from '@/assets/female.svg'
 import maleIcon from '@/assets/male.svg'
 import birdIcon from '@/assets/bird-color.svg'
@@ -102,7 +102,7 @@ function OrderList() {
   return (
     <main>
       <Container>
-        <div className='w-full h-14 shadow-l border-border border relative mt-6 bg-card'>
+        <div className='w-full h-14 shadow-l relative mt-6 bg-card'>
           <div className='bg-primary h-1 absolute bottom-0 transition-all duration-300' style={barStyle} />
           <ul className='flex justify-around h-full items-center'>
             {tabItems.map((tab) => (
@@ -155,7 +155,7 @@ function OrderList() {
             }
 
             return (
-              <div key={order._id} className='mt-4 rounded px-8 py-4 border bg-card'>
+              <div key={order._id} className='mt-4 rounded px-8 py-4 bg-card'>
                 <div className='flex justify-end'>
                   {order?.cancelMessage ? (
                     <p className='mt-2 text-teal-500'>{order?.cancelMessage}</p>
@@ -166,23 +166,16 @@ function OrderList() {
                   <div className='w-[1px] h-[20px] bg-border mx-4 mt-2 ' />
                   <p className='uppercase text-primary mt-2'>{statusToVi[order.status]}</p>
                 </div>
-                <div className='min-w-full h-[1px] bg-border my-4' />
+                <div className='min-w-full h-[1px] bg-border/50 my-4' />
                 {getBirds(order).map((bird) => (
                   <div key={bird._id} className='flex flex-row justify-between mb-3'>
                     <div className='flex items-center gap-4'>
-                      {!bird.imageUrls?.length ? (
-                        <img
-                          className='w-20 aspect-square object-cover rounded cursor-pointer'
-                          src={noImage}
-                          alt='bird'
-                        />
-                      ) : (
-                        <img
-                          className='w-20 aspect-square object-cover rounded cursor-pointer'
-                          src={bird.imageUrls[0]}
-                          alt='bird'
-                        />
-                      )}
+                      <img
+                        className='w-20 aspect-square object-cover rounded-md border cursor-pointer'
+                        src={bird.imageUrls?.[0] || noImage}
+                        alt='bird'
+                      />
+
                       <div>
                         <p className='font-semibold text-center md:text-left'>{bird.name}</p>
                         <p className='flex items-center'>
@@ -207,19 +200,12 @@ function OrderList() {
                 {getNests(order).map((nest) => (
                   <div key={nest._id} className='flex flex-row justify-between mb-4'>
                     <div className='flex items-center gap-4'>
-                      {!nest.imageUrls?.length ? (
-                        <img
-                          className='w-20 aspect-square object-cover rounded cursor-pointer'
-                          src={noImage}
-                          alt='nest'
-                        />
-                      ) : (
-                        <img
-                          className='w-20 aspect-square object-cover rounded cursor-pointer'
-                          src={nest.imageUrls[0]}
-                          alt='nest'
-                        />
-                      )}
+                      <img
+                        className='w-20 aspect-square object-cover rounded-md border cursor-pointer'
+                        src={nest.imageUrls?.[0] || noImage}
+                        alt='nest'
+                      />
+
                       <div>
                         <p className='font-semibold text-center md:text-left'>{nest.name}</p>
                         <p className='flex items-center'>Loài: {getSpecie(nest).name}</p>
@@ -234,7 +220,7 @@ function OrderList() {
                     </div>
                   </div>
                 ))}
-                <div className='min-w-full h-[1px] bg-border' />
+                <div className='min-w-full h-[1px] bg-border/50' />
                 <div className='flex gap-3 justify-end mt-6 items-center'>
                   <p className='font-medium text-lg mt-1'>Thành tiền:</p>
                   <p className='text-primary text-2xl font-medium'>{formatPrice(order.totalMoney)}</p>

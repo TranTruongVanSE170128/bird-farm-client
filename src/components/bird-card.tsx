@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader } from './ui/card'
 import { cn, formatPrice } from '@/lib/utils'
 import { Button } from './ui/button'
 import { Bird } from '@/lib/types'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import { useToast } from './ui/use-toast'
 import { useCartContext } from '@/contexts/cart-provider'
 import maleIcon from '@/assets/male.svg'
@@ -74,16 +74,19 @@ function BirdCard({ className, bird }: Props) {
           </div>
           <div className='flex items-center gap-2 lg:text-lg'>
             {bird.type === 'sell' ? (
-              `Giá bán: ${formatPrice(bird?.sellPrice || 0)}`
+              <>
+                Giá bán: <span className='text-primary font-medium'>{formatPrice(bird?.sellPrice || 0)}</span>
+              </>
             ) : (
               <>
-                Giá phối giống: {formatPrice(bird?.breedPrice || 0)}
-                {bird.gender === 'male' ? (
-                  <img className='w-6 h-6' src={maleIcon} />
-                ) : (
-                  <img className='w-6 h-6' src={femaleIcon} />
-                )}
+                Giá phối giống: <span className='text-primary font-medium'>{formatPrice(bird?.breedPrice || 0)}</span>
               </>
+            )}
+
+            {bird.gender === 'male' ? (
+              <img className='w-6 h-6' src={maleIcon} />
+            ) : (
+              <img className='w-6 h-6' src={femaleIcon} />
             )}
           </div>
         </CardContent>

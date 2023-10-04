@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import Container from '@/components/ui/container'
 import { cn } from '@/lib/utils'
 import { ArrowDown, Plus, X } from 'lucide-react'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import { useNavigate } from 'react-router-dom'
 import redHeart from '@/assets/red-heart.svg'
 import maleIcon from '@/assets/male.svg'
@@ -11,6 +11,7 @@ import { getSpecie } from '@/lib/types'
 import { useToast } from './use-toast'
 import { useCompareStore } from '@/store/use-compare'
 import { useBreedStore } from '@/store/use-breed'
+import versusIcon from '@/assets/versus.png'
 
 export function ComparatorAndBreeder() {
   const { birds: birdsCompare, activeCompare } = useCompareStore()
@@ -98,14 +99,15 @@ export function Comparator() {
           Thu gọn <ArrowDown />
         </div>
 
+        <img src={versusIcon} className='absolute z-50 top-1/2 -translate-y-1/2 left-1/3 -translate-x-1/2 w-14 h-14' />
+
         <div className='col-span-1 border flex justify-center items-center relative'>
           {firstBird ? (
             <div className='flex flex-col justify-center items-center gap-2'>
-              {!firstBird?.imageUrls?.length ? (
-                <img className='aspect-square w-16 object-cover' src={noImage} />
-              ) : (
-                <img className='aspect-square w-16 object-cover' src={firstBird.imageUrls[0]} />
-              )}
+              <img
+                className='aspect-square w-16 object-cover rounded-md overflow-hidden border'
+                src={firstBird?.imageUrls?.[0] || noImage}
+              />
 
               <div className='line-clamp-2'>{firstBird.name}</div>
 
@@ -132,11 +134,10 @@ export function Comparator() {
         <div className='col-span-1 border flex justify-center items-center relative'>
           {secondBird ? (
             <div className='flex flex-col justify-center items-center gap-2'>
-              {!secondBird?.imageUrls?.length ? (
-                <img className='aspect-square w-16 object-cover' src={noImage} />
-              ) : (
-                <img className='aspect-square w-16 object-cover' src={secondBird.imageUrls[0]} />
-              )}
+              <img
+                className='aspect-square w-16 object-cover rounded-md overflow-hidden border'
+                src={secondBird?.imageUrls?.[0] || noImage}
+              />
               <div className='line-clamp-2'>{secondBird.name}</div>
 
               <Button
@@ -218,11 +219,10 @@ export function Breeder() {
           <img src={maleIcon} className='w-9 h-9 absolute translate-x-6 translate-y-2' />
           {firstBird ? (
             <div className='flex flex-col justify-center items-center gap-2'>
-              {!firstBird?.imageUrls?.length ? (
-                <img className='aspect-square w-16 object-cover' src={noImage} />
-              ) : (
-                <img className='aspect-square w-16 object-cover' src={firstBird.imageUrls[0]} />
-              )}
+              <img
+                className='aspect-square w-16 object-cover rounded-md overflow-hidden border'
+                src={firstBird?.imageUrls?.[0] || noImage}
+              />
               <div className='line-clamp-2'>{firstBird.name}</div>
 
               <Button
@@ -249,11 +249,10 @@ export function Breeder() {
           <img src={femaleIcon} className='w-8 h-8 absolute translate-x-6 translate-y-2 z-20' />
           {secondBird ? (
             <div className='flex flex-col justify-center items-center gap-2'>
-              {!secondBird?.imageUrls?.length ? (
-                <img className='aspect-square w-16 object-cover' src={noImage} />
-              ) : (
-                <img className='aspect-square w-16 object-cover' src={secondBird.imageUrls[0]} />
-              )}
+              <img
+                className='aspect-square w-16 object-cover rounded-md overflow-hidden border'
+                src={secondBird?.imageUrls?.[0] || noImage}
+              />
 
               <div className='line-clamp-2'>{secondBird.name}</div>
 

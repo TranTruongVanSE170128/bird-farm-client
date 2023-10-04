@@ -111,15 +111,11 @@ function Ratings() {
                   <div className='flex justify-between items-center mb-4 mx-10'>
                     <div className='flex items-center'>
                       <div className='w-10 h-10 rounded-full overflow-hidden mr-2'>
-                        {getUser(rating).imageUrl ? (
-                          <img
-                            className='w-full h-full object-cover'
-                            src={getUser(rating).imageUrl}
-                            alt='Profile Image'
-                          />
-                        ) : (
-                          <img className='w-full h-full object-cover' src={avatarAlt} alt='Profile Image' />
-                        )}
+                        <img
+                          className='w-full h-full object-cover'
+                          src={getUser(rating).imageUrl || avatarAlt}
+                          alt='Profile Image'
+                        />
                       </div>
 
                       <div className=''>

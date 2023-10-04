@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Specie } from '@/lib/types'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import { Button } from '../ui/button'
 import { Textarea } from '../ui/textarea'
 import { Shell } from 'lucide-react'
@@ -132,7 +132,13 @@ function SpecieForm({ specie, btnTitle, action, setEdit }: Props) {
                       className='rounded-md object-contain'
                     />
                   ) : (
-                    <img src={noImage} alt='imageUrl' width={240} height={240} className='object-contain rounded-md' />
+                    <img
+                      src={noImage}
+                      alt='imageUrl'
+                      width={240}
+                      height={240}
+                      className='object-contain rounded-md border'
+                    />
                   )}
                 </FormLabel>
                 <FormControl>

@@ -5,7 +5,7 @@ import axios from 'axios'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import Cash from '@/assets/cash.png'
+import cashIcon from '@/assets/cash.png'
 import creditIcon from '@/assets/credit.svg'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
@@ -22,7 +22,7 @@ import { useAuthContext } from '@/contexts/auth-provider'
 import { loadStripe } from '@stripe/stripe-js'
 import { useCartContext } from '@/contexts/cart-provider'
 import { calculateDiscount, formatPrice } from '@/lib/utils'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 
 type Province = {
   code: number
@@ -117,8 +117,9 @@ function CheckoutOrder() {
       const { data } = await birdFarmApi.get(`/api/vouchers/${voucherId}`)
       setVoucher(data.voucher || null)
     }
-
-    fetchVouchers()
+    if (voucherId) {
+      fetchVouchers()
+    }
   }, [voucherId])
 
   useEffect(() => {
@@ -198,7 +199,7 @@ function CheckoutOrder() {
     if (data.type === 'cod') {
       setIsSubmitting(true)
       try {
-        await birdFarmApi.post('/api/orders', { address, receiver, phone, birds, nests, notice })
+        await birdFarmApi.post('/api/orders', { address, receiver, phone, birds, nests, notice, voucher: voucher?._id })
 
         clearCart()
         navigate('/orders?tab=processing')
@@ -463,7 +464,7 @@ function CheckoutOrder() {
                                   </FormControl>
                                   <FormLabel className='font-normal flex items-center gap-4 py-6 cursor-pointer'>
                                     <div>
-                                      <img src={Cash} alt='' className='w-8 h-w-8 ml-9' />
+                                      <img src={cashIcon} alt='' className='w-8 h-w-8 ml-9' />
                                     </div>
                                     Thanh toán khi nhận hàng
                                   </FormLabel>
@@ -502,13 +503,13 @@ function CheckoutOrder() {
                 <ScrollArea className='h-[300px] w-[350px] rounded-md p-4'>
                   {products.birds?.map((bird) => (
                     <div key={bird._id} className='flex p-2 items-center gap-3  rounded-lg '>
-                      {!bird?.imageUrls?.length ? (
-                        <img src={noImage} className='aspect-square object-cover w-20 rounded-lg' />
-                      ) : (
-                        <div className='flex gap-2 flex-wrap'>
-                          <img src={bird.imageUrls[0]} className='aspect-square object-cover w-20 rounded-lg' />
-                        </div>
-                      )}
+                      <div className='flex gap-2 flex-wrap'>
+                        <img
+                          src={bird?.imageUrls?.[0] || noImage}
+                          className='aspect-square object-cover w-20 rounded-lg border'
+                        />
+                      </div>
+
                       <div>
                         <p className='line-clamp-1 text-sm'>{bird.name}</p>
                         <p className='text-red-600'>{formatPrice(bird.sellPrice)}</p>
@@ -517,13 +518,13 @@ function CheckoutOrder() {
                   ))}
                   {products.nests?.map((nest) => (
                     <div key={nest._id} className='flex p-2 items-center gap-3  rounded-lg '>
-                      {!nest?.imageUrls?.length ? (
-                        <img src={noImage} className='aspect-square object-cover w-20 rounded-lg' />
-                      ) : (
-                        <div className='flex gap-2 flex-wrap'>
-                          <img src={nest.imageUrls[0]} className='aspect-square object-cover w-20 rounded-lg' />
-                        </div>
-                      )}
+                      <div className='flex gap-2 flex-wrap'>
+                        <img
+                          src={nest?.imageUrls?.[0] || noImage}
+                          className='border aspect-square object-cover w-20 rounded-lg'
+                        />
+                      </div>
+
                       <div>
                         <p className='line-clamp-1 text-sm'>{nest.name}</p>
                         <p className='text-red-600'>{formatPrice(nest.price)}</p>

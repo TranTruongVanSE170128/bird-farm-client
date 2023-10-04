@@ -8,7 +8,7 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 import { ArrowLeft, Shell } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import cancel from '@/assets/cancel.svg'
 import approve from '@/assets/approve.svg'
 import { useToast } from '@/components/ui/use-toast'
@@ -154,11 +154,11 @@ function ManageOrderDetail() {
             return (
               <TableRow key={bird._id}>
                 <TableCell>
-                  {!bird.imageUrls?.length ? (
-                    <img className='aspect-square w-16 object-cover' src={noImage} alt='' />
-                  ) : (
-                    <img className='aspect-square w-16 object-cover' src={bird.imageUrls?.[0]} alt='' />
-                  )}
+                  <img
+                    className='aspect-square w-16 object-cover border rounded-md'
+                    src={bird.imageUrls?.[0] || noImage}
+                    alt=''
+                  />
                 </TableCell>
                 <TableCell className=''>{bird.name}</TableCell>
                 <TableCell className='text-center'>{formatPrice(bird.sellPrice)}</TableCell>

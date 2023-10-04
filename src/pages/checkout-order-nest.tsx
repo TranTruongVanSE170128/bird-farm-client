@@ -5,7 +5,7 @@ import axios from 'axios'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import Cash from '@/assets/cash.png'
+import cashIcon from '@/assets/cash.png'
 import creditIcon from '@/assets/credit.svg'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
@@ -421,7 +421,7 @@ function CheckoutOrderNest() {
                                   </FormControl>
                                   <FormLabel className='font-normal flex items-center gap-4 py-6 cursor-pointer'>
                                     <div>
-                                      <img src={Cash} alt='' className='w-8 h-w-8 ml-9' />
+                                      <img src={cashIcon} alt='' className='w-8 h-w-8 ml-9' />
                                     </div>
                                     Thanh toán khi nhận hàng
                                   </FormLabel>

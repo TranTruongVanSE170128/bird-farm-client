@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader } from './ui/card'
 import { cn, formatPrice } from '@/lib/utils'
 import { Button } from './ui/button'
 import { Nest } from '@/lib/types'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import { useToast } from './ui/use-toast'
 import { useCartContext } from '@/contexts/cart-provider'
 
@@ -47,9 +47,11 @@ function NestCard({ className, nest }: Props) {
         </CardHeader>
         <CardContent className='flex-col items-start'>
           <div>
-            <p className='font-semibold text-lg lg:text-xl line-clamp-1'>{nest.name}</p>
+            <p className='font-semibold text-lg  line-clamp-1'>{nest.name}</p>
           </div>
-          <div className='flex items-center justify-between lg:text-lg'>{formatPrice(nest.price)}</div>
+          <div className='text-lg'>
+            Giá bán: <span className='font-medium text-primary'>{formatPrice(nest.price)}</span>
+          </div>
         </CardContent>
         <CardFooter className='flex gap-2 flex-col'>
           <div className='flex w-full gap-2'>

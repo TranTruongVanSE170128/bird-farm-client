@@ -57,10 +57,10 @@ function NestList() {
     <main>
       <Container>
         <div className='flex justify-between items-center mt-10 mb-6'>
-          <h1 className='text-3xl font-bold'>Tổ Chim đang bán tại cửa hàng</h1>
+          <h1 className='text-3xl font-bold'>Tổ chim đang bán tại cửa hàng</h1>
         </div>
 
-        <div className='pt-5 font-medium text-2xl'>Bộ Lọc</div>
+        <div className='font-medium text-2xl'>Bộ lọc loài chim</div>
 
         <Select
           value={specie}

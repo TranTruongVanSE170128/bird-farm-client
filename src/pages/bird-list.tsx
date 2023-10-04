@@ -71,7 +71,7 @@ function BirdList() {
           <h1 className='text-3xl font-bold'>Chim đang bán tại cửa hàng</h1>
         </div>
 
-        <div className='pt-5 font-medium text-2xl'>Bộ Lọc</div>
+        <div className='font-medium text-2xl'>Bộ lọc loài chim</div>
 
         <Select
           value={specie}

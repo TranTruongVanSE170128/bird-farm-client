@@ -11,7 +11,7 @@ import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
 import sellIcon from '@/assets/sell.svg'
 import breedIcon from '@/assets/breed.svg'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import { useToast } from '@/components/ui/use-toast'
 import { buttonVariants } from '@/components/ui/button'
 import { birdFarmApi } from '@/services/bird-farm-api'
@@ -86,11 +86,11 @@ function ManageBirdList() {
                   <TableCell>{getSpecie(bird).name}</TableCell>
                   <TableCell>{bird.name}</TableCell>
                   <TableCell className='flex justify-center overflow-hidden'>
-                    {!bird?.imageUrls?.length ? (
-                      <img className='w-12 h-12 aspect-square rounded-md' src={noImage} alt='' />
-                    ) : (
-                      <img className='w-12 h-12 aspect-square rounded-md' src={bird.imageUrls[0]} alt='' />
-                    )}
+                    <img
+                      className='w-12 h-12 aspect-square rounded-md border'
+                      src={bird?.imageUrls?.[0] || noImage}
+                      alt=''
+                    />
                   </TableCell>
                   <TableCell className='text-center'>
                     {bird.type === 'sell' ? formatPrice(bird.sellPrice || 0) : formatPrice(bird.breedPrice || 0)}

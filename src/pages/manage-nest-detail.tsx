@@ -5,7 +5,7 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 import { ArrowLeft, Edit } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import NestForm from '@/components/forms/nest-form'
 import Spinner from '@/components/ui/spinner'
 

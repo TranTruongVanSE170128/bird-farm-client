@@ -5,7 +5,7 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 import { ArrowLeft, Edit } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import noImage from '@/assets/no-image.avif'
+import noImage from '@/assets/no-image.webp'
 import BirdForm from '@/components/forms/bird-form'
 import Spinner from '@/components/ui/spinner'
 import maleIcon from '@/assets/male.svg'
@@ -139,7 +139,7 @@ function ManageBirdDetail() {
           <div className='text-lg font-bold mb-2'>Ảnh</div>
           <div>
             {!bird?.imageUrls?.length ? (
-              <img src={noImage} alt='' width={240} height={240} className='object-contain rounded-md' />
+              <img src={noImage} alt='' width={240} height={240} className='object-contain rounded-md border' />
             ) : (
               <div className='flex gap-2 flex-wrap'>
                 {bird?.imageUrls.map((imageUrl) => {
