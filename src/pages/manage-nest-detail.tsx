@@ -50,7 +50,7 @@ function ManageNestDetail() {
               <Edit className='w-5 h-5' />
             </Button>
           )}
-          <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/nests'>
+          <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/manager/nests'>
             <span>Quay lại</span>
             <ArrowLeft className='w-5 h-5' />
           </Link>
@@ -71,7 +71,7 @@ function ManageNestDetail() {
             <div className='flex items-center gap-2 text-lg mb-4'>
               <div className='font-bold'>Bố:</div>{' '}
               {nest.dad ? (
-                <Link className='hover:underline hover:text-primary' to={`/admin/birds/${nest.dad._id}`}>
+                <Link className='hover:underline hover:text-primary' to={`/manager/birds/${nest.dad._id}`}>
                   {nest.dad.name}
                 </Link>
               ) : (
@@ -82,7 +82,7 @@ function ManageNestDetail() {
             <div className='flex items-center gap-2 text-lg mb-4'>
               <div className='font-bold'>Mẹ:</div>{' '}
               {nest.mom?._id ? (
-                <Link className='hover:underline hover:text-primary' to={`/admin/birds/${nest.mom._id}`}>
+                <Link className='hover:underline hover:text-primary' to={`/manager/birds/${nest.mom._id}`}>
                   {nest.mom.name}
                 </Link>
               ) : (

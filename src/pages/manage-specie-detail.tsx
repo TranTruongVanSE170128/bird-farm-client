@@ -50,7 +50,7 @@ function ManageSpecieDetail() {
               <Edit className='w-5 h-5' />
             </Button>
           )}
-          <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/species'>
+          <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/manager/species'>
             <span>Quay lại</span>
             <ArrowLeft className='w-5 h-5' />
           </Link>

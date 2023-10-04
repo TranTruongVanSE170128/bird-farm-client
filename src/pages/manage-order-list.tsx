@@ -101,7 +101,7 @@ function ManageOrderList() {
       {!!totalPages && (
         <Paginate
           className='mt-8'
-          path={`/admin/orders`}
+          path={`/staff/orders`}
           pageSize={pageSize}
           pageNumber={pageNumber}
           totalPages={totalPages}

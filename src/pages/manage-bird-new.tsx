@@ -9,7 +9,7 @@ function ManageBirdNew() {
     <div>
       <div className='flex items-center justify-between mb-6'>
         <div className='text-3xl font-bold'>Tạo chim mới</div>
-        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/birds'>
+        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/manager/birds'>
           <span>Quay lại</span>
           <ArrowLeft className='w-5 h-5' />
         </Link>

@@ -54,7 +54,7 @@ function ManageBirdDetail() {
               <Edit className='w-5 h-5' />
             </Button>
           )}
-          <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/birds'>
+          <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/manager/birds'>
             <span>Quay lại</span>
             <ArrowLeft className='w-5 h-5' />
           </Link>
@@ -112,7 +112,7 @@ function ManageBirdDetail() {
             <div className='flex items-center gap-2 text-lg mb-4'>
               <div className='font-bold'>Bố:</div>{' '}
               {getDad(bird)?._id ? (
-                <Link className='hover:underline hover:text-primary' to={`/admin/birds/${getDad(bird)._id}`}>
+                <Link className='hover:underline hover:text-primary' to={`/manager/birds/${getDad(bird)._id}`}>
                   {getDad(bird).name}
                 </Link>
               ) : (
@@ -123,7 +123,7 @@ function ManageBirdDetail() {
             <div className='flex items-center gap-2 text-lg mb-4'>
               <div className='font-bold'>Mẹ:</div>{' '}
               {getMom(bird)?._id ? (
-                <Link className='hover:underline hover:text-primary' to={`/admin/birds/${getMom(bird)._id}`}>
+                <Link className='hover:underline hover:text-primary' to={`/manager/birds/${getMom(bird)._id}`}>
                   {getMom(bird).name}
                 </Link>
               ) : (

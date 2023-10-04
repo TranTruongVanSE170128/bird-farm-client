@@ -105,7 +105,7 @@ function NestDetail() {
               <div className='flex items-center gap-2 text-lg'>
                 <div className='font-medium'>Chim Bố:</div>{' '}
                 {nest.dad ? (
-                  <Link className='hover:underline hover:text-primary' to={`/admin/birds/${nest.dad._id}`}>
+                  <Link className='hover:underline hover:text-primary' to={`/birds/${nest.dad._id}`}>
                     {nest.dad.name}
                   </Link>
                 ) : (
@@ -116,7 +116,7 @@ function NestDetail() {
               <div className='flex items-center gap-2 text-lg'>
                 <div className='font-medium'>Chim Mẹ:</div>{' '}
                 {nest.mom?._id ? (
-                  <Link className='hover:underline hover:text-primary' to={`/admin/birds/${nest.mom._id}`}>
+                  <Link className='hover:underline hover:text-primary' to={`/birds/${nest.mom._id}`}>
                     {nest.mom.name}
                   </Link>
                 ) : (

@@ -58,7 +58,7 @@ function ManageBirdList() {
     <div>
       <div className='flex items-center justify-between mb-6'>
         <div className='text-3xl font-bold'>Danh sách chim</div>
-        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/birds/new'>
+        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/manager/birds/new'>
           <span>Tạo Chim</span>
           <Plus className='w-5 h-5' />
         </Link>
@@ -117,7 +117,7 @@ function ManageBirdList() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className='bg-background border border-border'>
                         <DropdownMenuItem asChild className='cursor-pointer py-2 px-4'>
-                          <Link to={`/admin/birds/${bird._id}`}>Chi Tiết</Link>
+                          <Link to={`/manager/birds/${bird._id}`}>Chi Tiết</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className='cursor-pointer py-2 px-4'>Bày Bán</DropdownMenuItem>
                         <DropdownMenuItem className='cursor-pointer py-2 px-4'>Ngừng Bán</DropdownMenuItem>
@@ -134,7 +134,7 @@ function ManageBirdList() {
       {!!totalPages && (
         <Paginate
           className='mt-8'
-          path={`/admin/birds?searchQuery=${searchQuery || ''}`}
+          path={`/manager/birds?searchQuery=${searchQuery || ''}`}
           pageSize={pageSize}
           pageNumber={pageNumber}
           totalPages={totalPages}

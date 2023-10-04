@@ -44,7 +44,7 @@ function ManageVoucherList() {
     <div>
       <div className='flex items-center justify-between mb-6'>
         <div className='text-3xl font-bold'>Danh sách voucher</div>
-        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/species/new'>
+        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/staff/vouchers/new'>
           <span>Tạo Voucher</span>
           <Plus className='w-5 h-5' />
         </Link>
@@ -59,7 +59,7 @@ function ManageVoucherList() {
       {!!totalPages && (
         <Paginate
           className='mt-8'
-          path={`/admin/vouchers`}
+          path={`/staff/vouchers`}
           pageSize={pageSize}
           pageNumber={pageNumber}
           totalPages={totalPages}

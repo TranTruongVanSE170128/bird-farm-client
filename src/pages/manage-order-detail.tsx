@@ -63,7 +63,7 @@ function ManageOrderDetail() {
 
         <div className='flex gap-2'>
           <Button disabled={approvingOrder} asChild>
-            <Link className='mb-6 flex items-center gap-1 my-auto' to='/admin/orders'>
+            <Link className='mb-6 flex items-center gap-1 my-auto' to='/staff/orders'>
               <span>Quay lại</span>
               <ArrowLeft className='w-5 h-5' />
             </Link>

@@ -47,7 +47,7 @@ function ManageNestList() {
     <div>
       <div className='flex items-center justify-between mb-6'>
         <div className='text-3xl font-bold'>Danh sách tổ chim</div>
-        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/nests/new'>
+        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/manager/nests/new'>
           <span>Tạo Tổ Chim</span>
           <Plus className='w-5 h-5' />
         </Link>
@@ -83,7 +83,7 @@ function ManageNestList() {
                   <TableCell>{nest.name}</TableCell>
                   <TableCell>
                     {nest.dad ? (
-                      <Link className='hover:underline hover:text-primary' to={`/admin/birds/${nest.dad._id}`}>
+                      <Link className='hover:underline hover:text-primary' to={`/manager/birds/${nest.dad._id}`}>
                         {nest.dad.name}
                       </Link>
                     ) : (
@@ -92,7 +92,7 @@ function ManageNestList() {
                   </TableCell>
                   <TableCell>
                     {nest.mom ? (
-                      <Link className='hover:underline hover:text-primary' to={`/admin/birds/${nest.mom._id}`}>
+                      <Link className='hover:underline hover:text-primary' to={`/manager/birds/${nest.mom._id}`}>
                         {nest.mom.name}
                       </Link>
                     ) : (
@@ -108,7 +108,7 @@ function ManageNestList() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className='bg-background border border-border'>
                         <DropdownMenuItem asChild className='cursor-pointer py-2 px-4'>
-                          <Link to={`/admin/nests/${nest._id}`}>Chi Tiết</Link>
+                          <Link to={`/manager/nests/${nest._id}`}>Chi Tiết</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className='cursor-pointer py-2 px-4'>Bày Bán</DropdownMenuItem>
                         <DropdownMenuItem className='cursor-pointer py-2 px-4'>Ngừng Bán</DropdownMenuItem>
@@ -125,7 +125,7 @@ function ManageNestList() {
       {!!totalPages && (
         <Paginate
           className='mt-8'
-          path={`/admin/nests?searchQuery=${searchQuery}`}
+          path={`/manager/nests?searchQuery=${searchQuery}`}
           pageSize={pageSize}
           pageNumber={pageNumber}
           totalPages={totalPages}

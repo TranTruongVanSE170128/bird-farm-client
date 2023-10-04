@@ -46,7 +46,7 @@ function ManageSpecieList() {
     <main>
       <div className='flex items-center justify-between mb-6'>
         <div className='text-3xl font-bold'>Danh sách loài</div>
-        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/species/new'>
+        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/manager/species/new'>
           <span>Tạo Loài</span>
           <Plus className='w-5 h-5' />
         </Link>
@@ -87,7 +87,7 @@ function ManageSpecieList() {
       {!!totalPages && (
         <Paginate
           className='mt-8'
-          path={`/admin/species?searchQuery=${searchQuery}`}
+          path={`/manager/species?searchQuery=${searchQuery}`}
           pageSize={pageSize}
           pageNumber={pageNumber}
           totalPages={totalPages}

@@ -11,7 +11,7 @@ function ManageSpecieNew() {
     <main>
       <div className='flex items-center justify-between mb-6'>
         <div className='text-3xl font-bold'>Tạo loài mới</div>
-        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/admin/species'>
+        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/manager/species'>
           <span>Quay lại</span>
           <ArrowLeft className='w-5 h-5' />
         </Link>
