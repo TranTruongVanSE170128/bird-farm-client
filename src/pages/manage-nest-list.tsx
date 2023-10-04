@@ -99,7 +99,7 @@ function ManageNestList() {
                       'Không có thông tin'
                     )}
                   </TableCell>
-                  <TableCell className='text-center'>{formatPrice(nest.price)}</TableCell>
+                  <TableCell className='text-center text-primary font-medium'>{formatPrice(nest.price)}</TableCell>
                   {/* <TableCell className='text-center'>Đã Bán</TableCell> */}
                   <TableCell className='text-center'>
                     <DropdownMenu>

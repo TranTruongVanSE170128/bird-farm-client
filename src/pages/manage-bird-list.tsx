@@ -70,9 +70,9 @@ function ManageBirdList() {
             <TableHead>Loài</TableHead>
             <TableHead>Tên</TableHead>
             <TableHead className='text-center'>Ảnh</TableHead>
+            <TableHead className='text-center'>Loại Chim</TableHead>
             <TableHead className='text-center'>Giá bán/Giá phối giống</TableHead>
             {/* <TableHead className='text-center'>Đã Bán</TableHead> */}
-            <TableHead className='text-center'>Loại Chim</TableHead>
             <TableHead className='text-center'>Giới Tính</TableHead>
             <TableHead className='text-end'></TableHead>
           </TableRow>
@@ -92,22 +92,35 @@ function ManageBirdList() {
                       alt=''
                     />
                   </TableCell>
-                  <TableCell className='text-center'>
+                  <TableCell>
+                    {bird.type === 'sell' ? (
+                      <div className='flex items-center gap-1 justify-center'>
+                        Chim kiểng
+                        <img className='w-6 h-6' src={birdIcon} alt='' />
+                      </div>
+                    ) : (
+                      <div className='flex items-center gap-1 justify-center'>
+                        Chim phối giống
+                        <img className='w-6 h-6' src={breedIcon} alt='' />
+                      </div>
+                    )}
+                  </TableCell>
+                  <TableCell className='text-center text-primary font-medium'>
                     {bird.type === 'sell' ? formatPrice(bird.sellPrice || 0) : formatPrice(bird.breedPrice || 0)}
                   </TableCell>
                   {/* <TableCell className='text-center'>Đã Bán</TableCell> */}
-                  <TableCell>
-                    {bird.type === 'sell' ? (
-                      <img className='w-9 h-9 block mx-auto' src={birdIcon} alt='chim kiểng' />
-                    ) : (
-                      <img className='w-8 h-8 block mx-auto' src={breedIcon} alt='chim phối giống' />
-                    )}
-                  </TableCell>
+
                   <TableCell>
                     {bird.gender === 'male' ? (
-                      <img className='w-9 h-9 block mx-auto' src={maleIcon} alt='đực' />
+                      <div className='flex items-center justify-center gap-1'>
+                        Đực
+                        <img className='w-6 h-6' src={maleIcon} alt='' />
+                      </div>
                     ) : (
-                      <img className='w-8 h-8 block mx-auto' src={femaleIcon} alt='cái' />
+                      <div className='flex items-center justify-center gap-1'>
+                        Cái
+                        <img className='w-6 h-6' src={femaleIcon} alt='' />
+                      </div>
                     )}
                   </TableCell>
                   <TableCell className='text-center'>

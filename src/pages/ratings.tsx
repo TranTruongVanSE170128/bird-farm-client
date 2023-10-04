@@ -10,6 +10,7 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 import moment from 'moment'
 import Spinner from '@/components/ui/spinner'
 import starFillIcon from '@/assets/star-fill.svg'
+import greyBirdIcon from '@/assets/grey-bird.svg'
 
 const pageSize = 10
 const buttons = [
@@ -63,7 +64,7 @@ function Ratings() {
       <Container>
         <h1 className=' text-3xl my-12 font-semibold text-center'>Đánh giá và Nhận xét</h1>
 
-        <div className='flex justify-start items-center border rounded-sm mb-4 p-4'>
+        <div className='flex justify-start items-center bg-muted rounded-sm mb-4 p-4'>
           <div className='mx-10'>
             <span className='font-medium text-4xl mx-4'>{averageRatings?.toFixed(1) || 0}</span>
             <span className='font-medium text-2xl'>/ 5</span>
@@ -103,10 +104,18 @@ function Ratings() {
 
         {isLoadingRatings && <Spinner />}
 
+        {!isLoadingRatings && !ratings.length && (
+          <div className='flex justify-center items-center w-full h-[400px] bg-accent mt-4'>
+            <div className='col-span-1 flex flex-col justify-center items-center text-lg font-medium mt-12'>
+              Chưa có đánh giá nào <img src={greyBirdIcon} className='w-24 h-24 mt-4' />
+            </div>
+          </div>
+        )}
+
         {!isLoadingRatings &&
           ratings.map((rating) => {
             return (
-              <div className='flex justify-center border mb-4'>
+              <div className='flex justify-center bg-muted mb-4'>
                 <div className='p-4 cursor-pointer w-full '>
                   <div className='flex justify-between items-center mb-4 mx-10'>
                     <div className='flex items-center'>

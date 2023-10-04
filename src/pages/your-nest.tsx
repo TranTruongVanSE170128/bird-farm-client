@@ -7,6 +7,7 @@ import { useSearchParams } from 'react-router-dom'
 import Paginate from '@/components/paginate'
 import Spinner from '@/components/ui/spinner'
 import OrderNestCard from '@/components/order-nest-card'
+import greyBirdIcon from '@/assets/grey-bird.svg'
 
 const pageSize = 5
 
@@ -37,6 +38,14 @@ function YourNest() {
             <div className='font-bold uppercase my-5 text-2xl'>Theo dõi quá trình phát triển của tổ chim của bạn</div>
 
             {isLoadingOrderNests && <Spinner className='mt-8' />}
+
+            {!isLoadingOrderNests && !orderNests.length && (
+              <div className='flex justify-center items-center w-full h-[400px] bg-accent mt-4'>
+                <div className='col-span-1 flex flex-col justify-center items-center text-lg font-medium mt-12'>
+                  Chưa có tổ chim nào <img src={greyBirdIcon} className='w-24 h-24 mt-4' />
+                </div>
+              </div>
+            )}
 
             {!isLoadingOrderNests && orderNests?.map((orderNest) => <OrderNestCard orderNest={orderNest} />)}
           </div>

@@ -15,6 +15,7 @@ import Spinner from '@/components/ui/spinner'
 import { useToast } from '@/components/ui/use-toast'
 import { useModalStore } from '@/store/use-modal'
 import { useRatingFormStore } from '@/store/use-rating-form'
+import greyBirdIcon from '@/assets/grey-bird.svg'
 
 const tabItems = [
   { label: 'Tất cả', value: 'all' },
@@ -102,7 +103,7 @@ function OrderList() {
   return (
     <main>
       <Container>
-        <div className='w-full h-14 shadow-l relative mt-6 bg-card'>
+        <div className='w-full h-14 shadow-l relative mt-6 bg-muted'>
           <div className='bg-primary h-1 absolute bottom-0 transition-all duration-300' style={barStyle} />
           <ul className='flex justify-around h-full items-center'>
             {tabItems.map((tab) => (
@@ -110,7 +111,7 @@ function OrderList() {
                 key={tab.value}
                 className={cn(
                   'cursor-pointer hover:text-primary w-full h-full flex justify-center items-center',
-                  activeTab === tab.value ? 'text-primary' : 'text-gray-600'
+                  activeTab === tab.value ? 'text-primary' : 'text-muted-foreground'
                 )}
                 onClick={() => navigate(`/orders?tab=${tab.value}`)}
               >
@@ -120,6 +121,14 @@ function OrderList() {
           </ul>
         </div>
         {isLoadingOrders && <Spinner className='mt-12' />}
+
+        {!isLoadingOrders && !orders.length && (
+          <div className='flex justify-center items-center w-full h-[400px] bg-accent mt-4'>
+            <div className='col-span-1 flex flex-col justify-center items-center text-lg font-medium mt-12'>
+              Chưa có đơn hàng nào <img src={greyBirdIcon} className='w-24 h-24 mt-4' />
+            </div>
+          </div>
+        )}
 
         {!isLoadingOrders &&
           orders?.map((order) => {
@@ -155,7 +164,7 @@ function OrderList() {
             }
 
             return (
-              <div key={order._id} className='mt-4 rounded px-8 py-4 bg-card'>
+              <div key={order._id} className='mt-4 rounded px-8 py-4 bg-muted'>
                 <div className='flex justify-end'>
                   {order?.cancelMessage ? (
                     <p className='mt-2 text-teal-500'>{order?.cancelMessage}</p>

@@ -160,7 +160,7 @@ function SpecieForm({ specie, btnTitle, action, setEdit }: Props) {
             name='description'
             render={({ field }) => (
               <FormItem className='flex w-full flex-col gap-3'>
-                <FormLabel className='font-bold text-light-2'>Mô tả (html)</FormLabel>
+                <FormLabel className='font-bold text-light-2'>Mô tả</FormLabel>
                 <FormControl>
                   <Textarea
                     // onChange={(e) => handleDescription(e, field.onChange)}
