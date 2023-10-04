@@ -3,13 +3,13 @@ import Spinner from '@/components/ui/spinner'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { OrderNest, getUser } from '@/lib/types'
 import { addSearchParams, formatDate, statusToVariant, statusToVi } from '@/lib/utils'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
 import { MoreHorizontal } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useToast } from '@/components/ui/use-toast'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 
 const pageSize = 12
 
@@ -90,18 +90,11 @@ function ManageOrderNestList() {
                     <Badge variant={statusToVariant[orderNest.status]}>{statusToVi[orderNest.status]}</Badge>
                   </TableCell>
                   <TableCell className='text-center'>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
+                    <Button size='icon' asChild variant='ghost'>
+                      <Link to={`/staff/order-nests/${orderNest._id}`}>
                         <MoreHorizontal className='cursor-pointer' />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className='bg-background borderNest borderNest-borderNest'>
-                        <DropdownMenuItem asChild className='cursor-pointer py-2 px-4'>
-                          <Link to={`/staff/order-nests/${orderNest._id}`}>Chi Tiết</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className='cursor-pointer py-2 px-4'>Bày Bán</DropdownMenuItem>
-                        <DropdownMenuItem className='cursor-pointer py-2 px-4'>Ngừng Bán</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                      </Link>
+                    </Button>
                   </TableCell>
                 </TableRow>
               )

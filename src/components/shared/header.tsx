@@ -2,14 +2,14 @@ import Container from '@/components/ui/container'
 import { Link, useNavigate } from 'react-router-dom'
 import { routes } from '@/constants/shopRoutes'
 import { Button } from '@/components/ui/button'
-import { Bell, Menu, Search, ShoppingCart } from 'lucide-react'
+import { Menu, Search, ShoppingCart } from 'lucide-react'
 import ProfileButton from '../profile-button'
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 import logoBlack from '@/assets/logo-black.png'
 import logoWhite from '@/assets/logo-white.png'
 import { useTheme } from '../theme-provider'
 import { useCartContext } from '@/contexts/cart-provider'
-import { useAuthContext } from '@/contexts/auth-provider'
+// import { useAuthContext } from '@/contexts/auth-provider'
 import nestEmpty from '@/assets/nest-empty.svg'
 import { ModeToggle } from '../mode-toggle'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
@@ -24,7 +24,7 @@ type TTypeSearch = 'sell' | 'breed' | 'nest'
 
 function Header() {
   const { theme } = useTheme()
-  const { user } = useAuthContext()
+  // const { user } = useAuthContext()
   const { quantityInCart } = useCartContext()
   const [searchQuery, setSearchQuery] = useState('')
   const [typeSearch, setTypeSearch] = useState<TTypeSearch>('sell')
@@ -148,11 +148,11 @@ function Header() {
                   </Link>
                 </Button>
 
-                {user && (
+                {/* {user && (
                   <Button variant='ghost' size='icon' className='shrink-0' aria-label='Shopping Cart'>
                     <Bell className='h-6 w-6' />
                   </Button>
-                )}
+                )} */}
 
                 <ProfileButton className='shrink-0' />
               </div>

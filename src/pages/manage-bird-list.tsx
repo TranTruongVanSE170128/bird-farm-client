@@ -3,7 +3,6 @@ import Spinner from '@/components/ui/spinner'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Bird, getSpecie } from '@/lib/types'
 import { addSearchParams, cn, formatPrice } from '@/lib/utils'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
 import { MoreHorizontal, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
@@ -13,7 +12,7 @@ import birdIcon from '@/assets/bird-color.svg'
 import breedIcon from '@/assets/breed.svg'
 import noImage from '@/assets/no-image.webp'
 import { useToast } from '@/components/ui/use-toast'
-import { buttonVariants } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { birdFarmApi } from '@/services/bird-farm-api'
 
 const pageSize = 12
@@ -124,18 +123,11 @@ function ManageBirdList() {
                     )}
                   </TableCell>
                   <TableCell className='text-center'>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
+                    <Button size='icon' asChild variant='ghost'>
+                      <Link to={`/manager/birds/${bird._id}`}>
                         <MoreHorizontal className='cursor-pointer' />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className='bg-background border border-border'>
-                        <DropdownMenuItem asChild className='cursor-pointer py-2 px-4'>
-                          <Link to={`/manager/birds/${bird._id}`}>Chi Tiết</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className='cursor-pointer py-2 px-4'>Bày Bán</DropdownMenuItem>
-                        <DropdownMenuItem className='cursor-pointer py-2 px-4'>Ngừng Bán</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                      </Link>
+                    </Button>
                   </TableCell>
                 </TableRow>
               )

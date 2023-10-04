@@ -2,11 +2,10 @@ import Paginate from '@/components/paginate'
 import { Nest, getSpecie } from '@/lib/types'
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { buttonVariants } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { MoreHorizontal, Plus } from 'lucide-react'
 import { addSearchParams, cn, formatPrice } from '@/lib/utils'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import Spinner from '@/components/ui/spinner'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import noImage from '@/assets/no-image.webp'
@@ -102,18 +101,11 @@ function ManageNestList() {
                   <TableCell className='text-center text-primary font-medium'>{formatPrice(nest.price)}</TableCell>
                   {/* <TableCell className='text-center'>Đã Bán</TableCell> */}
                   <TableCell className='text-center'>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
+                    <Button size='icon' asChild variant='ghost'>
+                      <Link to={`/manager/nests/${nest._id}`}>
                         <MoreHorizontal className='cursor-pointer' />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className='bg-background border border-border'>
-                        <DropdownMenuItem asChild className='cursor-pointer py-2 px-4'>
-                          <Link to={`/manager/nests/${nest._id}`}>Chi Tiết</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className='cursor-pointer py-2 px-4'>Bày Bán</DropdownMenuItem>
-                        <DropdownMenuItem className='cursor-pointer py-2 px-4'>Ngừng Bán</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                      </Link>
+                    </Button>
                   </TableCell>
                 </TableRow>
               )
