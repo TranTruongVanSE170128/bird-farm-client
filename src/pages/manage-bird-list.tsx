@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
-import sellIcon from '@/assets/sell.svg'
+import birdIcon from '@/assets/bird-color.svg'
 import breedIcon from '@/assets/breed.svg'
 import noImage from '@/assets/no-image.webp'
 import { useToast } from '@/components/ui/use-toast'
@@ -98,7 +98,7 @@ function ManageBirdList() {
                   {/* <TableCell className='text-center'>Đã Bán</TableCell> */}
                   <TableCell>
                     {bird.type === 'sell' ? (
-                      <img className='w-9 h-9 block mx-auto' src={sellIcon} alt='chim để bán' />
+                      <img className='w-9 h-9 block mx-auto' src={birdIcon} alt='chim kiểng' />
                     ) : (
                       <img className='w-8 h-8 block mx-auto' src={breedIcon} alt='chim phối giống' />
                     )}

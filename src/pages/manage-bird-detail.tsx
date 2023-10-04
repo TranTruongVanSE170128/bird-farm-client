@@ -10,7 +10,7 @@ import BirdForm from '@/components/forms/bird-form'
 import Spinner from '@/components/ui/spinner'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
-import sellIcon from '@/assets/sell.svg'
+import birdIcon from '@/assets/bird-color.svg'
 import breedIcon from '@/assets/breed.svg'
 
 function ManageBirdDetail() {
@@ -91,8 +91,8 @@ function ManageBirdDetail() {
               <div className='font-bold'>Loại chim:</div>{' '}
               {bird.type === 'sell' ? (
                 <div className='flex items-center'>
-                  <img className='w-6 h-6 mr-1' src={sellIcon} alt='' />
-                  Chim để bán
+                  <img className='w-6 h-6 mr-1' src={birdIcon} alt='' />
+                  Chim kiểng
                 </div>
               ) : (
                 <div className='flex items-center'>

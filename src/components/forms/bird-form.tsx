@@ -22,7 +22,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
 import breedIcon from '@/assets/breed.svg'
-import sellIcon from '@/assets/sell.svg'
+import birdIcon from '@/assets/bird-color.svg'
 import { Calendar } from '../ui/calendar'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
@@ -315,8 +315,8 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
                   <SelectContent>
                     <SelectItem value='sell'>
                       <div className='flex items-center'>
-                        <img className='w-6 h-6 mr-1' src={sellIcon} alt='' />
-                        Chim để bán
+                        <img className='w-6 h-6 mr-1' src={birdIcon} alt='' />
+                        Chim kiểng
                       </div>
                     </SelectItem>
                     <SelectItem className='flex items-center' value='breed'>
