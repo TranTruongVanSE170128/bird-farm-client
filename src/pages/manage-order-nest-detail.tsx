@@ -15,13 +15,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import noImage from '@/assets/no-image.webp'
-import { cn } from '@/lib/utils'
+import { cn, statusToVariant, statusToVi } from '@/lib/utils'
 import { imageDB } from '@/services/firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { v4 } from 'uuid'
 import paymentIcon from '@/assets/payment.svg'
 import OrderNestCard from '@/components/order-nest-card'
 import birdMaskIcon from '@/assets/bird-mask.svg'
+import { Badge } from '@/components/ui/badge'
 
 function ManageOrderNestDetail() {
   const { id } = useParams()
@@ -86,7 +87,7 @@ function ManageOrderNestDetail() {
 
   return (
     <div>
-      <div className='flex items-center justify-between mb-6'>
+      <div className='flex items-center justify-between mb-3'>
         <div className='flex gap-2'>
           <div className='text-3xl font-bold'>Chi tiết đơn tổ chim</div>
         </div>
@@ -101,60 +102,68 @@ function ManageOrderNestDetail() {
         </div>
       </div>
 
-      <div className='flex gap-4 mt-4 flex-row-reverse justify-end'>
-        <Button
-          variant='outline'
-          disabled={approvingOrderNest || requestingPayment}
-          onClick={() => {}}
-          className='flex items-center gap-1 my-auto mb-6'
-        >
-          <span>Hủy đơn hàng</span>
-          <img src={cancel} className='w-5 h-5 ml-1 dark:filter dark:invert' />
-        </Button>
+      <div className='flex justify-between items'>
+        <div className='text-xl font-medium'>
+          Trạng thái:{' '}
+          <Badge className='ml-1 py-1 px-5 text-base' variant={statusToVariant[orderNest.status]}>
+            {statusToVi[orderNest.status]}
+          </Badge>
+        </div>
+        <div className='flex gap-4 flex-row-reverse justify-end'>
+          <Button
+            variant='outline'
+            disabled={approvingOrderNest || requestingPayment}
+            onClick={() => {}}
+            className='flex items-center gap-1 my-auto mb-6'
+          >
+            <span>Hủy đơn hàng</span>
+            <img src={cancel} className='w-5 h-5 ml-1 dark:filter dark:invert' />
+          </Button>
 
-        {orderNest.status === 'processing' && (
-          <Button
-            disabled={approvingOrderNest}
-            onClick={approveOrderNest}
-            className='flex items-center gap-1 my-auto mb-6'
-          >
-            <span>Chấp nhận đơn hàng</span>
-            <img src={approve} className='w-5 h-5 filter invert' />
-            {approvingOrderNest && <Shell className='w-4 h-4 ml-1 animate-spin' />}
-          </Button>
-        )}
-        {orderNest.status === 'breeding' && (
-          <Button
-            disabled={requestingPayment}
-            onClick={requestPayment}
-            className='flex items-center gap-1 my-auto mb-6'
-          >
-            <span>Yêu cầu thanh toán</span>
-            <img src={paymentIcon} className='w-5 h-5 filter invert' />
-            {requestingPayment && <Shell className='w-4 h-4 ml-1 animate-spin' />}
-          </Button>
-        )}
-        {['breeding', 'wait-for-payment'].includes(orderNest.status) && (
-          <Button
-            onClick={() => {
-              setOpenUpdateAmountBirdForm(true)
-            }}
-            className='flex items-center gap-1 my-auto mb-6'
-          >
-            <span>Cập nhật số lượng chim non</span>
-            <img src={birdMaskIcon} className='w-5 h-5 filter invert' />
-            {requestingPayment && <Shell className='w-4 h-4 ml-1 animate-spin' />}
-          </Button>
-        )}
-        {!openAddStageForm && orderNest.status === 'breeding' && (
-          <Button
-            onClick={() => {
-              setOpenAddStageForm(true)
-            }}
-          >
-            Thêm giai đoạn mới
-          </Button>
-        )}
+          {orderNest.status === 'processing' && (
+            <Button
+              disabled={approvingOrderNest}
+              onClick={approveOrderNest}
+              className='flex items-center gap-1 my-auto mb-6'
+            >
+              <span>Chấp nhận đơn hàng</span>
+              <img src={approve} className='w-5 h-5 filter invert' />
+              {approvingOrderNest && <Shell className='w-4 h-4 ml-1 animate-spin' />}
+            </Button>
+          )}
+          {orderNest.status === 'breeding' && (
+            <Button
+              disabled={requestingPayment}
+              onClick={requestPayment}
+              className='flex items-center gap-1 my-auto mb-6'
+            >
+              <span>Yêu cầu thanh toán</span>
+              <img src={paymentIcon} className='w-5 h-5 filter invert' />
+              {requestingPayment && <Shell className='w-4 h-4 ml-1 animate-spin' />}
+            </Button>
+          )}
+          {orderNest.status === 'breeding' && (
+            <Button
+              onClick={() => {
+                setOpenUpdateAmountBirdForm(true)
+              }}
+              className='flex items-center gap-1 my-auto mb-6'
+            >
+              <span>Cập nhật số lượng chim non</span>
+              <img src={birdMaskIcon} className='w-5 h-5 filter invert' />
+              {requestingPayment && <Shell className='w-4 h-4 ml-1 animate-spin' />}
+            </Button>
+          )}
+          {!openAddStageForm && orderNest.status === 'breeding' && (
+            <Button
+              onClick={() => {
+                setOpenAddStageForm(true)
+              }}
+            >
+              Thêm giai đoạn mới
+            </Button>
+          )}
+        </div>
       </div>
 
       {openAddStageForm && <AddStageForm setOpenAddStageForm={setOpenAddStageForm} id={id} />}
@@ -321,8 +330,8 @@ const AddStageForm = ({ id, setOpenAddStageForm }: AddStageFormProps) => {
 }
 
 const updateAmountBirdSchema = z.object({
-  numberChildPriceMale: z.coerce.string().refine((data) => !isNaN(Number(data)), 'Số lượng không hợp lệ'),
-  numberChildPriceFemale: z.coerce.string().refine((data) => !isNaN(Number(data)), 'Số lượng không hợp lệ')
+  numberChildPriceMale: z.coerce.number({ invalid_type_error: 'Số lượng không hợp lệ' }),
+  numberChildPriceFemale: z.coerce.number({ invalid_type_error: 'Số lượng không hợp lệ' })
 })
 
 type TUpdateAmountBirdSchema = z.infer<typeof updateAmountBirdSchema>
@@ -344,8 +353,8 @@ const UpdateAmountBirdForm = ({
   const form = useForm<TUpdateAmountBirdSchema>({
     resolver: zodResolver(updateAmountBirdSchema),
     defaultValues: {
-      numberChildPriceMale: numberChildPriceMale?.toString(),
-      numberChildPriceFemale: numberChildPriceFemale?.toString()
+      numberChildPriceMale,
+      numberChildPriceFemale
     }
   })
   const [isSubmitting, setIsSubmitting] = useState(false)

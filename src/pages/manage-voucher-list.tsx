@@ -1,5 +1,6 @@
 import Paginate from '@/components/paginate'
 import { buttonVariants } from '@/components/ui/button'
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu'
 import Spinner from '@/components/ui/spinner'
 import { useToast } from '@/components/ui/use-toast'
 import VoucherTicket from '@/components/voucher-ticket'
@@ -52,8 +53,25 @@ function ManageVoucherList() {
 
       {isLoadingVouchers && <Spinner className='mt-5' />}
 
+      {/* <VoucherForm action='create' btnTitle='Tạo' /> */}
+
       <div className='flex flex-wrap gap-4'>
-        {!isLoadingVouchers && vouchers.map((voucher) => <VoucherTicket key={voucher._id} voucher={voucher} />)}
+        {!isLoadingVouchers &&
+          vouchers.map((voucher) => {
+            return (
+              <ContextMenu>
+                <ContextMenuTrigger>
+                  <VoucherTicket key={voucher._id} voucher={voucher} />
+                </ContextMenuTrigger>
+                <ContextMenuContent>
+                  <ContextMenuItem asChild>
+                    <Link to={`/staff/vouchers/${voucher._id}/edit`}>Chỉnh sửa</Link>
+                  </ContextMenuItem>
+                  <ContextMenuItem>Vô hiệu hóa</ContextMenuItem>
+                </ContextMenuContent>
+              </ContextMenu>
+            )
+          })}
       </div>
 
       {!!totalPages && (

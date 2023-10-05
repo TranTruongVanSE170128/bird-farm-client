@@ -45,6 +45,8 @@ import ManageOrderNestDetail from './pages/manage-order-nest-detail'
 import YourNest from './pages/your-nest'
 import ManageVoucherList from './pages/manage-voucher-list'
 import CheckoutOrderNest from './pages/checkout-order-nest'
+import ManageVoucherNew from './pages/manage-voucher-new'
+import ManageVoucherEdit from './pages/manage-voucher-edit'
 
 function App() {
   return (
@@ -107,6 +109,8 @@ function App() {
           <Route path='orders/:id' element={<ManageOrderDetail />} />
           <Route path='order-nests/:id' element={<ManageOrderNestDetail />} />
           <Route path='order-nests' element={<ManageOrderNestList />} />
+          <Route path='vouchers/:id/edit' element={<ManageVoucherEdit />} />
+          <Route path='vouchers/new' element={<ManageVoucherNew />} />
           <Route path='vouchers' element={<ManageVoucherList />} />
         </Route>
 
