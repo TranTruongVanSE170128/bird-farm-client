@@ -74,7 +74,7 @@ function ManageNestList() {
                   <TableCell>{getSpecie(nest).name}</TableCell>
                   <TableCell className='text-center'>
                     <img
-                      className='aspect-square w-16 object-cover block mx-auto border rounded-md'
+                      className='block object-cover w-16 mx-auto border rounded-md aspect-square'
                       src={nest.imageUrls?.[0] || noImage}
                       alt=''
                     />
@@ -98,7 +98,7 @@ function ManageNestList() {
                       'Không có thông tin'
                     )}
                   </TableCell>
-                  <TableCell className='text-center text-primary font-medium'>{formatPrice(nest.price)}</TableCell>
+                  <TableCell className='font-medium text-center text-primary'>{formatPrice(nest.price)}</TableCell>
                   {/* <TableCell className='text-center'>Đã Bán</TableCell> */}
                   <TableCell className='text-center'>
                     <Button size='icon' asChild variant='ghost'>

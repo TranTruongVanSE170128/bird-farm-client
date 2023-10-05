@@ -60,7 +60,7 @@ export function RatingForm() {
       {display ? (
         <div className={'fixed inset-0 z-[1000] flex justify-center items-center bg-foreground/60'}>
           <div className='w-[500px] bg-background rounded-md p-6'>
-            <div className='font-medium text-lg mb-2'>Đánh giá đơn hàng</div>
+            <div className='mb-2 text-lg font-medium'>Đánh giá đơn hàng</div>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
                 <div className='flex items-center gap-2'>
@@ -134,7 +134,7 @@ export function RatingForm() {
                     Trở lại
                   </div>
                   <Button disabled={isSubmitting} type='submit'>
-                    Đánh giá {isSubmitting && <Shell className='animate-spin w-4 h-4' />}
+                    Đánh giá {isSubmitting && <Shell className='w-4 h-4 animate-spin' />}
                   </Button>
                 </div>
               </form>

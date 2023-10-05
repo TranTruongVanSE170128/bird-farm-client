@@ -15,7 +15,7 @@ function SpecieCard({ className, specie }: Props) {
         className
       )}
     >
-      <Card className='border-2 rounded-2xl overflow-hidden'>
+      <Card className='overflow-hidden border-2 rounded-2xl'>
         <CardHeader className='p-0 mb-4'>
           <div className='aspect-square'>
             <img
@@ -25,7 +25,7 @@ function SpecieCard({ className, specie }: Props) {
             />
           </div>
         </CardHeader>
-        <CardContent className='font-semibold text-lg text-center line-clamp-1'>{specie.name}</CardContent>
+        <CardContent className='text-lg font-semibold text-center line-clamp-1'>{specie.name}</CardContent>
       </Card>
     </Link>
   )

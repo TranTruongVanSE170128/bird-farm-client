@@ -45,13 +45,13 @@ function Profile() {
   return (
     <main>
       <Container className='p-10'>
-        <div className=' shadow-md rounded-lg'>
+        <div className='rounded-lg shadow-md '>
           <div className='flex'>
             <div className='w-1/4 p-4'>
               <div className='flex flex-col'>
-                <div className='flex justify-center items-center mb-6'>
+                <div className='flex items-center justify-center mb-6'>
                   <img
-                    className='w-16 rounded-full border-2 border-primary'
+                    className='w-16 border-2 rounded-full border-primary'
                     src='https://nhadepso.com/wp-content/uploads/2023/03/tron-bo-50-hinh-anh-avatar-hai-huoc-cute-va-dang-yeu-nhat_1.jpg'
                     alt='Profile Avatar'
                   />
@@ -60,7 +60,7 @@ function Profile() {
                     <p className='text-sm'>Khách hàng</p>
                   </div>
                 </div>
-                <div className='flex items-center ml-10 mb-6'>
+                <div className='flex items-center mb-6 ml-10'>
                   <img src={userIcon} className='w-10 h-10 mr-1' />
                   <a
                     className={` hover:text-primary rounded-md ${
@@ -72,7 +72,7 @@ function Profile() {
                     Tài khoản của tôi
                   </a>
                 </div>
-                <div className='flex items-center ml-10 mb-6'>
+                <div className='flex items-center mb-6 ml-10'>
                   <img src={voucherIcon} className='w-10 h-10 mr-1' />
                   <a
                     className={`hover:text-primary rounded-md ${
@@ -84,7 +84,7 @@ function Profile() {
                     Kho Voucher
                   </a>
                 </div>
-                <div className='flex items-center ml-10 mb-6'>
+                <div className='flex items-center mb-6 ml-10'>
                   <Bell className='w-10 h-10 mr-1' />
                   <a
                     className={` hover:text-primary rounded-md ${
@@ -102,7 +102,7 @@ function Profile() {
             <div className='w-3/4 p-4 bg-card'>
               <div>
                 <div className={`${activeTab === 'account-general' ? 'block' : 'hidden'}`}>
-                  <h1 className='text-2xl font-semibold mb-4'>Hồ sơ của tôi</h1>
+                  <h1 className='mb-4 text-2xl font-semibold'>Hồ sơ của tôi</h1>
 
                   <div className='flex items-center mb-4'>
                     <img
@@ -126,33 +126,33 @@ function Profile() {
                   <div className=''>
                     <div className=''>
                       <label>Tên người dùng</label>
-                      <Input type='text' className='w-full p-2 mb-2 border border-muted-foreground rounded-md' />
+                      <Input type='text' className='w-full p-2 mb-2 border rounded-md border-muted-foreground' />
                     </div>
 
                     <div className=''>
                       <label className=''>E-mail</label>
-                      <Input type='text' className='w-full p-2 mb-2 border border-muted-foreground rounded-md' />
-                      <div className='flex flex-col justify-center bg-yellow-300 w-4/5 rounded-md h-16 p-4 '>
+                      <Input type='text' className='w-full p-2 mb-2 border rounded-md border-muted-foreground' />
+                      <div className='flex flex-col justify-center w-4/5 h-16 p-4 bg-yellow-300 rounded-md '>
                         Your email is not confirmed. Please check your inbox.
                         <br />
-                        <a className='hover: underline text-blue-500' href='#'>
+                        <a className='text-blue-500 underline hover:' href='#'>
                           Resend confirmation
                         </a>
                       </div>
                     </div>
                     <div className=''>
                       <label className=''>Điện thoại</label>
-                      <Input type='number' className='w-full p-2 mb-2 border border-muted-foreground rounded-md' />
+                      <Input type='number' className='w-full p-2 mb-2 border rounded-md border-muted-foreground' />
                     </div>
                     <div className=''>
                       <label className=''>Địa chỉ</label>
-                      <Input type='text' className='w-full p-2 mb-2 border border-muted-foreground rounded-md' />
+                      <Input type='text' className='w-full p-2 mb-2 border rounded-md border-muted-foreground' />
                     </div>
                     <div className=''>
                       <label className=''>Password</label>
                       <Input
                         type='password'
-                        className='w-full p-2 mb-2 border border-muted-foreground rounded-md'
+                        className='w-full p-2 mb-2 border rounded-md border-muted-foreground'
                         id='currentPassword'
                       />
                       <Button onClick={handleShowPasswordFields}>Change Password</Button>
@@ -163,7 +163,7 @@ function Profile() {
                           <label className=''>New Password</label>
                           <Input
                             type='password'
-                            className='w-full p-2 mb-2 border border-muted-foreground rounded-md'
+                            className='w-full p-2 mb-2 border rounded-md border-muted-foreground'
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
                           />
@@ -172,7 +172,7 @@ function Profile() {
                           <label className=''>Confirm Password</label>
                           <Input
                             type='password'
-                            className='w-full p-2 mb-2 border border-muted-foreground rounded-md'
+                            className='w-full p-2 mb-2 border rounded-md border-muted-foreground'
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                           />
@@ -186,7 +186,7 @@ function Profile() {
                       </div>
                     )}
                   </div>
-                  <div className='mt-10 flex justify-end'>
+                  <div className='flex justify-end mt-10'>
                     <Button className='mr-10'>Save changes</Button>
                     <Button variant={'outline'}>Cancel</Button>
                   </div>
@@ -194,13 +194,13 @@ function Profile() {
 
                 <div className={`${activeTab === 'account-vouchers' ? 'block' : 'hidden'}`}>
                   <div className=''>
-                    <h5 className='text-2xl font-semibold mb-3'>Voucher của bạn:</h5>
-                    <div className='flex justify-between items-center border border-muted-foreground p-2 mb-2'>
+                    <h5 className='mb-3 text-2xl font-semibold'>Voucher của bạn:</h5>
+                    <div className='flex items-center justify-between p-2 mb-2 border border-muted-foreground'>
                       <div className='flex--1'>
                         <h6 className='text-lg font-semibold'>Voucher 1</h6>
                         <div className='flex items-center mt-2'>
                           <img
-                            className='w-24 h-24 rounded-md mr-5'
+                            className='w-24 h-24 mr-5 rounded-md'
                             src='https://c8.alamy.com/comp/EMC7YT/special-discount-10-off-stamp-EMC7YT.jpg'
                             alt='Voucher 1'
                           />
@@ -215,12 +215,12 @@ function Profile() {
                         Dùng Voucher
                       </Button>
                     </div>
-                    <div className='flex justify-between items-center border border-muted-foreground p-2 mb-2'>
+                    <div className='flex items-center justify-between p-2 mb-2 border border-muted-foreground'>
                       <div className='flex--1'>
                         <h6 className='text-lg font-semibold'>Voucher 1</h6>
                         <div className='flex items-center mt-2'>
                           <img
-                            className='w-24 h-24 rounded-md mr-5'
+                            className='w-24 h-24 mr-5 rounded-md'
                             src='https://www.pngmart.com/files/8/Voucher-Download-PNG-Image.png'
                             alt='Voucher 1'
                           />
@@ -241,9 +241,9 @@ function Profile() {
                 <div className={`${activeTab === 'account-notifications' ? 'block' : 'hidden'}`}>
                   <div>
                     <h3 className='text-lg font-semibold'>Đơn mua</h3>
-                    <div className='flex my-4 justify-between items-center'>
+                    <div className='flex items-center justify-between my-4'>
                       <img
-                        className='w-20 h-20 rounded-md object-cover'
+                        className='object-cover w-20 h-20 rounded-md'
                         src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Eopsaltria_australis_-_Mogo_Campground.jpg/640px-Eopsaltria_australis_-_Mogo_Campground.jpg'
                         alt='Notification 1'
                       />
@@ -257,9 +257,9 @@ function Profile() {
                   <div>
                     <hr />
                     <h3 className='text-lg font-semibold'>Đơn đặt</h3>
-                    <div className='flex my-4 justify-between items-center'>
+                    <div className='flex items-center justify-between my-4'>
                       <img
-                        className='w-20 h-20 rounded-md object-cover'
+                        className='object-cover w-20 h-20 rounded-md'
                         src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Eopsaltria_australis_-_Mogo_Campground.jpg/640px-Eopsaltria_australis_-_Mogo_Campground.jpg'
                         alt='Notification 2'
                       />

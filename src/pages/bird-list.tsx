@@ -67,11 +67,11 @@ function BirdList() {
   return (
     <main>
       <Container>
-        <div className='flex justify-between items-center mt-10 mb-6'>
+        <div className='flex items-center justify-between mt-10 mb-6'>
           <h1 className='text-3xl font-bold'>Chim đang bán tại cửa hàng</h1>
         </div>
 
-        <div className='font-medium text-2xl'>Bộ lọc loài chim</div>
+        <div className='text-2xl font-medium'>Bộ lọc loài chim</div>
 
         <Select
           value={specie}
@@ -94,13 +94,13 @@ function BirdList() {
         </Select>
 
         {isLoadingBirds ? (
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
             {Array(...new Array(12)).map((_, i) => {
               return <BirdCardSkeleton key={i} />
             })}
           </div>
         ) : (
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
             {birds.map((bird) => {
               return <BirdCard key={bird._id} bird={bird} />
             })}

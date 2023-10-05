@@ -53,20 +53,20 @@ function ManageSpecieList() {
       </div>
 
       {isLoadingSpecies ? (
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
           {Array(...new Array(8)).map(() => {
             return <SpecieCardSkeleton />
           })}
         </div>
       ) : (
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
           {species.map((specie) => {
             return (
               <Link
                 to={`/manager/species/${specie._id}`}
-                className='outline-0 focus:border-2 hover:border-2 border-primary transition duration-300 rounded-2xl overflow-hidden'
+                className='overflow-hidden transition duration-300 outline-0 focus:border-2 hover:border-2 border-primary rounded-2xl'
               >
-                <Card className='border-2 rounded-2xl overflow-hidden'>
+                <Card className='overflow-hidden border-2 rounded-2xl'>
                   <CardHeader className='p-0 mb-4'>
                     <div className='aspect-square'>
                       <img
@@ -76,7 +76,7 @@ function ManageSpecieList() {
                       />
                     </div>
                   </CardHeader>
-                  <CardContent className='font-semibold text-lg text-center line-clamp-1'>{specie.name}</CardContent>
+                  <CardContent className='text-lg font-semibold text-center line-clamp-1'>{specie.name}</CardContent>
                 </Card>
               </Link>
             )

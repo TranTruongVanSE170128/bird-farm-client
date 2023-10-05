@@ -106,7 +106,7 @@ function SpecieForm({ specie, btnTitle, action, setEdit }: Props) {
             control={form.control}
             name='name'
             render={({ field }) => (
-              <FormItem className='flex w-full flex-col gap-3'>
+              <FormItem className='flex flex-col w-full gap-3'>
                 <FormLabel className='font-bold text-light-2'>Tên Loài*</FormLabel>
                 <FormControl>
                   <Input type='text' className='account-form_input no-focus' {...field} />
@@ -122,14 +122,14 @@ function SpecieForm({ specie, btnTitle, action, setEdit }: Props) {
             render={({ field }) => (
               <FormItem className='flex items-center gap-4'>
                 <FormLabel className=''>
-                  <div className='font-bold text-light-2 mb-4'>Ảnh</div>
+                  <div className='mb-4 font-bold text-light-2'>Ảnh</div>
                   {field.value ? (
                     <img
                       src={field.value}
                       alt='imageUrl'
                       width={240}
                       height={240}
-                      className='rounded-md object-contain'
+                      className='object-contain rounded-md'
                     />
                   ) : (
                     <img
@@ -137,7 +137,7 @@ function SpecieForm({ specie, btnTitle, action, setEdit }: Props) {
                       alt='imageUrl'
                       width={240}
                       height={240}
-                      className='object-contain rounded-md border'
+                      className='object-contain border rounded-md'
                     />
                   )}
                 </FormLabel>
@@ -159,7 +159,7 @@ function SpecieForm({ specie, btnTitle, action, setEdit }: Props) {
             control={form.control}
             name='description'
             render={({ field }) => (
-              <FormItem className='flex w-full flex-col gap-3'>
+              <FormItem className='flex flex-col w-full gap-3'>
                 <FormLabel className='font-bold text-light-2'>Mô tả</FormLabel>
                 <FormControl>
                   <Textarea
@@ -174,7 +174,7 @@ function SpecieForm({ specie, btnTitle, action, setEdit }: Props) {
             )}
           />
 
-          <div className='flex gap-2 justify-end'>
+          <div className='flex justify-end gap-2'>
             {setEdit && (
               <Button
                 onClick={() => {
@@ -189,14 +189,14 @@ function SpecieForm({ specie, btnTitle, action, setEdit }: Props) {
             )}
             <Button disabled={isSubmitting} type='submit'>
               {btnTitle}
-              {isSubmitting && <Shell className='ml-1 animate-spin w-4 h-4' />}
+              {isSubmitting && <Shell className='w-4 h-4 ml-1 animate-spin' />}
             </Button>
           </div>
         </form>
       </Form>
 
       {/* <div>
-        <div className='font-bold text-lg mb-4'>Mô tả trên cửa hàng</div>
+        <div className='mb-4 text-lg font-bold'>Mô tả trên cửa hàng</div>
         <div dangerouslySetInnerHTML={{ __html: descriptionReview }} />
       </div> */}
     </>

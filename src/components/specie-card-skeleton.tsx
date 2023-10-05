@@ -2,8 +2,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 function SpecieCardSkeleton() {
   return (
-    <div className='outline-0 focus:border-2 hover:border-2 border-primary transition duration-300 rounded-2xl overflow-hidden col-span-1'>
-      <div className='border-2 rounded-2xl overflow-hidden h-full'>
+    <div className='col-span-1 overflow-hidden transition duration-300 outline-0 focus:border-2 hover:border-2 border-primary rounded-2xl'>
+      <div className='h-full overflow-hidden border-2 rounded-2xl'>
         <div className='p-0 mb-4'>
           <Skeleton className='aspect-square' />
         </div>

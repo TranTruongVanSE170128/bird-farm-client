@@ -48,7 +48,7 @@ function ManageBirdDetail() {
               onClick={() => {
                 setEdit(true)
               }}
-              className='mb-6 flex items-center gap-1 my-auto'
+              className='flex items-center gap-1 my-auto mb-6'
             >
               <span>Chỉnh sửa</span>
               <Edit className='w-5 h-5' />
@@ -63,16 +63,16 @@ function ManageBirdDetail() {
       {!edit ? (
         <>
           <div className='flex gap-12'>
-            <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='flex items-center gap-2 mb-4 text-lg'>
               <div className='font-bold'>Loài chim:</div> {getSpecie(bird).name}
             </div>
-            <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='flex items-center gap-2 mb-4 text-lg'>
               <div className='font-bold'>Tên chim:</div> {bird?.name}
             </div>
           </div>
 
           <div className='flex gap-12'>
-            <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='flex items-center gap-2 mb-4 text-lg'>
               <div className='font-bold'>Giới tính:</div>{' '}
               {bird.gender === 'male' ? (
                 <div className='flex items-center'>
@@ -87,7 +87,7 @@ function ManageBirdDetail() {
               )}
             </div>
 
-            <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='flex items-center gap-2 mb-4 text-lg'>
               <div className='font-bold'>Loại chim:</div>{' '}
               {bird.type === 'sell' ? (
                 <div className='flex items-center'>
@@ -102,14 +102,14 @@ function ManageBirdDetail() {
               )}
             </div>
 
-            <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='flex items-center gap-2 mb-4 text-lg'>
               <div className='font-bold'>{bird.type === 'sell' ? 'Giá bán:' : 'Giá phối giống:'}</div>{' '}
               {formatPrice(bird.type === 'sell' ? bird.sellPrice : bird.breedPrice)}
             </div>
           </div>
 
           <div className='flex gap-12'>
-            <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='flex items-center gap-2 mb-4 text-lg'>
               <div className='font-bold'>Bố:</div>{' '}
               {getDad(bird)?._id ? (
                 <Link className='hover:underline hover:text-primary' to={`/manager/birds/${getDad(bird)._id}`}>
@@ -120,7 +120,7 @@ function ManageBirdDetail() {
               )}
             </div>
 
-            <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='flex items-center gap-2 mb-4 text-lg'>
               <div className='font-bold'>Mẹ:</div>{' '}
               {getMom(bird)?._id ? (
                 <Link className='hover:underline hover:text-primary' to={`/manager/birds/${getMom(bird)._id}`}>
@@ -131,30 +131,30 @@ function ManageBirdDetail() {
               )}
             </div>
 
-            <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='flex items-center gap-2 mb-4 text-lg'>
               <div className='font-bold'>Tuổi:</div> {calculateAge(bird.birth)}
             </div>
           </div>
 
-          <div className='text-lg font-bold mb-2'>Ảnh</div>
+          <div className='mb-2 text-lg font-bold'>Ảnh</div>
           <div>
             {!bird?.imageUrls?.length ? (
-              <img src={noImage} alt='' width={240} height={240} className='object-contain rounded-md border' />
+              <img src={noImage} alt='' width={240} height={240} className='object-contain border rounded-md' />
             ) : (
-              <div className='flex gap-2 flex-wrap'>
+              <div className='flex flex-wrap gap-2'>
                 {bird?.imageUrls.map((imageUrl) => {
-                  return <img src={imageUrl} alt='' width={240} height={240} className='rounded-md object-contain' />
+                  return <img src={imageUrl} alt='' width={240} height={240} className='object-contain rounded-md' />
                 })}
               </div>
             )}
           </div>
 
           <div>
-            <div className='font-bold text-lg mt-4'>Thành Tích Thi Đấu</div>
+            <div className='mt-4 text-lg font-bold'>Thành Tích Thi Đấu</div>
             <div className='flex w-full'>
-              <div className='grid grid-cols-2 gap-3 w-full'>
-                <div className='col-span-1 text-sm flex items-end pb-3'>Tên Cuộc Thi</div>
-                <div className='col-span-1 text-sm flex items-end pb-3'>Xếp Hạng</div>
+              <div className='grid w-full grid-cols-2 gap-3'>
+                <div className='flex items-end col-span-1 pb-3 text-sm'>Tên Cuộc Thi</div>
+                <div className='flex items-end col-span-1 pb-3 text-sm'>Xếp Hạng</div>
               </div>
               <Button size='icon' variant='outline' className='invisible'></Button>
             </div>
@@ -162,11 +162,11 @@ function ManageBirdDetail() {
               {bird?.achievements?.map((achievement) => {
                 return (
                   <div key={achievement._id} className='flex w-full gap-3'>
-                    <div className='grid grid-cols-2 gap-3 w-full'>
-                      <div className='col-span-1 py-2 px-4 rounded-md border-border border'>
+                    <div className='grid w-full grid-cols-2 gap-3'>
+                      <div className='col-span-1 px-4 py-2 border rounded-md border-border'>
                         {achievement.competition}
                       </div>
-                      <div className='col-span-1 py-2 px-4 rounded-md border-border border'>{achievement.rank}</div>
+                      <div className='col-span-1 px-4 py-2 border rounded-md border-border'>{achievement.rank}</div>
                     </div>
                   </div>
                 )
@@ -174,7 +174,7 @@ function ManageBirdDetail() {
             </div>
           </div>
 
-          <div className='mt-6 text-xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold mb-3'>
+          <div className='mt-6 mb-3 text-xl font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>
             Mô tả
           </div>
           {bird?.description ? (

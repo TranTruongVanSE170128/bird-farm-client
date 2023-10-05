@@ -44,7 +44,7 @@ function ManageSpecieDetail() {
               onClick={() => {
                 setEdit(true)
               }}
-              className='mb-6 flex items-center gap-1 my-auto'
+              className='flex items-center gap-1 my-auto mb-6'
             >
               <span>Chỉnh sửa</span>
               <Edit className='w-5 h-5' />
@@ -58,10 +58,10 @@ function ManageSpecieDetail() {
       </div>
       {!edit ? (
         <>
-          <div className='text-xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold text-light-2'>
+          <div className='text-xl font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-light-2'>
             Tên Loài: {specie?.name}
           </div>
-          <div className='mt-6 text-xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold text-light-2 mb-3'>
+          <div className='mt-6 mb-3 text-xl font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-light-2'>
             Ảnh
           </div>
           <div>
@@ -70,11 +70,11 @@ function ManageSpecieDetail() {
               alt='imageUrl'
               width={240}
               height={240}
-              className='rounded-md object-contain border'
+              className='object-contain border rounded-md'
             />
           </div>
 
-          <div className='mt-6 text-xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold text-light-2 mb-3'>
+          <div className='mt-6 mb-3 text-xl font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-light-2'>
             Mô tả
           </div>
           {specie?.description ? (

@@ -209,10 +209,10 @@ function CheckoutOrderNest() {
   return (
     <main>
       <Container>
-        <section className='my-7 px-5'>
-          <div className='flex flex-col mt-8 md:flex-row md:justify-between gap-12'>
+        <section className='px-5 my-7'>
+          <div className='flex flex-col gap-12 mt-8 md:flex-row md:justify-between'>
             <div className='basis-3/4 md:w-3/5'>
-              <p className='uppercase text-2xl font-bold'>thông tin thanh toán</p>
+              <p className='text-2xl font-bold uppercase'>thông tin thanh toán</p>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
                   <div className='flex justify-between mt-5'>
@@ -220,7 +220,7 @@ function CheckoutOrderNest() {
                       control={form.control}
                       name='firstName'
                       render={({ field }) => (
-                        <FormItem className='basis-1/2 mr-3'>
+                        <FormItem className='mr-3 basis-1/2'>
                           <FormLabel>Họ*</FormLabel>
                           <FormControl>
                             <Input {...field} />
@@ -258,12 +258,12 @@ function CheckoutOrderNest() {
                       )}
                     />
                   </div>
-                  <div className='mt-5 flex justify-between'>
+                  <div className='flex justify-between mt-5'>
                     <FormField
                       control={form.control}
                       name='province'
                       render={() => (
-                        <FormItem className='basis-1/3 mr-3'>
+                        <FormItem className='mr-3 basis-1/3'>
                           <FormLabel>Tỉnh*</FormLabel>
                           <Select
                             onValueChange={(value: string) => {
@@ -298,7 +298,7 @@ function CheckoutOrderNest() {
                       control={form.control}
                       name='district'
                       render={() => (
-                        <FormItem className='basis-1/3 mr-3'>
+                        <FormItem className='mr-3 basis-1/3'>
                           <FormLabel>Thành phố*</FormLabel>
                           <Select
                             onValueChange={(value: string) => {
@@ -333,7 +333,7 @@ function CheckoutOrderNest() {
                       control={form.control}
                       name='ward'
                       render={() => (
-                        <FormItem className='basis-1/3 mr-3'>
+                        <FormItem className='mr-3 basis-1/3'>
                           <FormLabel>Phường/Xã*</FormLabel>
                           <Select
                             onValueChange={(value: string) => {
@@ -401,7 +401,7 @@ function CheckoutOrderNest() {
                     />
                   </div>
                   <div className='mt-5'>
-                    <p className='uppercase font-bold text-2xl'>hình thức thanh toán</p>
+                    <p className='text-2xl font-bold uppercase'>hình thức thanh toán</p>
                     <div className='mt-5 '>
                       <FormField
                         control={form.control}
@@ -415,25 +415,25 @@ function CheckoutOrderNest() {
                                 defaultValue={field.value}
                                 className='flex flex-col space-y-1'
                               >
-                                <FormItem className='flex items-center space-y-0 border pl-4 rounded-md '>
+                                <FormItem className='flex items-center pl-4 space-y-0 border rounded-md '>
                                   <FormControl>
                                     <RadioGroupItem value='cod' />
                                   </FormControl>
-                                  <FormLabel className='font-normal flex items-center gap-4 py-6 cursor-pointer'>
+                                  <FormLabel className='flex items-center gap-4 py-6 font-normal cursor-pointer'>
                                     <div>
                                       <img src={cashIcon} alt='' className='w-8 h-w-8 ml-9' />
                                     </div>
                                     Thanh toán khi nhận hàng
                                   </FormLabel>
                                 </FormItem>
-                                <FormItem className='flex items-center space-y-0 border pl-4 rounded-md'>
+                                <FormItem className='flex items-center pl-4 space-y-0 border rounded-md'>
                                   <FormControl>
                                     <RadioGroupItem value='online' />
                                   </FormControl>
 
-                                  <FormLabel className='font-normal flex items-center gap-4 py-6 cursor-pointer'>
+                                  <FormLabel className='flex items-center gap-4 py-6 font-normal cursor-pointer'>
                                     <div>
-                                      <img src={creditIcon} alt='' className='w-8 h-w-8 ml-9 mb-2' />
+                                      <img src={creditIcon} alt='' className='w-8 mb-2 h-w-8 ml-9' />
                                     </div>
                                     Thẻ ATM/Thẻ tín dụng (Credit Card)
                                   </FormLabel>
@@ -445,7 +445,7 @@ function CheckoutOrderNest() {
                       />
                       <div className='mt-4'>
                         <Button disabled={isSubmitting} type='submit' className='w-full p-7 text-[20px] font-bold'>
-                          Thanh toán{isSubmitting && <Shell className='animate-spin w-4 h-4 ml-1' />}
+                          Thanh toán{isSubmitting && <Shell className='w-4 h-4 ml-1 animate-spin' />}
                         </Button>
                       </div>
                     </div>
@@ -453,29 +453,29 @@ function CheckoutOrderNest() {
                 </form>
               </Form>
             </div>
-            <div className='basis-1/4 md:w-2/5 mt-8 md:mt-0'>
+            <div className='mt-8 basis-1/4 md:w-2/5 md:mt-0'>
               <p className='text-2xl font-bold uppercase'>Đơn hàng</p>
-              <div className='border rounded-md p-3 mt-5'>
+              <div className='p-3 mt-5 border rounded-md'>
                 <div className='font-bold'>
                   Nội dung: <span className='font-medium'>Thanh toán phần còn lại của đơn đặt tổ chim non</span>
                 </div>
                 <div className='w-full h-[1px] border'></div>
                 <div className='flex m-auto mt-5'>
-                  <span className='w-1/2 text-start font-bold'>Tạm tính</span>
-                  <span className='w-1/2 text-end font-bold'>{formatPrice(orderNest?.totalMoney || 0)}</span>
+                  <span className='w-1/2 font-bold text-start'>Tạm tính</span>
+                  <span className='w-1/2 font-bold text-end'>{formatPrice(orderNest?.totalMoney || 0)}</span>
                 </div>
 
                 <div className='flex m-auto mt-5'>
-                  <span className='w-1/2 text-start font-bold'>Đã đặt cọc</span>
-                  <span className='w-1/2 text-end font-bold text-primary'>
+                  <span className='w-1/2 font-bold text-start'>Đã đặt cọc</span>
+                  <span className='w-1/2 font-bold text-end text-primary'>
                     -{formatPrice(orderNest?.childPriceMale || 0)}
                   </span>
                 </div>
 
-                <div className='border mt-4 m-auto'></div>
+                <div className='m-auto mt-4 border'></div>
                 <div className='flex m-auto mt-5'>
-                  <span className='w-1/2 text-start font-bold'>Tổng</span>
-                  <span className='w-1/2 text-end font-bold'>
+                  <span className='w-1/2 font-bold text-start'>Tổng</span>
+                  <span className='w-1/2 font-bold text-end'>
                     {formatPrice((orderNest?.totalMoney || 0) - (orderNest?.childPriceMale || 0))}
                   </span>
                 </div>

@@ -94,7 +94,7 @@ export function SignInForm() {
             )}
           />
           <Button disabled={isSubmitting} type='submit' className='w-full'>
-            Đăng nhập {isSubmitting && <Shell className='animate-spin w-4 h-4' />}
+            Đăng nhập {isSubmitting && <Shell className='w-4 h-4 animate-spin' />}
           </Button>
         </form>
       </Form>
@@ -104,7 +104,7 @@ export function SignInForm() {
           <span className='w-full border-t' />
         </div>
         <div className='relative flex justify-center text-xs uppercase'>
-          <span className='bg-background px-2 text-muted-foreground'>hoặc tiếp tục với</span>
+          <span className='px-2 bg-background text-muted-foreground'>hoặc tiếp tục với</span>
         </div>
       </div>
       <Button
@@ -115,9 +115,9 @@ export function SignInForm() {
         type='button'
         disabled={isLoggingGoogle}
       >
-        <img className='w-7 h-7 mr-2' alt='google' src={googleIcon} />
+        <img className='mr-2 w-7 h-7' alt='google' src={googleIcon} />
         Đăng nhập bằng google
-        {isLoggingGoogle && <Shell className='animate-spin w-4 h-4 ml-1' />}
+        {isLoggingGoogle && <Shell className='w-4 h-4 ml-1 animate-spin' />}
       </Button>
 
       <p className='mx-auto'>

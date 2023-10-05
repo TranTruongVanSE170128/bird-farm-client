@@ -90,7 +90,7 @@ function ManageOrderNestDetail() {
 
         <div className='flex gap-2'>
           <Button disabled={approvingOrderNest} asChild>
-            <Link className='mb-6 flex items-center gap-1 my-auto' to='/staff/order-nests'>
+            <Link className='flex items-center gap-1 my-auto mb-6' to='/staff/order-nests'>
               <span>Quay lại</span>
               <ArrowLeft className='w-5 h-5' />
             </Link>
@@ -103,31 +103,31 @@ function ManageOrderNestDetail() {
           variant='outline'
           disabled={approvingOrderNest || requestingPayment}
           onClick={() => {}}
-          className='mb-6 flex items-center gap-1 my-auto'
+          className='flex items-center gap-1 my-auto mb-6'
         >
           <span>Hủy đơn hàng</span>
-          <img src={cancel} className='w-5 h-5 dark:filter dark:invert ml-1' />
+          <img src={cancel} className='w-5 h-5 ml-1 dark:filter dark:invert' />
         </Button>
         {orderNest.status === 'processing' && (
           <Button
             disabled={approvingOrderNest}
             onClick={approveOrderNest}
-            className='mb-6 flex items-center gap-1 my-auto'
+            className='flex items-center gap-1 my-auto mb-6'
           >
             <span>Chấp nhận đơn hàng</span>
             <img src={approve} className='w-5 h-5 filter invert' />
-            {approvingOrderNest && <Shell className='animate-spin w-4 h-4 ml-1' />}
+            {approvingOrderNest && <Shell className='w-4 h-4 ml-1 animate-spin' />}
           </Button>
         )}
         {orderNest.status === 'breeding' && (
           <Button
             disabled={requestingPayment}
             onClick={requestPayment}
-            className='mb-6 flex items-center gap-1 my-auto'
+            className='flex items-center gap-1 my-auto mb-6'
           >
             <span>Yêu cầu thanh toán</span>
             <img src={paymentIcon} className='w-5 h-5 filter invert' />
-            {requestingPayment && <Shell className='animate-spin w-4 h-4 ml-1' />}
+            {requestingPayment && <Shell className='w-4 h-4 ml-1 animate-spin' />}
           </Button>
         )}
       </div>
@@ -239,13 +239,13 @@ const AddStageForm = ({ id, setOpenAddStageForm }: AddStageFormProps) => {
           render={({ field }) => (
             <FormItem className='flex items-center gap-4'>
               <FormLabel className=''>
-                <div className='font-bold mb-4'>Ảnh</div>
+                <div className='mb-4 font-bold'>Ảnh</div>
                 <img
                   src={field.value || noImage}
                   alt='imageUrl'
                   width={240}
                   height={240}
-                  className='rounded-md object-cover border'
+                  className='object-cover border rounded-md'
                 />
               </FormLabel>
               <FormControl>
@@ -286,7 +286,7 @@ const AddStageForm = ({ id, setOpenAddStageForm }: AddStageFormProps) => {
             Hủy
           </div>
           <Button disabled={isSubmitting} type='submit'>
-            Thêm {isSubmitting && <Shell className='animate-spin w-4 h-4' />}
+            Thêm {isSubmitting && <Shell className='w-4 h-4 animate-spin' />}
           </Button>
         </div>
       </form>

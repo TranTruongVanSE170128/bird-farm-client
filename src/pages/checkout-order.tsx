@@ -247,15 +247,15 @@ function CheckoutOrder() {
   return (
     <main>
       <Container>
-        <section className='my-7 px-5'>
+        <section className='px-5 my-7'>
           <div className='flex justify-center gap-2 '>
-            <span className='uppercase text-2xl  text-gray-500 '>Giỏ HÀNG </span>
+            <span className='text-2xl text-gray-500 uppercase '>Giỏ HÀNG </span>
             <span className='text-2xl '>{'>'}</span>
-            <span className='uppercase text-2xl '>Chi tiết thanh toán</span>
+            <span className='text-2xl uppercase '>Chi tiết thanh toán</span>
           </div>
           <div className='flex flex-col mt-8 md:flex-row md:justify-between'>
             <div className='basis-3/4 md:w-3/5'>
-              <p className='uppercase text-2xl font-bold'>thông tin thanh toán</p>
+              <p className='text-2xl font-bold uppercase'>thông tin thanh toán</p>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
                   <div className='flex justify-between mt-5 mr-12'>
@@ -263,7 +263,7 @@ function CheckoutOrder() {
                       control={form.control}
                       name='firstName'
                       render={({ field }) => (
-                        <FormItem className='basis-1/2 mr-3'>
+                        <FormItem className='mr-3 basis-1/2'>
                           <FormLabel>Họ*</FormLabel>
                           <FormControl>
                             <Input {...field} />
@@ -301,12 +301,12 @@ function CheckoutOrder() {
                       )}
                     />
                   </div>
-                  <div className='mt-5 flex justify-between mr-12'>
+                  <div className='flex justify-between mt-5 mr-12'>
                     <FormField
                       control={form.control}
                       name='province'
                       render={() => (
-                        <FormItem className='basis-1/3 mr-3'>
+                        <FormItem className='mr-3 basis-1/3'>
                           <FormLabel>Tỉnh*</FormLabel>
                           <Select
                             onValueChange={(value: string) => {
@@ -341,7 +341,7 @@ function CheckoutOrder() {
                       control={form.control}
                       name='district'
                       render={() => (
-                        <FormItem className='basis-1/3 mr-3'>
+                        <FormItem className='mr-3 basis-1/3'>
                           <FormLabel>Thành phố*</FormLabel>
                           <Select
                             onValueChange={(value: string) => {
@@ -376,7 +376,7 @@ function CheckoutOrder() {
                       control={form.control}
                       name='ward'
                       render={() => (
-                        <FormItem className='basis-1/3 mr-3'>
+                        <FormItem className='mr-3 basis-1/3'>
                           <FormLabel>Phường/Xã*</FormLabel>
                           <Select
                             onValueChange={(value: string) => {
@@ -444,7 +444,7 @@ function CheckoutOrder() {
                     />
                   </div>
                   <div className='mt-5'>
-                    <p className='uppercase font-bold text-2xl'>hình thức thanh toán</p>
+                    <p className='text-2xl font-bold uppercase'>hình thức thanh toán</p>
                     <div className='mt-5 '>
                       <FormField
                         control={form.control}
@@ -458,25 +458,25 @@ function CheckoutOrder() {
                                 defaultValue={field.value}
                                 className='flex flex-col space-y-1'
                               >
-                                <FormItem className='flex items-center space-y-0 border pl-4 rounded-md '>
+                                <FormItem className='flex items-center pl-4 space-y-0 border rounded-md '>
                                   <FormControl>
                                     <RadioGroupItem value='cod' />
                                   </FormControl>
-                                  <FormLabel className='font-normal flex items-center gap-4 py-6 cursor-pointer'>
+                                  <FormLabel className='flex items-center gap-4 py-6 font-normal cursor-pointer'>
                                     <div>
                                       <img src={cashIcon} alt='' className='w-8 h-w-8 ml-9' />
                                     </div>
                                     Thanh toán khi nhận hàng
                                   </FormLabel>
                                 </FormItem>
-                                <FormItem className='flex items-center space-y-0 border pl-4 rounded-md'>
+                                <FormItem className='flex items-center pl-4 space-y-0 border rounded-md'>
                                   <FormControl>
                                     <RadioGroupItem value='online' />
                                   </FormControl>
 
-                                  <FormLabel className='font-normal flex items-center gap-4 py-6 cursor-pointer'>
+                                  <FormLabel className='flex items-center gap-4 py-6 font-normal cursor-pointer'>
                                     <div>
-                                      <img src={creditIcon} alt='' className='w-8 h-w-8 ml-9 mb-2' />
+                                      <img src={creditIcon} alt='' className='w-8 mb-2 h-w-8 ml-9' />
                                     </div>
                                     Thẻ ATM/Thẻ tín dụng (Credit Card)
                                   </FormLabel>
@@ -488,7 +488,7 @@ function CheckoutOrder() {
                       />
                       <div className='mt-4'>
                         <Button disabled={isSubmitting} type='submit' className='w-full p-7 text-[20px] font-bold'>
-                          Thanh toán{isSubmitting && <Shell className='animate-spin w-4 h-4 ml-1' />}
+                          Thanh toán{isSubmitting && <Shell className='w-4 h-4 ml-1 animate-spin' />}
                         </Button>
                       </div>
                     </div>
@@ -496,57 +496,57 @@ function CheckoutOrder() {
                 </form>
               </Form>
             </div>
-            <div className='basis-1/4 md:w-2/5 mt-8 md:mt-0'>
+            <div className='mt-8 basis-1/4 md:w-2/5 md:mt-0'>
               <p className='text-2xl font-bold uppercase'>Đơn hàng</p>
-              <div className='border rounded-md p-3 mt-5'>
-                <p className='uppercase text-gray-500 font-bold'>sản phẩm</p>
+              <div className='p-3 mt-5 border rounded-md'>
+                <p className='font-bold text-gray-500 uppercase'>sản phẩm</p>
                 <ScrollArea className='h-[300px] w-[350px] rounded-md p-4'>
                   {products.birds?.map((bird) => (
-                    <div key={bird._id} className='flex p-2 items-center gap-3  rounded-lg '>
-                      <div className='flex gap-2 flex-wrap'>
+                    <div key={bird._id} className='flex items-center gap-3 p-2 rounded-lg '>
+                      <div className='flex flex-wrap gap-2'>
                         <img
                           src={bird?.imageUrls?.[0] || noImage}
-                          className='aspect-square object-cover w-20 rounded-lg border'
+                          className='object-cover w-20 border rounded-lg aspect-square'
                         />
                       </div>
 
                       <div>
-                        <p className='line-clamp-1 text-sm'>{bird.name}</p>
-                        <p className='text-red-600'>{formatPrice(bird.sellPrice)}</p>
+                        <p className='text-sm line-clamp-1'>{bird.name}</p>
+                        <p className='text-primary'>{formatPrice(bird.sellPrice)}</p>
                       </div>
                     </div>
                   ))}
                   {products.nests?.map((nest) => (
-                    <div key={nest._id} className='flex p-2 items-center gap-3  rounded-lg '>
-                      <div className='flex gap-2 flex-wrap'>
+                    <div key={nest._id} className='flex items-center gap-3 p-2 rounded-lg '>
+                      <div className='flex flex-wrap gap-2'>
                         <img
                           src={nest?.imageUrls?.[0] || noImage}
-                          className='border aspect-square object-cover w-20 rounded-lg'
+                          className='object-cover w-20 border rounded-lg aspect-square'
                         />
                       </div>
 
                       <div>
-                        <p className='line-clamp-1 text-sm'>{nest.name}</p>
-                        <p className='text-red-600'>{formatPrice(nest.price)}</p>
+                        <p className='text-sm line-clamp-1'>{nest.name}</p>
+                        <p className='text-primary'>{formatPrice(nest.price)}</p>
                       </div>
                     </div>
                   ))}
                 </ScrollArea>
                 <div className='w-full h-[1px] border'></div>
                 <div className='flex m-auto mt-5'>
-                  <span className='w-1/2 text-start font-bold'>Tạm tính</span>
-                  <span className='w-1/2 text-end font-bold'>{formatPrice(totalMoney)}</span>
+                  <span className='w-1/2 font-bold text-start'>Tạm tính</span>
+                  <span className='w-1/2 font-bold text-end'>{formatPrice(totalMoney)}</span>
                 </div>
                 <div className='flex m-auto mt-5'>
-                  <span className='w-1/2 text-start font-bold'>Giảm giá</span>
-                  <span className='w-1/2 text-end font-bold'>
+                  <span className='w-1/2 font-bold text-start'>Giảm giá</span>
+                  <span className='w-1/2 font-bold text-end'>
                     {voucher ? formatPrice(calculateDiscount(totalMoney, voucher)) : formatPrice(0)}
                   </span>
                 </div>
-                <div className='border mt-4 m-auto'></div>
+                <div className='m-auto mt-4 border'></div>
                 <div className='flex m-auto mt-5'>
-                  <span className='w-1/2 text-start font-bold'>Tổng</span>
-                  <span className='w-1/2 text-end font-bold'>
+                  <span className='w-1/2 font-bold text-start'>Tổng</span>
+                  <span className='w-1/2 font-bold text-end'>
                     {voucher
                       ? formatPrice(totalMoney - calculateDiscount(totalMoney, voucher))
                       : formatPrice(totalMoney)}

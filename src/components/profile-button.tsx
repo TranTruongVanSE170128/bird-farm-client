@@ -34,20 +34,20 @@ function ProfileButton({ className }: Props) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant='ghost' size='icon' className={cn('mr-2', className)} aria-label='Shopping Cart'>
-            <UserIcon className='h-6 w-6' />
+            <UserIcon className='w-6 h-6' />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className='w-56'>
           <DropdownMenuGroup>
             <DropdownMenuItem asChild className='cursor-pointer'>
               <Link to='/auth/sign-in'>
-                <LogIn className='mr-2 h-4 w-4' />
+                <LogIn className='w-4 h-4 mr-2' />
                 <span>Đăng nhập</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild className='cursor-pointer'>
               <Link to='/auth/sign-up'>
-                <img alt='đăng ký' src={registerIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                <img alt='đăng ký' src={registerIcon} className='w-4 h-4 mr-2 dark:filter dark:invert' />
                 <span>Đăng ký</span>
               </Link>
             </DropdownMenuItem>
@@ -60,7 +60,7 @@ function ProfileButton({ className }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className='cursor-pointer ml-3'>
+        <Avatar className='ml-3 cursor-pointer'>
           <AvatarImage src={user.imageUrl || 'https://github.com/shadcn.png'} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
@@ -78,12 +78,12 @@ function ProfileButton({ className }: Props) {
             <DropdownMenuItem asChild className='cursor-pointer'>
               {pathname.includes('admin') ? (
                 <Link to='/'>
-                  <img src={storeIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                  <img src={storeIcon} className='w-4 h-4 mr-2 dark:filter dark:invert' />
                   <span>Xem cửa hàng</span>
                 </Link>
               ) : (
                 <Link to='/admin'>
-                  <img src={adminIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                  <img src={adminIcon} className='w-4 h-4 mr-2 dark:filter dark:invert' />
                   <span>Admin</span>
                 </Link>
               )}
@@ -93,12 +93,12 @@ function ProfileButton({ className }: Props) {
             <DropdownMenuItem asChild className='cursor-pointer'>
               {pathname.includes('manager') ? (
                 <Link to='/'>
-                  <img src={storeIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                  <img src={storeIcon} className='w-4 h-4 mr-2 dark:filter dark:invert' />
                   <span>Xem cửa hàng</span>
                 </Link>
               ) : (
                 <Link to='/manager'>
-                  <img src={managerIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                  <img src={managerIcon} className='w-4 h-4 mr-2 dark:filter dark:invert' />
                   <span>Quản lý</span>
                 </Link>
               )}
@@ -108,12 +108,12 @@ function ProfileButton({ className }: Props) {
             <DropdownMenuItem asChild className='cursor-pointer'>
               {pathname.includes('staff') ? (
                 <Link to='/'>
-                  <img src={storeIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                  <img src={storeIcon} className='w-4 h-4 mr-2 dark:filter dark:invert' />
                   <span>Xem cửa hàng</span>
                 </Link>
               ) : (
                 <Link to='/staff'>
-                  <img src={staffIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+                  <img src={staffIcon} className='w-4 h-4 mr-2 dark:filter dark:invert' />
                   <span>Nhân viên</span>
                 </Link>
               )}
@@ -121,19 +121,19 @@ function ProfileButton({ className }: Props) {
           )}
           <DropdownMenuItem asChild className='cursor-pointer'>
             <Link to='/profile'>
-              <UserIcon className='mr-2 h-4 w-4' />
+              <UserIcon className='w-4 h-4 mr-2' />
               <span>Hồ sơ người dùng</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild className='cursor-pointer'>
             <Link to='/orders'>
-              <img src={orderIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+              <img src={orderIcon} className='w-4 h-4 mr-2 dark:filter dark:invert' />
               <span>Đơn hàng</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild className='cursor-pointer'>
             <Link to='/your-nest'>
-              <img src={nestIcon} className='mr-2 h-4 w-4 dark:filter dark:invert' />
+              <img src={nestIcon} className='w-4 h-4 mr-2 dark:filter dark:invert' />
               <span>Tổ chim của bạn</span>
             </Link>
           </DropdownMenuItem>
@@ -146,7 +146,7 @@ function ProfileButton({ className }: Props) {
           }}
           className='cursor-pointer'
         >
-          <LogOut className='mr-2 h-4 w-4' />
+          <LogOut className='w-4 h-4 mr-2' />
           <span>Đăng Xuất</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

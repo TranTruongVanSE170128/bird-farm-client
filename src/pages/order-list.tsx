@@ -103,9 +103,9 @@ function OrderList() {
   return (
     <main>
       <Container>
-        <div className='w-full h-14 shadow-l relative mt-6 bg-muted'>
-          <div className='bg-primary h-1 absolute bottom-0 transition-all duration-300' style={barStyle} />
-          <ul className='flex justify-around h-full items-center'>
+        <div className='relative w-full mt-6 h-14 shadow-l bg-muted'>
+          <div className='absolute bottom-0 h-1 transition-all duration-300 bg-primary' style={barStyle} />
+          <ul className='flex items-center justify-around h-full'>
             {tabItems.map((tab) => (
               <li
                 key={tab.value}
@@ -124,7 +124,7 @@ function OrderList() {
 
         {!isLoadingOrders && !orders.length && (
           <div className='flex justify-center items-center w-full h-[400px] bg-accent mt-4'>
-            <div className='col-span-1 flex flex-col justify-center items-center text-lg font-medium mt-12'>
+            <div className='flex flex-col items-center justify-center col-span-1 mt-12 text-lg font-medium'>
               Chưa có đơn hàng nào <img src={greyBirdIcon} className='w-24 h-24 mt-4' />
             </div>
           </div>
@@ -164,7 +164,7 @@ function OrderList() {
             }
 
             return (
-              <div key={order._id} className='mt-4 rounded px-8 py-4 bg-muted'>
+              <div key={order._id} className='px-8 py-4 mt-4 rounded bg-muted'>
                 <div className='flex justify-end'>
                   {order?.cancelMessage ? (
                     <p className='mt-2 text-teal-500'>{order?.cancelMessage}</p>
@@ -173,14 +173,14 @@ function OrderList() {
                   )}
 
                   <div className='w-[1px] h-[20px] bg-border mx-4 mt-2 ' />
-                  <p className='uppercase text-primary mt-2'>{statusToVi[order.status]}</p>
+                  <p className='mt-2 uppercase text-primary'>{statusToVi[order.status]}</p>
                 </div>
                 <div className='min-w-full h-[1px] bg-border/50 my-4' />
                 {getBirds(order).map((bird) => (
                   <div key={bird._id} className='flex flex-row justify-between mb-3'>
                     <div className='flex items-center gap-4'>
                       <img
-                        className='w-20 aspect-square object-cover rounded-md border cursor-pointer'
+                        className='object-cover w-20 border rounded-md cursor-pointer aspect-square'
                         src={bird.imageUrls?.[0] || noImage}
                         alt='bird'
                       />
@@ -210,7 +210,7 @@ function OrderList() {
                   <div key={nest._id} className='flex flex-row justify-between mb-4'>
                     <div className='flex items-center gap-4'>
                       <img
-                        className='w-20 aspect-square object-cover rounded-md border cursor-pointer'
+                        className='object-cover w-20 border rounded-md cursor-pointer aspect-square'
                         src={nest.imageUrls?.[0] || noImage}
                         alt='nest'
                       />
@@ -230,11 +230,11 @@ function OrderList() {
                   </div>
                 ))}
                 <div className='min-w-full h-[1px] bg-border/50' />
-                <div className='flex gap-3 justify-end mt-6 items-center'>
-                  <p className='font-medium text-lg mt-1'>Thành tiền:</p>
-                  <p className='text-primary text-2xl font-medium'>{formatPrice(order.totalMoney)}</p>
+                <div className='flex items-center justify-end gap-3 mt-6'>
+                  <p className='mt-1 text-lg font-medium'>Thành tiền:</p>
+                  <p className='text-2xl font-medium text-primary'>{formatPrice(order.totalMoney)}</p>
                 </div>
-                <div className='flex flex-col md:flex-row justify-end items-center mt-5 gap-3'>
+                <div className='flex flex-col items-center justify-end gap-3 mt-5 md:flex-row'>
                   {stateButtons.map((button, i) => {
                     return (
                       <Button

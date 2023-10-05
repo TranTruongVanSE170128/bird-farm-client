@@ -35,18 +35,18 @@ function SpecieList() {
   return (
     <main>
       <Container>
-        <div className='flex justify-between items-center my-12'>
+        <div className='flex items-center justify-between my-12'>
           <h1 className='text-3xl font-bold'>Các loài chim đang bán tại cửa hàng</h1>
         </div>
 
         {isLoadingSpecies ? (
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
             {Array(...new Array(12)).map(() => {
               return <SpecieCardSkeleton />
             })}
           </div>
         ) : (
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
             {species.map((specie) => {
               return <SpecieCard key={specie._id} specie={specie} />
             })}

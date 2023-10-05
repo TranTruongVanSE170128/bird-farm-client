@@ -207,7 +207,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
                         className={cn('w-[200px] justify-between', !field.value && 'text-muted-foreground')}
                       >
                         {field.value ? species.find((specie) => specie._id === field.value)?.name : 'Chọn loài'}
-                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                        <ChevronsUpDown className='w-4 h-4 ml-2 opacity-50 shrink-0' />
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
@@ -249,13 +249,13 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
               control={form.control}
               name='name'
               render={({ field }) => (
-                <FormItem className='flex w-full flex-col'>
+                <FormItem className='flex flex-col w-full'>
                   <FormLabel className='font-bold'>Tên*</FormLabel>
                   <FormControl>
                     <Input disabled type='hidden' className='no-focus' {...field} />
                   </FormControl>
 
-                  <div className='flex h-10 w-full rounded-md border bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300 border-border'>
+                  <div className='flex w-full h-10 px-3 py-2 text-sm bg-white border rounded-md ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300 border-border'>
                     {form.getValues('name')}
                   </div>
 
@@ -267,12 +267,12 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
           )}
         </div>
 
-        <div className='flex gap-4 items-end'>
+        <div className='flex items-end gap-4'>
           <FormField
             control={form.control}
             name='gender'
             render={({ field }) => (
-              <FormItem className='shrink-0 w-48'>
+              <FormItem className='w-48 shrink-0'>
                 <FormLabel>Giới Tính*</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
@@ -304,7 +304,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
             control={form.control}
             name='type'
             render={({ field }) => (
-              <FormItem className='shrink-0 w-56'>
+              <FormItem className='w-56 shrink-0'>
                 <FormLabel>Loại Chim*</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
@@ -337,7 +337,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
               control={form.control}
               name='sellPrice'
               render={({ field }) => (
-                <FormItem className='flex w-full flex-col'>
+                <FormItem className='flex flex-col w-full'>
                   <FormLabel className='font-bold'>Giá bán*(vnđ)</FormLabel>
                   <FormControl>
                     <Input placeholder='Giá bán...' type='text' className='no-focus' {...field} />
@@ -353,7 +353,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
               control={form.control}
               name='breedPrice'
               render={({ field }) => (
-                <FormItem className='flex w-full flex-col'>
+                <FormItem className='flex flex-col w-full'>
                   <FormLabel className='font-bold'>Giá phối giống*(vnđ)</FormLabel>
                   <FormControl>
                     <Input placeholder='Giá phối giống...' type='text' className='no-focus' {...field} />
@@ -420,7 +420,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
                         className={cn('w-[240px] text-left font-normal', !field.value && 'text-muted-foreground')}
                       >
                         {field.value ? format(field.value, 'PPP', { locale: vi }) : <span>Chọn ngày sinh</span>}
-                        <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                        <CalendarIcon className='w-4 h-4 ml-auto opacity-50' />
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
@@ -446,19 +446,19 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
           render={({ field }) => (
             <FormItem className='flex items-center gap-4'>
               <FormLabel className=''>
-                <div className='font-bold mb-4'>Ảnh</div>
+                <div className='mb-4 font-bold'>Ảnh</div>
                 {!field.value?.length ? (
                   <img
                     src={noImage}
                     alt='imageUrl'
                     width={240}
                     height={240}
-                    className='object-contain rounded-md border'
+                    className='object-contain border rounded-md'
                   />
                 ) : (
                   field.value.map((url) => {
                     return (
-                      <img src={url} alt='imageUrl' width={240} height={240} className='rounded-md object-contain' />
+                      <img src={url} alt='imageUrl' width={240} height={240} className='object-contain rounded-md' />
                     )
                   })
                 )}
@@ -478,13 +478,13 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
         />
 
         <div>
-          <div className='text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-semibold text-light-2 mb-3'>
+          <div className='mb-3 text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-light-2'>
             Thành Tích Thi Đấu
           </div>
           <div className='flex w-full'>
-            <div className='grid grid-cols-2 gap-3 w-full'>
-              <div className='col-span-1 text-sm flex items-end pb-3'>Tên Cuộc Thi</div>
-              <div className='col-span-1 text-sm flex items-end pb-3'>Xếp Hạng</div>
+            <div className='grid w-full grid-cols-2 gap-3'>
+              <div className='flex items-end col-span-1 pb-3 text-sm'>Tên Cuộc Thi</div>
+              <div className='flex items-end col-span-1 pb-3 text-sm'>Xếp Hạng</div>
             </div>
             <Button size='icon' variant='outline' className='invisible'></Button>
           </div>
@@ -492,16 +492,16 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
             {achievements?.map((achievement) => {
               return (
                 <div key={achievement._id} className='flex w-full gap-3'>
-                  <div className='grid grid-cols-2 gap-3 w-full'>
+                  <div className='grid w-full grid-cols-2 gap-3'>
                     <Input
                       onChange={(e) => handleChangeAchievements(e, achievement._id, 'competition')}
                       value={achievement.competition}
-                      className='col-span-1 py-2 px-4 rounded-md border-border border'
+                      className='col-span-1 px-4 py-2 border rounded-md border-border'
                     />
                     <Input
                       onChange={(e) => handleChangeAchievements(e, achievement._id, 'rank')}
                       value={achievement.rank}
-                      className='col-span-1 py-2 px-4 rounded-md border-border border'
+                      className='col-span-1 px-4 py-2 border rounded-md border-border'
                     />
                   </div>
                   <Button
@@ -517,9 +517,9 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
               )
             })}
             <div className='flex w-full gap-3'>
-              <div className='grid grid-cols-2 gap-3 w-full'>
-                <Input ref={newCompetition} className='col-span-1 py-2 px-4 rounded-md border-border border' />
-                <Input ref={newRank} className='col-span-1 py-2 px-4 rounded-md border-border border' />
+              <div className='grid w-full grid-cols-2 gap-3'>
+                <Input ref={newCompetition} className='col-span-1 px-4 py-2 border rounded-md border-border' />
+                <Input ref={newRank} className='col-span-1 px-4 py-2 border rounded-md border-border' />
               </div>
               <Button onClick={handleAddAchievement} size='icon' variant='outline'>
                 <Plus />
@@ -532,7 +532,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
           control={form.control}
           name='description'
           render={({ field }) => (
-            <FormItem className='flex w-full flex-col gap-3'>
+            <FormItem className='flex flex-col w-full gap-3'>
               <FormLabel className='font-bold'>Mô tả</FormLabel>
               <FormControl>
                 <Textarea rows={10} className='no-focus' {...field} />
@@ -542,7 +542,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
           )}
         />
 
-        <div className='flex gap-2 justify-end'>
+        <div className='flex justify-end gap-2'>
           {setEdit && (
             <Button
               onClick={() => {
@@ -557,7 +557,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
           )}
           <Button disabled={isSubmitting} type='submit'>
             {btnTitle}
-            {isSubmitting && <Shell className='ml-1 animate-spin w-4 h-4' />}
+            {isSubmitting && <Shell className='w-4 h-4 ml-1 animate-spin' />}
           </Button>
         </div>
       </form>

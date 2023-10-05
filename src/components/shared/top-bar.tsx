@@ -16,7 +16,7 @@ function TopBar({ baseUrl }: Props) {
   const { theme } = useTheme()
 
   return (
-    <nav className='fixed top-0 z-30 bg-background flex w-full items-center justify-between border-b px-6 py-3'>
+    <nav className='fixed top-0 z-30 flex items-center justify-between w-full px-6 py-3 border-b bg-background'>
       <Link to={baseUrl} className='flex items-center gap-4 py-1'>
         <img src={theme === 'light' ? logoBlack : logoWhite} alt='logo' className='h-12' />
       </Link>
@@ -25,7 +25,7 @@ function TopBar({ baseUrl }: Props) {
         <div className='block md:hidden'>
           {user && (
             <div onClick={() => {}}>
-              <div className='flex cursor-pointer gap-4 p-4'>
+              <div className='flex gap-4 p-4 cursor-pointer'>
                 <LogOut />
 
                 <p className='text-light-2 max-lg:hidden'>Logout</p>

@@ -47,45 +47,45 @@ function BirdComparing() {
       <Container>
         <h1 className='text-3xl font-bold'>So sánh chim</h1>
         <div className='flex mt-4'>
-          <div className='flex flex-col border justify-center items-center basis-1/3'>
-            <div className='text-center text-xl font-medium'>{firstBird?.name}</div>
+          <div className='flex flex-col items-center justify-center border basis-1/3'>
+            <div className='text-xl font-medium text-center'>{firstBird?.name}</div>
             <img src={versusIcon} className='w-32 h-32' />
-            <div className='text-center text-xl font-medium'>{firstBird?.name}</div>
+            <div className='text-xl font-medium text-center'>{firstBird?.name}</div>
           </div>
 
-          <div className='basis-1/3 flex justify-center border'>
-            <BirdCard className='max-w-[350px]' bird={firstBird} />
+          <div className='flex justify-center border basis-1/3'>
+            <BirdCard className='w-full h-full' bird={firstBird} />
           </div>
 
-          <div className='basis-1/3 flex justify-center border'>
-            <BirdCard className='max-w-[350px]' bird={secondBird} />
+          <div className='flex justify-center border basis-1/3'>
+            <BirdCard className='w-full h-full' bird={secondBird} />
           </div>
         </div>
 
         <Table className=''>
           <TableHeader>
             <TableRow className='grid grid-cols-12'>
-              <TableHead className='border col-span-4 font-medium text-base pt-3'>Tên</TableHead>
-              <TableHead className='border col-span-4 text-base pt-3'>{firstBird.name}</TableHead>
-              <TableHead className='border col-span-4 text-base pt-3'>{secondBird.name}</TableHead>
+              <TableHead className='col-span-4 pt-3 text-base font-medium border'>Tên</TableHead>
+              <TableHead className='col-span-4 pt-3 text-base border'>{firstBird.name}</TableHead>
+              <TableHead className='col-span-4 pt-3 text-base border'>{secondBird.name}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow className='grid grid-cols-12'>
-              <TableCell className='border col-span-4 font-medium text-base'>Loài chim</TableCell>
-              <TableCell className='border col-span-4'>{getSpecie(firstBird).name}</TableCell>
-              <TableCell className='border col-span-4'>{getSpecie(secondBird).name}</TableCell>
+              <TableCell className='col-span-4 text-base font-medium border'>Loài chim</TableCell>
+              <TableCell className='col-span-4 border'>{getSpecie(firstBird).name}</TableCell>
+              <TableCell className='col-span-4 border'>{getSpecie(secondBird).name}</TableCell>
             </TableRow>
             <TableRow className='grid grid-cols-12'>
-              <TableCell className='border col-span-4 font-medium text-base'>Bố</TableCell>
-              <TableCell className='border col-span-4'>
+              <TableCell className='col-span-4 text-base font-medium border'>Bố</TableCell>
+              <TableCell className='col-span-4 border'>
                 {getDad(firstBird) ? (
                   <Link to={`/birds/${getDad(firstBird)._id}`}>{getDad(firstBird).name}</Link>
                 ) : (
                   'Không có thông tin'
                 )}
               </TableCell>
-              <TableCell className='border col-span-4'>
+              <TableCell className='col-span-4 border'>
                 {getDad(secondBird) ? (
                   <Link to={`/birds/${getDad(secondBird)._id}`}>{getDad(secondBird).name}</Link>
                 ) : (
@@ -94,15 +94,15 @@ function BirdComparing() {
               </TableCell>
             </TableRow>
             <TableRow className='grid grid-cols-12'>
-              <TableCell className='border col-span-4 font-medium text-base'>Mẹ</TableCell>
-              <TableCell className='border col-span-4'>
+              <TableCell className='col-span-4 text-base font-medium border'>Mẹ</TableCell>
+              <TableCell className='col-span-4 border'>
                 {getMom(firstBird) ? (
                   <Link to={`/birds/${getMom(firstBird)._id}`}>{getMom(firstBird).name}</Link>
                 ) : (
                   'Không có thông tin'
                 )}
               </TableCell>
-              <TableCell className='border col-span-4'>
+              <TableCell className='col-span-4 border'>
                 {getMom(secondBird) ? (
                   <Link to={`/birds/${getMom(secondBird)._id}`}>{getMom(secondBird).name}</Link>
                 ) : (
@@ -111,17 +111,17 @@ function BirdComparing() {
               </TableCell>
             </TableRow>
             <TableRow className='grid grid-cols-12'>
-              <TableCell className='border col-span-4 font-medium text-base'>Tuổi</TableCell>
-              <TableCell className='border col-span-4'>
+              <TableCell className='col-span-4 text-base font-medium border'>Tuổi</TableCell>
+              <TableCell className='col-span-4 border'>
                 {firstBird.birth ? calculateAge(firstBird.birth) : 'Không có thông tin'}
               </TableCell>
-              <TableCell className='border col-span-4'>
+              <TableCell className='col-span-4 border'>
                 {secondBird.birth ? calculateAge(secondBird.birth) : 'Không có thông tin'}
               </TableCell>
             </TableRow>
             <TableRow className='grid grid-cols-12'>
-              <TableCell className='border col-span-4 font-medium text-base'>Giới tính</TableCell>
-              <TableCell className='border col-span-4'>
+              <TableCell className='col-span-4 text-base font-medium border'>Giới tính</TableCell>
+              <TableCell className='col-span-4 border'>
                 {firstBird.gender === 'male' ? (
                   <div className='flex items-center mt-[2px]'>
                     Đực
@@ -134,7 +134,7 @@ function BirdComparing() {
                   </div>
                 )}
               </TableCell>
-              <TableCell className='border col-span-4'>
+              <TableCell className='col-span-4 border'>
                 {secondBird.gender === 'male' ? (
                   <div className='flex items-center mt-[2px]'>
                     Đực
@@ -149,8 +149,8 @@ function BirdComparing() {
               </TableCell>
             </TableRow>
             <TableRow className='grid grid-cols-12'>
-              <TableCell className='border col-span-4 font-medium text-base'>Loại chim</TableCell>
-              <TableCell className='border col-span-4'>
+              <TableCell className='col-span-4 text-base font-medium border'>Loại chim</TableCell>
+              <TableCell className='col-span-4 border'>
                 {firstBird.type === 'sell' ? (
                   <div className='flex items-center gap-2'>
                     <img src={birdIcon} className='w-6 h-6' />
@@ -163,7 +163,7 @@ function BirdComparing() {
                   </div>
                 )}
               </TableCell>
-              <TableCell className='border col-span-4'>
+              <TableCell className='col-span-4 border'>
                 {secondBird.type === 'sell' ? (
                   <div className='flex items-center gap-2'>
                     <img src={birdIcon} className='w-6 h-6' />
@@ -178,37 +178,37 @@ function BirdComparing() {
               </TableCell>
             </TableRow>
             <TableRow className='grid grid-cols-12'>
-              <TableCell className='border col-span-4 font-medium text-base'>Giá bán/Giá phối giống</TableCell>
-              <TableCell className='border col-span-4 font-medium text-primary text-lg'>
+              <TableCell className='col-span-4 text-base font-medium border'>Giá bán/Giá phối giống</TableCell>
+              <TableCell className='col-span-4 text-lg font-medium border text-primary'>
                 {firstBird.type === 'sell' ? formatPrice(firstBird.sellPrice) : formatPrice(firstBird.breedPrice)}
               </TableCell>
-              <TableCell className='border col-span-4 font-medium text-primary text-lg'>
+              <TableCell className='col-span-4 text-lg font-medium border text-primary'>
                 {secondBird.type === 'sell' ? formatPrice(secondBird.sellPrice) : formatPrice(secondBird.breedPrice)}
               </TableCell>
             </TableRow>
             <TableRow className='grid grid-cols-12'>
-              <TableCell className='border col-span-4 font-medium text-base'>Thành tích thi đấu</TableCell>
-              <TableCell className='border col-span-4 gap-2 flex flex-col'>
+              <TableCell className='col-span-4 text-base font-medium border'>Thành tích thi đấu</TableCell>
+              <TableCell className='flex flex-col col-span-4 gap-2 border'>
                 {firstBird?.achievements?.map((achievement) => {
                   return (
                     <div className='flex items-center'>
                       <span className='pr-3'>
                         <img className='w-6' src={medalIcon}></img>
                       </span>
-                      <span className='font-medium mr-1'>Hạng {achievement.rank}</span>
+                      <span className='mr-1 font-medium'>Hạng {achievement.rank}</span>
                       <span> {achievement.competition}</span>
                     </div>
                   )
                 })}
               </TableCell>
-              <TableCell className='border col-span-4 gap-2 flex flex-col'>
+              <TableCell className='flex flex-col col-span-4 gap-2 border'>
                 {secondBird?.achievements?.map((achievement) => {
                   return (
                     <div className='flex items-center'>
                       <span className='pr-3'>
                         <img className='w-6' src={medalIcon}></img>
                       </span>
-                      <span className='font-medium mr-1'>Hạng {achievement.rank}</span>
+                      <span className='mr-1 font-medium'>Hạng {achievement.rank}</span>
                       <span> {achievement.competition}</span>
                     </div>
                   )

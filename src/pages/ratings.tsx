@@ -62,12 +62,12 @@ function Ratings() {
   return (
     <main className=''>
       <Container>
-        <h1 className=' text-3xl my-12 font-semibold text-center'>Đánh giá và Nhận xét</h1>
+        <h1 className='my-12 text-3xl font-semibold text-center '>Đánh giá và Nhận xét</h1>
 
-        <div className='flex justify-start items-center bg-muted rounded-sm mb-4 p-4'>
+        <div className='flex items-center justify-start p-4 mb-4 rounded-sm bg-muted'>
           <div className='mx-10'>
-            <span className='font-medium text-4xl mx-4'>{averageRatings?.toFixed(1) || 0}</span>
-            <span className='font-medium text-2xl'>/ 5</span>
+            <span className='mx-4 text-4xl font-medium'>{averageRatings?.toFixed(1) || 0}</span>
+            <span className='text-2xl font-medium'>/ 5</span>
             <div className='flex my-2'>
               <svg viewBox='0 0 1000 200' className='mb-0'>
                 <defs>
@@ -81,7 +81,7 @@ function Ratings() {
                   </clipPath>
                 </defs>
 
-                <rect className='fill-slate-300 w-full h-full' clipPath='url(#stars)' />
+                <rect className='w-full h-full fill-slate-300' clipPath='url(#stars)' />
 
                 <rect width={averageRatings * 20 + '%'} className='fill-[#eab308] h-full' clipPath='url(#stars)' />
               </svg>
@@ -94,7 +94,7 @@ function Ratings() {
                 key={button.value}
                 onClick={() => handleButtonClick(button.value)}
                 variant={selectedValue.toString() === button.value ? 'default' : 'outline'}
-                className='border border-primary text-base'
+                className='text-base border border-primary'
               >
                 {button.label}
               </Button>
@@ -106,7 +106,7 @@ function Ratings() {
 
         {!isLoadingRatings && !ratings.length && (
           <div className='flex justify-center items-center w-full h-[400px] bg-accent mt-4'>
-            <div className='col-span-1 flex flex-col justify-center items-center text-lg font-medium mt-12'>
+            <div className='flex flex-col items-center justify-center col-span-1 mt-12 text-lg font-medium'>
               Chưa có đánh giá nào <img src={greyBirdIcon} className='w-24 h-24 mt-4' />
             </div>
           </div>
@@ -115,20 +115,20 @@ function Ratings() {
         {!isLoadingRatings &&
           ratings.map((rating) => {
             return (
-              <div className='flex justify-center bg-muted mb-4'>
-                <div className='p-4 cursor-pointer w-full '>
-                  <div className='flex justify-between items-center mb-4 mx-10'>
+              <div className='flex justify-center mb-4 bg-muted'>
+                <div className='w-full p-4 cursor-pointer '>
+                  <div className='flex items-center justify-between mx-10 mb-4'>
                     <div className='flex items-center'>
-                      <div className='w-10 h-10 rounded-full overflow-hidden mr-2'>
+                      <div className='w-10 h-10 mr-2 overflow-hidden rounded-full'>
                         <img
-                          className='w-full h-full object-cover'
+                          className='object-cover w-full h-full'
                           src={getUser(rating).imageUrl || avatarAlt}
                           alt='Profile Image'
                         />
                       </div>
 
                       <div className=''>
-                        <strong className='text-lg mr-2 '>{getUser(rating).name}</strong>
+                        <strong className='mr-2 text-lg '>{getUser(rating).name}</strong>
                         <span className='text-lg'> {calculateTime(rating.createdAt)}</span>
                       </div>
                     </div>
@@ -142,12 +142,12 @@ function Ratings() {
                     </div>
                   </div>
 
-                  <div className='text-foreground text-xl mx-10'>{rating.content}</div>
+                  <div className='mx-10 text-xl text-foreground'>{rating.content}</div>
 
-                  <div className='flex mt-2 mx-10'>
+                  <div className='flex mx-10 mt-2'>
                     {!!rating.imageUrls?.length && (
                       <img
-                        className='w-24 aspect-square object-cover rounded cursor-pointer'
+                        className='object-cover w-24 rounded cursor-pointer aspect-square'
                         src={rating.imageUrls[0]}
                         alt='rating'
                       />

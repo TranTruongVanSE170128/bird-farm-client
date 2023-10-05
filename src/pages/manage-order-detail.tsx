@@ -63,7 +63,7 @@ function ManageOrderDetail() {
 
         <div className='flex gap-2'>
           <Button disabled={approvingOrder} asChild>
-            <Link className='mb-6 flex items-center gap-1 my-auto' to='/staff/orders'>
+            <Link className='flex items-center gap-1 my-auto mb-6' to='/staff/orders'>
               <span>Quay lại</span>
               <ArrowLeft className='w-5 h-5' />
             </Link>
@@ -110,30 +110,30 @@ function ManageOrderDetail() {
           <div className='flex flex-col gap-3 mt-4'>
             <div className='grid grid-cols-2 gap-2'>
               <div className='col-span-1'>Tổng tiền:</div>
-              <div className='col-span-1'>{formatPrice(order.totalMoney)}</div>
+              <div className='col-span-1 text-right'>{formatPrice(order.totalMoney)}</div>
             </div>
             <div className='grid grid-cols-2 gap-2'>
-              <div className='col-span-1'>Phí vận chuyển:</div>
-              <div className='col-span-1'>0đ</div>
+              <div className='col-span-1'>Giảm giá:</div>
+              <div className='col-span-1 text-right'>-{formatPrice(order.discount || 0)}</div>
             </div>
             <div className='grid grid-cols-2 gap-2 font-semibold text-primary'>
               <div className='col-span-1'>Tổng:</div>
-              <div className='col-span-1'>{formatPrice(order.totalMoney)}</div>
+              <div className='col-span-1 text-right'>{formatPrice(order.totalMoney - (order.discount || 0))}</div>
             </div>
           </div>
         </div>
       </div>
 
       <div className='flex justify-end gap-4 mt-4'>
-        <Button disabled={approvingOrder} onClick={() => {}} className='mb-6 flex items-center gap-1 my-auto'>
+        <Button disabled={approvingOrder} onClick={() => {}} className='flex items-center gap-1 my-auto mb-6'>
           <span>Hủy đơn hàng</span>
           <img src={cancel} className='w-5 h-5 filter invert' />
         </Button>
         {order.status === 'processing' && (
-          <Button disabled={approvingOrder} onClick={approveOrder} className='mb-6 flex items-center gap-1 my-auto'>
+          <Button disabled={approvingOrder} onClick={approveOrder} className='flex items-center gap-1 my-auto mb-6'>
             <span>Chấp nhận đơn hàng</span>
             <img src={approve} className='w-5 h-5 filter invert' />
-            {approvingOrder && <Shell className='animate-spin w-4 h-4 ml-1' />}
+            {approvingOrder && <Shell className='w-4 h-4 ml-1 animate-spin' />}
           </Button>
         )}
       </div>
@@ -155,7 +155,7 @@ function ManageOrderDetail() {
               <TableRow key={bird._id}>
                 <TableCell>
                   <img
-                    className='aspect-square w-16 object-cover border rounded-md'
+                    className='object-cover w-16 border rounded-md aspect-square'
                     src={bird.imageUrls?.[0] || noImage}
                     alt=''
                   />
@@ -171,9 +171,9 @@ function ManageOrderDetail() {
               <TableRow key={nest._id}>
                 <TableCell>
                   {!nest.imageUrls?.length ? (
-                    <img className='aspect-square w-16 object-cover' src={noImage} alt='' />
+                    <img className='object-cover w-16 aspect-square' src={noImage} alt='' />
                   ) : (
-                    <img className='aspect-square w-16 object-cover' src={nest.imageUrls?.[0]} alt='' />
+                    <img className='object-cover w-16 aspect-square' src={nest.imageUrls?.[0]} alt='' />
                   )}
                 </TableCell>
                 <TableCell className=''>{nest.name}</TableCell>

@@ -52,13 +52,13 @@ function Home() {
 
   return (
     <Container>
-      <div className='rounded-lg overflow-hidden'>
+      <div className='overflow-hidden rounded-lg'>
         <div
           style={{ backgroundImage: `url(https://images.alphacoders.com/774/thumb-1920-774587.jpg)` }}
           className='rounded-lg relative aspect-square md:aspect-[2.4/1] overflow-hidden bg-cover mt-8'
         >
-          <div className='h-full w-full flex flex-col justify-center items-center text-center gap-y-8'>
-            <div className='font-bold text-3xl sm:text-5xl lg:text-6xl sm:max-w-xl max-w-xs text-foreground bg-background/70 p-4 rounded-lg'>
+          <div className='flex flex-col items-center justify-center w-full h-full text-center gap-y-8'>
+            <div className='max-w-xs p-4 text-3xl font-bold rounded-lg sm:text-5xl lg:text-6xl sm:max-w-xl text-foreground bg-background/70'>
               Bird Farm
               <Button
                 onClick={() => {
@@ -77,7 +77,7 @@ function Home() {
         </div>
       </div>
 
-      <h1 ref={speciesSection} className='text-3xl font-bold mt-8 mb-5 text-center'>
+      <h1 ref={speciesSection} className='mt-8 mb-5 text-3xl font-bold text-center'>
         Các loài chim bán chạy
       </h1>
       <div className='relative'>
@@ -119,26 +119,26 @@ function Home() {
               })}
         </Swiper>
 
-        <Button className='p-2 text-primary-foreground bg-primary rounded-full swiper-button-prev slider-arrow absolute left-0 top-1/2 -translate-y-1/2 z-40 -translate-x-1/2'>
+        <Button className='absolute left-0 z-40 p-2 -translate-x-1/2 -translate-y-1/2 rounded-full text-primary-foreground bg-primary swiper-button-prev slider-arrow top-1/2'>
           <ArrowLeft />
         </Button>
-        <Button className='p-2 text-primary-foreground bg-primary rounded-full swiper-button-next slider-arrow absolute right-0 top-1/2 -translate-y-1/2 z-40 translate-x-1/2'>
+        <Button className='absolute right-0 z-40 p-2 translate-x-1/2 -translate-y-1/2 rounded-full text-primary-foreground bg-primary swiper-button-next slider-arrow top-1/2'>
           <ArrowRight />
         </Button>
       </div>
 
-      <Link className='mt-6 flex justify-center' to='/species'>
+      <Link className='flex justify-center mt-6' to='/species'>
         <Button size='lg'>Xem tất cả</Button>
       </Link>
 
-      <div className='flex justify-between items-center mt-8 mb-4'>
+      <div className='flex items-center justify-between mt-8 mb-4'>
         <h1 className='text-3xl font-bold'>Chim đang bán tại cửa hàng</h1>
 
-        <Link to='/birds' className='text-xl underline text-primary font-bold'>
+        <Link to='/birds' className='text-xl font-bold underline text-primary'>
           Xem thêm
         </Link>
       </div>
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
         {isLoadingBirds
           ? Array(...new Array(8)).map((_, index) => {
               return <BirdCardSkeleton key={index} />
@@ -148,7 +148,7 @@ function Home() {
             })}
       </div>
 
-      <Link className='mt-6 flex justify-center' to='/birds'>
+      <Link className='flex justify-center mt-6' to='/birds'>
         <Button size='lg'>Xem tất cả</Button>
       </Link>
     </Container>

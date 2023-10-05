@@ -13,7 +13,7 @@ function BottomBar({ routes, role }: Props) {
   const { theme } = useTheme()
 
   return (
-    <section className='fixed bottom-0 z-10 w-full rounded-md bg-input p-4 backdrop-blur-lg xs:px-7 md:hidden'>
+    <section className='fixed bottom-0 z-10 w-full p-4 rounded-md bg-input backdrop-blur-lg xs:px-7 md:hidden'>
       <div className='flex items-center justify-between gap-3 xs:gap-5'>
         {routes.map((link) => {
           const isActive =

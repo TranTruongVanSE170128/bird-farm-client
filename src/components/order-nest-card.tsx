@@ -71,7 +71,7 @@ function OrderNestCard({ orderNest }: Props) {
   }
 
   return (
-    <div className='flex flex-col gap-6 rounded-3xl border shadow-xl mb-10 p-10 pt-5'>
+    <div className='flex flex-col gap-6 p-10 pt-5 mb-10 border shadow-xl rounded-3xl'>
       <div className='flex justify-end'>
         {orderNest?.cancelMessage ? (
           <p className='mt-2 text-teal-500'>{orderNest?.cancelMessage}</p>
@@ -80,32 +80,32 @@ function OrderNestCard({ orderNest }: Props) {
         )}
 
         <div className='w-[1px] h-[20px] bg-border mx-4 mt-2 ' />
-        <p className='uppercase text-primary mt-2'>{statusToVi[orderNest.status]}</p>
+        <p className='mt-2 uppercase text-primary'>{statusToVi[orderNest.status]}</p>
       </div>
       <div className='min-w-full h-[1px] bg-border mb-4' />
       <div className='grid grid-cols-2 gap-12'>
-        <div className='col-span-1 flex flex-col gap-2'>
+        <div className='flex flex-col col-span-1 gap-2'>
           <div className='flex gap-4'>
-            <div className='font-medium text-lg'>
+            <div className='text-lg font-medium'>
               Chim non đực: <span className='font-normal'>{orderNest.numberChildPriceMale} con</span>
             </div>
-            <div className='font-medium text-lg'>
+            <div className='text-lg font-medium'>
               Chim non cái: <span className='font-normal'>{orderNest.numberChildPriceFemale} con</span>
             </div>
           </div>
 
           <div className='flex gap-4'>
-            <div className='font-medium text-lg'>
+            <div className='text-lg font-medium'>
               Giá chim non đực: <span className='font-normal'>{formatPrice(orderNest.childPriceMale)}/con</span>
             </div>
-            <div className='font-medium text-lg'>
+            <div className='text-lg font-medium'>
               Giá chim non cái: <span className='font-normal'>{formatPrice(orderNest.childPriceFemale)}/con</span>
             </div>
           </div>
 
           <Link to={`/birds/${orderNest.dad._id}`} className='flex group'>
             <img
-              className='w-24 aspect-square object-cover border rounded-md'
+              className='object-cover w-24 border rounded-md aspect-square'
               src={orderNest.dad.imageUrls?.[0] || noImage}
             />
             <div className='flex flex-col justify-around mx-5'>
@@ -114,7 +114,7 @@ function OrderNestCard({ orderNest }: Props) {
                 <div>Loài: {getSpecie(orderNest).name}</div>
                 <img className='w-6 h-6' src={maleIcon} />
               </div>
-              <div className='flex gap items-center'>
+              <div className='flex items-center gap'>
                 Loại chim: Chim phối giống <img src={breedIcon} className='w-6 h-6' />
               </div>
             </div>
@@ -122,7 +122,7 @@ function OrderNestCard({ orderNest }: Props) {
 
           <Link to={`/birds/${orderNest.mom._id}`} className='flex group'>
             <img
-              className='w-24 aspect-square object-cover rounded-md border'
+              className='object-cover w-24 border rounded-md aspect-square'
               src={orderNest.mom.imageUrls?.[0] || noImage}
             />
             <div className='flex flex-col justify-around mx-5'>
@@ -131,7 +131,7 @@ function OrderNestCard({ orderNest }: Props) {
                 <div>Loài: {getSpecie(orderNest).name}</div>
                 <img className='w-6 h-6' src={femaleIcon} />
               </div>
-              <div className='flex gap items-center'>
+              <div className='flex items-center gap'>
                 Loại chim: Chim phối giống <img src={breedIcon} className='w-6 h-6' />
               </div>
             </div>
@@ -165,7 +165,7 @@ function OrderNestCard({ orderNest }: Props) {
                   }}
                   disabled={isReceivingOrder}
                 >
-                  Đã nhận hàng {isReceivingOrder && <Shell className='ml-1 animate-spin w-4 h-4' />}
+                  Đã nhận hàng {isReceivingOrder && <Shell className='w-4 h-4 ml-1 animate-spin' />}
                 </Button>
                 <Button variant='outline'>Liên hệ shop</Button>
               </>
@@ -174,7 +174,7 @@ function OrderNestCard({ orderNest }: Props) {
             {orderNest.status === 'success' && !orderNest.rated && (
               <>
                 <Button onClick={() => showRatingForm({ orderNestId: orderNest._id })} disabled={isReceivingOrder}>
-                  Đánh giá {isReceivingOrder && <Shell className='ml-1 animate-spin w-4 h-4' />}
+                  Đánh giá {isReceivingOrder && <Shell className='w-4 h-4 ml-1 animate-spin' />}
                 </Button>
                 <Button variant='outline'>Liên hệ shop</Button>
               </>
@@ -192,9 +192,9 @@ function OrderNestCard({ orderNest }: Props) {
         </div>
 
         {selectedStage && (
-          <div className='col-span-1 flex flex-col items-center'>
+          <div className='flex flex-col items-center col-span-1'>
             <img
-              className='aspect-video rounded-xl object-cover w-full'
+              className='object-cover w-full aspect-video rounded-xl'
               src={selectedStage.imageUrl}
               alt='Selected Image'
             />
@@ -203,17 +203,17 @@ function OrderNestCard({ orderNest }: Props) {
         )}
 
         {!orderNest.stages.length && (
-          <div className='col-span-1 flex flex-col justify-center items-center text-lg font-medium'>
+          <div className='flex flex-col items-center justify-center col-span-1 text-lg font-medium'>
             Chưa có giai đoạn phát triển nào <img src={greyBirdIcon} className='w-16 h-16 mt-4' />
           </div>
         )}
       </div>
 
-      <div className='flex flex-wrap justify-between mt-10 relative w-full'>
+      <div className='relative flex flex-wrap justify-between w-full mt-10'>
         {orderNest.stages.map((stage, index) => {
           return (
-            <div className='flex-1 flex z-20 flex-col justify-center items-center gap-2 -mt-3'>
-              <div className='flex w-full items-center justify-center'>
+            <div className='z-20 flex flex-col items-center justify-center flex-1 gap-2 -mt-3'>
+              <div className='flex items-center justify-center w-full'>
                 <div
                   className={cn(
                     'w-full flex-1 h-2 bg-slate-200 dark:bg-slate-500',
@@ -248,22 +248,22 @@ function OrderNestCard({ orderNest }: Props) {
           )
         })}
         {orderNest.status === 'breeding' && (
-          <div className='flex-1 flex z-20 flex-col justify-center items-center gap-2 -mt-3'>
-            <div className='flex w-full items-center justify-center'>
-              <div className='w-full flex-1 h-2 bg-slate-200 dark:bg-slate-500' />
-              <div className='h-5 aspect-square rounded-full cursor-pointer shrink-0 flex justify-center items-center text-lg font-medium p-5 bg-slate-200 text-black dark:bg-slate-500 dark:text-white'>
+          <div className='z-20 flex flex-col items-center justify-center flex-1 gap-2 -mt-3'>
+            <div className='flex items-center justify-center w-full'>
+              <div className='flex-1 w-full h-2 bg-slate-200 dark:bg-slate-500' />
+              <div className='flex items-center justify-center h-5 p-5 text-lg font-medium text-black rounded-full cursor-pointer aspect-square shrink-0 bg-slate-200 dark:bg-slate-500 dark:text-white'>
                 ?
               </div>
-              <div className='w-full flex-1 h-2 bg-primary invisible' />
+              <div className='flex-1 invisible w-full h-2 bg-primary' />
             </div>
             <div>Sắp diễn ra</div>
           </div>
         )}
 
         {!orderNest.stages.length && (
-          <div className='flex-1 flex z-20 flex-col justify-center items-center gap-2 -mt-3'>
-            <div className='flex w-full items-center justify-center'>
-              <div className='h-5 w-5 rounded-full cursor-pointer shrink-0 flex justify-center items-center text-lg font-medium p-5 bg-slate-200 text-black dark:bg-slate-500 dark:text-white'>
+          <div className='z-20 flex flex-col items-center justify-center flex-1 gap-2 -mt-3'>
+            <div className='flex items-center justify-center w-full'>
+              <div className='flex items-center justify-center w-5 h-5 p-5 text-lg font-medium text-black rounded-full cursor-pointer shrink-0 bg-slate-200 dark:bg-slate-500 dark:text-white'>
                 ?
               </div>
             </div>

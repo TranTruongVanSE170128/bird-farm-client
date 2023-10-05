@@ -80,15 +80,15 @@ function Cart() {
   return (
     <main>
       <Container>
-        <section className='my-7 px-5 container'>
+        <section className='container px-5 my-7'>
           <div className='flex justify-center gap-2 '>
-            <span className='uppercase text-2xl  '>Giỏ HÀNG </span>
+            <span className='text-2xl uppercase '>Giỏ HÀNG </span>
             <span className='text-2xl '>{'>'}</span>
-            <span className='uppercase text-2xl  text-gray-500'>Chi tiết thanh toán</span>
+            <span className='text-2xl text-gray-500 uppercase'>Chi tiết thanh toán</span>
           </div>
 
-          <div className='flex gap-10 mt-10 w-full'>
-            <div className='flex justify-center gap-10 flex-1 '>
+          <div className='flex w-full gap-10 mt-10'>
+            <div className='flex justify-center flex-1 gap-10 '>
               <div className='flex flex-col w-full'>
                 <Table className=''>
                   <TableHeader>
@@ -162,7 +162,7 @@ function Cart() {
                 </Table>
 
                 {!isLoadingProducts && !products?.birds.length && !products.nests.length && (
-                  <div className='flex flex-col justify-center items-center text-lg font-medium mx-auto mt-6'>
+                  <div className='flex flex-col items-center justify-center mx-auto mt-6 text-lg font-medium'>
                     Giỏ hàng rỗng <img src={greyBirdIcon} className='w-16 h-16 mt-4' />
                   </div>
                 )}
@@ -170,18 +170,18 @@ function Cart() {
               </div>
             </div>
             <div className='min-w-[300px]'>
-              <h1 className='text-lg font-bold uppercase text-center'>Đơn hàng</h1>
+              <h1 className='text-lg font-bold text-center uppercase'>Đơn hàng</h1>
               <div className='flex m-auto mt-5'>
-                <span className='w-1/2 text-start font-bold'>Tạm tính</span>
-                <span className='w-1/2 text-end font-bold'>
-                  {isLoadingProducts ? <Skeleton className='h-5 w-28 float-right' /> : formatPrice(totalMoney)}
+                <span className='w-1/2 font-bold text-start'>Tạm tính</span>
+                <span className='w-1/2 font-bold text-end'>
+                  {isLoadingProducts ? <Skeleton className='float-right h-5 w-28' /> : formatPrice(totalMoney)}
                 </span>
               </div>
               <div className='flex m-auto mt-5'>
-                <span className='w-1/2 text-start font-bold'>Giảm giá</span>
-                <span className='w-1/2 text-end font-bold'>
+                <span className='w-1/2 font-bold text-start'>Giảm giá</span>
+                <span className='w-1/2 font-bold text-end'>
                   {isLoadingProducts ? (
-                    <Skeleton className='h-5 w-28 float-right' />
+                    <Skeleton className='float-right h-5 w-28' />
                   ) : selectedVoucher ? (
                     formatPrice(calculateDiscount(totalMoney, selectedVoucher))
                   ) : (
@@ -210,7 +210,7 @@ function Cart() {
                             })
                             .map((voucher, index) => {
                               return (
-                                <div className='flex w-full gap-4 items-center'>
+                                <div className='flex items-center w-full gap-4'>
                                   <VoucherTicket
                                     contextContent={
                                       totalMoney < voucher.conditionPrice
@@ -240,12 +240,12 @@ function Cart() {
                 </AlertDialogContent>
               </AlertDialog>
 
-              <div className='border mt-4 m-auto'></div>
+              <div className='m-auto mt-4 border'></div>
               <div className='flex m-auto mt-5'>
-                <span className='w-1/2 text-start font-bold'>Tổng</span>
-                <span className='w-1/2 text-end font-bold'>
+                <span className='w-1/2 font-bold text-start'>Tổng</span>
+                <span className='w-1/2 font-bold text-end'>
                   {isLoadingProducts ? (
-                    <Skeleton className='h-5 w-28 float-right' />
+                    <Skeleton className='float-right h-5 w-28' />
                   ) : selectedVoucher ? (
                     formatPrice(totalMoney - calculateDiscount(totalMoney, selectedVoucher))
                   ) : (
@@ -254,7 +254,7 @@ function Cart() {
                 </span>
               </div>
 
-              <div className='mt-4 m-auto'>
+              <div className='m-auto mt-4'>
                 <Button
                   className='w-full'
                   onClick={() => {

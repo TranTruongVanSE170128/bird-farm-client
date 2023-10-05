@@ -10,7 +10,7 @@ type Props = {
 function NestCardSkeleton({ className }: Props) {
   return (
     <div className={cn('focus:ring-2 rounded-lg hover:ring-2 ring-primary transition duration-300', className)}>
-      <Card className='border-2 overflow-hidden'>
+      <Card className='overflow-hidden border-2'>
         <CardHeader className='p-0 mb-4'>
           <Skeleton className='aspect-square' />
         </CardHeader>
@@ -18,7 +18,7 @@ function NestCardSkeleton({ className }: Props) {
           <Skeleton className='w-full h-6' />
           <Skeleton className='w-full h-6 mt-2' />
         </CardContent>
-        <CardFooter className='flex gap-2 flex-col'>
+        <CardFooter className='flex flex-col gap-2'>
           <div className='flex w-full gap-2'>
             <Button variant='outline' className='w-full'>
               Thêm vào giỏ

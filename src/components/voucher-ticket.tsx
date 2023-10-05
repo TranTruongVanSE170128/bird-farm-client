@@ -46,17 +46,17 @@ function VoucherTicket({ voucher, className, context = true, contextContent = 'S
           backgroundSize: '10px 10px',
           backgroundRepeat: 'repeat-y'
         }}
-        className='aspect-square bg-primary shrink-0 p-3 rounded-l-lg flex flex-col items-center justify-center shadow border-r border-dashed pl-4 pt-6'
+        className='flex flex-col items-center justify-center p-3 pt-6 pl-4 border-r border-dashed rounded-l-lg shadow aspect-square bg-primary shrink-0'
       >
         <img src={logo} className='w-14 h-14' />
-        <div className='text-primary-foreground font-medium'>BIRD FARM</div>
+        <div className='font-medium text-primary-foreground'>BIRD FARM</div>
       </div>
-      <div className='aspect-video bg-accent shrink-0 text-accent-foreground border p-4 rounded-r-lg flex flex-col shadow border-l border-dashed'>
+      <div className='flex flex-col p-4 border border-l border-dashed rounded-r-lg shadow aspect-video bg-accent shrink-0 text-accent-foreground'>
         {user?.role === 'staff' ? (
           <div className='flex items-center gap-2'>
             <div className='text-lg font-medium'>Giảm {discountPercent}%</div>
             <div>
-              Số lượng: <span className='text-primary font-medium'>{voucher.quantity}</span>
+              Số lượng: <span className='font-medium text-primary'>{voucher.quantity}</span>
             </div>
           </div>
         ) : (
@@ -65,7 +65,7 @@ function VoucherTicket({ voucher, className, context = true, contextContent = 'S
 
         <div>Đơn tối thiểu {formatPrice(conditionPrice)}</div>
         <div>Giảm giá tối đa {formatPrice(maxDiscountValue)}</div>
-        <div className='text-primary font-medium'>
+        <div className='font-medium text-primary'>
           Hạn sử dụng: {new Date(expiredAt) > new Date() ? `còn ${calculateExpired(expiredAt)}` : 'Hết hạn'}
         </div>
       </div>

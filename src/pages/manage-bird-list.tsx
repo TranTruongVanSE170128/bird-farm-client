@@ -86,25 +86,25 @@ function ManageBirdList() {
                   <TableCell>{bird.name}</TableCell>
                   <TableCell className='flex justify-center overflow-hidden'>
                     <img
-                      className='w-12 h-12 aspect-square rounded-md border'
+                      className='w-12 h-12 border rounded-md aspect-square'
                       src={bird?.imageUrls?.[0] || noImage}
                       alt=''
                     />
                   </TableCell>
                   <TableCell>
                     {bird.type === 'sell' ? (
-                      <div className='flex items-center gap-1 justify-center'>
+                      <div className='flex items-center justify-center gap-1'>
                         Chim kiểng
                         <img className='w-6 h-6' src={birdIcon} alt='' />
                       </div>
                     ) : (
-                      <div className='flex items-center gap-1 justify-center'>
+                      <div className='flex items-center justify-center gap-1'>
                         Chim phối giống
                         <img className='w-6 h-6' src={breedIcon} alt='' />
                       </div>
                     )}
                   </TableCell>
-                  <TableCell className='text-center text-primary font-medium'>
+                  <TableCell className='font-medium text-center text-primary'>
                     {bird.type === 'sell' ? formatPrice(bird.sellPrice || 0) : formatPrice(bird.breedPrice || 0)}
                   </TableCell>
                   {/* <TableCell className='text-center'>Đã Bán</TableCell> */}

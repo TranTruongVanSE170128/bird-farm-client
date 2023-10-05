@@ -17,7 +17,7 @@ function LayoutManager() {
       <TopBar baseUrl='/manager' />
       <div className='flex'>
         <LeftSidebar routes={routes} role='manager' />
-        <section className='flex min-h-screen flex-1 flex-col items-center bg-dark-1 px-4 pb-10 pt-28 max-md:pb-32 sm:px-8'>
+        <section className='flex flex-col items-center flex-1 min-h-screen px-4 pb-10 bg-dark-1 pt-28 max-md:pb-32 sm:px-8'>
           <div className='w-full max-w-7xl'>
             <Outlet />
           </div>

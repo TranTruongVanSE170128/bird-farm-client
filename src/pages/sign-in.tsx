@@ -6,8 +6,8 @@ import { SignInForm } from '@/components/forms/sign-in-form'
 function SignUp() {
   return (
     <main>
-      <div className='container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0'>
-        <div className='relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex'>
+      <div className='container relative grid flex-col items-center justify-center min-h-screen lg:max-w-none lg:grid-cols-2 lg:px-0'>
+        <div className='relative flex-col hidden h-full p-10 text-white bg-muted dark:border-r lg:flex'>
           <div
             style={{
               backgroundImage: `url(${background})`
@@ -18,12 +18,12 @@ function SignUp() {
             <img alt='logo' className='h-20' src={logo} />
           </div>
         </div>
-        <div className='lg:p-8 py-4'>
+        <div className='py-4 lg:p-8'>
           <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
             <div className='flex flex-col space-y-2 text-center'>
               <h1 className='text-2xl font-semibold tracking-tight'>Đăng nhập</h1>
               <p className='text-sm text-muted-foreground'>
-                để tiếp tục với <img className='w-5 h-5 mb-1 inline' alt='icon' src={icon} /> Bird Farm Shop
+                để tiếp tục với <img className='inline w-5 h-5 mb-1' alt='icon' src={icon} /> Bird Farm Shop
               </p>
             </div>
             <SignInForm />

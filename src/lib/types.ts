@@ -54,6 +54,7 @@ export type Order = {
   status: OrderStatus
   cancelMessage?: string
   rated: boolean
+  discount?: number
 }
 
 export type OrderNest = {

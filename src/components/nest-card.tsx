@@ -35,9 +35,9 @@ function NestCard({ className, nest }: Props) {
       to={`/nests/${nest._id}`}
       className={cn('focus:ring-2 rounded-lg hover:ring-2 ring-primary transition duration-300', className)}
     >
-      <Card className='border-2 overflow-hidden'>
+      <Card className='overflow-hidden border-2'>
         <CardHeader className='p-0 mb-4'>
-          <div className='aspect-square overflow-hidden'>
+          <div className='overflow-hidden aspect-square'>
             <img
               src={nest?.imageUrls?.[0] || noImage}
               alt=''
@@ -47,13 +47,13 @@ function NestCard({ className, nest }: Props) {
         </CardHeader>
         <CardContent className='flex-col items-start'>
           <div>
-            <p className='font-semibold text-lg  line-clamp-1'>{nest.name}</p>
+            <p className='text-lg font-semibold line-clamp-1'>{nest.name}</p>
           </div>
           <div className='text-lg'>
             Giá bán: <span className='font-medium text-primary'>{formatPrice(nest.price)}</span>
           </div>
         </CardContent>
-        <CardFooter className='flex gap-2 flex-col'>
+        <CardFooter className='flex flex-col gap-2'>
           <div className='flex w-full gap-2'>
             <Button onClick={addToCart} variant='outline' className='w-full'>
               Thêm vào giỏ

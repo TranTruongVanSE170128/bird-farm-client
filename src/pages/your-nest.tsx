@@ -31,17 +31,17 @@ function YourNest() {
   }, [pageNumber])
 
   return (
-    <main className='mt-8 container sm:flex-row transition-all'>
+    <main className='container mt-8 transition-all sm:flex-row'>
       <Container>
-        <div className='w-full flex flex-col mx-2 gap-5'>
+        <div className='flex flex-col w-full gap-5 mx-2'>
           <div>
-            <div className='font-bold uppercase my-5 text-2xl'>Theo dõi quá trình phát triển của tổ chim của bạn</div>
+            <div className='my-5 text-2xl font-bold uppercase'>Theo dõi quá trình phát triển của tổ chim của bạn</div>
 
             {isLoadingOrderNests && <Spinner className='mt-8' />}
 
             {!isLoadingOrderNests && !orderNests.length && (
               <div className='flex justify-center items-center w-full h-[400px] bg-accent mt-4'>
-                <div className='col-span-1 flex flex-col justify-center items-center text-lg font-medium mt-12'>
+                <div className='flex flex-col items-center justify-center col-span-1 mt-12 text-lg font-medium'>
                   Chưa có tổ chim nào <img src={greyBirdIcon} className='w-24 h-24 mt-4' />
                 </div>
               </div>

@@ -44,7 +44,7 @@ function ManageNestDetail() {
               onClick={() => {
                 setEdit(true)
               }}
-              className='mb-6 flex items-center gap-1 my-auto'
+              className='flex items-center gap-1 my-auto mb-6'
             >
               <span>Chỉnh sửa</span>
               <Edit className='w-5 h-5' />
@@ -59,16 +59,16 @@ function ManageNestDetail() {
       {!edit ? (
         <>
           <div className='flex gap-12'>
-            <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='flex items-center gap-2 mb-4 text-lg'>
               <div className='font-bold'>Loài chim:</div> {getSpecie(nest).name}
             </div>
-            <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='flex items-center gap-2 mb-4 text-lg'>
               <div className='font-bold'>Tên tổ chim:</div> {nest?.name}
             </div>
           </div>
 
           <div className='flex gap-12'>
-            <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='flex items-center gap-2 mb-4 text-lg'>
               <div className='font-bold'>Bố:</div>{' '}
               {nest.dad ? (
                 <Link className='hover:underline hover:text-primary' to={`/manager/birds/${nest.dad._id}`}>
@@ -79,7 +79,7 @@ function ManageNestDetail() {
               )}
             </div>
 
-            <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='flex items-center gap-2 mb-4 text-lg'>
               <div className='font-bold'>Mẹ:</div>{' '}
               {nest.mom?._id ? (
                 <Link className='hover:underline hover:text-primary' to={`/manager/birds/${nest.mom._id}`}>
@@ -90,25 +90,25 @@ function ManageNestDetail() {
               )}
             </div>
 
-            <div className='flex items-center gap-2 text-lg mb-4'>
+            <div className='flex items-center gap-2 mb-4 text-lg'>
               <div className='font-bold'>Giá:</div> {formatPrice(nest?.price)}
             </div>
           </div>
 
-          <div className='text-lg font-bold mb-2'>Ảnh</div>
+          <div className='mb-2 text-lg font-bold'>Ảnh</div>
           <div>
             {!nest?.imageUrls?.length ? (
               <img src={noImage} alt='' width={240} height={240} className='object-contain rounded-md' />
             ) : (
-              <div className='flex gap-2 flex-wrap'>
+              <div className='flex flex-wrap gap-2'>
                 {nest?.imageUrls.map((imageUrl) => {
-                  return <img src={imageUrl} alt='' width={240} height={240} className='rounded-md object-contain' />
+                  return <img src={imageUrl} alt='' width={240} height={240} className='object-contain rounded-md' />
                 })}
               </div>
             )}
           </div>
 
-          <div className='mt-6 text-xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold mb-3'>
+          <div className='mt-6 mb-3 text-xl font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>
             Mô tả
           </div>
           {nest?.description ? (

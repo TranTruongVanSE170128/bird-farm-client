@@ -158,7 +158,7 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
                         className={cn('w-[200px] justify-between', !field.value && 'text-muted-foreground')}
                       >
                         {field.value ? species.find((specie) => specie._id === field.value)?.name : 'Chọn loài'}
-                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                        <ChevronsUpDown className='w-4 h-4 ml-2 opacity-50 shrink-0' />
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
@@ -200,12 +200,12 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
               control={form.control}
               name='name'
               render={({ field }) => (
-                <FormItem className='flex w-full flex-col'>
+                <FormItem className='flex flex-col w-full'>
                   <FormLabel className='font-bold text-light-2'>Tên Tổ Chim*</FormLabel>
                   <FormControl>
                     <Input type='hidden' className='' {...field} />
                   </FormControl>
-                  <div className='flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300'>
+                  <div className='flex w-full h-10 px-3 py-2 text-sm bg-white border rounded-md border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300'>
                     {form.getValues('name')}
                   </div>
                   <FormDescription>Tên tổ chim được tạo tự động</FormDescription>
@@ -278,19 +278,19 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
           render={({ field }) => (
             <FormItem className='flex items-center gap-4'>
               <FormLabel className=''>
-                <div className='font-bold mb-4'>Ảnh</div>
+                <div className='mb-4 font-bold'>Ảnh</div>
                 {!field.value?.length ? (
                   <img
                     src={noImage}
                     alt='imageUrl'
                     width={240}
                     height={240}
-                    className='object-contain rounded-md border'
+                    className='object-contain border rounded-md'
                   />
                 ) : (
                   field.value.map((url) => {
                     return (
-                      <img src={url} alt='imageUrl' width={240} height={240} className='rounded-md object-contain' />
+                      <img src={url} alt='imageUrl' width={240} height={240} className='object-contain rounded-md' />
                     )
                   })
                 )}
@@ -313,7 +313,7 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
           control={form.control}
           name='description'
           render={({ field }) => (
-            <FormItem className='flex w-full flex-col gap-3'>
+            <FormItem className='flex flex-col w-full gap-3'>
               <FormLabel className='font-bold text-light-2'>Mô tả</FormLabel>
               <FormControl>
                 <Textarea rows={10} className='' {...field} />
@@ -323,7 +323,7 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
           )}
         />
 
-        <div className='flex gap-2 justify-end'>
+        <div className='flex justify-end gap-2'>
           {setEdit && (
             <Button
               onClick={() => {
@@ -338,7 +338,7 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
           )}
           <Button disabled={isSubmitting} type='submit'>
             {btnTitle}
-            {isSubmitting && <Shell className='ml-1 animate-spin w-4 h-4' />}
+            {isSubmitting && <Shell className='w-4 h-4 ml-1 animate-spin' />}
           </Button>
         </div>
       </form>

@@ -37,7 +37,7 @@ function Footer() {
 
             <div className='flex flex-col flex-1 gap-1'>
               <div className='text-2xl font-bold'>Hỗ trợ khách hàng</div>
-              <div className='flex 4 mt-5'>
+              <div className='flex mt-5 4'>
                 <Button variant='ghost'>
                   <PhoneCall />
                 </Button>
@@ -47,7 +47,7 @@ function Footer() {
               </div>
             </div>
           </div>
-          <div className='flex justify-center mt-10 pb-10'>© Bản quyền thuộc về BIRD FARM SHOP.</div>
+          <div className='flex justify-center pb-10 mt-10'>© Bản quyền thuộc về BIRD FARM SHOP.</div>
         </div>
       </Container>
     </footer>

@@ -82,54 +82,54 @@ function Pairing() {
 
   return (
     <Container>
-      <div className='flex flex-col justify-center items-center gap-4 mb-5'>
-        <div className='uppercase text-3xl mt-10'>Đặt tổ chim non theo yêu cầu</div>
+      <div className='flex flex-col items-center justify-center gap-4 mb-5'>
+        <div className='mt-10 text-3xl uppercase'>Đặt tổ chim non theo yêu cầu</div>
         <div className='flex gap-4'>
-          <div className='border-t-2 w-52 my-2' />
+          <div className='my-2 border-t-2 w-52' />
           <BirdIcon />
-          <div className='border-t-2 w-52 my-2' />
+          <div className='my-2 border-t-2 w-52' />
         </div>
       </div>
 
-      <div className='w-full flex justify-around gap-4 items-center'>
-        <div className='w-full flex justify-center flex-col items-center'>
+      <div className='flex items-center justify-around w-full gap-4'>
+        <div className='flex flex-col items-center justify-center w-full'>
           <Link to={`/birds/${maleBird?._id}`}>
             <img
               src={maleBird?.imageUrls?.[0] || noImage}
-              className='w-full aspect-square border max-w-xs rounded-lg'
+              className='w-full max-w-xs border rounded-lg aspect-square'
             />
           </Link>
-          <div className='font-bold text-xl mt-6 flex items-center gap-1'>
+          <div className='flex items-center gap-1 mt-6 text-xl font-bold'>
             {maleBird?.name} <img className='w-8 h-8' src={maleIcon} />
           </div>
-          <div className='font-bold text-xl flex items-center gap-1'>
+          <div className='flex items-center gap-1 text-xl font-bold'>
             Giá phối giống:{' '}
-            <span className='font-normal text-primary text-2xl'>{formatPrice(maleBird?.breedPrice || 0)}</span>
+            <span className='text-2xl font-normal text-primary'>{formatPrice(maleBird?.breedPrice || 0)}</span>
           </div>
         </div>
 
         <img src={redHeart} className='w-28 h-28' />
 
-        <div className='w-full flex justify-center flex-col items-center'>
+        <div className='flex flex-col items-center justify-center w-full'>
           <Link to={`/birds/${femaleBird?._id}`}>
             <img
               src={femaleBird?.imageUrls?.[0] || noImage}
-              className='w-full aspect-square border max-w-xs rounded-lg'
+              className='w-full max-w-xs border rounded-lg aspect-square'
             />
           </Link>
-          <div className='font-bold text-xl mt-6 flex items-center gap-1'>
+          <div className='flex items-center gap-1 mt-6 text-xl font-bold'>
             {femaleBird?.name} <img className='w-8 h-8' src={femaleIcon} />
           </div>
-          <div className='font-bold text-xl flex items-center gap-1'>
+          <div className='flex items-center gap-1 text-xl font-bold'>
             Giá phối giống:{' '}
-            <span className='font-normal text-primary text-2xl'>{formatPrice(femaleBird?.breedPrice || 0)}</span>
+            <span className='text-2xl font-normal text-primary'>{formatPrice(femaleBird?.breedPrice || 0)}</span>
           </div>
         </div>
       </div>
 
-      <div className='w-full flex flex-col items-center mt-8'>
+      <div className='flex flex-col items-center w-full mt-8'>
         <div className='flex flex-col items-center gap-2 mb-5'>
-          <div className='font-bold text-2xl'>Giá chim non</div>
+          <div className='text-2xl font-bold'>Giá chim non</div>
           <div className='flex gap-1 text-2xl'>
             Chim non <img className='w-6' src={maleIcon} />:{' '}
             <div className='text-primary'>{formatPrice(priceYoungBird * 2)}</div>/con

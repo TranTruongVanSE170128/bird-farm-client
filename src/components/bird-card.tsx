@@ -44,9 +44,9 @@ function BirdCard({ className, bird }: Props) {
       to={`/birds/${bird?._id}`}
       className={cn('focus:ring-2 rounded-lg hover:ring-2 ring-primary transition duration-300', className)}
     >
-      <Card className='border-2 overflow-hidden'>
+      <Card className='overflow-hidden border-2'>
         <CardHeader className='p-0 mb-4'>
-          <div className='aspect-square overflow-hidden'>
+          <div className='overflow-hidden aspect-square'>
             <img
               src={bird?.imageUrls?.[0] || noImage}
               alt=''
@@ -56,7 +56,7 @@ function BirdCard({ className, bird }: Props) {
         </CardHeader>
         <CardContent className='flex-col items-start'>
           <div>
-            <p className='font-semibold text-lg lg:text-xl line-clamp-1'>{bird?.name}</p>
+            <p className='text-lg font-semibold lg:text-xl line-clamp-1'>{bird?.name}</p>
           </div>
           <div className='flex items-center gap-2'>
             Loại chim:{' '}
@@ -75,11 +75,11 @@ function BirdCard({ className, bird }: Props) {
           <div className='flex items-center gap-2 lg:text-lg'>
             {bird.type === 'sell' ? (
               <>
-                Giá bán: <span className='text-primary font-medium'>{formatPrice(bird?.sellPrice || 0)}</span>
+                Giá bán: <span className='font-medium text-primary'>{formatPrice(bird?.sellPrice || 0)}</span>
               </>
             ) : (
               <>
-                Giá phối giống: <span className='text-primary font-medium'>{formatPrice(bird?.breedPrice || 0)}</span>
+                Giá phối giống: <span className='font-medium text-primary'>{formatPrice(bird?.breedPrice || 0)}</span>
               </>
             )}
 
@@ -90,7 +90,7 @@ function BirdCard({ className, bird }: Props) {
             )}
           </div>
         </CardContent>
-        <CardFooter className='flex gap-2 flex-col'>
+        <CardFooter className='flex flex-col gap-2'>
           <div className='flex w-full gap-2'>
             {bird.type === 'sell' && (
               <Button onClick={handleAddToCart} variant='outline' className='w-full'>

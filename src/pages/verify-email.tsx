@@ -34,7 +34,7 @@ function VerifyEmail() {
           }}
           value={code}
           type='text'
-          className='border border-black py-2 px-4'
+          className='px-4 py-2 border border-black'
         />
       </form>
       {verify === 'success' && (
