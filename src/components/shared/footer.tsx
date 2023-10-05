@@ -5,7 +5,7 @@ import { Button } from '../ui/button'
 
 function Footer() {
   return (
-    <footer className='bg-primary text-primary-foreground'>
+    <footer className='border-t'>
       <Container>
         <div className='w-full h-full pt-5'>
           <div className='flex mt-6 gap-14'>

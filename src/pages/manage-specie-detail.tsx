@@ -44,13 +44,13 @@ function ManageSpecieDetail() {
               onClick={() => {
                 setEdit(true)
               }}
-              className='flex items-center gap-1 my-auto mb-6'
+              className='flex items-center gap-1 my-auto'
             >
               <span>Chỉnh sửa</span>
               <Edit className='w-5 h-5' />
             </Button>
           )}
-          <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/manager/species'>
+          <Link className={cn(buttonVariants(), 'flex items-center gap-1 my-auto')} to='/manager/species'>
             <span>Quay lại</span>
             <ArrowLeft className='w-5 h-5' />
           </Link>

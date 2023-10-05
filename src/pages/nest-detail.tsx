@@ -127,7 +127,7 @@ function NestDetail() {
 
             <div className='flex items-center gap-2'>
               <div className='text-xl font-medium'>Giá: </div>
-              <p className='text-3xl font-medium text-red-500'>{formatPrice(nest.price)}</p>
+              <p className='text-3xl font-medium text-primary'>{formatPrice(nest.price)}</p>
             </div>
 
             <p className='my-3 mb-6'>

@@ -1,5 +1,5 @@
 import Container from '@/components/ui/container'
-import { BirdIcon } from 'lucide-react'
+import { BirdIcon, Shell } from 'lucide-react'
 import redHeart from '@/assets/red-heart.svg'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
@@ -144,7 +144,9 @@ function Pairing() {
 
         <AlertDialog>
           <AlertDialogTrigger>
-            <Button>Xác nhận phối giống</Button>
+            <Button disabled={isSubmitting}>
+              Xác nhận phối giống {isSubmitting && <Shell className='w-4 h-4 ml-1 animate-spin' />}
+            </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>

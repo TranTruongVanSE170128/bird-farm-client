@@ -13,6 +13,7 @@ import { toast } from './ui/use-toast'
 import { Button } from './ui/button'
 import { Shell } from 'lucide-react'
 import { useRatingFormStore } from '@/store/use-rating-form'
+import { useAuthContext } from '@/contexts/auth-provider'
 
 type Props = {
   orderNest: OrderNest
@@ -25,6 +26,8 @@ function OrderNestCard({ orderNest }: Props) {
   const navigate = useNavigate()
   const [isReceivingOrder, setIsReceivingOrder] = useState(false)
   const { showRatingForm } = useRatingFormStore()
+  const { user } = useAuthContext()
+  const isStaff = user?.role === 'staff'
 
   const receiveOrderNest = async (id: string) => {
     setIsReceivingOrder(true)
@@ -71,35 +74,39 @@ function OrderNestCard({ orderNest }: Props) {
   }
 
   return (
-    <div className='flex flex-col gap-6 p-10 pt-5 mb-10 border shadow-xl rounded-3xl'>
-      <div className='flex justify-end'>
-        {orderNest?.cancelMessage ? (
-          <p className='mt-2 text-teal-500'>{orderNest?.cancelMessage}</p>
-        ) : (
-          <p className='mt-2 text-teal-500'>{statusToMessage[orderNest.status]}</p>
-        )}
+    <div className='flex flex-col gap-6 p-8 mb-10 border shadow-xl rounded-3xl'>
+      {!isStaff && (
+        <>
+          <div className='flex justify-end'>
+            {orderNest?.cancelMessage ? (
+              <p className='mt-2 text-teal-500'>{orderNest?.cancelMessage}</p>
+            ) : (
+              <p className='mt-2 text-teal-500'>{statusToMessage[orderNest.status]}</p>
+            )}
 
-        <div className='w-[1px] h-[20px] bg-border mx-4 mt-2 ' />
-        <p className='mt-2 uppercase text-primary'>{statusToVi[orderNest.status]}</p>
-      </div>
-      <div className='min-w-full h-[1px] bg-border mb-4' />
+            <div className='w-[1px] h-[20px] bg-border mx-4 mt-2 ' />
+            <p className='mt-2 uppercase text-primary'>{statusToVi[orderNest.status]}</p>
+          </div>
+          <div className='min-w-full h-[1px] bg-border mb-4' />
+        </>
+      )}
       <div className='grid grid-cols-2 gap-12'>
         <div className='flex flex-col col-span-1 gap-2'>
           <div className='flex gap-4'>
             <div className='text-lg font-medium'>
-              Chim non đực: <span className='font-normal'>{orderNest.numberChildPriceMale} con</span>
+              Chim non đực: <span className='text-primary'>{orderNest.numberChildPriceMale}</span> con
             </div>
             <div className='text-lg font-medium'>
-              Chim non cái: <span className='font-normal'>{orderNest.numberChildPriceFemale} con</span>
+              Chim non cái: <span className='text-primary'>{orderNest.numberChildPriceFemale}</span> con
             </div>
           </div>
 
           <div className='flex gap-4'>
             <div className='text-lg font-medium'>
-              Giá chim non đực: <span className='font-normal'>{formatPrice(orderNest.childPriceMale)}/con</span>
+              Giá chim non đực: <span className='text-primary'>{formatPrice(orderNest.childPriceMale)}</span>/con
             </div>
             <div className='text-lg font-medium'>
-              Giá chim non cái: <span className='font-normal'>{formatPrice(orderNest.childPriceFemale)}/con</span>
+              Giá chim non cái: <span className='text-primary'>{formatPrice(orderNest.childPriceFemale)}</span>/con
             </div>
           </div>
 
@@ -109,7 +116,7 @@ function OrderNestCard({ orderNest }: Props) {
               src={orderNest.dad.imageUrls?.[0] || noImage}
             />
             <div className='flex flex-col justify-around mx-5'>
-              <div className='font-bold group-hover:text-primary'>Chim bố: {orderNest.dad.name}</div>
+              <div className='font-bold'>Chim bố: {orderNest.dad.name}</div>
               <div className='flex gap-2'>
                 <div>Loài: {getSpecie(orderNest).name}</div>
                 <img className='w-6 h-6' src={maleIcon} />
@@ -126,7 +133,7 @@ function OrderNestCard({ orderNest }: Props) {
               src={orderNest.mom.imageUrls?.[0] || noImage}
             />
             <div className='flex flex-col justify-around mx-5'>
-              <div className='font-bold group-hover:text-primary'>Chim mẹ: {orderNest.mom.name}</div>
+              <div className='font-bold'>Chim mẹ: {orderNest.mom.name}</div>
               <div className='flex gap-2'>
                 <div>Loài: {getSpecie(orderNest).name}</div>
                 <img className='w-6 h-6' src={femaleIcon} />
@@ -137,58 +144,60 @@ function OrderNestCard({ orderNest }: Props) {
             </div>
           </Link>
 
-          <div className='flex flex-row items-center gap-3 mt-8'>
-            {orderNest.status === 'processing' && (
-              <>
-                <Button>Liên hệ shop</Button>
+          {!isStaff && (
+            <div className='flex flex-row items-center gap-3 mt-8'>
+              {orderNest.status === 'processing' && (
+                <>
+                  <Button>Liên hệ shop</Button>
 
-                <Button onClick={() => showModalCancelOrderNest(orderNest._id)} variant='outline'>
-                  Hủy đơn hàng
-                </Button>
-              </>
-            )}
+                  <Button onClick={() => showModalCancelOrderNest(orderNest._id)} variant='outline'>
+                    Hủy đơn hàng
+                  </Button>
+                </>
+              )}
 
-            {orderNest.status === 'breeding' && <Button>Liên hệ shop</Button>}
+              {orderNest.status === 'breeding' && <Button>Liên hệ shop</Button>}
 
-            {orderNest.status === 'wait-for-payment' && (
-              <>
-                <Button onClick={() => redirectToCheckout()}>Thanh toán ngay</Button>
-                <Button variant='outline'>Liên hệ shop</Button>
-              </>
-            )}
+              {orderNest.status === 'wait-for-payment' && (
+                <>
+                  <Button onClick={() => redirectToCheckout()}>Thanh toán ngay</Button>
+                  <Button variant='outline'>Liên hệ shop</Button>
+                </>
+              )}
 
-            {orderNest.status === 'delivering' && (
-              <>
-                <Button
-                  onClick={() => {
-                    receiveOrderNest(orderNest._id)
-                  }}
-                  disabled={isReceivingOrder}
-                >
-                  Đã nhận hàng {isReceivingOrder && <Shell className='w-4 h-4 ml-1 animate-spin' />}
-                </Button>
-                <Button variant='outline'>Liên hệ shop</Button>
-              </>
-            )}
+              {orderNest.status === 'delivering' && (
+                <>
+                  <Button
+                    onClick={() => {
+                      receiveOrderNest(orderNest._id)
+                    }}
+                    disabled={isReceivingOrder}
+                  >
+                    Đã nhận hàng {isReceivingOrder && <Shell className='w-4 h-4 ml-1 animate-spin' />}
+                  </Button>
+                  <Button variant='outline'>Liên hệ shop</Button>
+                </>
+              )}
 
-            {orderNest.status === 'success' && !orderNest.rated && (
-              <>
-                <Button onClick={() => showRatingForm({ orderNestId: orderNest._id })} disabled={isReceivingOrder}>
-                  Đánh giá {isReceivingOrder && <Shell className='w-4 h-4 ml-1 animate-spin' />}
-                </Button>
-                <Button variant='outline'>Liên hệ shop</Button>
-              </>
-            )}
+              {orderNest.status === 'success' && !orderNest.rated && (
+                <>
+                  <Button onClick={() => showRatingForm({ orderNestId: orderNest._id })} disabled={isReceivingOrder}>
+                    Đánh giá {isReceivingOrder && <Shell className='w-4 h-4 ml-1 animate-spin' />}
+                  </Button>
+                  <Button variant='outline'>Liên hệ shop</Button>
+                </>
+              )}
 
-            {orderNest.status === 'success' && orderNest.rated && (
-              <>
-                <Button>Liên hệ shop</Button>
-                <Button variant='outline' disabled={true} className='border-primary text-primary'>
-                  Đã Đánh Giá
-                </Button>
-              </>
-            )}
-          </div>
+              {orderNest.status === 'success' && orderNest.rated && (
+                <>
+                  <Button>Liên hệ shop</Button>
+                  <Button variant='outline' disabled={true} className='border-primary text-primary'>
+                    Đã Đánh Giá
+                  </Button>
+                </>
+              )}
+            </div>
+          )}
         </div>
 
         {selectedStage && (

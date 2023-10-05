@@ -20,6 +20,8 @@ import { imageDB } from '@/services/firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { v4 } from 'uuid'
 import paymentIcon from '@/assets/payment.svg'
+import OrderNestCard from '@/components/order-nest-card'
+import birdMaskIcon from '@/assets/bird-mask.svg'
 
 function ManageOrderNestDetail() {
   const { id } = useParams()
@@ -27,6 +29,7 @@ function ManageOrderNestDetail() {
   const [approvingOrderNest, setApprovingOrderNest] = useState(false)
   const { toast } = useToast()
   const [openAddStageForm, setOpenAddStageForm] = useState(false)
+  const [openUpdateAmountBirdForm, setOpenUpdateAmountBirdForm] = useState(false)
 
   const [requestingPayment, setRequestingPayment] = useState(false)
 
@@ -98,7 +101,7 @@ function ManageOrderNestDetail() {
         </div>
       </div>
 
-      <div className='flex justify-end gap-4 mt-4'>
+      <div className='flex gap-4 mt-4 flex-row-reverse justify-end'>
         <Button
           variant='outline'
           disabled={approvingOrderNest || requestingPayment}
@@ -108,6 +111,7 @@ function ManageOrderNestDetail() {
           <span>Hủy đơn hàng</span>
           <img src={cancel} className='w-5 h-5 ml-1 dark:filter dark:invert' />
         </Button>
+
         {orderNest.status === 'processing' && (
           <Button
             disabled={approvingOrderNest}
@@ -130,18 +134,40 @@ function ManageOrderNestDetail() {
             {requestingPayment && <Shell className='w-4 h-4 ml-1 animate-spin' />}
           </Button>
         )}
+        {['breeding', 'wait-for-payment'].includes(orderNest.status) && (
+          <Button
+            onClick={() => {
+              setOpenUpdateAmountBirdForm(true)
+            }}
+            className='flex items-center gap-1 my-auto mb-6'
+          >
+            <span>Cập nhật số lượng chim non</span>
+            <img src={birdMaskIcon} className='w-5 h-5 filter invert' />
+            {requestingPayment && <Shell className='w-4 h-4 ml-1 animate-spin' />}
+          </Button>
+        )}
+        {!openAddStageForm && orderNest.status === 'breeding' && (
+          <Button
+            onClick={() => {
+              setOpenAddStageForm(true)
+            }}
+          >
+            Thêm giai đoạn mới
+          </Button>
+        )}
       </div>
 
-      {!openAddStageForm && orderNest.status === 'breeding' && (
-        <Button
-          onClick={() => {
-            setOpenAddStageForm(true)
-          }}
-        >
-          Thêm giai đoạn mới
-        </Button>
-      )}
       {openAddStageForm && <AddStageForm setOpenAddStageForm={setOpenAddStageForm} id={id} />}
+      {openUpdateAmountBirdForm && (
+        <UpdateAmountBirdForm
+          setOpenUpdateAmountBirdForm={setOpenUpdateAmountBirdForm}
+          numberChildPriceMale={orderNest.numberChildPriceMale}
+          numberChildPriceFemale={orderNest.numberChildPriceFemale}
+          id={id}
+        />
+      )}
+
+      <OrderNestCard orderNest={orderNest} />
     </div>
   )
 }
@@ -287,6 +313,104 @@ const AddStageForm = ({ id, setOpenAddStageForm }: AddStageFormProps) => {
           </div>
           <Button disabled={isSubmitting} type='submit'>
             Thêm {isSubmitting && <Shell className='w-4 h-4 animate-spin' />}
+          </Button>
+        </div>
+      </form>
+    </Form>
+  )
+}
+
+const updateAmountBirdSchema = z.object({
+  numberChildPriceMale: z.coerce.string().refine((data) => !isNaN(Number(data)), 'Số lượng không hợp lệ'),
+  numberChildPriceFemale: z.coerce.string().refine((data) => !isNaN(Number(data)), 'Số lượng không hợp lệ')
+})
+
+type TUpdateAmountBirdSchema = z.infer<typeof updateAmountBirdSchema>
+
+type UpdateAmountBirdFormProps = {
+  id?: string
+  setOpenUpdateAmountBirdForm: (val: boolean) => void
+  numberChildPriceMale?: number
+  numberChildPriceFemale?: number
+}
+
+const UpdateAmountBirdForm = ({
+  id,
+  setOpenUpdateAmountBirdForm,
+  numberChildPriceFemale,
+  numberChildPriceMale
+}: UpdateAmountBirdFormProps) => {
+  const { toast } = useToast()
+  const form = useForm<TUpdateAmountBirdSchema>({
+    resolver: zodResolver(updateAmountBirdSchema),
+    defaultValues: {
+      numberChildPriceMale: numberChildPriceMale?.toString(),
+      numberChildPriceFemale: numberChildPriceFemale?.toString()
+    }
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  async function onSubmit(values: TUpdateAmountBirdSchema) {
+    try {
+      setIsSubmitting(true)
+
+      await birdFarmApi.put(`/api/order-nests/${id}/update-bird-amount`, values)
+
+      window.location.reload()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const messageError = error.response.data.message
+      toast({
+        variant: 'destructive',
+        title: 'Không thể cập nhật',
+        description: messageError || 'Không rõ nguyễn nhân'
+      })
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 mb-4'>
+        <FormField
+          control={form.control}
+          name='numberChildPriceMale'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Số lượng chim non đực</FormLabel>
+              <FormControl>
+                <Input placeholder='Nhập số lượng chim non đực...' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='numberChildPriceFemale'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Số lượng chim non cái</FormLabel>
+              <FormControl>
+                <Input placeholder='Nhập số lượng chim non cái...' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className='flex justify-end gap-2'>
+          <div
+            onClick={() => {
+              setOpenUpdateAmountBirdForm(false)
+            }}
+            className={cn('cursor-pointer', buttonVariants({ variant: 'outline' }))}
+          >
+            Hủy
+          </div>
+          <Button disabled={isSubmitting} type='submit'>
+            Cập nhật {isSubmitting && <Shell className='w-4 h-4 animate-spin' />}
           </Button>
         </div>
       </form>
