@@ -35,8 +35,6 @@ import ManageSpecieNew from './pages/manage-specie-new'
 import Ratings from './pages/ratings'
 import Modal from './components/ui/modal'
 import CheckoutOrder from './pages/checkout-order'
-import PaymentSuccess from './pages/payment-success'
-import PaymentCancel from './pages/payment-cancel'
 import { RatingForm } from './components/forms/rating-form'
 import DepositSuccess from './pages/deposit-success'
 import DepositCancel from './pages/deposit-cancel'
@@ -69,16 +67,14 @@ function App() {
           <Route path='birds' element={<BirdList />} />
           <Route path='wishlist' element={<WishList />} />
           <Route path='profile' element={<Profile />} />
-          <Route path='orders/payment-success' element={<PaymentSuccess />} />
-          <Route path='orders/payment-cancel' element={<PaymentCancel />} />
+          <Route path='deposit-success' element={<DepositSuccess />} />
+          <Route path='deposit-cancel' element={<DepositCancel />} />
           <Route path='orders' element={<OrderList />} />
           <Route path='cart' element={<Cart />} />
           <Route path='nests/:id' element={<NestDetail />} />
           <Route path='nests' element={<NestList />} />
           <Route path='compare' element={<BirdComparing />} />
           <Route path='not-found' element={<NotFound />} />
-          <Route path='breed/deposit-success' element={<DepositSuccess />} />
-          <Route path='breed/deposit-cancel' element={<DepositCancel />} />
           <Route path='breed' element={<Breed />} />
           <Route path='ratings' element={<Ratings />} />
           <Route path='checkout-order' element={<CheckoutOrder />} />
