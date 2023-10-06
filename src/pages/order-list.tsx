@@ -45,7 +45,7 @@ function OrderList() {
     showModal({
       title: 'Bạn có chắc muốn hủy đơn hàng không?',
       titleAction: 'Hủy đơn hàng',
-      titleCancel: 'Không phải bây giờ',
+      titleCancel: 'Trở lại',
       handleAction: async () => {
         try {
           await birdFarmApi.put(`api/orders/${id}/cancel`)
@@ -201,7 +201,6 @@ function OrderList() {
                       </div>
                     </div>
                     <div className='flex items-center'>
-                      {/* <p className='mx-6 line-through text-slate-500'>500.000.000đ</p> */}
                       <p>{formatPrice(bird.sellPrice)}</p>
                     </div>
                   </div>
@@ -224,15 +223,23 @@ function OrderList() {
                       </div>
                     </div>
                     <div className='flex items-center'>
-                      {/* <p className='mx-6 line-through text-slate-500'>500.000.000đ</p> */}
                       <p>{formatPrice(nest.price)}</p>
                     </div>
                   </div>
                 ))}
                 <div className='min-w-full h-[1px] bg-border/50' />
                 <div className='flex items-center justify-end gap-3 mt-6'>
-                  <p className='mt-1 text-lg font-medium'>Thành tiền:</p>
-                  <p className='text-2xl font-medium text-primary'>{formatPrice(order.totalMoney)}</p>
+                  <p className='mt-1 text-lg font-medium leading-0'>Thành tiền:</p>
+                  {order.discount ? (
+                    <div className='flex items-center gap-2 leading-0'>
+                      <p className='line-through text-2xl text-slate-500'>{formatPrice(order.totalMoney)}</p>
+                      <p className='text-2xl font-medium text-primary'>
+                        {formatPrice(order.totalMoney - order.discount)}
+                      </p>
+                    </div>
+                  ) : (
+                    <p className='text-2xl font-semibold text-primary'>{formatPrice(order.totalMoney)}</p>
+                  )}
                 </div>
                 <div className='flex flex-col items-center justify-end gap-3 mt-5 md:flex-row'>
                   {stateButtons.map((button, i) => {

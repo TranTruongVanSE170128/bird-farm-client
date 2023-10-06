@@ -70,7 +70,9 @@ function ManageOrderList() {
                   <TableCell>{getUser(order).name}</TableCell>
                   <TableCell>{order.receiver}</TableCell>
                   <TableCell className='text-center'>{order.phone}</TableCell>
-                  <TableCell className='text-center'>{formatPrice(order.totalMoney)}</TableCell>
+                  <TableCell className='text-center text-primary font-medium'>
+                    {formatPrice(order.totalMoney)}
+                  </TableCell>
                   <TableCell className='text-center'>{formatDate(order.createdAt)}</TableCell>
                   <TableCell className='text-center'>
                     <Badge variant={statusToVariant[order.status as OrderNestStatus]}>

@@ -12,6 +12,7 @@ import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
 import birdIcon from '@/assets/bird-color.svg'
 import breedIcon from '@/assets/breed.svg'
+import medalIcon from '@/assets/medal.svg'
 
 function ManageBirdDetail() {
   const { id } = useParams()
@@ -151,23 +152,16 @@ function ManageBirdDetail() {
 
           <div>
             <div className='mt-4 text-lg font-bold'>Thành Tích Thi Đấu</div>
-            <div className='flex w-full'>
-              <div className='grid w-full grid-cols-2 gap-3'>
-                <div className='flex items-end col-span-1 pb-3 text-sm'>Tên Cuộc Thi</div>
-                <div className='flex items-end col-span-1 pb-3 text-sm'>Xếp Hạng</div>
-              </div>
-              <Button size='icon' variant='outline' className='invisible'></Button>
-            </div>
-            <div className='flex flex-col gap-3'>
+            {!bird?.achievements?.length && <div className='text-lg'>Chưa có thành tích thi đấu</div>}
+            <div className='flex flex-col gap-2 mt-3'>
               {bird?.achievements?.map((achievement) => {
                 return (
-                  <div key={achievement._id} className='flex w-full gap-3'>
-                    <div className='grid w-full grid-cols-2 gap-3'>
-                      <div className='col-span-1 px-4 py-2 border rounded-md border-border'>
-                        {achievement.competition}
-                      </div>
-                      <div className='col-span-1 px-4 py-2 border rounded-md border-border'>{achievement.rank}</div>
-                    </div>
+                  <div className='flex items-center'>
+                    <span className='pr-3'>
+                      <img className='w-6' src={medalIcon}></img>
+                    </span>
+                    <span className='mr-1 font-medium'>Hạng {achievement.rank}</span>
+                    <span> {achievement.competition}</span>
                   </div>
                 )
               })}

@@ -203,11 +203,8 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
                 <FormItem className='flex flex-col w-full'>
                   <FormLabel className='font-bold text-light-2'>Tên Tổ Chim*</FormLabel>
                   <FormControl>
-                    <Input type='hidden' className='' {...field} />
+                    <Input disabled className='' {...field} />
                   </FormControl>
-                  <div className='flex w-full h-10 px-3 py-2 text-sm bg-white border rounded-md border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300'>
-                    {form.getValues('name')}
-                  </div>
                   <FormDescription>Tên tổ chim được tạo tự động</FormDescription>
                   <FormMessage />
                 </FormItem>

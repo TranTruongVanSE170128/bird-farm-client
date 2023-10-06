@@ -9,7 +9,7 @@ import { Bird, Specie, getDad, getMom, getSpecie } from '@/lib/types'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import noImage from '@/assets/no-image.webp'
-import { Button } from '../ui/button'
+import { Button, buttonVariants } from '../ui/button'
 import { Textarea } from '../ui/textarea'
 import { CalendarIcon, Check, ChevronsUpDown, Plus, Shell, Trash } from 'lucide-react'
 import { useToast } from '../ui/use-toast'
@@ -252,12 +252,8 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
                 <FormItem className='flex flex-col w-full'>
                   <FormLabel className='font-bold'>Tên*</FormLabel>
                   <FormControl>
-                    <Input disabled type='hidden' className='no-focus' {...field} />
+                    <Input disabled className='no-focus' {...field} />
                   </FormControl>
-
-                  <div className='flex w-full h-10 px-3 py-2 text-sm bg-white border rounded-md ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300 border-border'>
-                    {form.getValues('name')}
-                  </div>
 
                   <FormDescription>Tên được tạo tự động</FormDescription>
                   <FormMessage />
@@ -483,10 +479,10 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
           </div>
           <div className='flex w-full'>
             <div className='grid w-full grid-cols-2 gap-3'>
-              <div className='flex items-end col-span-1 pb-3 text-sm'>Tên Cuộc Thi</div>
-              <div className='flex items-end col-span-1 pb-3 text-sm'>Xếp Hạng</div>
+              <div className='flex items-end col-span-1 pb-3 text-sm font-medium'>Tên Cuộc Thi</div>
+              <div className='flex items-end col-span-1 pb-3 text-sm font-medium'>Xếp Hạng</div>
             </div>
-            <Button size='icon' variant='outline' className='invisible'></Button>
+            <div className={cn(buttonVariants({ size: 'icon' }), 'invisible')}></div>
           </div>
           <div className='flex flex-col gap-3'>
             {achievements?.map((achievement) => {
@@ -504,15 +500,14 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
                       className='col-span-1 px-4 py-2 border rounded-md border-border'
                     />
                   </div>
-                  <Button
+                  <div
                     onClick={() => {
                       handleDeleteAchievement(achievement._id)
                     }}
-                    size='icon'
-                    variant='outline'
+                    className={cn(buttonVariants({ size: 'icon', variant: 'outline' }))}
                   >
                     <Trash />
-                  </Button>
+                  </div>
                 </div>
               )
             })}
@@ -521,9 +516,9 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
                 <Input ref={newCompetition} className='col-span-1 px-4 py-2 border rounded-md border-border' />
                 <Input ref={newRank} className='col-span-1 px-4 py-2 border rounded-md border-border' />
               </div>
-              <Button onClick={handleAddAchievement} size='icon' variant='outline'>
+              <div onClick={handleAddAchievement} className={cn(buttonVariants({ size: 'icon', variant: 'outline' }))}>
                 <Plus />
-              </Button>
+              </div>
             </div>
           </div>
         </div>
