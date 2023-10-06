@@ -23,6 +23,17 @@ import paymentIcon from '@/assets/payment.svg'
 import OrderNestCard from '@/components/order-nest-card'
 import birdMaskIcon from '@/assets/bird-mask.svg'
 import { Badge } from '@/components/ui/badge'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from '@/components/ui/alert-dialog'
 
 function ManageOrderNestDetail() {
   const { id } = useParams()
@@ -110,15 +121,17 @@ function ManageOrderNestDetail() {
           </Badge>
         </div>
         <div className='flex gap-4 flex-row-reverse justify-end'>
-          <Button
-            variant='outline'
-            disabled={approvingOrderNest || requestingPayment}
-            onClick={() => {}}
-            className='flex items-center gap-1 my-auto mb-6'
-          >
-            <span>Hủy đơn hàng</span>
-            <img src={cancel} className='w-5 h-5 ml-1 dark:filter dark:invert' />
-          </Button>
+          {!['success', 'canceled'].includes(orderNest.status) && (
+            <Button
+              variant='outline'
+              disabled={approvingOrderNest || requestingPayment}
+              onClick={() => {}}
+              className='flex items-center gap-1 my-auto mb-6'
+            >
+              <span>Hủy đơn hàng</span>
+              <img src={cancel} className='w-5 h-5 ml-1 dark:filter dark:invert' />
+            </Button>
+          )}
 
           {orderNest.status === 'processing' && (
             <Button
@@ -132,15 +145,35 @@ function ManageOrderNestDetail() {
             </Button>
           )}
           {orderNest.status === 'breeding' && (
-            <Button
-              disabled={requestingPayment}
-              onClick={requestPayment}
-              className='flex items-center gap-1 my-auto mb-6'
-            >
-              <span>Yêu cầu thanh toán</span>
-              <img src={paymentIcon} className='w-5 h-5 filter invert' />
-              {requestingPayment && <Shell className='w-4 h-4 ml-1 animate-spin' />}
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger>
+                <Button disabled={requestingPayment} className='flex items-center gap-1 my-auto mb-6'>
+                  <span>Yêu cầu thanh toán</span>
+                  <img src={paymentIcon} className='w-5 h-5 filter invert' />
+                  {requestingPayment && <Shell className='w-4 h-4 ml-1 animate-spin' />}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Yêu cầu thanh toán</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Hãy kiểm tra kĩ và cập nhật số lượng chim non trước khi yêu cầu khách hàng thanh toán
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Trở lại</AlertDialogCancel>
+                  <AlertDialogAction asChild>
+                    <Button
+                      disabled={requestingPayment}
+                      onClick={requestPayment}
+                      className='flex items-center gap-1 my-auto'
+                    >
+                      <span>Yêu Cầu</span>
+                    </Button>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           )}
           {orderNest.status === 'breeding' && (
             <Button
@@ -154,7 +187,7 @@ function ManageOrderNestDetail() {
               {requestingPayment && <Shell className='w-4 h-4 ml-1 animate-spin' />}
             </Button>
           )}
-          {!openAddStageForm && orderNest.status === 'breeding' && (
+          {orderNest.status === 'breeding' && (
             <Button
               onClick={() => {
                 setOpenAddStageForm(true)
@@ -253,7 +286,7 @@ const AddStageForm = ({ id, setOpenAddStageForm }: AddStageFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 mb-4'>
         <FormField
           control={form.control}
           name='name'

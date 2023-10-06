@@ -124,11 +124,19 @@ function ManageOrderDetail() {
         </div>
       </div>
 
-      <div className='flex justify-end gap-4 mt-4'>
-        <Button disabled={approvingOrder} onClick={() => {}} className='flex items-center gap-1 my-auto mb-6'>
-          <span>Hủy đơn hàng</span>
-          <img src={cancel} className='w-5 h-5 filter invert' />
-        </Button>
+      <div className='flex gap-4 mt-4 flex-row-reverse'>
+        {!['success', 'canceled'].includes(order.status) && (
+          <Button
+            variant='outline'
+            disabled={approvingOrder}
+            onClick={() => {}}
+            className='flex items-center gap-1 my-auto mb-6'
+          >
+            <span>Hủy đơn hàng</span>
+            <img src={cancel} className='w-5 h-5 dark:filter dark:invert' />
+          </Button>
+        )}
+
         {order.status === 'processing' && (
           <Button disabled={approvingOrder} onClick={approveOrder} className='flex items-center gap-1 my-auto mb-6'>
             <span>Chấp nhận đơn hàng</span>

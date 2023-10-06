@@ -10,6 +10,9 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 import { Plus } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import voucherEnableIcon from '@/assets/voucher-enable.svg'
+import voucherDisableIcon from '@/assets/voucher-disable.svg'
+import editIcon from '@/assets/edit.svg'
 
 const pageSize = 12
 
@@ -65,9 +68,22 @@ function ManageVoucherList() {
                 </ContextMenuTrigger>
                 <ContextMenuContent>
                   <ContextMenuItem asChild>
-                    <Link to={`/staff/vouchers/${voucher._id}/edit`}>Chỉnh sửa</Link>
+                    <Link
+                      className='cursor-pointer flex justify-between items-center gap-2'
+                      to={`/staff/vouchers/${voucher._id}/edit`}
+                    >
+                      Chỉnh sửa
+                      <img src={editIcon} className='w-5 h-5' />
+                    </Link>
                   </ContextMenuItem>
-                  <ContextMenuItem>Vô hiệu hóa</ContextMenuItem>
+                  <ContextMenuItem className='flex justify-between items-center gap-2'>
+                    Vô hiệu hóa
+                    <img src={voucherDisableIcon} className='w-5 h-5' />
+                  </ContextMenuItem>
+                  <ContextMenuItem className='flex justify-between items-center gap-2'>
+                    Kích hoạt
+                    <img src={voucherEnableIcon} className='w-5 h-5' />
+                  </ContextMenuItem>
                 </ContextMenuContent>
               </ContextMenu>
             )

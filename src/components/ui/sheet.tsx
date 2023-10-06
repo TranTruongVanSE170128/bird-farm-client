@@ -11,9 +11,7 @@ const SheetTrigger = SheetPrimitive.Trigger
 
 const SheetClose = SheetPrimitive.Close
 
-const SheetPortal = ({ className, ...props }: SheetPrimitive.DialogPortalProps) => (
-  <SheetPrimitive.Portal className={cn(className)} {...props} />
-)
+const SheetPortal = ({ ...props }: SheetPrimitive.DialogPortalProps) => <SheetPrimitive.Portal {...props} />
 SheetPortal.displayName = SheetPrimitive.Portal.displayName
 
 const SheetOverlay = React.forwardRef<
@@ -104,4 +102,15 @@ const SheetDescription = React.forwardRef<
 ))
 SheetDescription.displayName = SheetPrimitive.Description.displayName
 
-export { Sheet, SheetTrigger, SheetClose, SheetContent, SheetHeader, SheetFooter, SheetTitle, SheetDescription }
+export {
+  Sheet,
+  SheetPortal,
+  SheetOverlay,
+  SheetTrigger,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription
+}
