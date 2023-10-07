@@ -14,6 +14,7 @@ import { Button } from './ui/button'
 import { Shell } from 'lucide-react'
 import { useRatingFormStore } from '@/store/use-rating-form'
 import { useAuthContext } from '@/contexts/auth-provider'
+import { Skeleton } from './ui/skeleton'
 
 type Props = {
   orderNest: OrderNest
@@ -28,6 +29,7 @@ function OrderNestCard({ orderNest }: Props) {
   const { showRatingForm } = useRatingFormStore()
   const { user } = useAuthContext()
   const isStaff = user?.role === 'staff'
+  const [isLoadingImage, setIsLoadingImage] = useState(false)
 
   const receiveOrderNest = async (id: string) => {
     setIsReceivingOrder(true)
@@ -202,11 +204,16 @@ function OrderNestCard({ orderNest }: Props) {
 
         {selectedStage && (
           <div className='flex flex-col items-center col-span-1'>
+            {isLoadingImage && <Skeleton className='object-cover w-full aspect-video rounded-xl' />}
             <img
-              className='object-cover w-full aspect-video rounded-xl'
               src={selectedStage.imageUrl}
               alt='Selected Image'
+              className={cn('object-cover w-full aspect-video rounded-xl', isLoadingImage && 'hidden')}
+              onLoad={() => {
+                setIsLoadingImage(false), console.log('On Load')
+              }}
             />
+
             <div className='flex flex-col items-center gap-2 mt-2 text-lg'>{selectedStage.description}</div>
           </div>
         )}
@@ -238,7 +245,7 @@ function OrderNestCard({ orderNest }: Props) {
                       : 'bg-slate-200 text-black dark:bg-slate-500 dark:text-white'
                   )}
                   onClick={() => {
-                    setSelectedStage(stage), setIndexActive(index)
+                    setSelectedStage(stage), setIndexActive(index), setIsLoadingImage(true)
                   }}
                 >
                   {index + 1}
