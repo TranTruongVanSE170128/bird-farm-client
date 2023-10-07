@@ -23,6 +23,7 @@ function ManageVoucherList() {
   const [isLoadingVouchers, setIsLoadingVouchers] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
   const { toast } = useToast()
+  const [changedVoucher, setChangedVoucher] = useState<Voucher | null>(null)
 
   useEffect(() => {
     const fetchVouchers = async () => {
@@ -44,6 +45,56 @@ function ManageVoucherList() {
     fetchVouchers()
   }, [pageNumber, toast])
 
+  const disableVoucher = async (voucher: Voucher) => {
+    setChangedVoucher(voucher)
+    try {
+      await birdFarmApi.put(`/api/vouchers/${voucher._id}/disable`)
+      setChangedVoucher(null)
+      setVouchers((prev) =>
+        prev.map((item) => {
+          if (item._id === voucher._id) {
+            item.enable = false
+          }
+          return item
+        })
+      )
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const messageError = error.response.data.message
+      toast({
+        variant: 'destructive',
+        content: messageError || 'Không rõ nguyễn nhân',
+        title: 'Không thể vô hiệu hóa voucher'
+      })
+      setChangedVoucher(null)
+    }
+  }
+
+  const enableVoucher = async (voucher: Voucher) => {
+    setChangedVoucher(voucher)
+    try {
+      await birdFarmApi.put(`/api/vouchers/${voucher._id}/enable`)
+      setChangedVoucher(null)
+      setVouchers((prev) =>
+        prev.map((item) => {
+          if (item._id === voucher._id) {
+            item.enable = true
+          }
+          return item
+        })
+      )
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const messageError = error.response.data.message
+      toast({
+        variant: 'destructive',
+        content: messageError || 'Không rõ nguyễn nhân',
+        title: 'Không thể kích hoạt voucher'
+      })
+      setChangedVoucher(null)
+    }
+  }
+
   return (
     <div>
       <div className='flex items-center justify-between mb-6'>
@@ -64,7 +115,12 @@ function ManageVoucherList() {
             return (
               <ContextMenu>
                 <ContextMenuTrigger>
-                  <VoucherTicket key={voucher._id} voucher={voucher} />
+                  <VoucherTicket
+                    contextContent={voucher.enable ? 'Đang kích hoạt' : 'Đang vô hiệu hóa'}
+                    isChanging={changedVoucher?._id === voucher._id}
+                    key={voucher._id}
+                    voucher={voucher}
+                  />
                 </ContextMenuTrigger>
                 <ContextMenuContent>
                   <ContextMenuItem asChild>
@@ -76,14 +132,27 @@ function ManageVoucherList() {
                       <img src={editIcon} className='w-5 h-5' />
                     </Link>
                   </ContextMenuItem>
-                  <ContextMenuItem className='flex justify-between items-center gap-2'>
-                    Vô hiệu hóa
-                    <img src={voucherDisableIcon} className='w-5 h-5' />
-                  </ContextMenuItem>
-                  <ContextMenuItem className='flex justify-between items-center gap-2'>
-                    Kích hoạt
-                    <img src={voucherEnableIcon} className='w-5 h-5' />
-                  </ContextMenuItem>
+                  {voucher.enable ? (
+                    <ContextMenuItem
+                      onClick={() => {
+                        disableVoucher(voucher)
+                      }}
+                      className='cursor-pointer flex justify-between items-center gap-2'
+                    >
+                      Vô hiệu hóa
+                      <img src={voucherDisableIcon} className='w-5 h-5' />
+                    </ContextMenuItem>
+                  ) : (
+                    <ContextMenuItem
+                      onClick={() => {
+                        enableVoucher(voucher)
+                      }}
+                      className='cursor-pointer flex justify-between items-center gap-2'
+                    >
+                      Kích hoạt
+                      <img src={voucherEnableIcon} className='w-5 h-5' />
+                    </ContextMenuItem>
+                  )}
                 </ContextMenuContent>
               </ContextMenu>
             )

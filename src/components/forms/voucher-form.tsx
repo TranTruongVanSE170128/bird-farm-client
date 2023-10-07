@@ -41,7 +41,11 @@ function VoucherForm({ voucher, btnTitle, action, setEdit }: Props) {
       if (action === 'create') {
         await birdFarmApi.post('/api/vouchers', values)
       } else {
-        await birdFarmApi.put(`/api/vouchers/${voucher?._id}`, values)
+        await birdFarmApi.put(`/api/vouchers/${voucher?._id}`, {
+          ...values,
+
+          expiredAt: values.expiredAt && new Date(values.expiredAt)
+        })
       }
 
       toast({
@@ -55,7 +59,8 @@ function VoucherForm({ voucher, btnTitle, action, setEdit }: Props) {
       const messageError = error.response.data.message
       toast({
         variant: 'destructive',
-        title: messageError
+        title: action === 'create' ? 'Không thể tạo voucher' : 'Không thể cập nhật voucher',
+        content: messageError || 'Không rõ nguyên nhân'
       })
       setIsSubmitting(false)
     }

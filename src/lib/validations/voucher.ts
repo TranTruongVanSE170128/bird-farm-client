@@ -10,7 +10,7 @@ export const voucherSchema = z.object({
     .min(0, 'Không thể bé hơn 0'),
   conditionPrice: z.coerce.number({ invalid_type_error: 'Giá tối thiểu không hợp lệ' }).min(0, 'Không thể bé hơn 0'),
   quantity: z.coerce.number({ invalid_type_error: 'Số lượng không hợp lệ' }).min(0, 'Không thể bé hơn 0'),
-  expiredAt: z.coerce.date({ invalid_type_error: 'Ngày không hợp lệ' })
+  expiredAt: z.date({ invalid_type_error: 'Ngày không hợp lệ' })
 })
 
 export type TVoucherSchema = z.infer<typeof voucherSchema>
