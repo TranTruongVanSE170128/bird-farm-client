@@ -59,10 +59,10 @@ const formSchema = z.object({
       message: 'Số điện thoại có độ dài tối đa là 11 chữ số'
     })
     .trim(),
-  province: z.string().nonempty('Bắt buộc').trim(),
-  district: z.string().nonempty('Bắt buộc').trim(),
-  ward: z.string().nonempty('Bắt buộc').trim(),
-  address: z.string().nonempty('Bắt buộc').trim(),
+  province: z.string({ required_error: 'Bắt buộc' }).trim(),
+  district: z.string({ required_error: 'Bắt buộc' }).trim(),
+  ward: z.string({ required_error: 'Bắt buộc' }).trim(),
+  address: z.string({ required_error: 'Bắt buộc' }).trim(),
   notice: z.string().trim().optional()
 })
 
@@ -222,7 +222,8 @@ function CheckoutOrder() {
           receiver,
           phone,
           address,
-          notice
+          notice,
+          voucher: voucher?._id
         })
 
         const result = await stripe?.redirectToCheckout({
@@ -311,7 +312,6 @@ function CheckoutOrder() {
                           <Select
                             onValueChange={(value: string) => {
                               const province = provinces.find((province) => province.code === Number(value))
-                              console.log({ value, province })
 
                               form.setValue('province', province?.name || '')
                               setSelectedProvince(province || null)
@@ -346,7 +346,6 @@ function CheckoutOrder() {
                           <Select
                             onValueChange={(value: string) => {
                               const district = districts.find((district) => district.code === Number(value))
-                              console.log({ district })
 
                               form.setValue('district', district?.name || '')
                               setSelectedDistrict(district || null)
@@ -381,7 +380,6 @@ function CheckoutOrder() {
                           <Select
                             onValueChange={(value: string) => {
                               const ward = wards.find((ward) => ward.code === Number(value))
-                              console.log({ ward })
 
                               form.setValue('ward', ward?.name || '')
                             }}

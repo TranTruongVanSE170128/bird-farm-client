@@ -38,7 +38,6 @@ export function RatingForm() {
       } else if (orderNestId) {
         body.orderNest = orderNestId
       }
-      console.log(body)
 
       await birdFarmApi.post('/api/ratings', body)
       useRatingFormStore.setState({ display: false })
@@ -73,7 +72,6 @@ export function RatingForm() {
                         <FormControl>
                           <RadioGroup
                             onValueChange={(value: string) => {
-                              console.log(value)
                               setRateValue(Number(value))
                               form.setValue('value', Number(value))
                             }}

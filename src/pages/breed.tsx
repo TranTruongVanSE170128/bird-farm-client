@@ -47,9 +47,7 @@ function Pairing() {
     fetchBirds()
   }, [searchParams])
 
-  useEffect(() => {
-    console.log({ maleBird, femaleBird })
-  }, [maleBird, femaleBird])
+  useEffect(() => {}, [maleBird, femaleBird])
 
   const deposit = async () => {
     try {

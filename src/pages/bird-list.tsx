@@ -60,8 +60,6 @@ function BirdList() {
     }
 
     fetchBirds()
-
-    console.log({ searchQuery })
   }, [pageNumber, searchQuery, specie, type])
 
   return (

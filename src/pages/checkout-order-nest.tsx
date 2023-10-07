@@ -268,7 +268,6 @@ function CheckoutOrderNest() {
                           <Select
                             onValueChange={(value: string) => {
                               const province = provinces.find((province) => province.code === Number(value))
-                              console.log({ value, province })
 
                               form.setValue('province', province?.name || '')
                               setSelectedProvince(province || null)
@@ -303,7 +302,6 @@ function CheckoutOrderNest() {
                           <Select
                             onValueChange={(value: string) => {
                               const district = districts.find((district) => district.code === Number(value))
-                              console.log({ district })
 
                               form.setValue('district', district?.name || '')
                               setSelectedDistrict(district || null)
@@ -338,7 +336,6 @@ function CheckoutOrderNest() {
                           <Select
                             onValueChange={(value: string) => {
                               const ward = wards.find((ward) => ward.code === Number(value))
-                              console.log({ ward })
 
                               form.setValue('ward', ward?.name || '')
                             }}

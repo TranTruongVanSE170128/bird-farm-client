@@ -57,8 +57,6 @@ export function calculateDiscount(originPrice: number, voucher: Voucher): number
     return 0
   }
   const discountByPercent = Math.round((originPrice * voucher.discountPercent) / 100)
-  console.log(discountByPercent)
-
   return discountByPercent > voucher.maxDiscountValue ? voucher.maxDiscountValue : discountByPercent
 }
 

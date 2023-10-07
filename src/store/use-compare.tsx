@@ -37,8 +37,6 @@ export const useCompareStore = create<State & Action>((set) => ({
           cloneBirds[1] = bird
           state.setBirds(cloneBirds)
         } else {
-          console.log(3)
-
           toast({
             duration: 2500,
             variant: 'destructive',
