@@ -37,6 +37,7 @@ function BirdDetail() {
 
   useEffect(() => {
     const fetchBird = async () => {
+      setIsLoadingSameBirds(true)
       try {
         const { data } = await birdFarmApi.get(`/api/birds/${id}`)
 
@@ -44,6 +45,7 @@ function BirdDetail() {
       } catch (error) {
         navigate('/not-found')
       }
+      setIsLoadingSameBirds(false)
     }
 
     fetchBird()
@@ -64,7 +66,11 @@ function BirdDetail() {
     fetchSameBirds()
   }, [bird])
 
-  if (!bird) {
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [id])
+
+  if (isLoadingSameBirds || !bird) {
     return <Spinner className='mt-12' />
   }
 

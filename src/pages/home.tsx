@@ -143,8 +143,8 @@ function Home() {
         <Button size='lg'>Xem tất cả</Button>
       </Link>
 
-      <div className='flex items-center justify-between mt-8 mb-4'>
-        <h1 className='text-3xl font-bold'>Chim kiểng tại cửa hàng</h1>
+      <div className='flex items-center justify-between mt- mb-4'>
+        <h1 className='text-3xl font-bold'>Chim kiểng đang bán tại cửa hàng</h1>
       </div>
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
         {isLoadingBirds
@@ -161,7 +161,7 @@ function Home() {
       </Link>
 
       <div className='flex items-center justify-between mt-8 mb-4'>
-        <h1 className='text-3xl font-bold'>Chim phối giống tại cửa hàng</h1>
+        <h1 className='text-3xl font-bold'>Chim phối giống đang có tại cửa hàng</h1>
       </div>
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
         {isLoadingBirds

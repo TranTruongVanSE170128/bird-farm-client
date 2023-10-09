@@ -1,7 +1,7 @@
 import Container from '@/components/ui/container'
 import { BirdIcon, Shell } from 'lucide-react'
 import redHeart from '@/assets/red-heart.svg'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { Bird } from '@/lib/types'
@@ -23,6 +23,7 @@ import { toast } from '@/components/ui/use-toast'
 import { loadStripe } from '@stripe/stripe-js'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
+import { useAuthContext } from '@/contexts/auth-provider'
 // import { Button } from '@/components/ui/button'
 // import { formatPrice } from '@/lib/utils'
 
@@ -31,6 +32,8 @@ function Pairing() {
   const [maleBird, setMaleBird] = useState<Bird | null>(null)
   const [femaleBird, setFemaleBird] = useState<Bird | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const navigate = useNavigate()
+  const { user } = useAuthContext()
 
   useEffect(() => {
     const fetchBirds = async () => {
@@ -50,6 +53,14 @@ function Pairing() {
   useEffect(() => {}, [maleBird, femaleBird])
 
   const deposit = async () => {
+    if (!user) {
+      toast({
+        title: 'Hãy đăng nhập để tiếp tục đặt cọc',
+        variant: 'destructive'
+      })
+      navigate('/auth/sign-in')
+      return
+    }
     try {
       setIsSubmitting(true)
       const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY)

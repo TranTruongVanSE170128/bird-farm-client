@@ -263,6 +263,7 @@ function Cart() {
                         title: 'Hãy đăng nhập để tiếp tục mua hàng',
                         variant: 'destructive'
                       })
+                      navigate('/auth/sign-in')
                       return
                     }
 

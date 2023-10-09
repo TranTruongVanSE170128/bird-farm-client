@@ -84,9 +84,15 @@ function BirdCard({ className, bird }: Props) {
             )}
 
             {bird.gender === 'male' ? (
-              <img className='w-6 h-6' src={maleIcon} />
+              <div className='flex items-center gap-0'>
+                {/* Đực */}
+                <img className='w-6 h-6' src={maleIcon} />
+              </div>
             ) : (
-              <img className='w-6 h-6' src={femaleIcon} />
+              <div className='flex items-center gap-0'>
+                {/* Cái */}
+                <img className='w-6 h-6' src={femaleIcon} />
+              </div>
             )}
           </div>
         </CardContent>
