@@ -1,10 +1,11 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, ChangeEvent } from 'react'
 import Container from '@/components/ui/container'
 import { Button } from '@/components/ui/button'
 import userIcon from '@/assets/user.png'
 import voucherIcon from '@/assets/voucher.svg'
 import { Input } from '@/components/ui/input'
 import { Bell } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 function Profile() {
   const [activeTab, setActiveTab] = useState('account-general')
@@ -12,6 +13,12 @@ function Profile() {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const fileInputRef = useRef(null)
+  const [address, setAddress] = useState('123 Tran Hung Dao,Thành phố Phan Thiết, Bình Thuận')
+  const [isDefault, setIsDefault] = useState(true)
+  const [isEditing, setIsEditing] = useState(false)
+  const [newAddress, setNewAddress] = useState('')
+  const [showAddressesModal, setShowAddressesModal] = useState(false)
+  const [otherAddresses, setOtherAddresses] = useState(['123 Tran Hung Dao,Thành phố Phan Thiết, Bình Thuận','456 Le Loi, Quận 1, TP.HCM', '789 Nguyen Hue, Quận 3, TP.HCM'])
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId)
   }
@@ -41,6 +48,41 @@ function Profile() {
     if (fileInputRef.current) {
       ;(fileInputRef.current as HTMLInputElement).click()
     }
+  }
+  const handleUpdateClick = () => {
+    if (!isEditing) {
+      // If not in edit mode, switch to edit mode
+      setIsEditing(true)
+      setNewAddress(address) // Set the input value to the current address
+    } else {
+      // If in edit mode, save the updated address
+      setAddress(newAddress)
+      setIsEditing(false)
+    }
+  }
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewAddress(e.target.value)
+  }
+  const handleShowAddressesModal = () => {
+    setShowAddressesModal(true)
+  }
+
+  const handleAddAddress = () => {
+    if (newAddress.trim() === '') {
+      return; // Don't add empty addresses
+    }
+
+    // Check for duplicates before adding
+    if (!otherAddresses.includes(newAddress)) {
+      setOtherAddresses([...otherAddresses, newAddress]);
+    } 
+    setNewAddress(''); // Reset the input field
+
+  }
+
+  const handleCloseAddressesModal = () => {
+    setShowAddressesModal(false)
   }
   return (
     <main>
@@ -111,7 +153,7 @@ function Profile() {
                     />
                     <div className='flex flex-col'>
                       <Button className='' onClick={handleUploadButtonClick}>
-                        Upload new photo
+                        Cập nhật ảnh mới
                       </Button>
                       <Input
                         type='file'
@@ -119,7 +161,9 @@ function Profile() {
                         ref={fileInputRef}
                         accept='image/jpeg, image/png, image/gif'
                       />
-                      <div className='mt-2 text-sm text-card-foreground'>Allowed JPG, GIF or PNG. Max size of 800K</div>
+                      <div className='mt-2 text-sm text-card-foreground'>
+                        Được phép JPG, GIF hoặc PNG. Kích thước tối đa 800K
+                      </div>
                     </div>
                   </div>
                   <hr />
@@ -132,11 +176,11 @@ function Profile() {
                     <div className=''>
                       <label className=''>E-mail</label>
                       <Input type='text' className='w-full p-2 mb-2 border rounded-md border-muted-foreground' />
-                      <div className='flex flex-col justify-center w-4/5 h-16 p-4 bg-yellow-300 rounded-md '>
-                        Your email is not confirmed. Please check your inbox.
+                      <div className='flex flex-col justify-center w-4/5 h-20 p-4 bg-yellow-300 rounded-md '>
+                        Email của bạn chưa được xác nhận. Hãy kiểm tra hộp thư đến của bạn.
                         <br />
                         <a className='text-blue-500 underline hover:' href='#'>
-                          Resend confirmation
+                          Gửi lại xác nhận
                         </a>
                       </div>
                     </div>
@@ -144,23 +188,77 @@ function Profile() {
                       <label className=''>Điện thoại</label>
                       <Input type='number' className='w-full p-2 mb-2 border rounded-md border-muted-foreground' />
                     </div>
-                    <div className=''>
+                    <div className='pt-2'>
                       <label className=''>Địa chỉ</label>
-                      <Input type='text' className='w-full p-2 mb-2 border rounded-md border-muted-foreground' />
+                      <div className='flex '>
+                        <div className='w-10/12'>
+                          {!isEditing ? (
+                            <>
+                              <p className='py-2'>{address}</p>
+                              {isDefault && (
+                                <span className='border-2 border-primary px-2 py-1 text-primary'>Mặc định</span>
+                              )}
+                            </>
+                          ) : (
+                            <Input
+                              type='text'
+                              value={newAddress}
+                              onChange={handleInputChange}
+                              className='w-full mb-1'
+                            />
+                          )}
+                        </div>
+                        <div className='flex flex-col'>
+                          <Button variant={'outline'} onClick={handleUpdateClick}>
+                            {isEditing ? 'Lưu' : 'Cập nhật'}
+                          </Button>
+                          {!isEditing && <Button onClick={handleShowAddressesModal}>Thay đổi</Button>}
+
+                          {isEditing && (
+                            <Button variant={'link'} onClick={() => setIsEditing(false)}>
+                              Hủy
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                      {showAddressesModal && (
+                        <div className='fixed inset-0 flex items-center justify-center z-50'>
+                          <div className='bg-white p-4 rounded-md shadow-md w-96'>
+                            <h2 className='text-lg font-semibold mb-4'>Các Địa chỉ khác</h2>
+                            <ul className='mb-4'>
+                              {otherAddresses.map((address, index) => (
+                                <li key={index}>{address}</li>
+                              ))}
+                            </ul>
+                            <input
+                              type='text'
+                              placeholder='Thêm địa chỉ mới'
+                              value={newAddress}
+                              onChange={(e) => setNewAddress(e.target.value)}
+                              className='w-full p-2 border border-gray-300 rounded-md mb-2'
+                            />
+                            <Button onClick={handleAddAddress}>Thêm</Button>
+                            <Button variant={'link'} onClick={handleCloseAddressesModal}>
+                              Đóng
+                            </Button>
+                          </div>
+                        </div>
+                      )}
                     </div>
+
                     <div className=''>
-                      <label className=''>Password</label>
+                      <label className=''>Mật khẩu</label>
                       <Input
                         type='password'
                         className='w-full p-2 mb-2 border rounded-md border-muted-foreground'
                         id='currentPassword'
                       />
-                      <Button onClick={handleShowPasswordFields}>Change Password</Button>
+                      <Button onClick={handleShowPasswordFields}>Thay đổi mật khẩu</Button>
                     </div>
                     {showPasswordFields && (
                       <div id='passwordFields'>
                         <div className=''>
-                          <label className=''>New Password</label>
+                          <label className=''>Mật khẩu mới</label>
                           <Input
                             type='password'
                             className='w-full p-2 mb-2 border rounded-md border-muted-foreground'
@@ -169,7 +267,7 @@ function Profile() {
                           />
                         </div>
                         <div className=''>
-                          <label className=''>Confirm Password</label>
+                          <label className=''>Xác nhận mật khẩu</label>
                           <Input
                             type='password'
                             className='w-full p-2 mb-2 border rounded-md border-muted-foreground'
@@ -178,17 +276,17 @@ function Profile() {
                           />
                         </div>
                         <Button className='mr-5' onClick={handleSavePassword}>
-                          Save
+                          Lưu
                         </Button>
                         <Button variant={'outline'} onClick={handleCancelPasswordChange}>
-                          Cancel
+                          Hủy
                         </Button>
                       </div>
                     )}
                   </div>
                   <div className='flex justify-end mt-10'>
-                    <Button className='mr-10'>Save changes</Button>
-                    <Button variant={'outline'}>Cancel</Button>
+                    <Button className='mr-10'>Lưu thay đổi</Button>
+                    <Button variant={'outline'}>Hủy bỏ</Button>
                   </div>
                 </div>
 
