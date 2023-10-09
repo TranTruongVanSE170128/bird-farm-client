@@ -17,7 +17,8 @@ function Home() {
   const [isLoadingSpecies, setIsLoadingSpecies] = useState(true)
   const [species, setSpecies] = useState<Specie[]>([])
   const [isLoadingBirds, setIsLoadingBirds] = useState(true)
-  const [birds, setBirds] = useState<Bird[]>([])
+  const [birdsSell, setBirdsSell] = useState<Bird[]>([])
+  const [birdsBreed, setBirdsBreed] = useState<Bird[]>([])
   const { width } = useWindowSize()
   const speciesSection = useRef<HTMLHeadingElement>(null)
 
@@ -30,7 +31,7 @@ function Home() {
 
   useEffect(() => {
     const fetchSpecies = async () => {
-      const { data } = await birdFarmApi.get('/api/species/pagination?pageSize=8&pageNumber=1')
+      const { data } = await birdFarmApi.get('/api/species')
 
       setSpecies(data?.species || [])
       setIsLoadingSpecies(false)
@@ -40,14 +41,25 @@ function Home() {
   }, [])
 
   useEffect(() => {
-    const fetchSpecies = async () => {
-      const { data } = await birdFarmApi.get('/api/birds/pagination?pageSize=8&pageNumber=1')
+    const fetchBirdsSell = async () => {
+      const { data } = await birdFarmApi.get('/api/birds/pagination?pageSize=8&pageNumber=1&type=sell')
 
-      setBirds(data?.birds || [])
+      setBirdsSell(data?.birds || [])
       setIsLoadingBirds(false)
     }
 
-    fetchSpecies()
+    fetchBirdsSell()
+  }, [])
+
+  useEffect(() => {
+    const fetchBirdsBreed = async () => {
+      const { data } = await birdFarmApi.get('/api/birds/pagination?pageSize=8&pageNumber=1&type=breed')
+
+      setBirdsBreed(data?.birds || [])
+      setIsLoadingBirds(false)
+    }
+
+    fetchBirdsBreed()
   }, [])
 
   return (
@@ -78,7 +90,7 @@ function Home() {
       </div>
 
       <h1 ref={speciesSection} className='mt-8 mb-5 text-3xl font-bold text-center'>
-        Các loài chim bán chạy
+        Các loài chim đang có tại cửa hàng
       </h1>
       <div className='relative'>
         <Swiper
@@ -132,18 +144,31 @@ function Home() {
       </Link>
 
       <div className='flex items-center justify-between mt-8 mb-4'>
-        <h1 className='text-3xl font-bold'>Chim đang bán tại cửa hàng</h1>
-
-        <Link to='/birds' className='text-xl font-bold underline text-primary'>
-          Xem thêm
-        </Link>
+        <h1 className='text-3xl font-bold'>Chim kiểng tại cửa hàng</h1>
       </div>
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
         {isLoadingBirds
           ? Array(...new Array(8)).map((_, index) => {
               return <BirdCardSkeleton key={index} />
             })
-          : birds?.map((bird) => {
+          : birdsSell?.map((bird) => {
+              return <BirdCard key={bird._id} bird={bird} />
+            })}
+      </div>
+
+      <Link className='flex justify-center mt-6' to='/birds'>
+        <Button size='lg'>Xem tất cả</Button>
+      </Link>
+
+      <div className='flex items-center justify-between mt-8 mb-4'>
+        <h1 className='text-3xl font-bold'>Chim phối giống tại cửa hàng</h1>
+      </div>
+      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+        {isLoadingBirds
+          ? Array(...new Array(8)).map((_, index) => {
+              return <BirdCardSkeleton key={index} />
+            })
+          : birdsBreed?.map((bird) => {
               return <BirdCard key={bird._id} bird={bird} />
             })}
       </div>

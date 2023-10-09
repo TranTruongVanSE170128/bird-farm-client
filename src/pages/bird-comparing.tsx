@@ -50,7 +50,7 @@ function BirdComparing() {
           <div className='flex flex-col items-center justify-center border basis-1/3'>
             <div className='text-xl font-medium text-center'>{firstBird?.name}</div>
             <img src={versusIcon} className='w-32 h-32' />
-            <div className='text-xl font-medium text-center'>{firstBird?.name}</div>
+            <div className='text-xl font-medium text-center'>{secondBird?.name}</div>
           </div>
 
           <div className='flex justify-center border basis-1/3'>
