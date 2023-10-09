@@ -13,12 +13,18 @@ function Profile() {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const fileInputRef = useRef(null)
-  const [address, setAddress] = useState('123 Tran Hung Dao,Thành phố Phan Thiết, Bình Thuận')
   const [isDefault, setIsDefault] = useState(true)
   const [isEditing, setIsEditing] = useState(false)
   const [newAddress, setNewAddress] = useState('')
   const [showAddressesModal, setShowAddressesModal] = useState(false)
-  const [otherAddresses, setOtherAddresses] = useState(['123 Tran Hung Dao,Thành phố Phan Thiết, Bình Thuận','456 Le Loi, Quận 1, TP.HCM', '789 Nguyen Hue, Quận 3, TP.HCM'])
+  const [showNewAddressFields, setShowNewAddressFields] = useState(false); 
+  const [otherAddresses, setOtherAddresses] = useState([
+    '123 Tran Hung Dao,Thành phố Phan Thiết, Bình Thuận',
+    '456 Le Loi, Quận 1, TP.HCM',
+    '789 Nguyen Hue, Quận 3, TP.HCM'
+  ])
+  const [defaultAddress, setDefaultAddress] = useState(otherAddresses[0])
+
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId)
   }
@@ -49,14 +55,12 @@ function Profile() {
       ;(fileInputRef.current as HTMLInputElement).click()
     }
   }
-  const handleUpdateClick = () => {
+  const handleUpdateClick = (index:number) => {
     if (!isEditing) {
-      // If not in edit mode, switch to edit mode
       setIsEditing(true)
-      setNewAddress(address) // Set the input value to the current address
+      setNewAddress(defaultAddress)
     } else {
-      // If in edit mode, save the updated address
-      setAddress(newAddress)
+      setDefaultAddress(newAddress)
       setIsEditing(false)
     }
   }
@@ -70,19 +74,33 @@ function Profile() {
 
   const handleAddAddress = () => {
     if (newAddress.trim() === '') {
-      return; // Don't add empty addresses
+      return // Don't add empty addresses
     }
 
     // Check for duplicates before adding
     if (!otherAddresses.includes(newAddress)) {
-      setOtherAddresses([...otherAddresses, newAddress]);
-    } 
-    setNewAddress(''); // Reset the input field
-
+      setOtherAddresses([...otherAddresses, newAddress])
+    }
+    setNewAddress('') // Reset the input field
   }
 
   const handleCloseAddressesModal = () => {
     setShowAddressesModal(false)
+  }
+  const handleDeleteAddress = (index:number) => {
+    const updatedAddresses = [...otherAddresses]
+    updatedAddresses.splice(index, 1)
+    setOtherAddresses(updatedAddresses)
+  }
+  const handleSetDefaultAddress = (index:number) => {
+    const updatedAddresses = [...otherAddresses];
+    const addressToMove = updatedAddresses.splice(index, 1)[0];
+    updatedAddresses.unshift(addressToMove); // Move to the beginning of the list
+    setOtherAddresses(updatedAddresses);
+    setDefaultAddress(updatedAddresses[0])
+  };
+  const handleShowAddressInput =()=>{
+    setShowNewAddressFields(true);
   }
   return (
     <main>
@@ -194,7 +212,7 @@ function Profile() {
                         <div className='w-10/12'>
                           {!isEditing ? (
                             <>
-                              <p className='py-2'>{address}</p>
+                              <p className='py-2'>{defaultAddress}</p>
                               {isDefault && (
                                 <span className='border-2 border-primary px-2 py-1 text-primary'>Mặc định</span>
                               )}
@@ -209,7 +227,7 @@ function Profile() {
                           )}
                         </div>
                         <div className='flex flex-col'>
-                          <Button variant={'outline'} onClick={handleUpdateClick}>
+                          <Button variant={'outline'} onClick={()=>handleUpdateClick(0)}>
                             {isEditing ? 'Lưu' : 'Cập nhật'}
                           </Button>
                           {!isEditing && <Button onClick={handleShowAddressesModal}>Thay đổi</Button>}
@@ -222,27 +240,71 @@ function Profile() {
                         </div>
                       </div>
                       {showAddressesModal && (
-                        <div className='fixed inset-0 flex items-center justify-center z-50'>
-                          <div className='bg-white p-4 rounded-md shadow-md w-96'>
-                            <h2 className='text-lg font-semibold mb-4'>Các Địa chỉ khác</h2>
-                            <ul className='mb-4'>
-                              {otherAddresses.map((address, index) => (
-                                <li key={index}>{address}</li>
-                              ))}
-                            </ul>
-                            <input
-                              type='text'
-                              placeholder='Thêm địa chỉ mới'
-                              value={newAddress}
-                              onChange={(e) => setNewAddress(e.target.value)}
-                              className='w-full p-2 border border-gray-300 rounded-md mb-2'
-                            />
-                            <Button onClick={handleAddAddress}>Thêm</Button>
-                            <Button variant={'link'} onClick={handleCloseAddressesModal}>
+                        <div className='fixed inset-0 flex items-center justify-center z-50 backdrop-brightness-0 backdrop-opacity-50'>
+                        <div className='bg-white p-8 rounded-lg shadow-lg w-2/5 '>
+                          <div className='flex justify-between items-center'>
+                            <h1 className='text-2xl font-semibold mb-5'>Các Địa chỉ khác</h1>
+                            <Button onClick={handleShowAddressInput}>+Thêm địa chỉ mới</Button>
+                          </div>
+                          
+                          <ul className='mb-4'>
+                            {otherAddresses.map((address, index) => (
+                              <li key={index} className='flex justify-between items-center my-5'>
+                                {index === 0 ? (
+                                  <div className='font-bold flex justify-between items-center'><span className=''>{address}</span><span className='border-2 border-primary px-2 py-1 text-primary justify-end ml-20'>Mặc định</span></div>
+                                  
+                                ) : (
+                                  address
+                                )}
+                                {index !== 0 && (
+                                  <div className='flex space-x-2'>
+                                    <Button
+                                      variant={'link'}
+                                      onClick={() => handleSetDefaultAddress(index)}
+                                      className='text-primary'
+                                    >
+                                      Đặt làm mặc định
+                                    </Button>
+                                    <Button
+                                      variant={'link'}
+                                      onClick={() => handleDeleteAddress(index)}
+                                      className='text-red-500'
+                                    >
+                                      Xóa
+                                    </Button>
+                                  </div>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                         {showNewAddressFields && (
+                          <> <input
+                            type='text'
+                            placeholder='Thêm địa chỉ mới'
+                            value={newAddress}
+                            onChange={handleInputChange}
+                            className='w-full p-3 border border-gray-300 rounded-md mb-4'
+                          />
+                          <div className='flex justify-end'>
+                            <Button
+                              onClick={handleAddAddress}
+                              className='bg-primary text-white hover:bg-primary-dark'
+                            >
+                              Thêm
+                            </Button>
+                            <Button
+                              variant={'link'}
+                              onClick={handleCloseAddressesModal}
+                              className='text-gray-500'
+                            >
                               Đóng
                             </Button>
                           </div>
+                          </>)
+                         } 
+                         
                         </div>
+                      </div>
                       )}
                     </div>
 
