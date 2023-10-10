@@ -6,7 +6,7 @@ import voucherIcon from '@/assets/voucher.svg'
 import { Input } from '@/components/ui/input'
 import { Bell } from 'lucide-react'
 import { Link } from 'react-router-dom'
-
+import closeIcon from '@/assets/close.png'
 function Profile() {
   const [activeTab, setActiveTab] = useState('account-general')
   const [showPasswordFields, setShowPasswordFields] = useState(false)
@@ -17,7 +17,7 @@ function Profile() {
   const [isEditing, setIsEditing] = useState(false)
   const [newAddress, setNewAddress] = useState('')
   const [showAddressesModal, setShowAddressesModal] = useState(false)
-  const [showNewAddressFields, setShowNewAddressFields] = useState(false); 
+  const [showNewAddressFields, setShowNewAddressFields] = useState(false)
   const [otherAddresses, setOtherAddresses] = useState([
     '123 Tran Hung Dao,Thành phố Phan Thiết, Bình Thuận',
     '456 Le Loi, Quận 1, TP.HCM',
@@ -37,11 +37,11 @@ function Profile() {
     // Add your code to handle saving the new password here
     if (newPassword === confirmPassword) {
       // Save the new password (replace with your logic)
-      alert('Password saved successfully!')
+      alert('Đã lưu mật khẩu thành công!')
       // You can add further logic to actually save the password to your backend.
       setShowPasswordFields(false)
     } else {
-      alert('Passwords do not match. Please try again.')
+      alert('Mất khẩu không hợp lệ. Vui lòng thử lại!')
     }
   }
 
@@ -55,7 +55,7 @@ function Profile() {
       ;(fileInputRef.current as HTMLInputElement).click()
     }
   }
-  const handleUpdateClick = (index:number) => {
+  const handleUpdateClick = (index: number) => {
     if (!isEditing) {
       setIsEditing(true)
       setNewAddress(defaultAddress)
@@ -67,6 +67,18 @@ function Profile() {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewAddress(e.target.value)
+    if (newAddress.trim() === '') {
+      return; // Don't add empty addresses
+    }
+    // Check for duplicates before adding
+    if (newAddress !== otherAddresses[0]) {
+      // Update the first address in the list with the new value
+      const updatedAddresses = [...otherAddresses];
+      updatedAddresses[0] = newAddress;
+      setOtherAddresses(updatedAddresses);
+      // Reset the input and hide the fields
+    } 
+    
   }
   const handleShowAddressesModal = () => {
     setShowAddressesModal(true)
@@ -86,21 +98,28 @@ function Profile() {
 
   const handleCloseAddressesModal = () => {
     setShowAddressesModal(false)
+    setShowNewAddressFields(false)
   }
-  const handleDeleteAddress = (index:number) => {
+  const handleDeleteAddress = (index: number) => {
     const updatedAddresses = [...otherAddresses]
     updatedAddresses.splice(index, 1)
     setOtherAddresses(updatedAddresses)
   }
-  const handleSetDefaultAddress = (index:number) => {
-    const updatedAddresses = [...otherAddresses];
-    const addressToMove = updatedAddresses.splice(index, 1)[0];
-    updatedAddresses.unshift(addressToMove); // Move to the beginning of the list
-    setOtherAddresses(updatedAddresses);
+  const handleSetDefaultAddress = (index: number) => {
+    const updatedAddresses = [...otherAddresses]
+    const addressToMove = updatedAddresses.splice(index, 1)[0]
+    updatedAddresses.unshift(addressToMove) // Move to the beginning of the list
+    setOtherAddresses(updatedAddresses)
     setDefaultAddress(updatedAddresses[0])
-  };
-  const handleShowAddressInput =()=>{
-    setShowNewAddressFields(true);
+  }
+  const handleShowAddressInput = () => {
+    setShowNewAddressFields(true)
+  }
+  const handleInputNewAddress = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewAddress(e.target.value)
+  }
+  const handleCloseInputNewAddress = () => {
+    setShowNewAddressFields(false)
   }
   return (
     <main>
@@ -204,15 +223,15 @@ function Profile() {
                     </div>
                     <div className=''>
                       <label className=''>Điện thoại</label>
-                      <Input type='number' className='w-full p-2 mb-2 border rounded-md border-muted-foreground' />
+                      <Input type='text' className='w-full p-2 mb-2 border rounded-md border-muted-foreground' />
                     </div>
                     <div className='pt-2'>
                       <label className=''>Địa chỉ</label>
-                      <div className='flex '>
-                        <div className='w-10/12'>
+                      <div className='flex justify-between'>
+                        <div className='w-10/12 '>
                           {!isEditing ? (
                             <>
-                              <p className='py-2'>{defaultAddress}</p>
+                              <p className='pt-2 pb-4'>{defaultAddress}</p>
                               {isDefault && (
                                 <span className='border-2 border-primary px-2 py-1 text-primary'>Mặc định</span>
                               )}
@@ -226,8 +245,8 @@ function Profile() {
                             />
                           )}
                         </div>
-                        <div className='flex flex-col'>
-                          <Button variant={'outline'} onClick={()=>handleUpdateClick(0)}>
+                        <div className='flex flex-col gap-y-2'>
+                          <Button variant={'outline'} onClick={() => handleUpdateClick(0)} >
                             {isEditing ? 'Lưu' : 'Cập nhật'}
                           </Button>
                           {!isEditing && <Button onClick={handleShowAddressesModal}>Thay đổi</Button>}
@@ -241,70 +260,88 @@ function Profile() {
                       </div>
                       {showAddressesModal && (
                         <div className='fixed inset-0 flex items-center justify-center z-50 backdrop-brightness-0 backdrop-opacity-50'>
-                        <div className='bg-white p-8 rounded-lg shadow-lg w-2/5 '>
-                          <div className='flex justify-between items-center'>
-                            <h1 className='text-2xl font-semibold mb-5'>Các Địa chỉ khác</h1>
-                            <Button onClick={handleShowAddressInput}>+Thêm địa chỉ mới</Button>
+                          <div className='bg-card px-8 pb-8 pt-2 rounded-lg shadow-lg w-2/5'>
+                            <div className='flex justify-end items-center mb-4 '>
+                             
+                            <img className='w-6 cursor-pointer' src={closeIcon}  onClick={handleCloseAddressesModal}/>
+                            <span className='cursor-pointer'  onClick={handleCloseAddressesModal}>Đóng</span>
+                            </div>
+                            <div className='flex justify-between items-center'>
+                              <h1 className='text-2xl font-semibold mb-5'>Các Địa chỉ khác</h1>
+                              <Button onClick={handleShowAddressInput}>+Thêm địa chỉ mới</Button>
+                            </div>
+
+                            <ul className='mb-4'>
+                              {otherAddresses.map((address, index) => (
+                                <li key={index} className='flex justify-between items-center my-5'>
+                                  {index === 0 ? (
+                                    <div className='font-bold flex justify-between items-center'>
+                                      <span className=''>{address}</span>
+                                      <span className='border-2 border-primary px-2 py-1 text-primary justify-end ml-20'>
+                                        Mặc định
+                                      </span>
+                                    </div>
+                                  ) : (
+                                    address
+                                  )}
+                                  {index !== 0 && (
+                                    <div className='flex space-x-2'>
+                                      <Button
+                                        variant={'link'}
+                                        onClick={() => handleSetDefaultAddress(index)}
+                                        className='text-primary'
+                                      >
+                                        Đặt làm mặc định
+                                      </Button>
+                                      <Button
+                                        variant={'link'}
+                                        onClick={() => handleDeleteAddress(index)}
+                                        className='text-red-500'
+                                      >
+                                        Xóa
+                                      </Button>
+                                    </div>
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                            {showNewAddressFields && (
+                              <>
+                                {' '}
+                                <input
+                                  type='text'
+                                  placeholder='Thêm địa chỉ mới'
+                                  value={newAddress}
+                                  onChange={handleInputNewAddress}
+                                  className='w-full p-3 border border-muted rounded-md mb-4'
+                                />
+                                <div className='flex justify-end'>
+                                  {showNewAddressFields && (
+                                    <>
+                                      <Button
+                                        onClick={handleAddAddress}
+                                        value={newAddress}
+                                        className='bg-primary text-primary-foreground hover:bg-primary-dark'
+                                      >
+                                        Thêm
+                                      </Button>
+                                      <Button
+                                        variant={'link'}
+                                        onClick={handleCloseInputNewAddress}
+                                        className='text-foreground'
+                                      >
+                                        Hủy
+                                      </Button>
+                                      
+                                    </>
+                                  )}
+                                </div>
+                              </>
+                            )}
+
+                            
                           </div>
-                          
-                          <ul className='mb-4'>
-                            {otherAddresses.map((address, index) => (
-                              <li key={index} className='flex justify-between items-center my-5'>
-                                {index === 0 ? (
-                                  <div className='font-bold flex justify-between items-center'><span className=''>{address}</span><span className='border-2 border-primary px-2 py-1 text-primary justify-end ml-20'>Mặc định</span></div>
-                                  
-                                ) : (
-                                  address
-                                )}
-                                {index !== 0 && (
-                                  <div className='flex space-x-2'>
-                                    <Button
-                                      variant={'link'}
-                                      onClick={() => handleSetDefaultAddress(index)}
-                                      className='text-primary'
-                                    >
-                                      Đặt làm mặc định
-                                    </Button>
-                                    <Button
-                                      variant={'link'}
-                                      onClick={() => handleDeleteAddress(index)}
-                                      className='text-red-500'
-                                    >
-                                      Xóa
-                                    </Button>
-                                  </div>
-                                )}
-                              </li>
-                            ))}
-                          </ul>
-                         {showNewAddressFields && (
-                          <> <input
-                            type='text'
-                            placeholder='Thêm địa chỉ mới'
-                            value={newAddress}
-                            onChange={handleInputChange}
-                            className='w-full p-3 border border-gray-300 rounded-md mb-4'
-                          />
-                          <div className='flex justify-end'>
-                            <Button
-                              onClick={handleAddAddress}
-                              className='bg-primary text-white hover:bg-primary-dark'
-                            >
-                              Thêm
-                            </Button>
-                            <Button
-                              variant={'link'}
-                              onClick={handleCloseAddressesModal}
-                              className='text-gray-500'
-                            >
-                              Đóng
-                            </Button>
-                          </div>
-                          </>)
-                         } 
-                         
                         </div>
-                      </div>
                       )}
                     </div>
 
@@ -347,7 +384,7 @@ function Profile() {
                     )}
                   </div>
                   <div className='flex justify-end mt-10'>
-                    <Button className='mr-10'>Lưu thay đổi</Button>
+                    <Button className='mr-6'>Lưu thay đổi</Button>
                     <Button variant={'outline'}>Hủy bỏ</Button>
                   </div>
                 </div>
