@@ -120,7 +120,7 @@ function ProfileButton({ className }: Props) {
             </DropdownMenuItem>
           )}
           <DropdownMenuItem asChild className='cursor-pointer'>
-            <Link to='/profile'>
+            <Link to='/user'>
               <UserIcon className='w-4 h-4 mr-2' />
               <span>Hồ sơ người dùng</span>
             </Link>

@@ -111,6 +111,13 @@ export type Stage = {
   description: string
 }
 
+export type Address = {
+  address: string
+  phone: string
+  receiver: string
+  default: boolean
+}
+
 export type Gender = 'male' | 'female'
 
 export type BirdType = 'sell' | 'breed'
@@ -133,6 +140,7 @@ export type Voucher = {
   quantity: number
   expiredAt: Date
   enable: boolean
+  users: string[]
 }
 
 export type Role = 'customer' | 'staff' | 'manager' | 'admin' | 'guest'
