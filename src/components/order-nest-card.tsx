@@ -60,7 +60,7 @@ function OrderNestCard({ orderNest }: Props) {
       handleAction: async () => {
         try {
           await birdFarmApi.put(`api/order-nests/${id}/cancel`)
-          navigate('/orders?tab=canceled')
+          navigate('/orders-nests?tab=canceled')
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
           const messageError = error.response.data.message
@@ -150,53 +150,37 @@ function OrderNestCard({ orderNest }: Props) {
             <div className='flex flex-row items-center gap-3 mt-8'>
               {orderNest.status === 'processing' && (
                 <>
-                  <Button>Liên hệ shop</Button>
-
                   <Button onClick={() => showModalCancelOrderNest(orderNest._id)} variant='outline'>
                     Hủy đơn hàng
                   </Button>
                 </>
               )}
 
-              {orderNest.status === 'breeding' && <Button>Liên hệ shop</Button>}
-
               {orderNest.status === 'wait-for-payment' && (
-                <>
-                  <Button onClick={() => redirectToCheckout()}>Thanh toán ngay</Button>
-                  <Button variant='outline'>Liên hệ shop</Button>
-                </>
+                <Button onClick={() => redirectToCheckout()}>Thanh toán ngay</Button>
               )}
 
               {orderNest.status === 'delivering' && (
-                <>
-                  <Button
-                    onClick={() => {
-                      receiveOrderNest(orderNest._id)
-                    }}
-                    disabled={isReceivingOrder}
-                  >
-                    Đã nhận hàng {isReceivingOrder && <Shell className='w-4 h-4 ml-1 animate-spin' />}
-                  </Button>
-                  <Button variant='outline'>Liên hệ shop</Button>
-                </>
+                <Button
+                  onClick={() => {
+                    receiveOrderNest(orderNest._id)
+                  }}
+                  disabled={isReceivingOrder}
+                >
+                  Đã nhận hàng {isReceivingOrder && <Shell className='w-4 h-4 ml-1 animate-spin' />}
+                </Button>
               )}
 
               {orderNest.status === 'success' && !orderNest.rated && (
-                <>
-                  <Button onClick={() => showRatingForm({ orderNestId: orderNest._id })} disabled={isReceivingOrder}>
-                    Đánh giá {isReceivingOrder && <Shell className='w-4 h-4 ml-1 animate-spin' />}
-                  </Button>
-                  <Button variant='outline'>Liên hệ shop</Button>
-                </>
+                <Button onClick={() => showRatingForm({ orderNestId: orderNest._id })} disabled={isReceivingOrder}>
+                  Đánh giá {isReceivingOrder && <Shell className='w-4 h-4 ml-1 animate-spin' />}
+                </Button>
               )}
 
               {orderNest.status === 'success' && orderNest.rated && (
-                <>
-                  <Button>Liên hệ shop</Button>
-                  <Button variant='outline' disabled={true} className='border-primary text-primary'>
-                    Đã Đánh Giá
-                  </Button>
-                </>
+                <Button variant='outline' disabled={true} className='border-primary text-primary'>
+                  Đã Đánh Giá
+                </Button>
               )}
             </div>
           )}

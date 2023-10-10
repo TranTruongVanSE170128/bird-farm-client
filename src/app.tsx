@@ -66,7 +66,7 @@ function App() {
           <Route path='birds/:id' element={<BirdDetail />} />
           <Route path='birds' element={<BirdList />} />
           <Route path='wishlist' element={<WishList />} />
-          <Route path='profile' element={<Profile />} />
+          <Route path='user' element={<Profile />} />
           <Route path='deposit-success' element={<DepositSuccess />} />
           <Route path='deposit-cancel' element={<DepositCancel />} />
           <Route path='orders' element={<OrderList />} />

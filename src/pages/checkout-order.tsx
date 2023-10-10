@@ -538,7 +538,7 @@ function CheckoutOrder() {
                 <div className='flex m-auto mt-5'>
                   <span className='w-1/2 font-bold text-start'>Giảm giá</span>
                   <span className='w-1/2 font-bold text-end'>
-                    {voucher ? formatPrice(calculateDiscount(totalMoney, voucher)) : formatPrice(0)}
+                    {voucher ? formatPrice(calculateDiscount(totalMoney, voucher, user?._id)) : formatPrice(0)}
                   </span>
                 </div>
                 <div className='m-auto mt-4 border'></div>
@@ -546,7 +546,7 @@ function CheckoutOrder() {
                   <span className='w-1/2 font-bold text-start'>Tổng</span>
                   <span className='w-1/2 font-bold text-end'>
                     {voucher
-                      ? formatPrice(totalMoney - calculateDiscount(totalMoney, voucher))
+                      ? formatPrice(totalMoney - calculateDiscount(totalMoney, voucher, user?._id))
                       : formatPrice(totalMoney)}
                   </span>
                 </div>

@@ -183,7 +183,7 @@ function Cart() {
                   {isLoadingProducts ? (
                     <Skeleton className='float-right h-5 w-28' />
                   ) : selectedVoucher ? (
-                    formatPrice(calculateDiscount(totalMoney, selectedVoucher))
+                    formatPrice(calculateDiscount(totalMoney, selectedVoucher, user?._id))
                   ) : (
                     formatPrice(0)
                   )}
@@ -206,7 +206,10 @@ function Cart() {
                         <div className='flex flex-col max-h-[50vh] pr-4 mt-2 mb-4 gap-3'>
                           {vouchers
                             .sort((a: Voucher, b: Voucher) => {
-                              return calculateDiscount(totalMoney, b) - calculateDiscount(totalMoney, a)
+                              return (
+                                calculateDiscount(totalMoney, b, user?._id) -
+                                calculateDiscount(totalMoney, a, user?._id)
+                              )
                             })
                             .map((voucher, index) => {
                               return (
@@ -222,7 +225,7 @@ function Cart() {
                                     key={voucher._id}
                                     voucher={voucher}
                                   />
-                                  <Button disabled={totalMoney < voucher.conditionPrice} asChild>
+                                  <Button disabled={calculateDiscount(totalMoney, voucher, user?._id) <= 0} asChild>
                                     <AlertDialogCancel onClick={() => setSelectedVoucher(voucher)}>
                                       Lưu
                                     </AlertDialogCancel>
@@ -247,7 +250,7 @@ function Cart() {
                   {isLoadingProducts ? (
                     <Skeleton className='float-right h-5 w-28' />
                   ) : selectedVoucher ? (
-                    formatPrice(totalMoney - calculateDiscount(totalMoney, selectedVoucher))
+                    formatPrice(totalMoney - calculateDiscount(totalMoney, selectedVoucher, user?._id))
                   ) : (
                     formatPrice(totalMoney)
                   )}

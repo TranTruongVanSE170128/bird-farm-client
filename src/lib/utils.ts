@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { OrderNestStatus, Voucher } from './types'
+import { OrderNestStatus, Role, Voucher } from './types'
 import moment from 'moment'
 import 'moment/dist/locale/vi'
 
@@ -46,7 +46,10 @@ export function calculateTime(time: Date | string | undefined): string {
   return moment(time).locale('vi').fromNow()
 }
 
-export function calculateDiscount(originPrice: number, voucher: Voucher): number {
+export function calculateDiscount(originPrice: number, voucher: Voucher, userId: string | undefined): number {
+  if (voucher.users.includes(userId || '')) {
+    return 0
+  }
   if (voucher.quantity <= 0) {
     return 0
   }
@@ -77,6 +80,14 @@ export function addSearchParams(url: string, params: Record<string, any>) {
     if (params[key]) url += key.toString() + '=' + params[key].toString() + '&'
   })
   return url
+}
+
+export const roleToVi: Record<Role, string> = {
+  admin: 'Admin',
+  customer: 'Khách hàng',
+  guest: '',
+  manager: 'Quản lý',
+  staff: 'Nhân viên'
 }
 
 export const statusToVi: Record<OrderNestStatus, string> = {

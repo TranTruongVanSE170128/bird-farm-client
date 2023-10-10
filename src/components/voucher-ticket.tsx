@@ -17,6 +17,7 @@ type Props = {
     | 'Số lượng có hạn'
     | 'Đang kích hoạt'
     | 'Đang vô hiệu hóa'
+    | 'Đã dùng'
   isChanging?: boolean
 }
 
@@ -40,6 +41,9 @@ function VoucherTicket({
     if (new Date(expiredAt) < new Date()) {
       return <div className='text-xs absolute rounded-sm top-2 p-0.5 text-white bg-red-500'>Hết hạn</div>
     }
+    if (voucher.users.includes(user?._id || '')) {
+      return <div className='text-xs absolute rounded-sm top-2 p-0.5 text-white bg-red-500'>Đã dùng</div>
+    }
     switch (contextContent) {
       case 'Đang kích hoạt':
         return <div className='text-xs absolute rounded-sm top-2 p-0.5 text-white bg-green-500'>Đang kích hoạt</div>
@@ -50,7 +54,7 @@ function VoucherTicket({
       case 'Không đủ điều kiện':
         return <div className='text-xs absolute rounded-sm top-2 p-0.5 text-white bg-red-500'>Không đủ điều kiện</div>
       default:
-        return null
+        return <div className='text-xs absolute rounded-sm top-2 p-0.5 text-white bg-yellow-500'>Số lượng có hạn</div>
     }
   }
 

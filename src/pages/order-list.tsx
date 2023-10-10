@@ -148,8 +148,6 @@ function OrderList() {
               })
             }
 
-            stateButtons.push({ title: 'Liên Hệ Shop', handleClick: () => {} })
-
             if (order.status === 'processing') {
               stateButtons.push({ title: 'Hủy Đơn Hàng', handleClick: () => showModalCancelOrder(order._id) })
             }

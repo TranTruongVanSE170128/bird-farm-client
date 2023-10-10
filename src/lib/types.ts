@@ -133,6 +133,7 @@ export type Voucher = {
   quantity: number
   expiredAt: Date
   enable: boolean
+  users: string[]
 }
 
 export type Role = 'customer' | 'staff' | 'manager' | 'admin' | 'guest'

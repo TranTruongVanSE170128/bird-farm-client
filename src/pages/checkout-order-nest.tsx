@@ -57,10 +57,10 @@ const formSchema = z.object({
       message: 'Số điện thoại có độ dài tối đa là 11 chữ số'
     })
     .trim(),
-  province: z.string().nonempty('Bắt buộc').trim(),
-  district: z.string().nonempty('Bắt buộc').trim(),
-  ward: z.string().nonempty('Bắt buộc').trim(),
-  address: z.string().nonempty('Bắt buộc').trim(),
+  province: z.string({ required_error: 'Bắt buộc' }).min(1, 'Tỉnh bắt buộc').trim(),
+  district: z.string({ required_error: 'Bắt buộc' }).min(1, 'Thành phố bắt buộc').trim(),
+  ward: z.string({ required_error: 'Bắt buộc' }).min(1, 'Phường/Xã bắt buộc').trim(),
+  address: z.string({ required_error: 'Bắt buộc' }).min(1, 'Số nhà, tên đường bắt buộc').trim(),
   notice: z.string().trim().optional()
 })
 
