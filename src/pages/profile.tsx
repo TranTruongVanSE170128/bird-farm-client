@@ -3,14 +3,20 @@ import Container from '@/components/ui/container'
 import { Button, buttonVariants } from '@/components/ui/button'
 import voucherIcon from '@/assets/voucher.svg'
 import { Input } from '@/components/ui/input'
-import { Bell, Plus, User } from 'lucide-react'
+import { Bell, Plus, Shell, User } from 'lucide-react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { cn, roleToVi } from '@/lib/utils'
 import { useAuthContext } from '@/contexts/auth-provider'
 import noImage from '@/assets/no-image.avif'
 import addressIcon from '@/assets/address.svg'
 import AddressCard from '@/components/address-card'
-import { Address } from '@/lib/types'
+import { Address, Voucher } from '@/lib/types'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { imageDB } from '@/services/firebase'
+import { v4 } from 'uuid'
+import { birdFarmApi } from '@/services/bird-farm-api'
+import { toast } from '@/components/ui/use-toast'
+import VoucherTicket from '@/components/voucher-ticket'
 
 const addresses: Address[] = [
   {
@@ -40,6 +46,23 @@ function Profile() {
   const [nameValue, setNameValue] = useState<string>(user?.name || '')
   const [files, setFiles] = useState<File[]>([])
   const [imageUrl, setImageUrl] = useState(user?.imageUrl)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [vouchers, setVouchers] = useState<Voucher[]>([])
+
+  useEffect(() => {
+    setNameValue(user?.name || '')
+    setImageUrl(user?.imageUrl)
+  }, [user])
+
+  useEffect(() => {
+    const fetchVouchers = async () => {
+      const { data } = await birdFarmApi.get('/api/vouchers')
+
+      setVouchers(data.vouchers || [])
+    }
+
+    fetchVouchers()
+  }, [])
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
@@ -61,13 +84,31 @@ function Profile() {
     }
   }
 
-  useEffect(() => {
-    setNameValue(user?.name || '')
-    setImageUrl(user?.imageUrl)
-  }, [user])
+  const handleSaveChange = async () => {
+    setIsSubmitting(true)
+    try {
+      let imageUrl
+      const image = files[0]
+      if (image) {
+        const imageRef = ref(imageDB, `images/${image.name + v4()}`)
+        await uploadBytes(imageRef, image)
+        imageUrl = await getDownloadURL(imageRef)
+      }
+      await birdFarmApi.post(`/api/users/${user?._id}`, {
+        imageUrl: imageUrl,
+        name: nameValue || undefined
+      })
 
-  const handleSaveChange = () => {
-    console.log(files)
+      window.location.reload()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const messageError = error.response.data.message
+      toast({
+        variant: 'destructive',
+        title: messageError
+      })
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -176,8 +217,8 @@ function Profile() {
                     <Input disabled type='text' value={user?.email} />
                   </div>
 
-                  <Button onClick={handleSaveChange} className='float-right mt-8'>
-                    Lưu thay đổi
+                  <Button disabled={isSubmitting} onClick={handleSaveChange} className='float-right mt-8'>
+                    Lưu thay đổi {isSubmitting && <Shell className='w-4 h-4 ml-1 animate-spin' />}
                   </Button>
                 </div>
               )}
@@ -197,84 +238,54 @@ function Profile() {
                 </div>
               )}
 
-              <div className={`${activeTab === 'account-vouchers' ? 'block' : 'hidden'}`}>
-                <div>
-                  <h5 className='mb-3 text-2xl font-semibold'>Voucher của bạn:</h5>
-                  <div className='flex items-center justify-between p-2 mb-2 border border-muted-foreground'>
-                    <div className='flex--1'>
-                      <h6 className='text-lg font-semibold'>Voucher 1</h6>
-                      <div className='flex items-center mt-2'>
-                        <img
-                          className='w-24 h-24 mr-5 rounded-md'
-                          src='https://c8.alamy.com/comp/EMC7YT/special-discount-10-off-stamp-EMC7YT.jpg'
-                          alt='Voucher 1'
-                        />
-                        <div>
-                          <p>Description: 10% off on all products</p>
-                          <p>Code: VOUCHER10</p>
-                          <p className='text-muted-foreground'>Expires: 2023-12-31</p>
-                        </div>
-                      </div>
-                    </div>
-                    <Button variant={'destructive'} className='mx-10 '>
-                      Dùng Voucher
-                    </Button>
-                  </div>
-                  <div className='flex items-center justify-between p-2 mb-2 border border-muted-foreground'>
-                    <div className='flex--1'>
-                      <h6 className='text-lg font-semibold'>Voucher 1</h6>
-                      <div className='flex items-center mt-2'>
-                        <img
-                          className='w-24 h-24 mr-5 rounded-md'
-                          src='https://www.pngmart.com/files/8/Voucher-Download-PNG-Image.png'
-                          alt='Voucher 1'
-                        />
-                        <div>
-                          <p>Description: 10% off on all products</p>
-                          <p>Code: VOUCHER10</p>
-                          <p className='text-muted-foreground'>Expires: 2023-12-31</p>
-                        </div>
-                      </div>
-                    </div>
-                    <Button variant={'destructive'} className='mx-10 '>
-                      Dùng Voucher
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <div className={`${activeTab === 'account-notifications' ? 'block' : 'hidden'}`}>
-                <div>
-                  <h3 className='text-lg font-semibold'>Đơn mua</h3>
-                  <div className='flex items-center justify-between my-4'>
-                    <img
-                      className='object-cover w-20 h-20 rounded-md'
-                      src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Eopsaltria_australis_-_Mogo_Campground.jpg/640px-Eopsaltria_australis_-_Mogo_Campground.jpg'
-                      alt='Notification 1'
+              {activeTab === 'vouchers' && (
+                <div className='flex flex-wrap gap-8'>
+                  {vouchers.map((voucher) => (
+                    <VoucherTicket
+                      // contextContent={
+                      //   totalMoney < voucher.conditionPrice ? 'Không đủ điều kiện' : index === 0 ? 'Lựa chọn tốt nhất' : 'Số lượng có hạn'
+                      // }
+                      key={voucher._id}
+                      voucher={voucher}
                     />
-                    <div className='flex-1 ml-4'>
-                      <span>Đã xác nhận thanh toán. Đơn hàng vadj2341 đã được đặt vui lòng kiểm tra đơn hàng</span>
-                    </div>
-                    <Button>Xem chi tiết</Button>
-                  </div>
+                  ))}
                 </div>
+              )}
 
+              {activeTab === 'notifications' && (
                 <div>
-                  <hr />
-                  <h3 className='text-lg font-semibold'>Đơn đặt</h3>
-                  <div className='flex items-center justify-between my-4'>
-                    <img
-                      className='object-cover w-20 h-20 rounded-md'
-                      src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Eopsaltria_australis_-_Mogo_Campground.jpg/640px-Eopsaltria_australis_-_Mogo_Campground.jpg'
-                      alt='Notification 2'
-                    />
-                    <div className='flex-1 ml-4'>
-                      <span>Đơn đặt của bạn đã có cập nhật mới từ shop, vui lòng kiểm tra</span>
+                  <div>
+                    <h3 className='text-lg font-semibold'>Đơn mua</h3>
+                    <div className='flex items-center justify-between my-4'>
+                      <img
+                        className='object-cover w-20 h-20 rounded-md'
+                        src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Eopsaltria_australis_-_Mogo_Campground.jpg/640px-Eopsaltria_australis_-_Mogo_Campground.jpg'
+                        alt='Notification 1'
+                      />
+                      <div className='flex-1 ml-4'>
+                        <span>Đã xác nhận thanh toán. Đơn hàng vadj2341 đã được đặt vui lòng kiểm tra đơn hàng</span>
+                      </div>
+                      <Button>Xem chi tiết</Button>
                     </div>
-                    <Button>Xem chi tiết</Button>
+                  </div>
+
+                  <div>
+                    <hr />
+                    <h3 className='text-lg font-semibold'>Đơn đặt</h3>
+                    <div className='flex items-center justify-between my-4'>
+                      <img
+                        className='object-cover w-20 h-20 rounded-md'
+                        src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Eopsaltria_australis_-_Mogo_Campground.jpg/640px-Eopsaltria_australis_-_Mogo_Campground.jpg'
+                        alt='Notification 2'
+                      />
+                      <div className='flex-1 ml-4'>
+                        <span>Đơn đặt của bạn đã có cập nhật mới từ shop, vui lòng kiểm tra</span>
+                      </div>
+                      <Button>Xem chi tiết</Button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
