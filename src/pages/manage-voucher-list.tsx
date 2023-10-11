@@ -33,11 +33,14 @@ function ManageVoucherList() {
         setVouchers(data?.vouchers || null)
         setIsLoadingVouchers(false)
         setTotalPages(data?.totalPages || null)
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         setIsLoadingVouchers(false)
+        const messageError = error.response.data.message
         toast({
           variant: 'destructive',
-          title: 'Có lỗi xảy ra'
+          title: 'Lỗi',
+          content: messageError || 'Không rõ nguyễn nhân'
         })
       }
     }

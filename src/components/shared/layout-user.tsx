@@ -1,7 +1,7 @@
 import Container from '@/components/ui/container'
 import voucherIcon from '@/assets/voucher.svg'
-import { Bell, User } from 'lucide-react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { User } from 'lucide-react'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { cn, roleToVi } from '@/lib/utils'
 import { useAuthContext } from '@/contexts/auth-provider'
 import addressIcon from '@/assets/address.svg'
@@ -10,6 +10,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 function LayoutUser() {
   const { user } = useAuthContext()
   const activeTab = useLocation().pathname.split('/')[2]
+  const navigate = useNavigate()
+
+  if (user && user.role === 'guest') {
+    navigate('/')
+  }
+
   return (
     <main>
       <Container>
@@ -39,42 +45,34 @@ function LayoutUser() {
                   Hồ sơ
                 </Link>
               </div>
-              <div className='flex items-center'>
-                <img src={addressIcon} className='w-7 h-7 mr-2 dark:filter dark:invert' />
-                <Link
-                  className={cn(
-                    `hover:text-primary rounded-md text-lg font-medium`,
-                    activeTab === 'addresses' && 'text-primary'
-                  )}
-                  to='/user/addresses'
-                >
-                  Địa chỉ
-                </Link>
-              </div>
-              <div className='flex items-center'>
-                <img src={voucherIcon} className='w-7 h-7 mr-2 dark:filter dark:invert' />
-                <Link
-                  className={cn(
-                    `hover:text-primary rounded-md text-lg font-medium`,
-                    activeTab === 'vouchers' && 'text-primary'
-                  )}
-                  to='/user/vouchers'
-                >
-                  Kho vouchers
-                </Link>
-              </div>
-              <div className='flex items-center'>
-                <Bell className='w-7 h-7 mr-2' />
-                <Link
-                  className={cn(
-                    `hover:text-primary rounded-md text-lg font-medium`,
-                    activeTab === 'notifications' && 'text-primary'
-                  )}
-                  to='/user/notifications'
-                >
-                  Thông báo
-                </Link>
-              </div>
+              {user?.role === 'customer' && (
+                <>
+                  <div className='flex items-center'>
+                    <img src={addressIcon} className='w-7 h-7 mr-2 dark:filter dark:invert' />
+                    <Link
+                      className={cn(
+                        `hover:text-primary rounded-md text-lg font-medium`,
+                        activeTab === 'addresses' && 'text-primary'
+                      )}
+                      to='/user/addresses'
+                    >
+                      Địa chỉ
+                    </Link>
+                  </div>
+                  <div className='flex items-center'>
+                    <img src={voucherIcon} className='w-7 h-7 mr-2 dark:filter dark:invert' />
+                    <Link
+                      className={cn(
+                        `hover:text-primary rounded-md text-lg font-medium`,
+                        activeTab === 'vouchers' && 'text-primary'
+                      )}
+                      to='/user/vouchers'
+                    >
+                      Kho vouchers
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 

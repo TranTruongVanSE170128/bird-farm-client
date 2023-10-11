@@ -14,12 +14,16 @@ import creditIcon from '@/assets/credit.svg'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { Button } from '../ui/button'
 import { Shell } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 type Props = {
   onSubmit: (data: TDeliveryInfoSchema) => void
+  className?: string
+  addDeliveryInfo?: boolean
+  CloseComponent?: React.ReactNode
 }
 
-function DeliveryInfoForm({ onSubmit }: Props) {
+function DeliveryInfoForm({ onSubmit, className, addDeliveryInfo, CloseComponent }: Props) {
   const [provinces, setProvinces] = useState<Province[]>([])
   const [districts, setDistricts] = useState<District[]>([])
   const [wards, setWards] = useState<Ward[]>([])
@@ -30,14 +34,14 @@ function DeliveryInfoForm({ onSubmit }: Props) {
   const form = useForm<TDeliveryInfoSchema>({
     resolver: zodResolver(deliveryInfoSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      receiver: '',
       phoneNumber: '',
       province: '',
       district: '',
       ward: '',
       address: '',
-      notice: ''
+      notice: '',
+      type: addDeliveryInfo ? 'cod' : undefined
     }
   })
   useEffect(() => {
@@ -84,56 +88,41 @@ function DeliveryInfoForm({ onSubmit }: Props) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-        <div className='flex justify-between mt-5 mr-12'>
-          <FormField
-            control={form.control}
-            name='firstName'
-            render={({ field }) => (
-              <FormItem className='mr-3 basis-1/2'>
-                <FormLabel>Họ*</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='lastName'
-            render={({ field }) => (
-              <FormItem className='basis-1/2'>
-                <FormLabel>Tên*</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div>
-          <FormField
-            control={form.control}
-            name='phoneNumber'
-            render={({ field }) => (
-              <FormItem className='mr-12'>
-                <FormLabel>Số điện thoại*</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className='flex justify-between mt-5 mr-12'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className={cn('space-y-8', className)}>
+        <FormField
+          control={form.control}
+          name='receiver'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Họ và Tên*</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='phoneNumber'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Số điện thoại*</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className='flex justify-between gap-3'>
           <FormField
             control={form.control}
             name='province'
             render={() => (
-              <FormItem className='mr-3 basis-1/3'>
+              <FormItem className='flex-1'>
                 <FormLabel>Tỉnh*</FormLabel>
                 <Select
                   onValueChange={(value: string) => {
@@ -166,7 +155,7 @@ function DeliveryInfoForm({ onSubmit }: Props) {
             control={form.control}
             name='district'
             render={() => (
-              <FormItem className='mr-3 basis-1/3'>
+              <FormItem className='flex-1'>
                 <FormLabel>Thành phố*</FormLabel>
                 <Select
                   onValueChange={(value: string) => {
@@ -200,7 +189,7 @@ function DeliveryInfoForm({ onSubmit }: Props) {
             control={form.control}
             name='ward'
             render={() => (
-              <FormItem className='mr-3 basis-1/3'>
+              <FormItem className='flex-1'>
                 <FormLabel>Phường/Xã*</FormLabel>
                 <Select
                   onValueChange={(value: string) => {
@@ -229,7 +218,7 @@ function DeliveryInfoForm({ onSubmit }: Props) {
             )}
           />
         </div>
-        <div className='mt-5 mr-12'>
+        <div className='mt-5 '>
           <FormField
             control={form.control}
             name='address'
@@ -244,78 +233,93 @@ function DeliveryInfoForm({ onSubmit }: Props) {
             )}
           />
         </div>
-        <div className='mt-5 mr-12'>
-          <p className='uppercase font-bold text-[20px]'>Thông tin bổ sung</p>
-          <div className='w-[220px] h-[1px] border'></div>
+        {!addDeliveryInfo && (
+          <>
+            <div className='mt-5 '>
+              <p className='uppercase font-bold text-[20px]'>Thông tin bổ sung</p>
+              <div className='w-[220px] h-[1px] border'></div>
 
-          <FormField
-            control={form.control}
-            name='notice'
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    className='mt-3 h-[150px]'
-                    placeholder='Ghi chú đơn hàng, ví dụ: Thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn'
-                    {...field}
-                  />
-                </FormControl>
+              <FormField
+                control={form.control}
+                name='notice'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Textarea
+                        className='mt-3 h-[150px]'
+                        placeholder='Ghi chú đơn hàng, ví dụ: Thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn'
+                        {...field}
+                      />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className='mt-5'>
-          <p className='text-2xl font-bold uppercase'>hình thức thanh toán</p>
-          <div className='mt-5 '>
-            <FormField
-              control={form.control}
-              name='type'
-              render={({ field }) => (
-                <FormItem className='space-y-3'>
-                  <FormMessage />
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className='flex flex-col space-y-1'
-                    >
-                      <FormItem className='flex items-center pl-4 space-y-0 border rounded-md '>
-                        <FormControl>
-                          <RadioGroupItem value='cod' />
-                        </FormControl>
-                        <FormLabel className='flex items-center gap-4 py-6 font-normal cursor-pointer'>
-                          <div>
-                            <img src={cashIcon} alt='' className='w-8 h-w-8 ml-9' />
-                          </div>
-                          Thanh toán khi nhận hàng
-                        </FormLabel>
-                      </FormItem>
-                      <FormItem className='flex items-center pl-4 space-y-0 border rounded-md'>
-                        <FormControl>
-                          <RadioGroupItem value='online' />
-                        </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
-                        <FormLabel className='flex items-center gap-4 py-6 font-normal cursor-pointer'>
-                          <div>
-                            <img src={creditIcon} alt='' className='w-8 mb-2 h-w-8 ml-9' />
-                          </div>
-                          Thẻ ATM/Thẻ tín dụng (Credit Card)
-                        </FormLabel>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+            <div className='mt-5'>
+              <p className='text-2xl font-bold uppercase'>hình thức thanh toán</p>
+              <div className='mt-5 '>
+                <FormField
+                  control={form.control}
+                  name='type'
+                  render={({ field }) => (
+                    <FormItem className='space-y-3'>
+                      <FormMessage />
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className='flex flex-col space-y-1'
+                        >
+                          <FormItem className='flex items-center pl-4 space-y-0 border rounded-md '>
+                            <FormControl>
+                              <RadioGroupItem value='cod' />
+                            </FormControl>
+                            <FormLabel className='flex items-center gap-4 py-6 font-normal cursor-pointer'>
+                              <div>
+                                <img src={cashIcon} alt='' className='w-8 h-w-8 ml-9' />
+                              </div>
+                              Thanh toán khi nhận hàng
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className='flex items-center pl-4 space-y-0 border rounded-md'>
+                            <FormControl>
+                              <RadioGroupItem value='online' />
+                            </FormControl>
+
+                            <FormLabel className='flex items-center gap-4 py-6 font-normal cursor-pointer'>
+                              <div>
+                                <img src={creditIcon} alt='' className='w-8 mb-2 h-w-8 ml-9' />
+                              </div>
+                              Thẻ ATM/Thẻ tín dụng (Credit Card)
+                            </FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
             <div className='mt-4'>
               <Button disabled={form.formState.isSubmitting} type='submit' className='w-full p-7 text-[20px] font-bold'>
-                Thanh toán{form.formState.isSubmitting && <Shell className='w-4 h-4 ml-1 animate-spin' />}
+                Thanh toán
+                {form.formState.isSubmitting && <Shell className='w-4 h-4 ml-1 animate-spin' />}
               </Button>
             </div>
+          </>
+        )}
+        {addDeliveryInfo && (
+          <div className='flex justify-end items-center gap-3'>
+            {CloseComponent}
+            <Button disabled={form.formState.isSubmitting} type='submit'>
+              Thêm
+              {form.formState.isSubmitting && <Shell className='w-4 h-4 ml-1 animate-spin' />}
+            </Button>
           </div>
-        </div>
+        )}
       </form>
     </Form>
   )

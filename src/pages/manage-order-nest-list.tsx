@@ -31,11 +31,14 @@ function ManageOrderNestList() {
         setOrderNests(data?.orderNests || null)
         setIsLoadingOrderNests(false)
         setTotalPages(data?.totalPages || null)
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         setIsLoadingOrderNests(false)
+        const messageError = error.response.data.message
         toast({
           variant: 'destructive',
-          title: 'Có lỗi xảy ra'
+          title: 'Lỗi',
+          content: messageError || 'Không rõ nguyễn nhân'
         })
       }
     }

@@ -4,13 +4,7 @@ export const deliveryInfoSchema = z.object({
   type: z.enum(['cod', 'online'], {
     required_error: 'Bạn cần lựa chọn phương thức thanh toán'
   }),
-  firstName: z
-    .string()
-    .min(2, {
-      message: 'Họ tối thiểu 2 chữ cái'
-    })
-    .trim(),
-  lastName: z.string().min(2, {
+  receiver: z.string().min(2, {
     message: 'Tên tối thiểu 2 chữ cái'
   }),
   phoneNumber: z

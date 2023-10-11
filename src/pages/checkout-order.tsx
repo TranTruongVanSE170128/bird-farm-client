@@ -72,7 +72,7 @@ function CheckoutOrder() {
     }
 
     const address = [data.province, data.district, data.ward, data.address].filter(Boolean).join(', ')
-    const receiver = [data.firstName, data.lastName].filter(Boolean).join(' ')
+    const receiver = data.receiver
     const phone = data.phoneNumber
     const notice = data.notice
     const cart: Cart = JSON.parse(localStorage.getItem('cart') || String({ birds: [], nests: [] }))
@@ -118,7 +118,8 @@ function CheckoutOrder() {
         const messageError = error.response.data.message
         toast({
           variant: 'destructive',
-          title: messageError || 'Không rõ nguyễn nhân'
+          title: 'Lỗi thanh toán',
+          content: messageError || 'Không rõ nguyễn nhân'
         })
       }
     }
@@ -136,7 +137,7 @@ function CheckoutOrder() {
           <div className='flex flex-col mt-8 md:flex-row md:justify-between'>
             <div className='basis-3/4 md:w-3/5'>
               <p className='text-2xl font-bold uppercase'>thông tin thanh toán</p>
-              <DeliveryInfoForm onSubmit={onSubmit} />
+              <DeliveryInfoForm className='pr-12' onSubmit={onSubmit} />
             </div>
             <div className='mt-8 basis-1/4 md:w-2/5 md:mt-0'>
               <p className='text-2xl font-bold uppercase'>Đơn hàng</p>

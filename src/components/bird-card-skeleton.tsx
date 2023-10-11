@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card'
 import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
-import { Heart } from 'lucide-react'
 import { Bird } from '@/lib/types'
 import { Skeleton } from './ui/skeleton'
 
@@ -29,17 +28,15 @@ function BirdCardSkeleton({ className, bird }: Props) {
           </div>
 
           <Skeleton className='w-full h-6 mt-1' />
+          <Skeleton className='w-full h-6 mt-1' />
         </CardContent>
         <CardFooter className='flex flex-col gap-2'>
           <div className='flex w-full gap-2'>
             <Button variant='outline' className='w-full'>
-              Thêm vào giỏ
-            </Button>
-            <Button className='p-2' variant='outline' size='icon'>
-              <Heart />
+              So sánh
             </Button>
           </div>
-          <Button className='w-full'>Mua ngay</Button>
+          <Button className='w-full'>Thêm vào giỏ</Button>
         </CardFooter>
       </Card>
     </Link>

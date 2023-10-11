@@ -35,10 +35,6 @@ function BirdCard({ className, bird }: Props) {
     })
   }
 
-  const handleBuyNow = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-  }
-
   return (
     <Link
       to={`/birds/${bird?._id}`}
@@ -98,12 +94,6 @@ function BirdCard({ className, bird }: Props) {
         </CardContent>
         <CardFooter className='flex flex-col gap-2'>
           <div className='flex w-full gap-2'>
-            {bird.type === 'sell' && (
-              <Button onClick={handleAddToCart} variant='outline' className='w-full'>
-                Thêm vào giỏ
-              </Button>
-            )}
-
             <Button
               onClick={(e) => {
                 e.preventDefault()
@@ -115,10 +105,9 @@ function BirdCard({ className, bird }: Props) {
               So sánh
             </Button>
           </div>
-
           {bird.type === 'sell' ? (
-            <Button onClick={handleBuyNow} className='w-full'>
-              Mua ngay
+            <Button onClick={handleAddToCart} className='w-full'>
+              Thêm vào giỏ
             </Button>
           ) : (
             <Button

@@ -38,7 +38,7 @@ function CheckoutOrderNest() {
     }
 
     const address = [data.province, data.district, data.ward, data.address].filter(Boolean).join(', ')
-    const receiver = [data.firstName, data.lastName].filter(Boolean).join(' ')
+    const receiver = data.receiver
     const phone = data.phoneNumber
     const notice = data.notice
 
@@ -88,15 +88,15 @@ function CheckoutOrderNest() {
     <main>
       <Container>
         <section className='px-5 my-7'>
-          <div className='flex flex-col gap-12 mt-8 md:flex-row md:justify-between'>
+          <div className='flex flex-col mt-8 md:flex-row md:justify-between'>
             <div className='basis-3/4 md:w-3/5'>
               <p className='text-2xl font-bold uppercase'>thông tin thanh toán</p>
-              <DeliveryInfoForm onSubmit={onSubmit} />
+              <DeliveryInfoForm className='pr-12' onSubmit={onSubmit} />
             </div>
             <div className='mt-8 basis-1/4 md:w-2/5 md:mt-0'>
               <p className='text-2xl font-bold uppercase'>Đơn hàng</p>
               <div className='p-3 mt-5 border rounded-md'>
-                <div className='font-bold'>
+                <div className='font-bold pb-2'>
                   Nội dung: <span className='font-medium'>Thanh toán phần còn lại của đơn đặt tổ chim non</span>
                 </div>
                 <div className='w-full h-[1px] border'></div>

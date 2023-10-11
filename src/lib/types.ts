@@ -4,6 +4,7 @@ export type User = {
   email: string
   imageUrl?: string
   role: Role
+  deliveryInfos: Address[]
 }
 
 export type Specie = {
@@ -116,6 +117,7 @@ export type Address = {
   phone: string
   receiver: string
   default: boolean
+  _id: string
 }
 
 export type Gender = 'male' | 'female'
