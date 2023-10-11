@@ -8,10 +8,12 @@ import redHeart from '@/assets/red-heart.svg'
 import maleIcon from '@/assets/male.svg'
 import femaleIcon from '@/assets/female.svg'
 import { getSpecie } from '@/lib/types'
-import { useToast } from './use-toast'
+import { toast, useToast } from './use-toast'
 import { useCompareStore } from '@/store/use-compare'
 import { useBreedStore } from '@/store/use-breed'
 import versusIcon from '@/assets/versus.png'
+import breedIcon from '@/assets/breed.svg'
+import birdIcon from '@/assets/bird-color.svg'
 
 export function ComparatorAndBreeder() {
   const { birds: birdsCompare, activeCompare } = useCompareStore()
@@ -109,7 +111,13 @@ export function Comparator() {
                 src={firstBird?.imageUrls?.[0] || noImage}
               />
 
-              <div className='line-clamp-2'>{firstBird.name}</div>
+              <div className='line-clamp-2 flex flex-col items-center'>
+                {firstBird.name}
+                <p className='flex gap-1 text-sm items-center'>
+                  {firstBird.type === 'sell' ? 'Chim kiểng' : 'Chim phối giống'}
+                  <img className='w-5 h-5' src={firstBird.type === 'sell' ? birdIcon : breedIcon} />
+                </p>
+              </div>
 
               <Button
                 onClick={() => {
@@ -138,7 +146,13 @@ export function Comparator() {
                 className='aspect-square w-16 object-cover rounded-md overflow-hidden border'
                 src={secondBird?.imageUrls?.[0] || noImage}
               />
-              <div className='line-clamp-2'>{secondBird.name}</div>
+              <div className='line-clamp-2 flex flex-col items-center'>
+                {secondBird.name}
+                <p className='flex gap-1 text-sm items-center'>
+                  {secondBird.type === 'sell' ? 'Chim kiểng' : 'Chim phối giống'}
+                  <img className='w-5 h-5' src={secondBird.type === 'sell' ? birdIcon : breedIcon} />
+                </p>
+              </div>
 
               <Button
                 onClick={() => {
@@ -164,6 +178,13 @@ export function Comparator() {
           <div className='flex flex-col gap-3 justify-center items-center'>
             <Button
               onClick={() => {
+                if (firstBird?.type !== secondBird?.type) {
+                  toast({
+                    title: 'Chỉ có thể so sánh chim cùng loại',
+                    variant: 'destructive'
+                  })
+                  return
+                }
                 useCompareStore.setState({ activeCompare: false })
                 navigate(`/compare?firstBird=${firstBird?._id}&secondBird=${secondBird?._id}`)
               }}
