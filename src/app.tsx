@@ -12,7 +12,6 @@ import NotFound from '@/pages/not-found'
 import Dashboard from '@/pages/dashboard'
 import LayoutAdmin from '@/components/shared/layout-admin'
 import WishList from '@/pages/wish-list'
-import Profile from '@/pages/profile'
 import OrderList from '@/pages/order-list'
 import Breed from '@/pages/breed'
 import Cart from '@/pages/cart'
@@ -45,6 +44,10 @@ import ManageVoucherList from './pages/manage-voucher-list'
 import CheckoutOrderNest from './pages/checkout-order-nest'
 import ManageVoucherNew from './pages/manage-voucher-new'
 import ManageVoucherEdit from './pages/manage-voucher-edit'
+import LayoutUser from './components/shared/layout-user'
+import UserProfile from './pages/user-profile'
+import UserVouchers from './pages/user-voucher'
+import UserAddresses from './pages/user-addresses'
 
 function App() {
   return (
@@ -66,7 +69,11 @@ function App() {
           <Route path='birds/:id' element={<BirdDetail />} />
           <Route path='birds' element={<BirdList />} />
           <Route path='wishlist' element={<WishList />} />
-          <Route path='user' element={<Profile />} />
+          <Route path='user' element={<LayoutUser />}>
+            <Route path='profile' element={<UserProfile />} />
+            <Route path='addresses' element={<UserAddresses />} />
+            <Route path='vouchers' element={<UserVouchers />} />
+          </Route>
           <Route path='deposit-success' element={<DepositSuccess />} />
           <Route path='deposit-cancel' element={<DepositCancel />} />
           <Route path='orders' element={<OrderList />} />
