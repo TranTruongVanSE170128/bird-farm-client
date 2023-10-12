@@ -16,26 +16,3 @@ export const signUpSchema = z.object({
 
 export type TSignInSchema = z.infer<typeof signInSchema>
 export type TSignUpSchema = z.infer<typeof signUpSchema>
-
-// export const forgetPasswordSchema = z.object({
-//   body: z.object({
-//     email: emailValidation
-//   })
-// })
-
-// export const verifyEmailSchema = z.object({
-//   params: z.object({
-//     id: idValidation,
-//     verifyCode: verifyCodeValidation
-//   })
-// })
-
-// export const resetPasswordSchema = z.object({
-//   params: z.object({
-//     id: idValidation,
-//     resetPasswordCode: verifyCodeValidation
-//   }),
-//   body: z.object({
-//     password: passwordValidation
-//   })
-// })
