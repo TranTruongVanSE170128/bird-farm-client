@@ -213,7 +213,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
                   </PopoverTrigger>
                   <PopoverContent className='w-[200px] p-0'>
                     <Command>
-                      <CommandInput placeholder='Search framework...' />
+                      <CommandInput placeholder='Chọn loài chim...' />
                       <CommandEmpty>Không tìm thấy.</CommandEmpty>
                       <CommandGroup>
                         <ScrollArea className='h-96'>

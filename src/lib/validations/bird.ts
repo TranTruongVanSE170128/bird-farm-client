@@ -31,5 +31,4 @@ export const birdSchema = z
   .refine((data) => {
     return (data.type === 'sell' && data.sellPrice) || (data.type === 'breed' && data.breedPrice)
   })
-
 export type TBirdSchema = z.infer<typeof birdSchema>
