@@ -247,7 +247,7 @@ function OrderNestCard({ orderNest }: Props) {
             </div>
           )
         })}
-        {orderNest.status === 'breeding' && (
+        {orderNest.status === 'breeding' && !!orderNest.stages.length && (
           <div className='z-20 flex flex-col items-center justify-center flex-1 gap-2 -mt-3'>
             <div className='flex items-center justify-center w-full'>
               <div className='flex-1 w-full h-2 bg-slate-200 dark:bg-slate-500' />

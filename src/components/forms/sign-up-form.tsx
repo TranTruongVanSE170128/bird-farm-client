@@ -106,7 +106,7 @@ export function SignUpForm() {
               <FormItem>
                 <FormLabel>Mật khẩu</FormLabel>
                 <FormControl>
-                  <Input placeholder='Nhập mật khẩu ...' {...field} />
+                  <Input type='password' placeholder='Nhập mật khẩu ...' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
