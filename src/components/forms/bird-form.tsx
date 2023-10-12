@@ -52,7 +52,9 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
       specie: bird?.specie ? getSpecie(bird)._id : '',
       name: bird?.name || code,
       birth: bird?.birth ? new Date(bird.birth) : undefined,
-      parent: bird?.parent ? { dad: getDad(bird)._id, mom: getMom(bird)._id } : undefined
+      parent: bird?.parent ? { dad: getDad(bird)._id, mom: getMom(bird)._id } : undefined,
+      type: bird?.type || 'sell',
+      gender: bird?.gender || 'male'
     }
   })
   const [achievements, setAchievements] = useState(form.getValues('achievements'))
