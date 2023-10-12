@@ -58,6 +58,9 @@ export function SignInForm() {
         variant: 'destructive',
         title: messageError
       })
+      if (messageError === 'Email chưa được xác thực.') {
+        navigate(`/auth/${error.response.data.userId}/verify-email?email=${error.response.data.email}`)
+      }
       setIsSubmitting(false)
     }
   }
