@@ -14,8 +14,11 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Nest, Specie } from '@/lib/types'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import Paginate from '@/components/paginate'
-import { addSearchParams } from '@/lib/utils'
+import { addSearchParams, cn } from '@/lib/utils'
 import NestCardSkeleton from '@/components/nest-card-skeleton'
+import { Button } from '@/components/ui/button'
+import decreaseIcon from '@/assets/decrease.svg'
+import { Calendar } from 'lucide-react'
 
 const pageSize = 12
 
@@ -24,6 +27,7 @@ function NestList() {
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
   const searchQuery = searchParams.get('searchQuery') || ''
   const specie = searchParams.get('specie') || ''
+  const sort = searchParams.get('sort') || 'createdAt_-1'
   const [nests, setNests] = useState<Nest[]>([])
   const [isLoadingNests, setIsLoadingNests] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
@@ -43,7 +47,7 @@ function NestList() {
     const fetchNests = async () => {
       setIsLoadingNests(true)
       const { data } = await birdFarmApi.get(
-        addSearchParams('/api/nests/pagination', { pageNumber, pageSize, searchQuery, specie })
+        addSearchParams('/api/nests/pagination', { pageNumber, pageSize, searchQuery, specie, sort })
       )
       setNests(data?.nests || [])
       setTotalPages(data?.totalPages || null)
@@ -51,7 +55,7 @@ function NestList() {
     }
 
     fetchNests()
-  }, [pageNumber, searchQuery, specie])
+  }, [pageNumber, searchQuery, specie, sort])
 
   return (
     <main>
@@ -67,7 +71,7 @@ function NestList() {
           <Select
             value={specie}
             onValueChange={(value) => {
-              navigate(addSearchParams('/nests', { searchQuery, specie: value }))
+              navigate(addSearchParams('/nests', { searchQuery, specie: value, sort }))
             }}
           >
             <SelectTrigger className='w-[180px]'>
@@ -83,6 +87,46 @@ function NestList() {
               </SelectGroup>
             </SelectContent>
           </Select>
+        </div>
+        <div className='text-2xl font-medium mt-3'>Sắp xếp theo</div>
+
+        <div className='mb-12 flex items-center mt-2 gap-3'>
+          <Button
+            onClick={() => {
+              navigate(addSearchParams('/nests', { sort: 'createdAt_-1', searchQuery, specie }))
+            }}
+            variant={sort === 'createdAt_-1' ? 'default' : 'outline'}
+            className='flex items-center gap-1'
+          >
+            <Calendar className='w-5 h-5 mr-1' />
+            Mới nhất
+          </Button>
+          <Button
+            onClick={() => {
+              navigate(addSearchParams('/nests', { sort: 'price_1', searchQuery, specie }))
+            }}
+            variant={sort === 'price_1' ? 'default' : 'outline'}
+            className='flex items-center gap-1'
+          >
+            <img
+              src={decreaseIcon}
+              className={cn('w-5 h-5 mr-1 dark:filter dark:invert scale-y-[-1]', sort === 'price_1' && 'filter invert')}
+            />
+            Giá tăng dần
+          </Button>
+          <Button
+            onClick={() => {
+              navigate(addSearchParams('/nests', { sort: 'price_-1', searchQuery, specie }))
+            }}
+            variant={sort === 'price_-1' ? 'default' : 'outline'}
+            className='flex items-center gap-1'
+          >
+            <img
+              src={decreaseIcon}
+              className={cn('w-5 h-5 mr-1 dark:filter dark:invert', sort === 'price_-1' && 'filter invert')}
+            />
+            Giá giảm dần
+          </Button>
         </div>
 
         {isLoadingNests ? (
@@ -102,7 +146,7 @@ function NestList() {
         {!!totalPages && (
           <Paginate
             className='mt-8'
-            path={addSearchParams('/nests', { searchQuery, specie })}
+            path={addSearchParams('/nests', { searchQuery, specie, sort })}
             pageSize={pageSize}
             pageNumber={pageNumber}
             totalPages={totalPages}

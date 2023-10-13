@@ -1,14 +1,25 @@
 import Paginate from '@/components/paginate'
-import { Nest, getSpecie } from '@/lib/types'
+import { Nest, Specie, getSpecie } from '@/lib/types'
 import { useEffect, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { MoreHorizontal, Plus } from 'lucide-react'
+import { Calendar, MoreHorizontal, Plus } from 'lucide-react'
 import { addSearchParams, cn, formatPrice } from '@/lib/utils'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Spinner from '@/components/ui/spinner'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import noImage from '@/assets/no-image.webp'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
+import decreaseIcon from '@/assets/decrease.svg'
+import { Badge } from '@/components/ui/badge'
 
 const pageSize = 12
 
@@ -16,16 +27,30 @@ function ManageNestList() {
   const [searchParams] = useSearchParams()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
   const searchQuery = searchParams.get('searchQuery') || ''
+  const sold = searchParams.get('sold') || ''
+  const specie = searchParams.get('specie') || ''
+  const sort = searchParams.get('sort') || 'createdAt_-1'
   const [nests, setNests] = useState<Nest[]>([])
+  const [species, setSpecies] = useState<Specie[]>([])
   const [isLoadingNests, setIsLoadingNests] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const fetchSpecies = async () => {
+      const { data } = await birdFarmApi.get('/api/species')
+
+      setSpecies(data?.species || [])
+    }
+    fetchSpecies()
+  }, [])
 
   useEffect(() => {
     const fetchNests = async () => {
       setIsLoadingNests(true)
       try {
         const { data } = await birdFarmApi.get(
-          addSearchParams('/api/nests/pagination', { searchQuery, pageNumber, pageSize })
+          addSearchParams('/api/nests/pagination/manage', { searchQuery, pageNumber, pageSize, sort, sold, specie })
         )
         setNests(data?.nests || null)
         setIsLoadingNests(false)
@@ -36,7 +61,7 @@ function ManageNestList() {
     }
 
     fetchNests()
-  }, [pageNumber, searchQuery])
+  }, [pageNumber, searchQuery, sort, sold, specie])
 
   if (!nests) {
     return <div>Loading</div>
@@ -46,10 +71,99 @@ function ManageNestList() {
     <div>
       <div className='flex items-center justify-between mb-6'>
         <div className='text-3xl font-bold'>Danh sách tổ chim</div>
-        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/manager/nests/new'>
+        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/manager/manager/nests/new'>
           <span>Tạo Tổ Chim</span>
           <Plus className='w-5 h-5' />
         </Link>
+      </div>
+
+      <div className='text-2xl font-medium'>Lọc theo tiêu chí</div>
+
+      <div className='flex items center gap-3 mt-3 mb-6'>
+        <div className='flex items-center gap-2 bg-accent p-2 rounded-md border w-fit'>
+          <p className='font-medium text-sm shrink-0'>Loài chim:</p>
+          <Select
+            value={specie}
+            onValueChange={(value) => {
+              navigate(addSearchParams('/manager/nests', { searchQuery, specie: value, sort, sold }))
+            }}
+          >
+            <SelectTrigger className='w-[180px]'>
+              <SelectValue className='font-semibold' placeholder='Lọc loài chim' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup className='h-96'>
+                <SelectLabel>Loài chim</SelectLabel>
+                <SelectItem value=''>Tất cả</SelectItem>
+                {species.map((specie) => {
+                  return <SelectItem value={specie._id}>{specie.name}</SelectItem>
+                })}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className='flex items-center gap-2 bg-accent p-2 rounded-md border w-fit'>
+          <p className='font-medium text-sm shrink-0'>Trạng thái:</p>
+          <Select
+            value={sold}
+            onValueChange={(value) => {
+              navigate(addSearchParams('/manager/nests', { searchQuery, specie, sort, sold: value }))
+            }}
+          >
+            <SelectTrigger className='w-[180px]'>
+              <SelectValue className='font-semibold' placeholder='Lọc trạng thái' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Trạng thái</SelectLabel>
+                <SelectItem value=''>Tất cả</SelectItem>
+                <SelectItem value='false'>Đang bán</SelectItem>
+                <SelectItem value='true'>Đã bán</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      <div className='text-2xl font-medium mt-3'>Sắp xếp theo</div>
+
+      <div className='mb-12 flex items-center mt-2 gap-3'>
+        <Button
+          onClick={() => {
+            navigate(addSearchParams('/manager/nests', { sort: 'createdAt_-1', searchQuery, specie, sold }))
+          }}
+          variant={sort === 'createdAt_-1' ? 'default' : 'outline'}
+          className='flex items-center gap-1'
+        >
+          <Calendar className='w-5 h-5 mr-1' />
+          Mới nhất
+        </Button>
+        <Button
+          onClick={() => {
+            navigate(addSearchParams('/manager/nests', { sort: 'price_1', searchQuery, specie, sold }))
+          }}
+          variant={sort === 'price_1' ? 'default' : 'outline'}
+          className='flex items-center gap-1'
+        >
+          <img
+            src={decreaseIcon}
+            className={cn('w-5 h-5 mr-1 dark:filter dark:invert scale-y-[-1]', sort === 'price_1' && 'filter invert')}
+          />
+          Giá tăng dần
+        </Button>
+        <Button
+          onClick={() => {
+            navigate(addSearchParams('/manager/nests', { sort: 'price_-1', searchQuery, specie, sold }))
+          }}
+          variant={sort === 'price_-1' ? 'default' : 'outline'}
+          className='flex items-center gap-1'
+        >
+          <img
+            src={decreaseIcon}
+            className={cn('w-5 h-5 mr-1 dark:filter dark:invert', sort === 'price_-1' && 'filter invert')}
+          />
+          Giá giảm dần
+        </Button>
       </div>
 
       <Table>
@@ -61,7 +175,7 @@ function ManageNestList() {
             <TableHead>Chim bố</TableHead>
             <TableHead>Chim mẹ</TableHead>
             <TableHead className='text-center'>Giá</TableHead>
-            {/* <TableHead className='text-center'>Đã Bán</TableHead> */}
+            <TableHead className='text-center'>Trạng thái</TableHead>
             <TableHead className='text-end'></TableHead>
           </TableRow>
         </TableHeader>
@@ -99,10 +213,16 @@ function ManageNestList() {
                     )}
                   </TableCell>
                   <TableCell className='font-medium text-center text-primary'>{formatPrice(nest.price)}</TableCell>
-                  {/* <TableCell className='text-center'>Đã Bán</TableCell> */}
+                  <TableCell className='text-center'>
+                    {nest.sold ? (
+                      <Badge variant='destructive'>Đã bán</Badge>
+                    ) : (
+                      <Badge variant='success'>Đang bán bán</Badge>
+                    )}
+                  </TableCell>
                   <TableCell className='text-center'>
                     <Button size='icon' asChild variant='ghost'>
-                      <Link to={`/manager/nests/${nest._id}`}>
+                      <Link to={`/manager/manager/nests/${nest._id}`}>
                         <MoreHorizontal className='cursor-pointer' />
                       </Link>
                     </Button>
@@ -117,7 +237,7 @@ function ManageNestList() {
       {!!totalPages && (
         <Paginate
           className='mt-8'
-          path={`/manager/nests?searchQuery=${searchQuery}`}
+          path={addSearchParams('/manager/manager/nests', { searchQuery, specie, sort, sold })}
           pageSize={pageSize}
           pageNumber={pageNumber}
           totalPages={totalPages}
