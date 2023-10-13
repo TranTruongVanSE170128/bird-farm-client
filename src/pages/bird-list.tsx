@@ -87,7 +87,7 @@ function BirdList() {
           </h1>
         </div>
 
-        <div className='text-2xl font-medium'>Chọn theo tiêu chí</div>
+        <div className='text-2xl font-medium'>Lọc theo tiêu chí</div>
 
         <div className='flex items-center mt-3 gap-4'>
           <div className='flex items-center gap-2 bg-accent p-2 rounded-md border'>
@@ -240,7 +240,7 @@ function BirdList() {
         {!!totalPages && (
           <Paginate
             className='mt-8'
-            path={addSearchParams('/birds', { searchQuery, type, specie })}
+            path={addSearchParams('/birds', { searchQuery, type, specie, sort, gender })}
             pageSize={pageSize}
             pageNumber={pageNumber}
             totalPages={totalPages}
