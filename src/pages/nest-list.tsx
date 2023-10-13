@@ -60,27 +60,30 @@ function NestList() {
           <h1 className='text-3xl font-bold'>Tổ chim đang bán tại cửa hàng</h1>
         </div>
 
-        <div className='text-2xl font-medium'>Bộ lọc loài chim</div>
+        <div className='text-2xl font-medium'>Lọc theo tiêu chí</div>
 
-        <Select
-          value={specie}
-          onValueChange={(value) => {
-            navigate(addSearchParams('/nests', { searchQuery, specie: value }))
-          }}
-        >
-          <SelectTrigger className='w-[180px] mt-3 mb-6'>
-            <SelectValue className='font-semibold' placeholder='Lọc loài chim' />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup className='h-96'>
-              <SelectLabel>Loài chim</SelectLabel>
-              <SelectItem value=''>Tất cả</SelectItem>
-              {species.map((specie) => {
-                return <SelectItem value={specie._id}>{specie.name}</SelectItem>
-              })}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <div className='flex items-center gap-2 bg-accent p-2 rounded-md border w-fit mt-3 mb-6'>
+          <p className='font-medium text-sm shrink-0'>Loài chim:</p>
+          <Select
+            value={specie}
+            onValueChange={(value) => {
+              navigate(addSearchParams('/nests', { searchQuery, specie: value }))
+            }}
+          >
+            <SelectTrigger className='w-[180px]'>
+              <SelectValue className='font-semibold' placeholder='Lọc loài chim' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup className='h-96'>
+                <SelectLabel>Loài chim</SelectLabel>
+                <SelectItem value=''>Tất cả</SelectItem>
+                {species.map((specie) => {
+                  return <SelectItem value={specie._id}>{specie.name}</SelectItem>
+                })}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
 
         {isLoadingNests ? (
           <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>

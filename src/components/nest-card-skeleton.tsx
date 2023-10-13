@@ -20,11 +20,8 @@ function NestCardSkeleton({ className }: Props) {
         </CardContent>
         <CardFooter className='flex flex-col gap-2'>
           <div className='flex w-full gap-2'>
-            <Button variant='outline' className='w-full'>
-              Thêm vào giỏ
-            </Button>
+            <Button className='w-full'>Thêm vào giỏ</Button>
           </div>
-          <Button className='w-full'>Mua ngay</Button>
         </CardFooter>
       </Card>
     </div>

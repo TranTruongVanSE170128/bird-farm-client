@@ -26,10 +26,6 @@ function NestCard({ className, nest }: Props) {
     })
   }
 
-  const handleBuyNow = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-  }
-
   return (
     <Link
       to={`/nests/${nest._id}`}
@@ -55,13 +51,10 @@ function NestCard({ className, nest }: Props) {
         </CardContent>
         <CardFooter className='flex flex-col gap-2'>
           <div className='flex w-full gap-2'>
-            <Button onClick={addToCart} variant='outline' className='w-full'>
+            <Button onClick={addToCart} className='w-full'>
               Thêm vào giỏ
             </Button>
           </div>
-          <Button onClick={handleBuyNow} className='w-full'>
-            Mua ngay
-          </Button>
         </CardFooter>
       </Card>
     </Link>
