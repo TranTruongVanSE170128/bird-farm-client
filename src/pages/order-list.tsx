@@ -31,8 +31,8 @@ const pageSize = 5
 function OrderList() {
   const [searchParams] = useSearchParams()
   const activeTab = searchParams.get('tab') || 'all'
-  const navigate = useNavigate()
   const [barStyle, setBarStyle] = useState({ left: '0%', width: '0%' })
+  const navigate = useNavigate()
   const pageNumber = Number(searchParams.get('pageNumber') || 1)
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoadingOrders, setIsLoadingOrders] = useState(true)

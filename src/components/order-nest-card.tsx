@@ -76,7 +76,7 @@ function OrderNestCard({ orderNest }: Props) {
   }
 
   return (
-    <div className='flex flex-col gap-6 p-8 mb-10 border shadow-xl rounded-3xl'>
+    <div className='flex flex-col gap-6 p-8 mb-6 border shadow-xl rounded-md'>
       {!isStaff && (
         <>
           <div className='flex justify-end'>

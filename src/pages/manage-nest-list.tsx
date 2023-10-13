@@ -79,7 +79,7 @@ function ManageNestList() {
 
       <div className='text-2xl font-medium'>Lọc theo tiêu chí</div>
 
-      <div className='flex items center gap-3 mt-3 mb-6'>
+      <div className='flex items center gap-3 mt-3'>
         <div className='flex items-center gap-2 bg-accent p-2 rounded-md border w-fit'>
           <p className='font-medium text-sm shrink-0'>Loài chim:</p>
           <Select

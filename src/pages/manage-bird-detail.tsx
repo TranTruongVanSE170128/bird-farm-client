@@ -13,6 +13,7 @@ import femaleIcon from '@/assets/female.svg'
 import birdIcon from '@/assets/bird-color.svg'
 import breedIcon from '@/assets/breed.svg'
 import medalIcon from '@/assets/medal.svg'
+import { Badge } from '@/components/ui/badge'
 
 function ManageBirdDetail() {
   const { id } = useParams()
@@ -69,6 +70,29 @@ function ManageBirdDetail() {
             </div>
             <div className='flex items-center gap-2 mb-4 text-lg'>
               <div className='font-bold'>Tên chim:</div> {bird?.name}
+            </div>
+            <div className='flex items-center gap-2 mb-4 text-lg'>
+              <div className='font-bold'>Trạng thái:</div>{' '}
+              {bird.type === 'sell' &&
+                (bird.sold ? (
+                  <Badge className='py-x px-5 text-base' variant='destructive'>
+                    Đã bán
+                  </Badge>
+                ) : (
+                  <Badge className='py-x px-5 text-base' variant='success'>
+                    Đang bán
+                  </Badge>
+                ))}
+              {bird.type === 'breed' &&
+                (bird.breading ? (
+                  <Badge className='py-x px-5 text-base' variant='breed'>
+                    Đang phối giống
+                  </Badge>
+                ) : (
+                  <Badge className='py-x px-5 text-base' variant='info'>
+                    Sẵn sàng phối giống
+                  </Badge>
+                ))}
             </div>
           </div>
 

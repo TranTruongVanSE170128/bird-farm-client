@@ -385,7 +385,7 @@ function ManageBirdList() {
                       (bird.breading ? (
                         <Badge variant='breed'>Đang phối giống</Badge>
                       ) : (
-                        <Badge variant='info'>Đang rảnh</Badge>
+                        <Badge variant='info'>Sẵn sàng phối giống</Badge>
                       ))}
                   </TableCell>
 
