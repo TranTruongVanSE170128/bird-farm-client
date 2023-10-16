@@ -71,7 +71,7 @@ function ManageNestList() {
     <div>
       <div className='flex items-center justify-between mb-6'>
         <div className='text-3xl font-bold'>Danh sách tổ chim</div>
-        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/manager/manager/nests/new'>
+        <Link className={cn(buttonVariants(), 'mb-6 flex items-center gap-1 my-auto')} to='/manager/nests/new'>
           <span>Tạo Tổ Chim</span>
           <Plus className='w-5 h-5' />
         </Link>
@@ -222,7 +222,7 @@ function ManageNestList() {
                   </TableCell>
                   <TableCell className='text-center'>
                     <Button size='icon' asChild variant='ghost'>
-                      <Link to={`/manager/manager/nests/${nest._id}`}>
+                      <Link to={`/manager/nests/${nest._id}`}>
                         <MoreHorizontal className='cursor-pointer' />
                       </Link>
                     </Button>
@@ -237,7 +237,7 @@ function ManageNestList() {
       {!!totalPages && (
         <Paginate
           className='mt-8'
-          path={addSearchParams('/manager/manager/nests', { searchQuery, specie, sort, sold })}
+          path={addSearchParams('/manager/nests', { searchQuery, specie, sort, sold })}
           pageSize={pageSize}
           pageNumber={pageNumber}
           totalPages={totalPages}
