@@ -82,7 +82,8 @@ function Pairing() {
       const messageError = error.response.data.message
       toast({
         variant: 'destructive',
-        title: messageError || 'Không rõ nguyễn nhân'
+        description: messageError || 'Không rõ nguyên nhân',
+        title: 'Không thể đặt cọc'
       })
       setIsSubmitting(false)
     }

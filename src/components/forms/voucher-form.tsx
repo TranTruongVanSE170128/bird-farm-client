@@ -60,7 +60,7 @@ function VoucherForm({ voucher, btnTitle, action, setEdit }: Props) {
       toast({
         variant: 'destructive',
         title: action === 'create' ? 'Không thể tạo voucher' : 'Không thể cập nhật voucher',
-        content: messageError || 'Không rõ nguyên nhân'
+        description: messageError || 'Không rõ nguyên nhân'
       })
       setIsSubmitting(false)
     }

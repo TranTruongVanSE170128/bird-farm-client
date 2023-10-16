@@ -40,7 +40,7 @@ function ManageVoucherList() {
         toast({
           variant: 'destructive',
           title: 'Lỗi',
-          content: messageError || 'Không rõ nguyễn nhân'
+          description: messageError || 'Không rõ nguyễn nhân'
         })
       }
     }
@@ -66,7 +66,7 @@ function ManageVoucherList() {
       const messageError = error.response.data.message
       toast({
         variant: 'destructive',
-        content: messageError || 'Không rõ nguyễn nhân',
+        description: messageError || 'Không rõ nguyễn nhân',
         title: 'Không thể vô hiệu hóa voucher'
       })
       setChangedVoucher(null)
@@ -91,7 +91,7 @@ function ManageVoucherList() {
       const messageError = error.response.data.message
       toast({
         variant: 'destructive',
-        content: messageError || 'Không rõ nguyễn nhân',
+        description: messageError || 'Không rõ nguyễn nhân',
         title: 'Không thể kích hoạt voucher'
       })
       setChangedVoucher(null)

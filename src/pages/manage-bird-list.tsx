@@ -80,7 +80,7 @@ function ManageBirdList() {
         toast({
           variant: 'destructive',
           title: 'Lỗi',
-          content: messageError || 'Không rõ nguyễn nhân'
+          description: messageError || 'Không rõ nguyễn nhân'
         })
       }
     }

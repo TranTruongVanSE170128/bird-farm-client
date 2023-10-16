@@ -90,7 +90,8 @@ function CheckoutOrder() {
         const messageError = error.response.data.message
         toast({
           variant: 'destructive',
-          title: messageError || 'Không rõ nguyễn nhân'
+          description: messageError || 'Không rõ nguyễn nhân',
+          title: 'Không thể thanh toán'
         })
       }
     } else {

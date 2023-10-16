@@ -100,7 +100,8 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
       const messageError = error.response.data.message
       toast({
         variant: 'destructive',
-        title: messageError
+        title: 'Lỗi',
+        description: messageError || 'Không rõ nguyên nhân'
       })
       setIsSubmitting(false)
     }

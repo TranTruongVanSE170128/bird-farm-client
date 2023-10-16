@@ -2,17 +2,19 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { Specie } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { birdFarmApi } from '@/services/bird-farm-api'
-import { ArrowLeft, Edit } from 'lucide-react'
+import { ArrowLeft, Edit, Trash } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import noImage from '@/assets/no-image.webp'
 import SpecieForm from '@/components/forms/specie-form'
 import Spinner from '@/components/ui/spinner'
+import { toast } from '@/components/ui/use-toast'
 
 function ManageSpecieDetail() {
   const { id } = useParams()
   const [specie, setSpecie] = useState<Specie | null>(null)
   const [edit, setEdit] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchSpecie = async () => {
@@ -26,6 +28,26 @@ function ManageSpecieDetail() {
 
     fetchSpecie()
   }, [id])
+
+  const handleDeleteSpecie = async () => {
+    try {
+      await birdFarmApi.delete(`/api/species/${id}`)
+      toast({
+        variant: 'success',
+        title: 'Xóa loài thành công'
+      })
+      navigate('/manager/species')
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const messageError = error.response.data.message
+      toast({
+        variant: 'destructive',
+        title: 'Không thể xóa loài',
+        description: messageError || 'Không rõ nguyễn nhân'
+      })
+    }
+  }
 
   if (!specie) {
     return <Spinner />
@@ -50,6 +72,10 @@ function ManageSpecieDetail() {
               <Edit className='w-5 h-5' />
             </Button>
           )}
+          <Button onClick={handleDeleteSpecie} className='flex items-center gap-1 my-auto'>
+            <span>Xóa</span>
+            <Trash className='w-5 h-5' />
+          </Button>
           <Link className={cn(buttonVariants(), 'flex items-center gap-1 my-auto')} to='/manager/species'>
             <span>Quay lại</span>
             <ArrowLeft className='w-5 h-5' />

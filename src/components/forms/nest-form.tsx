@@ -90,7 +90,8 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
       const messageError = error.response.data.message
       toast({
         variant: 'destructive',
-        title: messageError
+        description: messageError || 'Không rõ nguyên nhân',
+        title: 'Lỗi'
       })
       setIsSubmitting(false)
     }

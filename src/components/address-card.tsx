@@ -18,7 +18,8 @@ function AddressCard({ address }: Props) {
       const messageError = error.response.data.message
       toast({
         variant: 'destructive',
-        title: messageError || 'Không rõ nguyễn nhân'
+        title: 'Không thể cài mặc định',
+        description: messageError || 'Không rõ nguyễn nhân'
       })
     }
   }
@@ -33,7 +34,8 @@ function AddressCard({ address }: Props) {
       const messageError = error.response.data.message
       toast({
         variant: 'destructive',
-        title: messageError || 'Không rõ nguyễn nhân'
+        title: 'Không thể xóa',
+        description: messageError || 'Không rõ nguyễn nhân'
       })
     }
   }

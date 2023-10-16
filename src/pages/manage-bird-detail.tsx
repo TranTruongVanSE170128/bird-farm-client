@@ -2,9 +2,9 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { Bird, getDad, getMom, getSpecie } from '@/lib/types'
 import { calculateAge, cn, formatPrice } from '@/lib/utils'
 import { birdFarmApi } from '@/services/bird-farm-api'
-import { ArrowLeft, Edit } from 'lucide-react'
+import { ArrowLeft, Edit, Trash } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import noImage from '@/assets/no-image.webp'
 import BirdForm from '@/components/forms/bird-form'
 import Spinner from '@/components/ui/spinner'
@@ -14,11 +14,14 @@ import birdIcon from '@/assets/bird-color.svg'
 import breedIcon from '@/assets/breed.svg'
 import medalIcon from '@/assets/medal.svg'
 import { Badge } from '@/components/ui/badge'
+import { useToast } from '@/components/ui/use-toast'
 
 function ManageBirdDetail() {
   const { id } = useParams()
   const [bird, setBird] = useState<Bird | null>(null)
   const [edit, setEdit] = useState(false)
+  const navigate = useNavigate()
+  const { toast } = useToast()
 
   useEffect(() => {
     const fetchBird = async () => {
@@ -32,6 +35,28 @@ function ManageBirdDetail() {
 
     fetchBird()
   }, [id])
+
+  const handleDeleteBird = async () => {
+    try {
+      await birdFarmApi.delete(`/api/birds/${id}`)
+      toast({
+        variant: 'success',
+        title: 'Xóa chim thành công'
+      })
+      navigate('/manager/birds')
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const messageError = error.response.data.message
+      console.log(messageError)
+
+      toast({
+        variant: 'destructive',
+        title: 'Không thể xóa chim',
+        description: messageError || 'Không rõ nguyễn nhân'
+      })
+    }
+  }
 
   if (!bird) {
     return <Spinner />
@@ -56,6 +81,10 @@ function ManageBirdDetail() {
               <Edit className='w-5 h-5' />
             </Button>
           )}
+          <Button onClick={handleDeleteBird} className='flex items-center gap-1 my-auto'>
+            <span>Xóa</span>
+            <Trash className='w-5 h-5' />
+          </Button>
           <Link className={cn(buttonVariants(), 'flex items-center gap-1 my-auto')} to='/manager/birds'>
             <span>Quay lại</span>
             <ArrowLeft className='w-5 h-5' />

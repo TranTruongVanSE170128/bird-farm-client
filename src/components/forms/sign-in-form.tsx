@@ -38,7 +38,8 @@ export function SignInForm() {
         const messageError = error.response.data.message
         toast({
           variant: 'destructive',
-          title: messageError
+          content: messageError || 'Không rõ nguyên nhân',
+          title: 'Lỗi đăng nhập'
         })
         setIsLoggingGoogle(false)
       }
@@ -56,7 +57,8 @@ export function SignInForm() {
       const messageError = error.response.data.message
       toast({
         variant: 'destructive',
-        title: messageError
+        content: messageError || 'Không rõ nguyên nhân',
+        title: 'Lỗi đăng nhập'
       })
       if (messageError === 'Email chưa được xác thực.') {
         navigate(`/auth/${error.response.data.userId}/verify-email?email=${error.response.data.email}`)
