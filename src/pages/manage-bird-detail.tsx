@@ -113,7 +113,7 @@ function ManageBirdDetail() {
                   </Badge>
                 ))}
               {bird.type === 'breed' &&
-                (bird.breading ? (
+                (bird.breeding ? (
                   <Badge className='py-x px-5 text-base' variant='breed'>
                     Đang phối giống
                   </Badge>

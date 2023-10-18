@@ -42,7 +42,7 @@ function ManageOrderNestDetail() {
   const { toast } = useToast()
   const [openAddStageForm, setOpenAddStageForm] = useState(false)
   const [openUpdateAmountBirdForm, setOpenUpdateAmountBirdForm] = useState(false)
-
+  const [cancelingOrderNest, setCancelingOrderNest] = useState(false)
   const [requestingPayment, setRequestingPayment] = useState(false)
 
   const approveOrderNest = async () => {
@@ -79,6 +79,23 @@ function ManageOrderNestDetail() {
     }
   }
 
+  const cancelOrderNest = async () => {
+    try {
+      setCancelingOrderNest(true)
+      await birdFarmApi.put(`/api/order-nests/${id}/cancel`)
+      window.location.reload()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const msg = error?.response?.data?.message
+      toast({
+        title: 'Không thể hủy đơn hàng',
+        description: msg || 'Không rõ lý do',
+        variant: 'destructive'
+      })
+      setCancelingOrderNest(false)
+    }
+  }
+
   useEffect(() => {
     const fetchOrderNest = async () => {
       try {
@@ -104,7 +121,7 @@ function ManageOrderNestDetail() {
         </div>
 
         <div className='flex gap-2'>
-          <Button disabled={approvingOrderNest} asChild>
+          <Button disabled={approvingOrderNest || cancelingOrderNest || requestingPayment} asChild>
             <Link className='flex items-center gap-1 my-auto mb-6' to='/staff/order-nests'>
               <span>Quay lại</span>
               <ArrowLeft className='w-5 h-5' />
@@ -113,7 +130,7 @@ function ManageOrderNestDetail() {
         </div>
       </div>
 
-      <div className='flex justify-between items'>
+      <div className='flex justify-between items mb-4'>
         <div className='text-xl font-medium'>
           Trạng thái:{' '}
           <Badge className='ml-1 py-1 px-5 text-base' variant={statusToVariant[orderNest.status]}>
@@ -124,20 +141,21 @@ function ManageOrderNestDetail() {
           {!['success', 'canceled'].includes(orderNest.status) && (
             <Button
               variant='outline'
-              disabled={approvingOrderNest || requestingPayment}
-              onClick={() => {}}
-              className='flex items-center gap-1 my-auto mb-6'
+              disabled={approvingOrderNest || requestingPayment || cancelingOrderNest}
+              onClick={cancelOrderNest}
+              className='flex items-center gap-1 my-auto'
             >
               <span>Hủy đơn hàng</span>
               <img src={cancel} className='w-5 h-5 ml-1 dark:filter dark:invert' />
+              {cancelingOrderNest && <Shell className='w-4 h-4 animate-spin' />}
             </Button>
           )}
 
           {orderNest.status === 'processing' && (
             <Button
-              disabled={approvingOrderNest}
+              disabled={approvingOrderNest || cancelingOrderNest || requestingPayment}
               onClick={approveOrderNest}
-              className='flex items-center gap-1 my-auto mb-6'
+              className='flex items-center gap-1 my-auto'
             >
               <span>Chấp nhận đơn hàng</span>
               <img src={approve} className='w-5 h-5 filter invert' />
@@ -147,7 +165,10 @@ function ManageOrderNestDetail() {
           {orderNest.status === 'breeding' && (
             <AlertDialog>
               <AlertDialogTrigger>
-                <Button disabled={requestingPayment} className='flex items-center gap-1 my-auto mb-6'>
+                <Button
+                  disabled={approvingOrderNest || cancelingOrderNest || requestingPayment}
+                  className='flex items-center gap-1 my-auto'
+                >
                   <span>Yêu cầu thanh toán</span>
                   <img src={paymentIcon} className='w-5 h-5 filter invert' />
                   {requestingPayment && <Shell className='w-4 h-4 ml-1 animate-spin' />}
@@ -164,7 +185,7 @@ function ManageOrderNestDetail() {
                   <AlertDialogCancel>Trở lại</AlertDialogCancel>
                   <AlertDialogAction asChild>
                     <Button
-                      disabled={requestingPayment}
+                      disabled={approvingOrderNest || cancelingOrderNest || requestingPayment}
                       onClick={requestPayment}
                       className='flex items-center gap-1 my-auto'
                     >
@@ -177,10 +198,11 @@ function ManageOrderNestDetail() {
           )}
           {orderNest.status === 'breeding' && (
             <Button
+              disabled={approvingOrderNest || cancelingOrderNest || requestingPayment}
               onClick={() => {
                 setOpenUpdateAmountBirdForm(true)
               }}
-              className='flex items-center gap-1 my-auto mb-6'
+              className='flex items-center gap-1 my-auto'
             >
               <span>Cập nhật số lượng chim non</span>
               <img src={birdMaskIcon} className='w-5 h-5 filter invert' />
@@ -189,6 +211,7 @@ function ManageOrderNestDetail() {
           )}
           {orderNest.status === 'breeding' && (
             <Button
+              disabled={approvingOrderNest || cancelingOrderNest || requestingPayment}
               onClick={() => {
                 setOpenAddStageForm(true)
               }}

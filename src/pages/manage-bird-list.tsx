@@ -264,7 +264,7 @@ function ManageBirdList() {
                 <SelectItem className='flex items-center' value='free'>
                   <div className='flex items-center'>
                     <img className='w-6 h-6 mr-1' src={breedIcon} alt='' />
-                    Đang rảnh
+                    Sẵn sàng phối giống
                   </div>
                 </SelectItem>
               </SelectGroup>
@@ -382,7 +382,7 @@ function ManageBirdList() {
                         <Badge variant='success'>Đang bán</Badge>
                       ))}
                     {bird.type === 'breed' &&
-                      (bird.breading ? (
+                      (bird.breeding ? (
                         <Badge variant='breed'>Đang phối giống</Badge>
                       ) : (
                         <Badge variant='info'>Sẵn sàng phối giống</Badge>

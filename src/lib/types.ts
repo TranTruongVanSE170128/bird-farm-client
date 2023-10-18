@@ -19,7 +19,7 @@ export type Bird = {
   specie: Specie | string
   name: string
   sold: boolean
-  breading: boolean
+  breeding: boolean
   type: BirdType
   birth?: Date
   gender: Gender
