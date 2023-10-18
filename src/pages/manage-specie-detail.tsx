@@ -2,7 +2,7 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { Specie } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { birdFarmApi } from '@/services/bird-farm-api'
-import { ArrowLeft, Edit, Trash } from 'lucide-react'
+import { ArrowLeft, Edit, Shell, Trash } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import noImage from '@/assets/no-image.webp'
@@ -15,6 +15,7 @@ function ManageSpecieDetail() {
   const [specie, setSpecie] = useState<Specie | null>(null)
   const [edit, setEdit] = useState(false)
   const navigate = useNavigate()
+  const [deletingSpecie, setDeletingSpecie] = useState(false)
 
   useEffect(() => {
     const fetchSpecie = async () => {
@@ -30,6 +31,7 @@ function ManageSpecieDetail() {
   }, [id])
 
   const handleDeleteSpecie = async () => {
+    setDeletingSpecie(true)
     try {
       await birdFarmApi.delete(`/api/species/${id}`)
       toast({
@@ -40,6 +42,7 @@ function ManageSpecieDetail() {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      setDeletingSpecie(false)
       const messageError = error.response.data.message
       toast({
         variant: 'destructive',
@@ -63,6 +66,7 @@ function ManageSpecieDetail() {
         <div className='flex gap-2'>
           {!edit && (
             <Button
+              disabled={deletingSpecie}
               onClick={() => {
                 setEdit(true)
               }}
@@ -72,9 +76,10 @@ function ManageSpecieDetail() {
               <Edit className='w-5 h-5' />
             </Button>
           )}
-          <Button onClick={handleDeleteSpecie} className='flex items-center gap-1 my-auto'>
+          <Button disabled={deletingSpecie} onClick={handleDeleteSpecie} className='flex items-center gap-1 my-auto'>
             <span>Xóa</span>
             <Trash className='w-5 h-5' />
+            {deletingSpecie && <Shell className='w-4 h-4 ml-1 animate-spin' />}
           </Button>
           <Link className={cn(buttonVariants(), 'flex items-center gap-1 my-auto')} to='/manager/species'>
             <span>Quay lại</span>
