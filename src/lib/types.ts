@@ -5,6 +5,7 @@ export type User = {
   imageUrl?: string
   role: Role
   deliveryInfos: Address[]
+  verified: boolean
 }
 
 export type Specie = {

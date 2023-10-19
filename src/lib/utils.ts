@@ -83,11 +83,19 @@ export function addSearchParams(url: string, params: Record<string, any>) {
 }
 
 export const roleToVi: Record<Role, string> = {
-  admin: 'Admin',
+  admin: 'Quản trị viên',
   customer: 'Khách hàng',
   guest: '',
   manager: 'Quản lý',
   staff: 'Nhân viên'
+}
+
+export const roleToVariant: Record<Role, Variant> = {
+  admin: 'info',
+  customer: 'breed',
+  manager: 'warning',
+  staff: 'success',
+  guest: 'destructive'
 }
 
 export const statusToVi: Record<OrderNestStatus, string> = {

@@ -84,7 +84,7 @@ function ProfileButton({ className }: Props) {
               ) : (
                 <Link to='/admin'>
                   <img src={adminIcon} className='w-4 h-4 mr-2 dark:filter dark:invert' />
-                  <span>Admin</span>
+                  <span>Quản trị viên</span>
                 </Link>
               )}
             </DropdownMenuItem>

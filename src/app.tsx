@@ -48,6 +48,7 @@ import LayoutUser from './components/shared/layout-user'
 import UserProfile from './pages/user-profile'
 import UserVouchers from './pages/user-voucher'
 import UserAddresses from './pages/user-addresses'
+import ManageAccountList from './pages/manage-account-list'
 
 function App() {
   return (
@@ -91,6 +92,7 @@ function App() {
 
         <Route path='/admin' element={<LayoutAdmin />}>
           <Route path='' element={<Dashboard />} />
+          <Route path='accounts' element={<ManageAccountList />} />
         </Route>
 
         <Route path='/manager' element={<LayoutManager />}>
