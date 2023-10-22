@@ -49,6 +49,7 @@ import UserProfile from './pages/user-profile'
 import UserVouchers from './pages/user-voucher'
 import UserAddresses from './pages/user-addresses'
 import ManageAccountList from './pages/manage-account-list'
+import ManageMedia from './pages/manage-media'
 
 function App() {
   return (
@@ -93,6 +94,7 @@ function App() {
         <Route path='/admin' element={<LayoutAdmin />}>
           <Route path='' element={<Dashboard />} />
           <Route path='accounts' element={<ManageAccountList />} />
+          <Route path='media' element={<ManageMedia />} />
         </Route>
 
         <Route path='/manager' element={<LayoutManager />}>

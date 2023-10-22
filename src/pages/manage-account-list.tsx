@@ -1,8 +1,8 @@
 import Paginate from '@/components/paginate'
-import { User } from '@/lib/types'
+import { Role, User } from '@/lib/types'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { addSearchParams } from '@/lib/utils'
+import { addSearchParams, roleToVi } from '@/lib/utils'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Spinner from '@/components/ui/spinner'
 import { birdFarmApi } from '@/services/bird-farm-api'
@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Check, X } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { toast } from '@/components/ui/use-toast'
 
 const pageSize = 12
 
@@ -35,6 +36,28 @@ function ManageAccountList() {
 
     fetchAccounts()
   }, [pageNumber])
+
+  const changeRole = async (userId: string, role: Role) => {
+    try {
+      await birdFarmApi.put(`/api/users/${userId}/role`, { role })
+
+      toast({
+        variant: 'success',
+        title: 'Phân quyền thành công',
+        description: 'Đã phân quyền người dùng này thành ' + roleToVi[role]
+      })
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const messageError = error.response.data.message
+      window.location.reload()
+      toast({
+        variant: 'destructive',
+        title: 'Không thể đổi vai trò',
+        description: messageError || 'Không rõ nguyễn nhân'
+      })
+    }
+  }
 
   if (!accounts) {
     return <div>Loading</div>
@@ -80,8 +103,11 @@ function ManageAccountList() {
                   </TableCell>
                   <TableCell className='text-center'>
                     <Select
+                      disabled={account.role === 'admin'}
+                      onValueChange={(val: Role) => {
+                        changeRole(account._id, val)
+                      }}
                       defaultValue={(() => {
-                        console.log(account.role)
                         return account.role.toString()
                       })()}
                     >
