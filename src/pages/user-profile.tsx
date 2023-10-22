@@ -17,6 +17,16 @@ function UserProfile() {
   const [files, setFiles] = useState<File[]>([])
   const [imageUrl, setImageUrl] = useState(user?.imageUrl)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [defaultAvatarUrl, setDefaultAvatarUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchMedia = async () => {
+      const { data } = await birdFarmApi.get('/api/media')
+      setDefaultAvatarUrl(data.media.defaultAvatarUrl)
+    }
+
+    fetchMedia()
+  }, [])
 
   useEffect(() => {
     setNameValue(user?.name || '')
@@ -76,7 +86,7 @@ function UserProfile() {
 
       <div className='flex items-center mb-4 gap-8'>
         <Avatar className='w-28 h-28 cursor-pointer border-2 border-primary'>
-          <AvatarImage src={imageUrl || 'https://github.com/shadcn.png'} />
+          <AvatarImage src={imageUrl || defaultAvatarUrl || 'https://github.com/shadcn.png'} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <div className='flex flex-col'>

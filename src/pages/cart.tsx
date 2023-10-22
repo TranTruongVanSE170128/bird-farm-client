@@ -269,6 +269,14 @@ function Cart() {
                       navigate('/auth/sign-in')
                       return
                     }
+                    if (cart.birds.length === 0 && cart.nests.length === 0) {
+                      toast({
+                        title: 'Không thể mua hàng',
+                        description: 'Giỏ hàng rỗng',
+                        variant: 'destructive'
+                      })
+                      return
+                    }
 
                     navigate(addSearchParams('/checkout-order', { voucher: selectedVoucher?._id }))
                   }}

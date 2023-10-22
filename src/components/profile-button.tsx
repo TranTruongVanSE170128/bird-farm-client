@@ -20,6 +20,8 @@ import managerIcon from '@/assets/manager.svg'
 import staffIcon from '@/assets/staff.svg'
 import storeIcon from '@/assets/store.svg'
 import nestIcon from '@/assets/nest.svg'
+import { useEffect, useState } from 'react'
+import { birdFarmApi } from '@/services/bird-farm-api'
 
 type Props = {
   className?: string
@@ -28,6 +30,16 @@ type Props = {
 function ProfileButton({ className }: Props) {
   const { user, setAccessToken } = useAuthContext()
   const pathname = useLocation().pathname
+  const [defaultAvatarUrl, setDefaultAvatarUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchMedia = async () => {
+      const { data } = await birdFarmApi.get('/api/media')
+      setDefaultAvatarUrl(data.media.defaultAvatarUrl)
+    }
+
+    fetchMedia()
+  }, [])
 
   if (!user) {
     return (
@@ -61,7 +73,7 @@ function ProfileButton({ className }: Props) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className='ml-3 cursor-pointer'>
-          <AvatarImage src={user.imageUrl || 'https://github.com/shadcn.png'} />
+          <AvatarImage src={user.imageUrl || defaultAvatarUrl || 'https://github.com/shadcn.png'} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

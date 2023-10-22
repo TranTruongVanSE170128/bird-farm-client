@@ -20,6 +20,16 @@ function ManageAccountList() {
   const [accounts, setAccounts] = useState<User[]>([])
   const [isLoadingAccounts, setIsLoadingAccounts] = useState(true)
   const [totalPages, setTotalPages] = useState<number | null>(null)
+  const [defaultAvatarUrl, setDefaultAvatarUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchMedia = async () => {
+      const { data } = await birdFarmApi.get('/api/media')
+      setDefaultAvatarUrl(data.media.defaultAvatarUrl)
+    }
+
+    fetchMedia()
+  }, [])
 
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -88,7 +98,7 @@ function ManageAccountList() {
                 <TableRow key={account._id}>
                   <TableCell className='text-center flex justify-center'>
                     <Avatar className='cursor-pointer'>
-                      <AvatarImage src={account.imageUrl || 'https://github.com/shadcn.png'} />
+                      <AvatarImage src={account.imageUrl || defaultAvatarUrl || 'https://github.com/shadcn.png'} />
                       <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                   </TableCell>

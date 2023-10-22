@@ -236,8 +236,7 @@ function DeliveryInfoForm({ onSubmit, className, addDeliveryInfo, CloseComponent
         {!addDeliveryInfo && (
           <>
             <div className='mt-5 '>
-              <p className='uppercase font-bold text-[20px]'>Thông tin bổ sung</p>
-              <div className='w-[220px] h-[1px] border'></div>
+              <p className='uppercase font-bold text-lg'>Thông tin bổ sung</p>
 
               <FormField
                 control={form.control}
@@ -259,7 +258,7 @@ function DeliveryInfoForm({ onSubmit, className, addDeliveryInfo, CloseComponent
             </div>
 
             <div className='mt-5'>
-              <p className='text-2xl font-bold uppercase'>hình thức thanh toán</p>
+              <p className='text-lg font-bold uppercase'>hình thức thanh toán</p>
               <div className='mt-5 '>
                 <FormField
                   control={form.control}

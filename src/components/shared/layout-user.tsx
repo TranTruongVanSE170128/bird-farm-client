@@ -6,11 +6,23 @@ import { cn, roleToVi } from '@/lib/utils'
 import { useAuthContext } from '@/contexts/auth-provider'
 import addressIcon from '@/assets/address.svg'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { useEffect, useState } from 'react'
+import { birdFarmApi } from '@/services/bird-farm-api'
 
 function LayoutUser() {
   const { user } = useAuthContext()
   const activeTab = useLocation().pathname.split('/')[2]
   const navigate = useNavigate()
+  const [defaultAvatarUrl, setDefaultAvatarUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchMedia = async () => {
+      const { data } = await birdFarmApi.get('/api/media')
+      setDefaultAvatarUrl(data.media.defaultAvatarUrl)
+    }
+
+    fetchMedia()
+  }, [])
 
   if (user && user.role === 'guest') {
     navigate('/')
@@ -24,7 +36,7 @@ function LayoutUser() {
             <div className='flex flex-col gap-4'>
               <div className='flex items-center mb-4 gap-3'>
                 <Avatar className='w-12 h-12 cursor-pointer border-2 border-primary'>
-                  <AvatarImage src={user?.imageUrl || 'https://github.com/shadcn.png'} />
+                  <AvatarImage src={user?.imageUrl || defaultAvatarUrl || 'https://github.com/shadcn.png'} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <div>
