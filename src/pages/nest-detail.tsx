@@ -29,10 +29,12 @@ function NestDetail() {
   }
 
   useEffect(() => {
+    setIsLoadingSameNests(true)
     const fetchNest = async () => {
       const { data } = await birdFarmApi.get(`/api/nests/${id}`)
 
       setNest(data.nest || null)
+      setIsLoadingSameNests(false)
     }
 
     fetchNest()
@@ -53,7 +55,11 @@ function NestDetail() {
     fetchSameNests()
   }, [nest])
 
-  if (!nest) {
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [id])
+
+  if (isLoadingSameNests || !nest) {
     return <Spinner className='mt-12' />
   }
 

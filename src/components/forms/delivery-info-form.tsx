@@ -94,6 +94,7 @@ function DeliveryInfoForm({ onSubmit, className, addDeliveryInfo, CloseComponent
           name='receiver'
           render={({ field }) => (
             <FormItem>
+              <p className='uppercase font-bold text-lg mt-4'>Thông tin giao hàng</p>
               <FormLabel>Họ và Tên*</FormLabel>
               <FormControl>
                 <Input {...field} />
