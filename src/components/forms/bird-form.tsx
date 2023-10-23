@@ -67,7 +67,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
   const onSubmit = async (values: TBirdSchema) => {
     setIsSubmitting(true)
     try {
-      let imageUrls: string[] = []
+      let imageUrls: string[] = bird?.imageUrls || []
       const image = files[0]
       if (image) {
         const imageRef = ref(imageDB, `images/${image.name + v4()}`)

@@ -58,7 +58,7 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
   const onSubmit = async (values: TNestSchema) => {
     setIsSubmitting(true)
     try {
-      let imageUrls: string[] = []
+      let imageUrls: string[] = nest?.imageUrls || []
       const image = files[0]
       if (image) {
         const imageRef = ref(imageDB, `images/${image.name + v4()}`)
