@@ -8,7 +8,7 @@ import { formatPrice } from '@/lib/utils'
 import { loadStripe } from '@stripe/stripe-js'
 import { TDeliveryInfoSchema } from '@/lib/validations/deliveryInfo'
 import DeliveryInfoForm from '@/components/forms/delivery-info-form'
-import { OrderNest } from '@/lib/types'
+import { Address, OrderNest } from '@/lib/types'
 
 function CheckoutOrderNest() {
   const [searchParams] = useSearchParams()
@@ -27,7 +27,7 @@ function CheckoutOrderNest() {
     fetchOrderNests()
   }, [orderNestId])
 
-  const onSubmit = async (data: TDeliveryInfoSchema) => {
+  const onSubmit = async (data: TDeliveryInfoSchema, deliveryInfo: Address | undefined) => {
     if (!user) {
       toast({
         title: 'Hãy đăng nhập để tiếp tục thanh toán',
@@ -37,9 +37,11 @@ function CheckoutOrderNest() {
       return
     }
 
-    const address = [data.province, data.district, data.ward, data.address].filter(Boolean).join(', ')
-    const receiver = data.receiver
-    const phone = data.phoneNumber
+    const address = deliveryInfo
+      ? deliveryInfo.address
+      : [data.province, data.district, data.ward, data.address].filter(Boolean).join(', ')
+    const receiver = deliveryInfo ? deliveryInfo.receiver : data.receiver
+    const phone = deliveryInfo ? deliveryInfo.phone : data.phoneNumber
     const notice = data.notice
 
     if (data.type === 'cod') {

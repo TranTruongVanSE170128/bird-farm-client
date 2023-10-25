@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Container from '@/components/ui/container'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Cart, Products, Voucher } from '@/lib/types'
+import { Address, Cart, Products, Voucher } from '@/lib/types'
 import { toast } from '@/components/ui/use-toast'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -61,7 +61,7 @@ function CheckoutOrder() {
     setTotalMoney(temp)
   }, [products])
 
-  const onSubmit = async (data: TDeliveryInfoSchema) => {
+  const onSubmit = async (data: TDeliveryInfoSchema, deliveryInfo: Address | undefined) => {
     if (!user) {
       toast({
         title: 'Hãy đăng nhập để tiếp tục thanh toán',
@@ -71,9 +71,11 @@ function CheckoutOrder() {
       return
     }
 
-    const address = [data.province, data.district, data.ward, data.address].filter(Boolean).join(', ')
-    const receiver = data.receiver
-    const phone = data.phoneNumber
+    const address = deliveryInfo
+      ? deliveryInfo.address
+      : [data.province, data.district, data.ward, data.address].filter(Boolean).join(', ')
+    const receiver = deliveryInfo ? deliveryInfo.receiver : data.receiver
+    const phone = deliveryInfo ? deliveryInfo.phone : data.phoneNumber
     const notice = data.notice
     const cart: Cart = JSON.parse(localStorage.getItem('cart') || String({ birds: [], nests: [] }))
     const birds = cart.birds
@@ -130,11 +132,6 @@ function CheckoutOrder() {
     <main>
       <Container>
         <section className='px-5 my-7'>
-          <div className='flex justify-center gap-2 '>
-            <span className='text-2xl text-gray-500 uppercase '>Giỏ HÀNG </span>
-            <span className='text-2xl '>{'>'}</span>
-            <span className='text-2xl uppercase '>Chi tiết thanh toán</span>
-          </div>
           <div className='flex flex-col mt-8 md:flex-row md:justify-between'>
             <div className='basis-3/4 md:w-3/5'>
               <p className='text-2xl font-bold uppercase'>thông tin thanh toán</p>

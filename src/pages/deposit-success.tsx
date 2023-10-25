@@ -28,11 +28,10 @@ function DepositSuccess() {
           {type === 'payment' ? 'Thanh toán thành công' : 'Đặt cọc thành công'}
         </div>
         <p className='text-lg mt-4'>
-          Cảm ơn vì đã tin tưởng <span className='text-primary font-medium'>Bird Farm Shop</span>. Hóa đơn sẽ được
-          chuyển tự động đến email của bạn
+          Cảm ơn vì đã tin tưởng <span className='text-primary font-medium'>Bird Farm Shop</span>
         </p>
 
-        <Link to='/' className='underline hover:text-primary font-medium text-xl mt-12'>
+        <Link to='/' className='underline hover:text-primary font-medium text-xl mt-8'>
           Quay lại trang chủ
         </Link>
       </Container>

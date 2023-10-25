@@ -2,12 +2,15 @@ import { birdFarmApi } from '@/services/bird-farm-api'
 import { Button } from './ui/button'
 import { toast } from './ui/use-toast'
 import { Address } from '@/lib/types'
+import { cn } from '@/lib/utils'
 
 type Props = {
   address: Address
+  noAction?: boolean
+  className?: string
 }
 
-function AddressCard({ address }: Props) {
+function AddressCard({ address, className, noAction = false }: Props) {
   const handleSetDefault = async () => {
     try {
       await birdFarmApi.put(`/api/users/delivery-info/${address._id}/make-default`)
@@ -41,7 +44,7 @@ function AddressCard({ address }: Props) {
   }
 
   return (
-    <div className='flex justify-between border-b py-4'>
+    <div className={cn('flex justify-between border-b py-4', className)}>
       <div className='flex flex-col gap-1'>
         <div className='flex items-center gap-2'>
           <span className='text-lg font-medium'>{address.receiver}</span> <span>|</span> <span>{address.phone}</span>
@@ -57,14 +60,16 @@ function AddressCard({ address }: Props) {
           </Button>
         )}
       </div>
-      <div className='flex gap-2 items-end'>
-        <Button onClick={handleDelete} variant='link' disabled={address.default}>
-          Xóa
-        </Button>
-        <Button onClick={handleSetDefault} variant='outline' disabled={address.default}>
-          Thiết lập mặc định
-        </Button>
-      </div>
+      {!noAction && (
+        <div className='flex gap-2 items-end'>
+          <Button onClick={handleDelete} variant='link' disabled={address.default}>
+            Xóa
+          </Button>
+          <Button onClick={handleSetDefault} variant='outline' disabled={address.default}>
+            Thiết lập mặc định
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
