@@ -225,7 +225,16 @@ function Cart() {
                                     key={voucher._id}
                                     voucher={voucher}
                                   />
-                                  <Button disabled={calculateDiscount(totalMoney, voucher, user?._id) <= 0} asChild>
+                                  <Button
+                                    disabled={
+                                      calculateDiscount(totalMoney, voucher, user?._id) <= 0 ||
+                                      voucher.quantity <= 0 ||
+                                      new Date(voucher.expiredAt) < new Date() ||
+                                      voucher.users.includes(user?._id || '') ||
+                                      !voucher.enable
+                                    }
+                                    asChild
+                                  >
                                     <AlertDialogCancel onClick={() => setSelectedVoucher(voucher)}>
                                       Lưu
                                     </AlertDialogCancel>
