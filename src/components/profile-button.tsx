@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from './ui/button'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import orderIcon from '@/assets/order.svg'
 import { useAuthContext } from '@/contexts/auth-provider'
@@ -31,6 +31,7 @@ function ProfileButton({ className }: Props) {
   const { user, setAccessToken } = useAuthContext()
   const pathname = useLocation().pathname
   const [defaultAvatarUrl, setDefaultAvatarUrl] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchMedia = async () => {
@@ -154,6 +155,7 @@ function ProfileButton({ className }: Props) {
         <DropdownMenuItem
           onClick={() => {
             setAccessToken('')
+            navigate('/')
             window.location.reload()
           }}
           className='cursor-pointer'
