@@ -122,7 +122,7 @@ function CheckoutOrder() {
         toast({
           variant: 'destructive',
           title: 'Lỗi thanh toán',
-          content: messageError || 'Không rõ nguyễn nhân'
+          description: messageError || 'Không rõ nguyễn nhân'
         })
       }
     }

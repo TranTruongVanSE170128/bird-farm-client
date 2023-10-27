@@ -39,7 +39,7 @@ export function SignUpForm() {
       const messageError = error.response.data.message
       toast({
         variant: 'destructive',
-        content: messageError || 'Không rõ nguyên nhân',
+        description: messageError || 'Không rõ nguyên nhân',
         title: 'Lỗi đăng ký'
       })
       setIsSubmitting(false)
@@ -61,7 +61,7 @@ export function SignUpForm() {
         const messageError = error.response.data.message
         toast({
           variant: 'destructive',
-          content: messageError || 'Không rõ nguyên nhân',
+          description: messageError || 'Không rõ nguyên nhân',
           title: 'Lỗi đăng ký'
         })
         setIsLoggingGoogle(false)
