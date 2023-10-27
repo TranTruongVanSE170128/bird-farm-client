@@ -1,5 +1,6 @@
 import useLocalStorage from '@/hooks/use-local-storage'
-import { Cart } from '@/lib/types'
+import { Bird, Cart, Nest } from '@/lib/types'
+import { birdFarmApi } from '@/services/bird-farm-api'
 import React, { useContext, useEffect, useState } from 'react'
 
 type CartProviderProps = {
@@ -56,6 +57,22 @@ const CartProvider = ({ children }: CartProviderProps) => {
       nests: []
     })
   }
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const birdsData = birdFarmApi.post('/api/birds/get-by-ids', { birds: cart.birds }).then((res) => res.data.birds)
+      const nestsData = birdFarmApi.post('/api/nests/get-by-ids', { nests: cart.nests }).then((res) => res.data.nests)
+
+      const [birds, nests]: [Bird[], Nest[]] = await Promise.all([birdsData, nestsData])
+
+      setCart({
+        birds: birds.map((b) => b._id),
+        nests: nests.map((n) => n._id)
+      })
+    }
+
+    fetchProducts()
+  }, [])
 
   useEffect(() => {
     setQuantityInCart(cart.birds.length + cart.nests.length)

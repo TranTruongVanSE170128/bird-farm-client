@@ -50,10 +50,13 @@ export function calculateDiscount(originPrice: number, voucher: Voucher, userId:
   if (voucher.users.includes(userId || '')) {
     return 0
   }
+  if (!voucher.enable) {
+    return 0
+  }
   if (voucher.quantity <= 0) {
     return 0
   }
-  if (voucher.expiredAt < new Date()) {
+  if (new Date(voucher.expiredAt) < new Date()) {
     return 0
   }
   if (originPrice < voucher.conditionPrice) {
