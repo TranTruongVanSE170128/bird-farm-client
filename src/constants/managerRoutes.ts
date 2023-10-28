@@ -1,14 +1,14 @@
-import dashBoardIcon from '@/assets/dashboard.svg'
+// import dashBoardIcon from '@/assets/dashboard.svg'
 import birdIcon from '@/assets/bird.svg'
 import nestIcon from '@/assets/nest.svg'
 import specieIcon from '@/assets/specie.svg'
 
 export const routes = [
-  {
-    icon: dashBoardIcon,
-    route: '/manager',
-    label: 'Dashboard'
-  },
+  // {
+  //   icon: dashBoardIcon,
+  //   route: '/manager',
+  //   label: 'Dashboard'
+  // },
   {
     icon: specieIcon,
     route: '/manager/species',
