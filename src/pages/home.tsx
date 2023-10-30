@@ -21,6 +21,7 @@ function Home() {
   const [birdsBreed, setBirdsBreed] = useState<Bird[]>([])
   const { width } = useWindowSize()
   const speciesSection = useRef<HTMLHeadingElement>(null)
+  const [bannerUrls, setBannerUrls] = useState<string[]>([])
 
   const sliceSpeciePerView = useMemo(() => {
     if (width < 640) return 1
@@ -28,6 +29,15 @@ function Home() {
     else if (width < 1024) return 3
     else return 4
   }, [width])
+
+  useEffect(() => {
+    const fetchMedia = async () => {
+      const { data } = await birdFarmApi.get('/api/media')
+      setBannerUrls(data.media.bannerUrls)
+    }
+
+    fetchMedia()
+  }, [])
 
   useEffect(() => {
     const fetchSpecies = async () => {
@@ -66,7 +76,9 @@ function Home() {
     <Container>
       <div className='overflow-hidden rounded-lg'>
         <div
-          style={{ backgroundImage: `url(https://images.alphacoders.com/774/thumb-1920-774587.jpg)` }}
+          style={{
+            backgroundImage: `url(${bannerUrls[0] || 'https://images.alphacoders.com/774/thumb-1920-774587.jpg'})`
+          }}
           className='rounded-lg relative aspect-square md:aspect-[2.4/1] overflow-hidden bg-cover mt-8'
         >
           <div className='flex flex-col items-center justify-center w-full h-full text-center gap-y-8'>
