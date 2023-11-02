@@ -38,6 +38,10 @@ function BirdComparing() {
     fetchBirds()
   }, [searchParams])
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   if (!firstBird || !secondBird) {
     return <Spinner className='mt-12' />
   }

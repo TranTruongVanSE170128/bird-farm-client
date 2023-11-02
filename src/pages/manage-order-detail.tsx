@@ -7,7 +7,7 @@ import { formatDate, formatPrice, statusToVariant, statusToVi } from '@/lib/util
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { ArrowLeft, Shell } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import noImage from '@/assets/no-image.webp'
 import cancel from '@/assets/cancel.svg'
 import approve from '@/assets/approve.svg'
@@ -17,8 +17,9 @@ function ManageOrderDetail() {
   const { id } = useParams()
   const [order, setOrder] = useState<Order | null>(null)
   const [approvingOrder, setApprovingOrder] = useState(false)
+  const [cancelingOrder, setCancelingOrder] = useState(false)
   const { toast } = useToast()
-  // const [edit, setEdit] = useState(false)
+  const navigate = useNavigate()
 
   const approveOrder = async () => {
     try {
@@ -34,6 +35,28 @@ function ManageOrderDetail() {
         variant: 'destructive'
       })
       setApprovingOrder(false)
+    }
+  }
+
+  const cancelOrder = async () => {
+    try {
+      setCancelingOrder(true)
+      await birdFarmApi.put(`/api/orders/${id}/cancel`)
+      navigate('/staff/orders')
+      window.location.reload()
+      toast({
+        title: 'Xóa đơn hàng thành công',
+        variant: 'success'
+      })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const msg = error?.response?.data?.message
+      toast({
+        title: 'Xóa đơn hàng thất bại',
+        description: msg || 'Không rõ lý do',
+        variant: 'destructive'
+      })
+      setCancelingOrder(false)
     }
   }
 
@@ -128,8 +151,8 @@ function ManageOrderDetail() {
         {!['success', 'canceled'].includes(order.status) && (
           <Button
             variant='outline'
-            disabled={approvingOrder}
-            onClick={() => {}}
+            disabled={approvingOrder || cancelingOrder}
+            onClick={cancelOrder}
             className='flex items-center gap-1 my-auto mb-6'
           >
             <span>Hủy đơn hàng</span>
@@ -138,7 +161,11 @@ function ManageOrderDetail() {
         )}
 
         {order.status === 'processing' && (
-          <Button disabled={approvingOrder} onClick={approveOrder} className='flex items-center gap-1 my-auto mb-6'>
+          <Button
+            disabled={approvingOrder || cancelingOrder}
+            onClick={approveOrder}
+            className='flex items-center gap-1 my-auto mb-6'
+          >
             <span>Chấp nhận đơn hàng</span>
             <img src={approve} className='w-5 h-5 filter invert' />
             {approvingOrder && <Shell className='w-4 h-4 ml-1 animate-spin' />}

@@ -29,12 +29,14 @@ function VoucherTicket({
   isChanging = false
 }: Props) {
   const { theme } = useTheme()
-  const { conditionPrice, expiredAt, discountPercent, maxDiscountValue, quantity } = voucher
+  const { conditionPrice, expiredAt, discountPercent, maxDiscountValue, quantity, enable } = voucher
   const { user } = useAuthContext()
 
   const contextElement = () => {
     console.log({ expiredAt, date: new Date() })
-
+    if (!enable) {
+      return <div className='text-xs absolute rounded-sm top-2 p-0.5 text-white bg-red-500'>Đang vô hiệu hóa</div>
+    }
     if (quantity <= 0) {
       return <div className='text-xs absolute rounded-sm top-2 p-0.5 text-white bg-red-500'>Đã hết</div>
     }

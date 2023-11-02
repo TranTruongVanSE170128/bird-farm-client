@@ -94,7 +94,7 @@ function Home() {
                 className='w-full py-6 text-xl'
               >
                 <ShoppingBag className='mr-2' />
-                Shop Now
+                Mua Ngay
               </Button>
             </div>
           </div>
@@ -168,7 +168,7 @@ function Home() {
             })}
       </div>
 
-      <Link className='flex justify-center mt-6' to='/birds'>
+      <Link className='flex justify-center mt-6' to='/birds?type=sell'>
         <Button size='lg'>Xem tất cả</Button>
       </Link>
 
@@ -185,7 +185,7 @@ function Home() {
             })}
       </div>
 
-      <Link className='flex justify-center mt-6' to='/birds'>
+      <Link className='flex justify-center mt-6' to='/birds?type=breed'>
         <Button size='lg'>Xem tất cả</Button>
       </Link>
     </Container>

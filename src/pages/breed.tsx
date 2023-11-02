@@ -50,7 +50,9 @@ function Pairing() {
     fetchBirds()
   }, [searchParams])
 
-  useEffect(() => {}, [maleBird, femaleBird])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const deposit = async () => {
     if (!user) {
