@@ -7,7 +7,7 @@ import { formatDate, formatPrice, statusToVariant, statusToVi } from '@/lib/util
 import { birdFarmApi } from '@/services/bird-farm-api'
 import { ArrowLeft, Shell } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import noImage from '@/assets/no-image.webp'
 import cancel from '@/assets/cancel.svg'
 import approve from '@/assets/approve.svg'
@@ -19,7 +19,6 @@ function ManageOrderDetail() {
   const [approvingOrder, setApprovingOrder] = useState(false)
   const [cancelingOrder, setCancelingOrder] = useState(false)
   const { toast } = useToast()
-  const navigate = useNavigate()
 
   const approveOrder = async () => {
     try {
@@ -42,7 +41,6 @@ function ManageOrderDetail() {
     try {
       setCancelingOrder(true)
       await birdFarmApi.put(`/api/orders/${id}/cancel`)
-      navigate('/staff/orders')
       window.location.reload()
       toast({
         title: 'Xóa đơn hàng thành công',
