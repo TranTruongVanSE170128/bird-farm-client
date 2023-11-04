@@ -97,7 +97,7 @@ function YourNest() {
         {!!totalPages && (
           <Paginate
             className='mt-8'
-            path={addSearchParams('/api/order-nests/pagination', { pageNumber, pageSize, status: activeTab })}
+            path={addSearchParams('/your-nest', { tab: activeTab })}
             pageSize={pageSize}
             pageNumber={pageNumber}
             totalPages={totalPages}

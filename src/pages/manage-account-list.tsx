@@ -150,7 +150,7 @@ function ManageAccountList() {
       {!!totalPages && (
         <Paginate
           className='mt-8'
-          path={addSearchParams('/manager/accounts', {})}
+          path={addSearchParams('/admin/accounts', {})}
           pageSize={pageSize}
           pageNumber={pageNumber}
           totalPages={totalPages}

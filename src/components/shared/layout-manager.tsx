@@ -1,12 +1,21 @@
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import LeftSidebar from './left-side-bar'
 import TopBar from './top-bar'
 import BottomBar from './bottom-bar'
 import { useAuthContext } from '@/contexts/auth-provider'
 import { routes } from '@/constants/managerRoutes'
+import { useEffect } from 'react'
 
 function LayoutManager() {
   const { role } = useAuthContext()
+  const navigate = useNavigate()
+  const pathName = useLocation().pathname
+
+  useEffect(() => {
+    if (pathName === '/manager') {
+      navigate('/manager/species')
+    }
+  }, [pathName, navigate])
 
   if (role && !(role === 'manager')) {
     return <Navigate to='/' />

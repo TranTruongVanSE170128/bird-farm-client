@@ -1,12 +1,21 @@
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import LeftSidebar from './left-side-bar'
 import TopBar from './top-bar'
 import BottomBar from './bottom-bar'
 import { useAuthContext } from '@/contexts/auth-provider'
 import { routes } from '@/constants/staffRoutes'
+import { useEffect } from 'react'
 
 function LayoutStaff() {
   const { role } = useAuthContext()
+  const navigate = useNavigate()
+  const pathName = useLocation().pathname
+
+  useEffect(() => {
+    if (pathName === '/staff') {
+      navigate('/staff/orders')
+    }
+  }, [pathName, navigate])
 
   if (role && !(role === 'staff')) {
     return <Navigate to='/' />
