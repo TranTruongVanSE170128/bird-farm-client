@@ -4,7 +4,7 @@ import SpecieCardSkeleton from '@/components/specie-card-skeleton'
 import { Button } from '@/components/ui/button'
 import Container from '@/components/ui/container'
 import { Bird, Specie } from '@/lib/types'
-import { ArrowLeft, ArrowRight, ShoppingBag } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -12,6 +12,7 @@ import { Navigation, Pagination, EffectCoverflow } from 'swiper/modules'
 import useWindowSize from '@/hooks/use-window-size'
 import BirdCardSkeleton from '@/components/bird-card-skeleton'
 import { birdFarmApi } from '@/services/bird-farm-api'
+import Banners from '@/components/ui/banners'
 
 function Home() {
   const [isLoadingSpecies, setIsLoadingSpecies] = useState(true)
@@ -21,7 +22,6 @@ function Home() {
   const [birdsBreed, setBirdsBreed] = useState<Bird[]>([])
   const { width } = useWindowSize()
   const speciesSection = useRef<HTMLHeadingElement>(null)
-  const [bannerUrls, setBannerUrls] = useState<string[]>([])
 
   const sliceSpeciePerView = useMemo(() => {
     if (width < 640) return 1
@@ -29,15 +29,6 @@ function Home() {
     else if (width < 1024) return 3
     else return 4
   }, [width])
-
-  useEffect(() => {
-    const fetchMedia = async () => {
-      const { data } = await birdFarmApi.get('/api/media')
-      setBannerUrls(data.media.bannerUrls)
-    }
-
-    fetchMedia()
-  }, [])
 
   useEffect(() => {
     const fetchSpecies = async () => {
@@ -74,32 +65,7 @@ function Home() {
 
   return (
     <Container>
-      <div className='overflow-hidden rounded-lg'>
-        <div
-          style={{
-            backgroundImage: `url(${bannerUrls[0] || 'https://images.alphacoders.com/774/thumb-1920-774587.jpg'})`
-          }}
-          className='rounded-lg relative aspect-square md:aspect-[2.4/1] overflow-hidden bg-cover mt-8'
-        >
-          <div className='flex flex-col items-center justify-center w-full h-full text-center gap-y-8'>
-            <div className='max-w-xs p-4 text-3xl font-bold rounded-lg sm:text-5xl lg:text-6xl sm:max-w-xl text-foreground bg-background/70'>
-              Bird Farm
-              <Button
-                onClick={() => {
-                  speciesSection.current?.scrollIntoView({
-                    behavior: 'smooth'
-                  })
-                }}
-                size='lg'
-                className='w-full py-6 text-xl'
-              >
-                <ShoppingBag className='mr-2' />
-                Mua Ngay
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Banners />
 
       <h1 ref={speciesSection} className='mt-8 mb-5 text-3xl font-bold text-center'>
         Các loài chim đang có tại cửa hàng
