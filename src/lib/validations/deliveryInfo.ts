@@ -15,7 +15,8 @@ export const deliveryInfoSchema = z.object({
     .max(11, {
       message: 'Số điện thoại có độ dài tối đa là 11 chữ số'
     })
-    .trim(),
+    .trim()
+    .refine((p) => p.match(/^[0-9]+$/), 'Số điện thoại không hợp lệ'),
   province: z.string({ required_error: 'Bắt buộc' }).min(1, 'Tỉnh bắt buộc').trim(),
   district: z.string({ required_error: 'Bắt buộc' }).min(1, 'Thành phố bắt buộc').trim(),
   ward: z.string({ required_error: 'Bắt buộc' }).min(1, 'Phường/Xã bắt buộc').trim(),

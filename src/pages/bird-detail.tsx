@@ -16,6 +16,8 @@ import BirdCardSkeleton from '@/components/bird-card-skeleton'
 import BirdCard from '@/components/bird-card'
 import { useCompareStore } from '@/store/use-compare'
 import { useBreedStore } from '@/store/use-breed'
+import compareIcon from '@/assets/compare.svg'
+import { ShoppingCart } from 'lucide-react'
 
 function BirdDetail() {
   const { id } = useParams()
@@ -237,6 +239,7 @@ function BirdDetail() {
                   size='lg'
                   variant='outline'
                 >
+                  <img src={compareIcon} className='w-5 h-5 mr-1 dark:filter dark:invert' />
                   So sánh
                 </Button>
                 <Button
@@ -248,13 +251,9 @@ function BirdDetail() {
                     })
                   }}
                   size='lg'
-                  variant='outline'
                 >
+                  <ShoppingCart className='mr-1' />
                   Thêm vào giỏ
-                </Button>
-
-                <Button onClick={() => {}} size='lg'>
-                  Mua ngay
                 </Button>
               </div>
             )}

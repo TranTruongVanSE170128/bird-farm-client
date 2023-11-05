@@ -11,6 +11,7 @@ import { Link, useParams } from 'react-router-dom'
 import Spinner from '@/components/ui/spinner'
 import NestCardSkeleton from '@/components/nest-card-skeleton'
 import NestCard from '@/components/nest-card'
+import { ShoppingCart } from 'lucide-react'
 
 function NestDetail() {
   const imageRef = useRef<HTMLImageElement | null>(null)
@@ -111,7 +112,7 @@ function NestDetail() {
               <div className='flex items-center gap-2 text-lg'>
                 <div className='font-medium'>Chim Bố:</div>{' '}
                 {nest.dad ? (
-                  <Link className='hover:underline hover:text-primary' to={`/birds/${nest.dad._id}`}>
+                  <Link className='hover:underline text-primary' to={`/birds/${nest.dad._id}`}>
                     {nest.dad.name}
                   </Link>
                 ) : (
@@ -122,7 +123,7 @@ function NestDetail() {
               <div className='flex items-center gap-2 text-lg'>
                 <div className='font-medium'>Chim Mẹ:</div>{' '}
                 {nest.mom?._id ? (
-                  <Link className='hover:underline hover:text-primary' to={`/birds/${nest.mom._id}`}>
+                  <Link className='hover:underline text-primary' to={`/birds/${nest.mom._id}`}>
                     {nest.mom.name}
                   </Link>
                 ) : (
@@ -143,7 +144,6 @@ function NestDetail() {
 
             <div className='flex gap-4 my-6 mt-10'>
               <Button
-                className='text-lg'
                 onClick={() => {
                   addNestToCart(nest._id)
                   toast({
@@ -152,13 +152,9 @@ function NestDetail() {
                   })
                 }}
                 size='lg'
-                variant='outline'
               >
+                <ShoppingCart className='mr-1' />
                 Thêm vào giỏ
-              </Button>
-
-              <Button className='text-lg' onClick={() => {}} size='lg'>
-                Mua ngay
               </Button>
             </div>
           </div>

@@ -13,7 +13,7 @@ function VerifyEmail() {
   const [searchParams] = useSearchParams()
   const email = searchParams.get('email')
   const [code, setCode] = useState('')
-  const [verify, setVerify] = useState<'pending' | 'success' | 'fail'>('fail')
+  const [verify, setVerify] = useState<'pending' | 'success' | 'fail'>('pending')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async () => {
