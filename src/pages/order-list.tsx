@@ -157,7 +157,7 @@ function OrderList() {
                 title: 'Đã Đánh Giá',
                 disabled: true,
                 handleClick: () => showRatingForm({ orderId: order._id }),
-                className: 'border-primary text-primary select-none'
+                className: 'border-primary select-none'
               })
             }
 

@@ -17,7 +17,7 @@ function Banners() {
   }, [])
   return (
     <div className='overflow-hidden rounded-lg'>
-      <div className='rounded-lg relative aspect-square md:aspect-[2.4/1] bg-cover mt-8 z-20'>
+      <div className='rounded-lg relative aspect-square md:aspect-[2.4/1] mt-8 z-20'>
         <Swiper
           // install Swiper modules
           modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -34,7 +34,7 @@ function Banners() {
           {bannerUrls.map((bannerUrl) => {
             return (
               <SwiperSlide>
-                <img className='w-full h-full object-cover' src={bannerUrl} />
+                <img className='w-full h-full object-contain' src={bannerUrl} />
               </SwiperSlide>
             )
           })}
