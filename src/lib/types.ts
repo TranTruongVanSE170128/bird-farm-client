@@ -84,6 +84,8 @@ export type Rating = {
   imageUrls?: string[]
   user: User | string
   createdAt: Date
+  order?: Order
+  orderNest?: OrderNest
 }
 
 export function getSpecie(item: Bird | Nest | OrderNest): Specie {

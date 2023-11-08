@@ -4,13 +4,20 @@ import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
 import { addSearchParams, calculateTime } from '@/lib/utils'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { Rating, getUser } from '@/lib/types'
+import { Rating, getBirds, getNests, getSpecie, getUser } from '@/lib/types'
 import Paginate from '@/components/paginate'
 import { birdFarmApi } from '@/services/bird-farm-api'
 import moment from 'moment'
 import Spinner from '@/components/ui/spinner'
 import starFillIcon from '@/assets/star-fill.svg'
 import greyBirdIcon from '@/assets/grey-bird.svg'
+import noImage from '@/assets/no-image.webp'
+import maleIcon from '@/assets/male.svg'
+import femaleIcon from '@/assets/female.svg'
+import birdIcon from '@/assets/bird-color.svg'
+import nestIcon from '@/assets/nest-color.svg'
+import breedIcon from '@/assets/breed.svg'
+import redHeart from '@/assets/red-heart.svg'
 
 const pageSize = 10
 const buttons = [
@@ -32,6 +39,10 @@ function Ratings() {
   const [totalPages, setTotalPages] = useState<number | null>(null)
   const [averageRatings, setAverageRatings] = useState<number>(5)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    console.log(ratings.map((r) => r.order))
+  }, [ratings])
 
   useEffect(() => {
     const fetchRatings = async () => {
@@ -116,8 +127,8 @@ function Ratings() {
           ratings.map((rating) => {
             return (
               <div className='flex justify-center mb-4 bg-muted'>
-                <div className='w-full p-4 cursor-pointer '>
-                  <div className='flex items-center justify-between mx-10 mb-4'>
+                <div className='w-full p-4 cursor-pointer mx-10'>
+                  <div className='flex items-center justify-between mb-4'>
                     <div className='flex items-center'>
                       <div className='w-10 h-10 mr-2 overflow-hidden rounded-full'>
                         <img
@@ -142,9 +153,9 @@ function Ratings() {
                     </div>
                   </div>
 
-                  <div className='mx-10 text-xl text-foreground'>{rating.content}</div>
+                  <div className='text-xl text-foreground'>{rating.content}</div>
 
-                  <div className='flex mx-10 mt-2'>
+                  <div className='flex mt-2'>
                     {!!rating.imageUrls?.length && (
                       <img
                         className='object-cover w-24 rounded cursor-pointer aspect-square'
@@ -153,6 +164,102 @@ function Ratings() {
                       />
                     )}
                   </div>
+
+                  {rating.order && (
+                    <>
+                      <div className='text-lg font-medium mb-2'>Sản phẩm đã mua:</div>
+
+                      <div className='flex flex-wrap gap-4'>
+                        {getBirds(rating.order).map((bird) => (
+                          <div className='flex items-center gap-4 bg-card p-2 rounded-lg'>
+                            <img
+                              className='object-cover w-20 border rounded-md cursor-pointer aspect-square'
+                              src={bird.imageUrls?.[0] || noImage}
+                              alt='bird'
+                            />
+
+                            <div>
+                              <p className='font-semibold text-center md:text-left'>{bird.name}</p>
+                              <p className='flex items-center'>
+                                Loài: {getSpecie(bird).name}
+                                {bird.gender === 'male' ? (
+                                  <img className='w-6 h-6 ml-1' src={maleIcon} alt='' />
+                                ) : (
+                                  <img className='w-6 h-6 ml-1' src={femaleIcon} alt='' />
+                                )}
+                              </p>
+                              <p className='flex items-center'>
+                                Phân loại: Chim kiểng <img src={birdIcon} className='w-5 h-5 ml-1' />
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                        {getNests(rating.order).map((nest) => (
+                          <div className='flex items-center gap-4 bg-card p-2 rounded-lg'>
+                            <img
+                              className='object-cover w-20 border rounded-md cursor-pointer aspect-square'
+                              src={nest.imageUrls?.[0] || noImage}
+                              alt='nest'
+                            />
+
+                            <div>
+                              <p className='font-semibold text-center md:text-left'>{nest.name}</p>
+                              <p className='flex items-center'>Loài: {getSpecie(nest).name}</p>
+                              <p className='flex items-center'>
+                                Phân loại: Tổ chim non <img src={nestIcon} className='w-5 h-5 ml-1' />
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                  {rating.orderNest && (
+                    <>
+                      <div className='text-lg font-medium mb-2'>Đặt tổ chim non:</div>
+
+                      <div className='flex flex-wrap gap-4 items-center'>
+                        <div className='flex items-center gap-4 bg-card p-2 rounded-lg'>
+                          <img
+                            className='object-cover w-20 border rounded-md cursor-pointer aspect-square'
+                            src={rating.orderNest.dad.imageUrls?.[0] || noImage}
+                            alt='rating.orderNest.dad'
+                          />
+
+                          <div>
+                            <p className='font-semibold text-center md:text-left'>{rating.orderNest.dad.name}</p>
+                            <p className='flex items-center'>
+                              Loài: {getSpecie(rating.orderNest.dad).name}
+                              <img className='w-6 h-6 ml-1' src={maleIcon} alt='' />
+                            </p>
+                            <p className='flex items-center'>
+                              Phân loại: Chim phối giống <img src={breedIcon} className='w-5 h-5 ml-1' />
+                            </p>
+                          </div>
+                        </div>
+
+                        <img src={redHeart} className='w-12 h-12' />
+
+                        <div className='flex items-center gap-4 bg-card p-2 rounded-lg'>
+                          <img
+                            className='object-cover w-20 border rounded-md cursor-pointer aspect-square'
+                            src={rating.orderNest.mom.imageUrls?.[0] || noImage}
+                            alt='rating.orderNest.mom'
+                          />
+
+                          <div>
+                            <p className='font-semibold text-center md:text-left'>{rating.orderNest.mom.name}</p>
+                            <p className='flex items-center'>
+                              <img className='w-6 h-6 ml-1' src={femaleIcon} alt='' />
+                            </p>
+                            <p className='flex items-center'>
+                              Phân loại: Chim phối giống <img src={breedIcon} className='w-5 h-5 ml-1' />
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             )
