@@ -229,7 +229,7 @@ function Ratings() {
                           <div>
                             <p className='font-semibold text-center md:text-left'>{rating.orderNest.dad.name}</p>
                             <p className='flex items-center'>
-                              Loài: {getSpecie(rating.orderNest.dad).name}
+                              Loài: {getSpecie(rating.orderNest).name}
                               <img className='w-6 h-6 ml-1' src={maleIcon} alt='' />
                             </p>
                             <p className='flex items-center'>
@@ -250,6 +250,7 @@ function Ratings() {
                           <div>
                             <p className='font-semibold text-center md:text-left'>{rating.orderNest.mom.name}</p>
                             <p className='flex items-center'>
+                              Loài: {getSpecie(rating.orderNest).name}
                               <img className='w-6 h-6 ml-1' src={femaleIcon} alt='' />
                             </p>
                             <p className='flex items-center'>
