@@ -17,6 +17,10 @@ function LayoutManager() {
     }
   }, [pathName, navigate])
 
+  useEffect(() => {
+    console.log(routes)
+  }, [])
+
   if (role && !(role === 'manager')) {
     return <Navigate to='/' />
   }

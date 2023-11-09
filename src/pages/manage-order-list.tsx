@@ -30,7 +30,7 @@ function ManageOrderList() {
         )
         setOrders(data?.orders || null)
         setIsLoadingOrders(false)
-        setTotalPages(data?.totalPages || null)
+        setTotalPages(data?.totalPage || null)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         setIsLoadingOrders(false)
