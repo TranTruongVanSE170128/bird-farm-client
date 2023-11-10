@@ -66,7 +66,7 @@ function DeliveryInfoForm({ onSubmit, className, addDeliveryInfo = false, CloseC
     if (deliveryInfo) {
       form.setValue('address', 'x')
       form.setValue('receiver', 'xx')
-      form.setValue('phoneNumber', 'xxxxxxxxxx')
+      form.setValue('phoneNumber', '0000000000')
       form.setValue('province', 'x')
       form.setValue('district', 'x')
       form.setValue('ward', 'x')

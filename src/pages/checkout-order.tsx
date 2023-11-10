@@ -71,15 +71,24 @@ function CheckoutOrder() {
       return
     }
 
+    if (cart.birds.length === 0 && cart.nests.length === 0) {
+      toast({
+        title: 'Không thể mua hàng',
+        description: 'Giỏ hàng rỗng',
+        variant: 'destructive'
+      })
+      return
+    }
+
     const address = deliveryInfo
       ? deliveryInfo.address
       : [data.province, data.district, data.ward, data.address].filter(Boolean).join(', ')
     const receiver = deliveryInfo ? deliveryInfo.receiver : data.receiver
     const phone = deliveryInfo ? deliveryInfo.phone : data.phoneNumber
     const notice = data.notice
-    const cart: Cart = JSON.parse(localStorage.getItem('cart') || String({ birds: [], nests: [] }))
-    const birds = cart.birds
-    const nests = cart.nests
+    const dataCart: Cart = JSON.parse(localStorage.getItem('cart') || String({ birds: [], nests: [] }))
+    const birds = dataCart.birds
+    const nests = dataCart.nests
 
     if (data.type === 'cod') {
       try {
@@ -101,7 +110,7 @@ function CheckoutOrder() {
         const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY)
 
         const { data: session } = await birdFarmApi.post('/api/stripe/create-checkout-session', {
-          products: cart,
+          products: dataCart,
           receiver,
           phone,
           address,

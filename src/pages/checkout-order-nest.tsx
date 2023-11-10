@@ -37,6 +37,15 @@ function CheckoutOrderNest() {
       return
     }
 
+    if (!orderNestId) {
+      toast({
+        title: 'Không thể thanh toán',
+        description: 'Không tìm thấy đơn hàng',
+        variant: 'destructive'
+      })
+      return
+    }
+
     const address = deliveryInfo
       ? deliveryInfo.address
       : [data.province, data.district, data.ward, data.address].filter(Boolean).join(', ')
