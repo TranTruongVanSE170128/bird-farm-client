@@ -10,6 +10,9 @@ import orderSuccessIcon from '@/assets/order-success.svg'
 import orderCanceledIcon from '@/assets/order-canceled.svg'
 import revenueIcon from '@/assets/revenue.svg'
 import Spinner from '@/components/ui/spinner'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import LineChart from '@/components/ui/line-chart'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 type Statistical = {
   numberCustomer: number
@@ -19,26 +22,32 @@ type Statistical = {
   numberDeliveringOrder: number
   numberProcessingOrder: number
   totalRevenueSpecie: { _id: string; value: number; imageUrl: string }[]
+  totalRevenueByDay: { _id: string; value: number; imageUrl: string }[]
 }
 
 function Dashboard() {
   const [statistical, setStatistical] = useState<Statistical | null>(null)
   const [isLoadingStatistical, setIsLoadingStatistical] = useState(true)
+  const [loadingLineChart, setLoadingLineChart] = useState(false)
+  const [searchParams] = useSearchParams()
+  const days = searchParams.get('days') || '7'
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchStatistical = async () => {
-      const { data } = await birdFarmApi.get('/api/statistical')
+      setLoadingLineChart(true)
+      const { data } = await birdFarmApi.get(`/api/statistical?days=${days}`)
       setStatistical(data)
       setIsLoadingStatistical(false)
+      setLoadingLineChart(false)
     }
 
     fetchStatistical()
-  }, [])
+  }, [days])
 
   if (isLoadingStatistical) {
     return (
       <>
-        {' '}
         <div className='text-3xl font-bold mb-4'>Dashboard</div>
         <Spinner className='w-12 h-12' />
       </>
@@ -85,6 +94,31 @@ function Dashboard() {
               <div className='font-medium text-2xl'>{formatPrice(statistical?.totalRevenue || 0)}</div>
             </div>
             {/* ----- */}
+          </div>
+
+          <div>
+            <Select
+              value={String(days)}
+              onValueChange={(val) => {
+                navigate(`/manager?days=${val}`)
+              }}
+            >
+              <SelectTrigger className='w-[180px]'>
+                <SelectValue placeholder='ngày' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value='7'>1 Tuần</SelectItem>
+                <SelectItem value='30'>1 Tháng</SelectItem>
+                <SelectItem value='90'>3 Tháng</SelectItem>
+                <SelectItem value='180'>6 Tháng</SelectItem>
+                <SelectItem value='365'>1 Năm</SelectItem>
+              </SelectContent>
+            </Select>
+            <LineChart
+              loadingLineChart={loadingLineChart}
+              chartData={statistical?.totalRevenueByDay || []}
+              days={Number(days)}
+            />
           </div>
 
           <div className='bg-accent flex p-4 rounded-lg flex-col gap-4'>
