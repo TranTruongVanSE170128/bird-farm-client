@@ -218,6 +218,7 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
           <FormItem className='w-64'>
             <FormLabel>Chim bố</FormLabel>
             <Select
+              defaultValue={form.getValues('dad')}
               onValueChange={(value: string) => {
                 form.setValue('dad', value)
               }}
@@ -238,6 +239,7 @@ function NestForm({ nest, btnTitle, action, setEdit }: Props) {
           <FormItem className='w-64'>
             <FormLabel>Chim mẹ</FormLabel>
             <Select
+              defaultValue={form.getValues('mom')}
               onValueChange={(value: string) => {
                 form.setValue('mom', value)
               }}

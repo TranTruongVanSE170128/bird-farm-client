@@ -233,7 +233,6 @@ function ManageBirdDetail() {
       ) : (
         <BirdForm setEdit={setEdit} action='update' btnTitle='Lưu' bird={bird} />
       )}
-      {/* <BirdForm setEdit={setEdit} action='update' btnTitle='Lưu' bird={bird} /> */}
     </div>
   )
 }

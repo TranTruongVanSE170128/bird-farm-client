@@ -57,6 +57,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
       gender: bird?.gender || 'male'
     }
   })
+
   const [achievements, setAchievements] = useState(form.getValues('achievements'))
   const newCompetition = useRef<HTMLInputElement>(null)
   const newRank = useRef<HTMLInputElement>(null)
@@ -368,6 +369,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
           <FormItem className='w-64'>
             <FormLabel>Chim bố</FormLabel>
             <Select
+              defaultValue={form.getValues('parent.dad')}
               onValueChange={(value: string) => {
                 form.setValue('parent', { ...form.getValues('parent'), dad: value })
               }}
@@ -388,6 +390,7 @@ function BirdForm({ bird, btnTitle, setEdit, action }: Props) {
           <FormItem className='w-64'>
             <FormLabel>Chim mẹ</FormLabel>
             <Select
+              defaultValue={form.getValues('parent.mom')}
               onValueChange={(value: string) => {
                 form.setValue('parent', { ...form.getValues('parent'), mom: value })
               }}
