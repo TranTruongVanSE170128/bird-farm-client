@@ -2,12 +2,12 @@ import { z } from 'zod'
 
 export const birdSchema = z
   .object({
-    specie: z.string().min(1, 'Bắt buộc'),
-    name: z.string().min(1, 'Bắt buộc'),
-    birth: z.date().optional(),
-    sellPrice: z.coerce.number().optional(),
-    breedPrice: z.coerce.number().optional(),
-    description: z.string().optional(),
+    specie: z.string().trim().min(1, 'Bắt buộc'),
+    name: z.string().trim().min(1, 'Bắt buộc'),
+    birth: z.date({ invalid_type_error: 'Ngày sinh không hợp lệ' }).optional(),
+    sellPrice: z.coerce.number({ invalid_type_error: 'Giá bán không hợp lệ' }).optional(),
+    breedPrice: z.coerce.number({ invalid_type_error: 'Giá phối giống không hợp lệ' }).optional(),
+    description: z.string().trim().optional(),
     sold: z.coerce.boolean().optional(),
     type: z.enum(['sell', 'breed']),
     gender: z.enum(['male', 'female']),

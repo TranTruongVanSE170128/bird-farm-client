@@ -1,17 +1,14 @@
 import { z } from 'zod'
 
-// const idValidation = z.string().nonempty('id is required').trim().toLowerCase()
-// const verifyCodeValidation = z.string().nonempty('verify code is required').trim().toLowerCase()
-
 export const signInSchema = z.object({
-  email: z.string({ required_error: 'Bắt buộc' }).email('Email không hợp lệ').trim().toLowerCase(),
-  password: z.string({ required_error: 'Bắt buộc' }).trim()
+  email: z.string().trim().toLowerCase().min(1, 'Bắt buộc').email('Email không hợp lệ'),
+  password: z.string().trim().min(1, 'Bắt buộc')
 })
 
 export const signUpSchema = z.object({
-  name: z.string({ required_error: 'Bắt buộc' }).min(2, 'Tên ít nhất 2 kí tự').trim(),
-  email: z.string({ required_error: 'Bắt buộc' }).email('Email không hợp lệ').trim().toLowerCase(),
-  password: z.string({ required_error: 'Bắt buộc' }).trim().min(6, 'Mật khẩu ít nhất 6 kí tự')
+  name: z.string().trim().min(1, 'Bắt buộc').min(2, 'Tên ít nhất 2 kí tự'),
+  email: z.string().trim().toLowerCase().min(1, 'Bắt buộc').email('Email không hợp lệ'),
+  password: z.string().trim().min(6, 'Mật khẩu ít nhất 6 kí tự')
 })
 
 export type TSignInSchema = z.infer<typeof signInSchema>

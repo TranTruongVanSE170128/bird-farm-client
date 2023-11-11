@@ -14,6 +14,7 @@ type Statistical = {
   totalRevenue: number
   numberDeliveringOrder: number
   numberProcessingOrder: number
+  totalRevenueSpecie: { _id: string; value: number; imageUrl: string }[]
 }
 
 function Dashboard() {
@@ -23,6 +24,7 @@ function Dashboard() {
     const fetchStatistical = async () => {
       const { data } = await birdFarmApi.get('/api/statistical')
       setStatistical(data)
+      console.log(data)
     }
 
     fetchStatistical()
@@ -33,7 +35,7 @@ function Dashboard() {
       <div className='text-3xl font-bold mb-4'>Dashboard</div>
 
       <div className='grid grid-cols-12 gap-4'>
-        <div className='col-span-9 flex flex-col gap-4'>
+        <div className='col-span-8 flex flex-col gap-4'>
           <div className='bg-accent flex items-center justify-between p-4 rounded-lg '>
             {/* ----- */}
             <div className='flex-1 flex flex-col gap-2 items-center'>
@@ -71,84 +73,36 @@ function Dashboard() {
           </div>
 
           <div className='bg-accent flex p-4 rounded-lg flex-col gap-4'>
-            <div className='font-medium text-lg '>Top 5 loài chim có doanh thu cao</div>
-            <div className='grid grid-cols-5 gap-4'>
-              <Card className='overflow-hidden rounded-2xl col-span-1'>
-                <CardHeader className='p-0 mb-2'>
-                  <div className='aspect-square'>
-                    <img
-                      src='https://github.com/shadcn.png'
-                      alt=''
-                      className='object-fill w-full h-full transition-all duration-300 hover:scale-105'
-                    />
-                  </div>
-                </CardHeader>
-                <CardContent className='font-medium text-center line-clamp-1 p-0'>Chim sơn ca</CardContent>
-                <CardFooter className='text-xs'>Doanh thu: 25M vnđ</CardFooter>
-              </Card>
-              <Card className='overflow-hidden rounded-2xl col-span-1'>
-                <CardHeader className='p-0 mb-2'>
-                  <div className='aspect-square'>
-                    <img
-                      src='https://github.com/shadcn.png'
-                      alt=''
-                      className='object-fill w-full h-full transition-all duration-300 hover:scale-105'
-                    />
-                  </div>
-                </CardHeader>
-                <CardContent className='font-medium text-center line-clamp-1 p-0'>Chim sơn ca</CardContent>
-                <CardFooter className='text-xs'>Doanh thu: 25M vnđ</CardFooter>
-              </Card>
-              <Card className='overflow-hidden rounded-2xl col-span-1'>
-                <CardHeader className='p-0 mb-2'>
-                  <div className='aspect-square'>
-                    <img
-                      src='https://github.com/shadcn.png'
-                      alt=''
-                      className='object-fill w-full h-full transition-all duration-300 hover:scale-105'
-                    />
-                  </div>
-                </CardHeader>
-                <CardContent className='font-medium text-center line-clamp-1 p-0'>Chim sơn ca</CardContent>
-                <CardFooter className='text-xs'>Doanh thu: 25M vnđ</CardFooter>
-              </Card>
-              <Card className='overflow-hidden rounded-2xl col-span-1'>
-                <CardHeader className='p-0 mb-2'>
-                  <div className='aspect-square'>
-                    <img
-                      src='https://github.com/shadcn.png'
-                      alt=''
-                      className='object-fill w-full h-full transition-all duration-300 hover:scale-105'
-                    />
-                  </div>
-                </CardHeader>
-                <CardContent className='font-medium text-center line-clamp-1 p-0'>Chim sơn ca</CardContent>
-                <CardFooter className='text-xs'>Doanh thu: 25M vnđ</CardFooter>
-              </Card>
-              <Card className='overflow-hidden rounded-2xl col-span-1'>
-                <CardHeader className='p-0 mb-2'>
-                  <div className='aspect-square'>
-                    <img
-                      src='https://github.com/shadcn.png'
-                      alt=''
-                      className='object-fill w-full h-full transition-all duration-300 hover:scale-105'
-                    />
-                  </div>
-                </CardHeader>
-                <CardContent className='font-medium text-center line-clamp-1 p-0'>Chim sơn ca</CardContent>
-                <CardFooter className='text-xs'>Doanh thu: 25M vnđ</CardFooter>
-              </Card>
+            <div className='font-medium text-lg '>Top 4 loài chim có doanh thu cao</div>
+            <div className='grid grid-cols-4 gap-4'>
+              {statistical?.totalRevenueSpecie.slice(0, 4).map((x) => {
+                return (
+                  <Card className='overflow-hidden rounded-2xl col-span-1'>
+                    <CardHeader className='p-0 mb-2'>
+                      <div className='aspect-square'>
+                        <img
+                          src={x.imageUrl || 'https://github.com/shadcn.png'}
+                          alt=''
+                          className='object-fill w-full h-full transition-all duration-300 hover:scale-105'
+                        />
+                      </div>
+                    </CardHeader>
+                    <CardContent className='font-medium text-center line-clamp-1 p-0'>{x._id}</CardContent>
+                    <CardFooter className='text-xs'>Doanh thu: {formatPrice(x.value)}</CardFooter>
+                  </Card>
+                )
+              })}
             </div>
           </div>
         </div>
 
-        <div className='col-span-3 flex flex-col gap-4'>
+        <div className='col-span-4 flex flex-col gap-4'>
           <div className='p-4 rounded-lg bg-accent'>
             <CircleChart
               title='Tỉ lệ doanh thu theo loài'
               items={{
-                labels: ['Chim sơn ca', 'Chim vàng anh', 'Chim sáo', 'Chim hồng tước', 'Chim chào mào'],
-                values: [123, 234, 423, 87, 345]
+                labels: statistical?.totalRevenueSpecie.map((x) => x._id) || [],
+                values: statistical?.totalRevenueSpecie.map((x) => x.value) || []
               }}
             />
           </div>

@@ -17,10 +17,10 @@ export const deliveryInfoSchema = z.object({
     })
     .trim()
     .refine((p) => p.match(/^[0-9]+$/), 'Số điện thoại không hợp lệ'),
-  province: z.string({ required_error: 'Bắt buộc' }).min(1, 'Tỉnh bắt buộc').trim(),
-  district: z.string({ required_error: 'Bắt buộc' }).min(1, 'Thành phố bắt buộc').trim(),
-  ward: z.string({ required_error: 'Bắt buộc' }).min(1, 'Phường/Xã bắt buộc').trim(),
-  address: z.string({ required_error: 'Bắt buộc' }).min(1, 'Số nhà, tên đường bắt buộc').trim(),
+  province: z.string().trim().min(1, 'Tỉnh bắt buộc'),
+  district: z.string().trim().min(1, 'Thành phố bắt buộc'),
+  ward: z.string().trim().min(1, 'Phường/Xã bắt buộc'),
+  address: z.string().trim().min(1, 'Số nhà, tên đường bắt buộc'),
   notice: z.string().trim().optional()
 })
 

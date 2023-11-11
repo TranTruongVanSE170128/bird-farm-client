@@ -240,9 +240,9 @@ function ManageOrderNestDetail() {
 export default ManageOrderNestDetail
 
 const addStageSchema = z.object({
-  name: z.string({ required_error: 'Bắt buôc' }),
-  imageUrl: z.string({ required_error: 'Bắt buôc' }),
-  description: z.string({ required_error: 'Bắt buôc' })
+  name: z.string().trim().min(1, 'Bắt buộc'),
+  imageUrl: z.string().trim().min(1, 'Bắt buộc'),
+  description: z.string().trim().min(1, 'Bắt buộc')
 })
 
 type TAddStageSchema = z.infer<typeof addStageSchema>
