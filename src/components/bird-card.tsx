@@ -12,6 +12,7 @@ import breedIcon from '@/assets/breed.svg'
 import birdIcon from '@/assets/bird-color.svg'
 import { useCompareStore } from '@/store/use-compare'
 import { useBreedStore } from '@/store/use-breed'
+import { useAuthContext } from '@/contexts/auth-provider'
 
 type Props = {
   className?: string
@@ -22,11 +23,20 @@ function BirdCard({ className, bird }: Props) {
   const { addBirdToCart } = useCartContext()
   const { addToCompare } = useCompareStore()
   const { addToBreed } = useBreedStore()
+  const { user } = useAuthContext()
 
   const { toast } = useToast()
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
+    if (user?.role !== 'customer' && user?.role !== 'guest') {
+      toast({
+        variant: 'destructive',
+        title: 'Bạn không có quyền thêm chim vào giỏ hàng!',
+        duration: 2500
+      })
+      return
+    }
     addBirdToCart(bird._id)
     toast({
       variant: 'success',

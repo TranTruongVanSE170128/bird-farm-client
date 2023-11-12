@@ -6,6 +6,7 @@ import { Nest } from '@/lib/types'
 import noImage from '@/assets/no-image.webp'
 import { useToast } from './ui/use-toast'
 import { useCartContext } from '@/contexts/cart-provider'
+import { useAuthContext } from '@/contexts/auth-provider'
 
 type Props = {
   className?: string
@@ -15,9 +16,18 @@ type Props = {
 function NestCard({ className, nest }: Props) {
   const { toast } = useToast()
   const { addNestToCart } = useCartContext()
+  const user = useAuthContext()
 
   const addToCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
+    if (user?.role !== 'customer' && user?.role !== 'guest') {
+      toast({
+        variant: 'destructive',
+        title: 'Bạn không có quyền thêm tổ chim vào giỏ hàng!',
+        duration: 2500
+      })
+      return
+    }
     addNestToCart(nest._id)
     toast({
       variant: 'success',

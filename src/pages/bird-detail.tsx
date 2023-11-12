@@ -18,6 +18,7 @@ import { useCompareStore } from '@/store/use-compare'
 import { useBreedStore } from '@/store/use-breed'
 import compareIcon from '@/assets/compare.svg'
 import { ShoppingCart } from 'lucide-react'
+import { useAuthContext } from '@/contexts/auth-provider'
 
 function BirdDetail() {
   const { id } = useParams()
@@ -30,6 +31,7 @@ function BirdDetail() {
   const { toast } = useToast()
   const [sameBirds, setSameBirds] = useState<Bird[]>([])
   const [isLoadingSameBirds, setIsLoadingSameBirds] = useState(true)
+  const { user } = useAuthContext()
 
   const handleMouseEnter = (imageUrl: string) => {
     if (imageRef.current) {
@@ -244,6 +246,14 @@ function BirdDetail() {
                 </Button>
                 <Button
                   onClick={() => {
+                    if (user?.role !== 'customer' && user?.role !== 'guest') {
+                      toast({
+                        variant: 'destructive',
+                        title: 'Bạn không có quyền thêm chim vào giỏ hàng!',
+                        duration: 2500
+                      })
+                      return
+                    }
                     addBirdToCart(bird._id)
                     toast({
                       title: 'Đã thêm chim vào giỏ hàng',

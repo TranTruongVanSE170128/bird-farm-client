@@ -12,6 +12,7 @@ import Spinner from '@/components/ui/spinner'
 import NestCardSkeleton from '@/components/nest-card-skeleton'
 import NestCard from '@/components/nest-card'
 import { ShoppingCart } from 'lucide-react'
+import { useAuthContext } from '@/contexts/auth-provider'
 
 function NestDetail() {
   const imageRef = useRef<HTMLImageElement | null>(null)
@@ -19,7 +20,7 @@ function NestDetail() {
   const { toast } = useToast()
   const { id } = useParams()
   const [nest, setNest] = useState<Nest | null>(null)
-
+  const { user } = useAuthContext()
   const [sameNests, setSameNests] = useState<Nest[]>([])
   const [isLoadingSameNests, setIsLoadingSameNests] = useState(true)
 
@@ -145,6 +146,14 @@ function NestDetail() {
             <div className='flex gap-4 my-6 mt-10'>
               <Button
                 onClick={() => {
+                  if (user?.role !== 'customer' && user?.role !== 'guest') {
+                    toast({
+                      variant: 'destructive',
+                      title: 'Bạn không có quyền thêm tổ chim vào giỏ hàng!',
+                      duration: 2500
+                    })
+                    return
+                  }
                   addNestToCart(nest._id)
                   toast({
                     title: 'Đã thêm chim vào giỏ hàng',
