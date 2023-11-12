@@ -29,7 +29,7 @@ function BirdCard({ className, bird }: Props) {
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
-    if (user?.role !== 'customer' && user?.role !== 'guest') {
+    if (user && user.role !== 'customer' && user.role !== 'guest') {
       toast({
         variant: 'destructive',
         title: 'Bạn không có quyền thêm chim vào giỏ hàng!',

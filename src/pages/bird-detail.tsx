@@ -246,7 +246,7 @@ function BirdDetail() {
                 </Button>
                 <Button
                   onClick={() => {
-                    if (user?.role !== 'customer' && user?.role !== 'guest') {
+                    if (user && user.role !== 'customer' && user.role !== 'guest') {
                       toast({
                         variant: 'destructive',
                         title: 'Bạn không có quyền thêm chim vào giỏ hàng!',

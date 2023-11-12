@@ -20,7 +20,7 @@ function NestCard({ className, nest }: Props) {
 
   const addToCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
-    if (user?.role !== 'customer' && user?.role !== 'guest') {
+    if (user && user.role !== 'customer' && user.role !== 'guest') {
       toast({
         variant: 'destructive',
         title: 'Bạn không có quyền thêm tổ chim vào giỏ hàng!',

@@ -146,7 +146,7 @@ function NestDetail() {
             <div className='flex gap-4 my-6 mt-10'>
               <Button
                 onClick={() => {
-                  if (user?.role !== 'customer' && user?.role !== 'guest') {
+                  if (user && user.role !== 'customer' && user.role !== 'guest') {
                     toast({
                       variant: 'destructive',
                       title: 'Bạn không có quyền thêm tổ chim vào giỏ hàng!',
