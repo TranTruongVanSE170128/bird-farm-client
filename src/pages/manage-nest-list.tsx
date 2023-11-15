@@ -217,7 +217,7 @@ function ManageNestList() {
                     {nest.sold ? (
                       <Badge variant='destructive'>Đã bán</Badge>
                     ) : (
-                      <Badge variant='success'>Đang bán bán</Badge>
+                      <Badge variant='success'>Đang bán</Badge>
                     )}
                   </TableCell>
                   <TableCell className='text-center'>
